@@ -28,11 +28,21 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 
 **Alternatives considered:** Keeping presence-based scoring or requiring a hot cache. Neither reliably establishes retrieval quality or successful execution.
 
+**Owner:** Nate Herk
+
+---
+
 ## 2026-09-06 - Portable skills and automatic audit history
 
 **Decision:** Ship all four skills for Claude Code and Codex, with bundled resources, matching operating manuals, and a script for regenerating Codex copies. Audit reports are saved automatically, preserve previous runs, and track findings across comparable inspections.
 
 **Why:** Students need the same shared guidance when switching assistants and evidence of actual improvements over time. Intentional runtime adaptations, unknown verification, and confirmed defects are reported separately.
+
+**Alternatives considered:** Single-assistant distribution or manual copy-pasting of prompt updates across platforms.
+
+**Owner:** Nate Herk
+
+---
 
 ## 2026-09-06 - Portable 3D Brain skill
 
@@ -40,8 +50,102 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 
 **Why:** Shipping the working renderer preserves the intended appearance and interactions across AIOS installations. A prose-only prompt would produce inconsistent recreations. User config and graph data remain local; the public package includes only code, documentation, dependency notices, and fictional test inputs.
 
+**Alternatives considered:** Pure ASCII art representation or web-hosted third-party visualisers.
+
+**Owner:** Nate Herk
+
+---
+
 ## 2026-09-06 - Add ongoing context interviews
 
 **Decision:** Adapt Herk-2's grill-me skill for the student kit and ship matching Claude/Codex packages. Save every answer to brainstorms/, preserve resumable Q&A history, and update canonical context only with confirmed facts during requested context-building sessions.
 
 **Why:** Onboarding is an initial snapshot. Ongoing interviews capture changing priorities, decisions, and preferences while keeping tentative ideas distinct from current business facts.
+
+**Alternatives considered:** Overwriting canonical context on every chat interaction without human review.
+
+**Owner:** Nate Herk
+
+---
+
+## 2026-09-29 — Mobile-first navigation and WCAG token system
+
+**Decision:** Standardise on a fixed 4-tab mobile bottom bar (`[Overview, Graph, Chat, Skills]`), top-left slide-over drawer, desktop collapsible sidebar with pinned profile anchor, and a calibrated token matrix (4 dark surfaces, 4 light surfaces, 8 accent colourways).
+
+**Why:** Guarantees WCAG 2.1 AA/AAA contrast compliance across all user-selected themes and prevents virtual keyboard clipping, touch-scroll hijacking, and nested scroll traps on mobile viewports.
+
+**Alternatives considered:** Arbitrary hex colour picker, desktop-only layout, and a single responsive layout without dedicated mobile navigation patterns.
+
+**Owner:** Colin Jones
+
+---
+
+## 2026-09-29 — Four Cs architecture and 3Ms operational framework
+
+**Decision:** Adopt Nate Herk's Four Cs (Floor 01 Context, Floor 02 Connections, Floor 03 Capabilities, Floor 04 Cadence) and Three Ms frameworks (Mindset, Method, Machine) with L0–L4 Autonomy ratings, the Intern Rule, and the Kill Switch.
+
+**Why:** Prevents disconnected automations, ensures deterministic scripts precede non-deterministic LLMs, and enforces view-only, scoped permissions with audit trails.
+
+**Alternatives considered:** Unstructured agent-first setups, autonomous agents with unrestricted write access, and ad-hoc automations without an underlying architectural stack.
+
+**Owner:** Colin Jones
+
+---
+
+## 2026-09-29 — Payhip automated digital storefront engine
+
+**Decision:** Use Payhip backed by PayPal for automated per-video beat license sales and instant untagged audio file delivery, linking directly from YouTube/Shorts descriptions and automated pinned comments.
+
+**Why:** Eliminates the manual email and Instagram DM negotiation bottleneck that loses midnight impulse buyers, without incurring the recurring monthly subscription fees of BeatStars.
+
+**Alternatives considered:** Returning to BeatStars (monthly subscription overhead), manual DM/email bank transfers (high drop-off), and custom Stripe webhook infrastructure (high maintenance burden).
+
+**Owner:** Colin Jones
+
+---
+
+## 2026-09-29 — Absorb Nexus metadata generator into local CJ-OS capability
+
+**Decision:** Deprecate the standalone Base44 Nexus web app and absorb metadata generation, description formatting, and tag creation directly into CJ-OS as a local Floor 03 skill.
+
+**Why:** Eliminates manual data entry across disparate tools and enables automated extraction of artist, title, and key/BPM directly from FL Studio audio exports.
+
+**Alternatives considered:** Integrating the external Base44 web app via API or maintaining manual data entry in a separate browser tab.
+
+**Owner:** Colin Jones
+
+---
+
+## 2026-09-29 — Centralise notes, catalogue, and backlog in Notion
+
+**Decision:** Designate Notion as the canonical workspace for track catalogue databases, project backlogs, and release schedules, connecting to CJ-OS via MCP.
+
+**Why:** Resolves scattered notes across devices, leverages Colin's familiar workflow, and provides clean structured data for Graphify to index.
+
+**Alternatives considered:** Obsidian vault, loose Markdown/text files, Google Docs, and ClickUp.
+
+**Owner:** Colin Jones
+
+---
+
+## 2026-09-30 — Streamline connections and eliminate enterprise bloat
+
+**Decision:** Strip out Stripe, Skool, Slack, Fireflies, and lyric transcription ingestion from Floor 02 Connections. Standardise strictly on PayPal, Payhip, YouTube Studio, Google Workspace (Gmail/Calendar), Notion, and Local Files.
+
+**Why:** Solitary music production and content creation workflows do not require team chat, meeting summarisation, or lyric RAG, which only pollute local context and waste tokens.
+
+**Alternatives considered:** Leaving unused services configured as inactive or maintaining generic template integrations.
+
+**Owner:** Colin Jones
+
+---
+
+## 2026-09-30 — Sunsama-style morning ritual for Floor 04 Cadence
+
+**Decision:** Implement an interactive morning briefing script that ingests Google Calendar events via `gws-cli`, surfaces proactive task suggestions from the Notion backlog, and prompts interactive daily hit-list triage into `today.md`.
+
+**Why:** Establishes an intentional start to the day, aligns immediate actions with quarterly upload and development priorities, and prevents reactive distractions.
+
+**Alternatives considered:** Passive desktop notifications, uncurated to-do lists, and unstructured manual planning.
+
+**Owner:** Colin Jones
