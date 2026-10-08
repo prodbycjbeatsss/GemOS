@@ -227,3 +227,13 @@ CJ chose A: after Sunday’s last clip reaches 24 hours, provide the Monday batc
 ## 8 October 2026 — Handoff project context added
 
 At CJ’s request, the dashboard handoff now explains GemOs’s broader purpose, release workflow, five dashboard groups, current reference/data-definition stage and deferred app architecture/integration work. This supplies context without approving a new stack, autonomous publishing or additional implementation scope.
+
+## 8 October 2026 — All-tab shared reporting window
+
+**Decision:** CJ chose A. The All tab uses one shared rolling 28-day date range, ending on the latest date with complete, compatible imported data across the required platforms (Shorts, TikTok and Reels). Compare with the immediately preceding non-overlapping 28 days using matching coverage. Individual platform tabs may show their own latest complete window and must label it. Validate source day boundaries before claiming compatibility; matching date labels alone do not establish equivalent coverage. Missing sources remain explicitly identified under the existing partial-data rules; hide combined growth and target status until required coverage is complete. A missing source does not become zero.
+
+**Why:** Combined totals should cover matching dates rather than silently mix each platform’s latest window. Shared results may lag behind individual platform figures.
+
+**Alternatives considered:** Combining each platform’s latest available 28-day window with different date ranges.
+
+**Owner:** CJ
