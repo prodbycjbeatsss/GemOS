@@ -10,13 +10,13 @@ Period: rolling last 28 days versus the preceding non-overlapping 28 days, advan
 
 ### Current metric choices
 
-These are the accepted design choices, still subject to API feasibility decisions. No replacement is approved yet.
+These are the accepted design choices, still subject to real API validation. CJ approved Likes to replace YouTube Stayed to watch on 8 October; CJ also approved Comments to replace TikTok Followers gained. Preview updates are queued until remaining decisions are settled.
 
 | Selection | Four tiles |
 |---|---|
 | All | Shorts views; TikTok views; Reels views; combined shares |
-| Shorts | Average percentage viewed; Stayed to watch; subscribers gained; shares |
-| TikTok | Average watch time; watched full video; followers gained; shares |
+| Shorts | Average percentage viewed; likes; subscribers gained; shares |
+| TikTok | Average watch time; watched full video; comments; shares |
 | Reels | Average watch time; shares; follows attributed to Reels; saves |
 
 Main views count uses the selected platform or sum of available platforms; combined plays are not unique people. Target is editable per platform; All sums targets. Growth uses the previous matched window. No forecasting, velocity or unsupported On track claim.
@@ -64,4 +64,4 @@ Example views: 92,400 / 54,600 / 26,800 = 173,800; shares 1,260 / 840 / 420 = 2,
 
 ## Next decisions
 
-Resolve Stayed to watch, attributed follower tiles, period coverage and aggregation. Then settle snapshot tolerance and wording. Verify account types and real API access. See [PLAN.md](../PLAN.md). No further code changes without CJ's confirmation.
+YouTube Likes replacement is approved. TikTok Comments replacement is approved. Resolve Reels follower attribution, period coverage and aggregation. Then settle snapshot tolerance and wording. Verify account types and real API access. See [PLAN.md](../PLAN.md). No further code changes without CJ's confirmation.

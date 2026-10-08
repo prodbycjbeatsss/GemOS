@@ -45,7 +45,7 @@ The minimal YouTube test can run before every cross-platform metric is settled i
 
 ## Current open decisions
 
-- YouTube replacement for Stayed to watch: present useful candidates and agree one; no replacement chosen.
+- YouTube replacement for Stayed to watch: Likes approved; real report validation and preview implementation pending.
 - TikTok and Instagram clip-attributed followers versus obtainable alternatives.
 - Last-28-days activity reporting versus post-publication cohorts: these are different definitions, not interchangeable.
 - Weighted watch aggregates, date boundaries and partial data in All.
@@ -55,7 +55,7 @@ The minimal YouTube test can run before every cross-platform metric is settled i
 
 ## Next action
 
-Explain replacement choices for YouTube’s Stayed to watch tile in card 2.1. CJ chooses a useful candidate, conditional on a real API test. Then review the remaining platform metrics and scope. No code changes now.
+YouTube Likes replacement is approved. TikTok Comments replacement is also approved. Review Reels’ follower tile next, then remaining platform metrics and reporting scope. Implement agreed changes together after the decision review.
 
 ## Repository organisation — 8 October
 
@@ -64,3 +64,7 @@ CJ confirmed that reviewed/finished references belong in prodbycjbeatsss/GemOS, 
 ## Per-group folders and review — 8 October
 
 CJ approved a folder per reviewed group, containing preview.html, SPECIFICATION.md and USAGE-AND-CONNECTIONS.md. Older mixed documents are archived; shared design rules remain in docs/DESIGN_SYSTEM.md. A review using App Code Review and UI Verification checks document consistency, structure, known connections, skill mirror routing and browser behaviour. Open findings are in REPOSITORY-REVIEW.md. Review findings are not automatic permission for visual/product code changes.
+
+## Review follow-up — 8 October
+
+CJ approved the proposed existing-code fixes R01–R03 and R10. Settle open product decisions first, then implement approved fixes and newly agreed changes with relevant browser verification. Pending decisions remain pending; this approval does not establish working API connections.

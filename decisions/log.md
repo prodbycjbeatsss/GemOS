@@ -191,3 +191,15 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 **Alternatives considered:** Keeping ambiguous connected-status dates or treating a design-system document as a completed accessibility audit.
 
 **Owner:** CJ
+
+## 8 October 2026 — Repository review fixes approved
+
+CJ approved the fixes proposed in R01, R02, R03 and R10 of the repository review. Discuss remaining open decisions one at a time before applying the fixes and agreed changes together. Preserve the accepted card design; no unrelated redesign is authorised. Documentation corrections R04–R07 are already completed. API imports and account setup still require their own confirmed scope.
+
+## 8 October 2026 — YouTube metric replacement
+
+CJ chose B: replace Stayed to watch with Likes in card 2.1’s Shorts selection. Other Shorts tiles remain average percentage viewed, subscribers gained and shares. Real account reporting remains untested. Queue the preview change until the remaining decision review is complete.
+
+## 8 October 2026 — TikTok metric replacement
+
+CJ chose B: replace Followers gained with Comments in card 2.1’s TikTok selection. Other TikTok tiles remain average watch time, watched full video and shares, conditional on supported reports. Comment counts are documented, but selected-period activity still needs validation. Queue the preview change until the remaining decision review is complete.

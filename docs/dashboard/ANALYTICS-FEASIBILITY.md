@@ -104,3 +104,9 @@ The current HTML Sync controls intentionally show Not connected. A future succes
 ## Direction update — 8 October 2026
 
 Direct APIs first. TikTok Business and Instagram Creator/Business remain provisional until verified. Activepieces may be evaluated if it saves work, but neither it nor a custom scheduler is selected. Follow PLAN.md. The API findings above remain documentation evidence rather than tested account access.
+
+## Confirmed metric update — 8 October 2026
+
+CJ approved Likes as the replacement for YouTube Stayed to watch. The table above preserves the reviewed original choices; current choices are in group-2/USAGE-AND-CONNECTIONS.md. The standard YouTube metric is documented; the authorised account report and selected Shorts scope still require validation. Preview update is queued after the remaining decision review.
+
+CJ also approved Comments as the replacement for TikTok Followers gained. TikTok’s video object documents comment_count; a lifetime count does not by itself meet the last-28-days activity definition. Current decisions supersede the original-choice table above.
