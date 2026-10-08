@@ -6,6 +6,8 @@ Updated 8 October 2026. Current visual reference: [preview.html](preview.html). 
 
 Purpose: understand performance and view targets across YouTube Shorts, TikTok and Instagram Reels. Snapchat and YouTube long-form are excluded.
 
+Scope confirmed again on 8 October: 2.1 is the overall short-form view, while 2.2 remains one release batch. It is not a calendar-month report and 2.1 does not follow the selected leaderboard batch.
+
 Period: rolling last 28 days versus the preceding non-overlapping 28 days, advanced with the latest complete imported day. Use activity during the reporting period, not lifetime totals for posts published during that period. Source date boundaries, weighting and cross-platform coverage still need validation.
 
 ### Current metric choices

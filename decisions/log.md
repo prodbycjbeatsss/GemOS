@@ -207,3 +207,7 @@ CJ chose B: replace Followers gained with Comments in card 2.1’s TikTok select
 ## 8 October 2026 — Audience-growth consistency supersedes TikTok replacement
 
 After supplying a TikTok Studio screenshot showing New followers for an individual video, CJ confirmed that Shorts, TikTok and Reels should all retain an audience-growth metric. Use Subscribers gained for Shorts and Followers gained for TikTok/Reels, attributed to the selected short-form content rather than silently substituting whole-account growth. This supersedes the earlier TikTok Comments replacement. YouTube Likes still replaces Stayed to watch. TikTok/Reels API access and selected-period attribution remain unverified; unsupported data shows unavailable, never a fabricated value or automatic replacement.
+
+## 8 October 2026 — Overall performance and batch leaderboard retained
+
+CJ chose A: keep 2.1 as the overall rolling last-28-days performance view and 2.2 as a single-release-batch leaderboard. Do not add a batch filter to 2.1 or convert it to a calendar month. The existing activity-during-period definition remains current; selected-period API coverage still requires validation.
