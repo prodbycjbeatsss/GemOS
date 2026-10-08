@@ -1,16 +1,17 @@
 # GemOs card review and integration plan
 
-Updated 8 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This plan tracks the reference-card work and source validation; it is not a production app or deployment plan.
+Updated 9 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This plan tracks the reference-card work and source validation; it is not a production app or deployment plan.
 
 ## Current status
 
-Group folders, shared design rules and the review report are committed. Current previews contain mock figures and placeholder Sync actions. CJ approved R01–R03 and R10 fixes and the specific Group 2 changes below, but they have **not been implemented**. Continue open decisions one at a time before applying the agreed changes together.
+Group folders, shared design rules and the review report are committed. Current previews contain mock figures and placeholder Sync actions. CJ approved R01–R03 and R10 fixes and the specific Group 2 changes below, but they have **not been implemented**. The shared reporting window, required publishing-platform set and automatic asset-eligibility rule are now confirmed. Proceed with the authorised reference changes; remaining source/scanner/infrastructure choices belong to integration work.
 
 ## Confirmed direction
 
 - Preserve the accepted layouts, materials, coloured brand icons, fixed normal group geometry and matched Group 2 panels. Use [shared design rules](../DESIGN_SYSTEM.md) and each group’s spec/usage notes.
 - 2.1 remains overall activity during a rolling last 28 days versus the preceding 28 days; 2.2 follows one release batch. These are not calendar-month or post-publication-cohort reports.
 - Shorts tiles: average percentage viewed, Likes, subscribers gained, shares. TikTok: average watch time, watched full video, followers gained, shares. Reels: average watch time, shares, followers gained, saves. The TikTok Comments replacement is superseded. Unsupported data is unavailable, not zero or a silent substitute.
+- Asset Pass uses automatic project/type checks and a case-insensitive literal (WIP) filename exclusion, with no separate manual approval. Required sets must be complete; scanner matching/validation and freshness remain to implement/test.
 - Release buffer coverage requires the main YouTube video plus six shorts on each of Shorts, TikTok and Reels (19 confirmed scheduled uploads per release week). Reminder-only tasks and unconfirmed requests do not qualify; real scheduling support still needs testing.
 - All uses a shared rolling 28-day window ending on the latest complete, compatible date across the required platforms; compare the preceding matched 28 days. Individual platform tabs may use their latest complete window with explicit dates. Validate actual source day boundaries before claiming compatibility; preserve partial-data rules.
 - 2.2 freezes observed view snapshots around 24 hours. Provisional qualifying window: 24:00–24:15; test before locking or widening it. Missed captures stay unranked.
@@ -22,7 +23,7 @@ Group folders, shared design rules and the review report are committed. Current 
 
 | Step | Status / completion criterion |
 |---|---|
-| 1. Resume open choices | Clarify only unresolved items below, one at a time. Do not reopen confirmed metric or scope choices. |
+| 1. Resume open choices | Relevant pre-edit choices settled. Do not reopen confirmed choices; defer integration-only questions until evidence exists. |
 | 2. Apply approved reference fixes | R01: Group 1 third-date clipping with fallback fonts. R02: enlarged-text access/reflow. R03: unavailable CDN error. R10: stale gap-count comment. Preserve accepted normal appearance; verify conditions in the review. |
 | 3. Apply queued Group 2 changes | Replace Stayed to watch with Likes; retain audience-growth tiles; update Reels label as agreed; add confirmed snapshot subtitle/year dates. Preserve panel/header alignment and fixed sizing; test actual rendered fit. |
 | 4. Verify and document | Exercise relevant widths, states, enlarged text, keyboard/dialogs and no-overflow conditions. Record evidence and limits, update specs/report resolution notes and commit. |
@@ -36,7 +37,7 @@ Group folders, shared design rules and the review report are committed. Current 
 
 - All-tab shared-window convention is confirmed. Source day boundaries, compatible aggregation and weighted watch reports still need API evidence. Existing rule: identify partial totals and hide combined growth/target status until required coverage is complete.
 - Extra space in 2.1: leave it empty unless CJ approves useful content.
-- Group 1’s required publishing-platform set is confirmed. Precise WIP/approval/freshness rules for a future asset scanner remain open; scheduling support and confirmation records need integration evidence.
+- Group 1’s required publishing-platform set is confirmed. The automatic WIP/eligibility rule is confirmed. Scanner project matching, validation and freshness thresholds remain open; scheduling support and confirmation records need integration evidence.
 - Account types/access, follower period attribution and API limits: test rather than ask CJ to guess.
 - Snapshot failure rate and platform-counter freshness: provisional window, review after evidence.
 - Monday delivery time, notification channel and retry/update policy; scheduler/hosting: integration-stage decisions.
