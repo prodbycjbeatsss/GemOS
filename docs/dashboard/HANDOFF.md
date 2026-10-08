@@ -40,6 +40,8 @@ Completion: distinguish implemented reference behaviour, approved queued changes
 
 ## Latest decision
 
+CJ chose A for All-tab reporting: The All tab uses one shared rolling 28-day date range, ending on the latest date with complete, compatible imported data across the required platforms (Shorts, TikTok and Reels). Compare with the immediately preceding non-overlapping 28 days using matching coverage. Individual platform tabs may show their own latest complete window and must label it. Validate source day boundaries before claiming compatibility; matching date labels alone do not establish equivalent coverage. Missing sources remain explicitly identified under the existing partial-data rules; hide combined growth and target status until required coverage is complete. A missing source does not become zero.
+
 CJ chose partial Monday batch review: once Sunday’s last clip reaches 24 hours, notify even if some snapshots are missing. Rank usable snapshots and show unranked clips with reasons. Incomplete results are called Batch review, not Final leaderboard. A missing capture does not postpone the review indefinitely or permit a later lifetime count under a 24-hour label. Delivery time, channel and retry/update mechanics are deferred until integration work.
 
 ## Approvals and pending implementation
@@ -59,6 +61,7 @@ The previews still contain the older metric/secondary-header wording. They are m
 
 ## Confirmed decisions to preserve
 
+- All uses the shared rolling window described above; preserve missing-source rules and validate real source day boundaries before claiming comparable coverage.
 - 2.1 is overall activity during the rolling last 28 days, compared with the preceding non-overlapping 28 days. It is not a calendar month or lifetime totals for posts published in the period. 2.2 covers one Tuesday–Sunday release batch.
 - Four platform tiles are listed in Group 2 usage notes. Audience-growth attribution is to the selected short-form content; API support and period remain to test. Missing is unavailable, not zero.
 - 2.2 ranks frozen usable snapshots only after 24 hours. Provisional capture window: 24:00–24:15 inclusive, aim at 24:00. Test before locking it; discuss widening if too many captures fail. Record actual capture time; fetch timing cannot guarantee fresh platform counters. Missed/new uploads stay unranked below valid results.
@@ -67,7 +70,7 @@ The previews still contain the older metric/secondary-header wording. They are m
 
 ## Next steps and completion checks
 
-1. Read the sources above and briefly tell CJ the next unresolved item. Recommended next question: the All-tab reporting-boundary/coverage convention. Preserve existing partial-data rules; explain source limitations plainly. Discuss other relevant open items in PLAN.md individually; defer integration-only choices until evidence exists. Leave extra panel space untouched if no useful content is approved.
+1. Read the sources above and briefly tell CJ the next unresolved item. The All-tab shared-window convention is now confirmed; source boundary compatibility remains an API-test question. The next remaining product item is Group 1’s required publishing-platform set. Preserve existing partial-data rules; explain source limitations plainly. Discuss other relevant open items in PLAN.md individually; defer integration-only choices until evidence exists. Leave extra panel space untouched if no useful content is approved.
 2. Once relevant decisions are settled, apply the authorised fixes/changes in a focused code pass. Update affected specifications, usage notes, plan and review resolutions together. Do not request the same approval again.
 3. Reproduce the original bugs and verify the resulting fix: widths 320, 390, 840 and 1280px, intended/fallback fonts, three project dates, enlarged text, no clipping or page overflow, equal normal group card sizes, all platform/batch states, keyboard chips, dialogs/Escape/focus return and honest Sync placeholders. Add relevant widths if a breakpoint changes. Actual Android font scaling/Back and full measured contrast remain unverified; do not claim these passed from browser probes.
 4. Commit code, documents and evidence summary to GemOS; verify the remote branch and linked paths. Retain old report evidence as history and state which findings are fixed with new evidence.
