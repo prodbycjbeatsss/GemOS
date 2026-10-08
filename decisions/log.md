@@ -223,3 +223,7 @@ CJ approved keeping Shorts Views (24hrs), followed by Snapshot taken at 24h · u
 ## 8 October 2026 — Partial Monday batch review approved
 
 CJ chose A: after Sunday’s last clip reaches 24 hours, provide the Monday batch-review notification even if some snapshots are missing. Rank only usable snapshots and show unranked clips with their reason. Incomplete results are labelled Batch review rather than Final leaderboard. Exact delivery and retry/update scheduling await integration design/testing; no working notification is claimed. CJ requested a repository handoff, commits of all pending documents, and instructions for context continuity and token efficiency without lowering quality.
+
+## 8 October 2026 — Handoff project context added
+
+At CJ’s request, the dashboard handoff now explains GemOs’s broader purpose, release workflow, five dashboard groups, current reference/data-definition stage and deferred app architecture/integration work. This supplies context without approving a new stack, autonomous publishing or additional implementation scope.

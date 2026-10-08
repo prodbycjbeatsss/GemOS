@@ -2,6 +2,28 @@
 
 8 October 2026 · Repository: [prodbycjbeatsss/GemOS](https://github.com/prodbycjbeatsss/GemOS) · Branch: main.
 
+## What GemOs is building towards
+
+GemOs is CJ’s personal, dashboard-led operating system for the @prodbycjbeatsss music-production and content-release workflow. It should bring planning, release preparation, publishing records, useful analytics and automation status into one understandable command centre. The aim is to reduce repetitive work, maintain a consistent release cadence and help turn an audience into music/beat customers. It is a personal workflow tool, not a general social-media analytics service.
+
+The intended workflow is: prepare a track/remix and its assets → check release readiness → prepare/schedule the main release and short clips → verify publication → review overall performance and the release batch → use those results to plan the next release. Existing tools such as the music-production setup, SPLIT, storage and metadata/catalogue records are integration context, not services already wired into GemOs. The current card references use one main release with six Tuesday–Sunday short clips; required publishing platforms and future scheduling records still need confirmation.
+
+The original dashboard concepts cover five groups:
+
+| Group | Intended job | Current maturity |
+|---|---|---|
+| 1 | Release buffer, upcoming projects and asset readiness | Reviewed visual reference; connections and approved accessibility fixes pending. |
+| 2 | Overall short-form performance and a release-batch leaderboard | Reviewed layout; latest decisions queued; real imports untested. |
+| 3 | Store revenue, email-list growth and YouTube revenue | Original concepts plus feasibility research; detailed review still ahead. |
+| 4 | AI costs and studio subscriptions | Original concepts; real billing definitions/sources still to settle. |
+| 5 | Publishing cadence and automation performance | Original concepts; require verified publications and instrumented jobs. |
+
+Longer-term direction: connect selected tools and AI assistance to the workflow, with durable knowledge/decision records and human control over consequential actions. Keep useful deterministic workflows ahead of unnecessary agent complexity. This is direction, not approval to build a full autonomous platform, send messages, publish releases or purchase services.
+
+Current work is the **design-reference and data-definition stage**. The repository contains operating instructions and reference HTML, not a finished Android app or live dashboard. CJ works primarily on a phone, so mobile usability matters, alongside the agreed desktop card groups. Final app stack, Android implementation, backend, authentication, hosting and automation engine are not settled; do not treat Kotlin or the current standalone HTML as a locked architecture. Animation planning is deferred until the app works.
+
+Success means the cards accurately answer what is ready, what is scheduled/published, how the content performed and what needs attention—using honest source/period/freshness labels rather than attractive mock claims. Follow the accepted design system, preserve group-specific layouts and seek confirmation for new product decisions. [Operator context](../../context/profile.md) and [priorities](../../context/priorities.md) provide wider background; older CJ-OS naming or platform lists do not override current GemOs card decisions (Group 2 covers Shorts, TikTok and Reels).
+
 ## Initial project instructions
 
 Continue the existing reference-card review; do not restart the project or redesign approved cards. Inspect the repository tree and current branch state first, then read in this order:
