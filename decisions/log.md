@@ -247,3 +247,13 @@ At CJ’s request, the dashboard handoff now explains GemOs’s broader purpose,
 **Alternatives considered:** Main YouTube video plus YouTube Shorts only, without TikTok/Reels blocking the buffer.
 
 **Owner:** CJ
+
+## 9 October 2026 — Automatic asset eligibility
+
+**Decision:** CJ chose automatic file checks: an asset earns Pass when the correct project file exists, matches the required type and contains no literal (WIP) marker anywhere in its filename, checked case-insensitively. No separate manual approval is required. A marker such as (wip) or (WiP) excludes that file. Required sets must be complete: the Shorts part needs all six eligible source files; the WAV-stems part needs the required set defined by the project manifest. These checks establish file eligibility, not creative quality. Project matching, exact format validation and manifest details still need specification during scanner implementation; failed/no-access scans must not masquerade as missing files or a successful check.
+
+**Why:** Preserve CJ’s existing WIP-based workflow and avoid a separate approval step for every asset.
+
+**Alternatives considered:** Automatic checks plus explicit manual approval of each asset.
+
+**Owner:** CJ
