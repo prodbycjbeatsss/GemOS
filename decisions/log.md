@@ -149,3 +149,24 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 **Alternatives considered:** Passive desktop notifications, uncurated to-do lists, and unstructured manual planning.
 
 **Owner:** Colin Jones
+
+
+## 2026-10-08 — Dashboard references and integration review
+
+**Decision:** Keep reviewed/finished dashboard references in GemOS and experiments in telemetric-cards-test-suite. Use docs/dashboard/README.md as the index, docs/DESIGN_SYSTEM.md for shared appearance, group specs for behaviour/connections and PLAN.md for next work. Compare documents before changes and distinguish approved rules from proposals.
+
+**Why:** CJ needs current files to be easy to find without contradictory design or data assumptions. Group 1 is visually finalised; Group 2 has a reviewed layout but unresolved API-driven metrics. Neither is a live integration.
+
+**Alternatives considered:** Keeping final references only in the test suite or scattered chat attachments; forcing all cards into Group 1's internal layout.
+
+**Owner:** CJ
+
+## 2026-10-08 — Direct API feasibility and 24-hour snapshots
+
+**Decision:** Investigate direct APIs first. Rank frozen snapshots captured around 24 hours, store actual capture times and leave missed captures unranked. Activepieces is optional, only if it saves work; scheduler/hosting are not chosen. TikTok Business and Instagram Creator/Business remain provisional account types.
+
+**Why:** Exact first-24-hour reports are not established across platforms. Do not invent data, substitute later lifetime totals or commit to infrastructure before a small real import proves useful.
+
+**Alternatives considered:** Exact-window-only results and a paid analytics provider first.
+
+**Owner:** CJ

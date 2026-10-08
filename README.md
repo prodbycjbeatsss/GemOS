@@ -1,3 +1,7 @@
+## GemOs dashboard cards
+
+The current reviewed card sets and their documentation are indexed in [docs/dashboard/README.md](docs/dashboard/README.md). Start there for the review plan, shared design rules, group behaviour and connection research. The operating-system kit documentation below is preserved.
+
 # AIS-OS: AI Operating System starter kit for Claude Code and Codex
 
 A free, MIT-licensed starter kit that turns Claude Code or Codex into your personal **AI Operating System (AI OS)**. Audience: anyone building automations — solopreneurs, small business operators, managers, creators, AI consultants. Pairs with a companion masterclass video.

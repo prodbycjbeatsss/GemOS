@@ -67,3 +67,7 @@ Match the register in `references/voice.md`:
 - When an operational decision is confirmed, append it to `decisions/log.md`.
 - Apply the Default Shift: Ask *"to what extent could AI assist here?"* before accepting manual repetitive work.
 - Validate every step in an automation chain before linking it to the next.
+
+## Dashboard card review
+
+Start at `docs/dashboard/README.md`. Read `docs/DESIGN_SYSTEM.md`, the relevant group specification and `docs/dashboard/PLAN.md` before edits. Reviewed references belong in this GemOS repository; telemetric-cards-test-suite is for experiments. Group 1 is a finalised visual reference, Group 2 is the latest reviewed reference with open integration decisions; neither has working live connections. Discuss unsettled choices with CJ and obtain confirmation before code changes. Keep documents consistent with each other, clearly mark proposals and historical source material, and preserve group-specific layouts rather than forcing one template. Update affected specifications and the plan alongside confirmed decisions; append significant decisions to `decisions/log.md`.
