@@ -7,7 +7,7 @@ Updated 8 October 2026. Visual reference finalised by CJ for this review; live c
 **Purpose:** show how long the confirmed release schedule covers CJ, and which projects come next.
 
 - Display up to three projects, with name, relevant dates and Next Up / Scheduled / In Progress. Show all opens the remaining projects without changing the card height.
-- Scheduled means the main video and six source shorts meet the scheduling requirement. The six shorts run Tuesday–Sunday. Next Up is the first ready project; an unfinished first project remains In Progress. Ready statuses use restrained green; In Progress stays neutral.
+- Scheduled requires the main YouTube video and all six source shorts scheduled on each of Shorts, TikTok and Reels (19 platform uploads). The six shorts run Tuesday–Sunday. Next Up is the first ready project; an unfinished first project remains In Progress. Ready statuses use restrained green; In Progress stays neutral.
 - Count consecutive covered future calendar weeks in Europe/London. Stop at the first gap or unfinished week. Derive You're good until from the last confirmed scheduled publication in the covered stretch; account for current-week coverage where applicable. Later bookings beyond a gap must not imply uninterrupted cover.
 - Empty: No upcoming projects. Footer route: Release management →.
 
@@ -19,7 +19,7 @@ Updated 8 October 2026. Visual reference finalised by CJ for this review; live c
 | Scheduled times, destination, source clip and platform post IDs | Scheduling records backed by platform/scheduler confirmation | No integration tested. A requested schedule is not proof of acceptance or publication. |
 | Buffer count, first ready project and coverage date | GemOs calculations from verified records | Agreed behaviour; example records only in HTML. |
 
-The exact required platform set for a project to count as fully scheduled must be confirmed. One source short reused across platforms is not one platform upload. A failed refresh must preserve last-known records with visible freshness; stale-data trust thresholds remain unsettled. This preview does not publish anything.
+Required platform set confirmed by CJ on 8 October 2026: A covered release week requires confirmed scheduling for one main YouTube video plus six Tuesday–Sunday source shorts on each of YouTube Shorts, TikTok and Instagram Reels: 19 platform uploads in total. All required destinations must qualify before the week counts towards the release buffer. Planned uploads, reminder-only tasks and submitted scheduling requests without acceptance confirmation do not qualify. One source short reused across platforms is three platform uploads. Real scheduling support and confirmation records remain untested; this decision defines the requirement, not a working connection. A failed refresh must preserve last-known records with visible freshness; stale-data trust thresholds remain unsettled. This preview does not publish anything.
 
 ## 1.2 Pre Release Checklist
 
@@ -50,6 +50,6 @@ An FLP is not one of the seven visible parts and must not be assumed final just 
 
 ## Implementation boundary and open decisions
 
-The existing standalone HTML is a design reference with examples, not a functioning release manager or Drive integration. Google Drive detection/matching, authoritative release store, required platform set, stale-data threshold and upload failure handling must be decided before live implementation.
+The existing standalone HTML is a design reference with examples, not a functioning release manager or Drive integration. Google Drive detection/matching, authoritative release store, stale-data threshold and upload failure handling must be decided before live implementation.
 
 Group 1's accepted visual layout does not need redesign to document these connections. Use [the plan](../PLAN.md) for review order and [API feasibility](../ANALYTICS-FEASIBILITY.md) for research limitations.
