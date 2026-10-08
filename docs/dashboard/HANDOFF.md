@@ -6,7 +6,7 @@
 
 GemOs is CJ’s personal, dashboard-led operating system for the @prodbycjbeatsss music-production and content-release workflow. It should bring planning, release preparation, publishing records, useful analytics and automation status into one understandable command centre. The aim is to reduce repetitive work, maintain a consistent release cadence and help turn an audience into music/beat customers. It is a personal workflow tool, not a general social-media analytics service.
 
-The intended workflow is: prepare a track/remix and its assets → check release readiness → prepare/schedule the main release and short clips → verify publication → review overall performance and the release batch → use those results to plan the next release. Existing tools such as the music-production setup, SPLIT, storage and metadata/catalogue records are integration context, not services already wired into GemOs. The current card references use one main release with six Tuesday–Sunday short clips; required publishing platforms and future scheduling records still need confirmation.
+The intended workflow is: prepare a track/remix and its assets → check release readiness → prepare/schedule the main release and short clips → verify publication → review overall performance and the release batch → use those results to plan the next release. Existing tools such as the music-production setup, SPLIT, storage and metadata/catalogue records are integration context, not services already wired into GemOs. The current card references use one main release with six Tuesday–Sunday short clips; required publishing platforms are now confirmed below; future scheduling records and actual support remain untested.
 
 The original dashboard concepts cover five groups:
 
@@ -40,6 +40,8 @@ Completion: distinguish implemented reference behaviour, approved queued changes
 
 ## Latest decision
 
+CJ chose A for release-buffer eligibility: A covered release week requires confirmed scheduling for one main YouTube video plus six Tuesday–Sunday source shorts on each of YouTube Shorts, TikTok and Instagram Reels: 19 platform uploads in total. All required destinations must qualify before the week counts towards the release buffer. Planned uploads, reminder-only tasks and submitted scheduling requests without acceptance confirmation do not qualify. One source short reused across platforms is three platform uploads. Real scheduling support and confirmation records remain untested; this decision defines the requirement, not a working connection.
+
 CJ chose A for All-tab reporting: The All tab uses one shared rolling 28-day date range, ending on the latest date with complete, compatible imported data across the required platforms (Shorts, TikTok and Reels). Compare with the immediately preceding non-overlapping 28 days using matching coverage. Individual platform tabs may show their own latest complete window and must label it. Validate source day boundaries before claiming compatibility; matching date labels alone do not establish equivalent coverage. Missing sources remain explicitly identified under the existing partial-data rules; hide combined growth and target status until required coverage is complete. A missing source does not become zero.
 
 CJ chose partial Monday batch review: once Sunday’s last clip reaches 24 hours, notify even if some snapshots are missing. Rank usable snapshots and show unranked clips with reasons. Incomplete results are called Batch review, not Final leaderboard. A missing capture does not postpone the review indefinitely or permit a later lifetime count under a 24-hour label. Delivery time, channel and retry/update mechanics are deferred until integration work.
@@ -61,6 +63,7 @@ The previews still contain the older metric/secondary-header wording. They are m
 
 ## Confirmed decisions to preserve
 
+- Release-buffer coverage requires all 19 uploads described above; a missing destination blocks that week. Reminder-only tasks do not count as confirmed scheduling.
 - All uses the shared rolling window described above; preserve missing-source rules and validate real source day boundaries before claiming comparable coverage.
 - 2.1 is overall activity during the rolling last 28 days, compared with the preceding non-overlapping 28 days. It is not a calendar month or lifetime totals for posts published in the period. 2.2 covers one Tuesday–Sunday release batch.
 - Four platform tiles are listed in Group 2 usage notes. Audience-growth attribution is to the selected short-form content; API support and period remain to test. Missing is unavailable, not zero.
@@ -70,7 +73,7 @@ The previews still contain the older metric/secondary-header wording. They are m
 
 ## Next steps and completion checks
 
-1. Read the sources above and briefly tell CJ the next unresolved item. The All-tab shared-window convention is now confirmed; source boundary compatibility remains an API-test question. The next remaining product item is Group 1’s required publishing-platform set. Preserve existing partial-data rules; explain source limitations plainly. Discuss other relevant open items in PLAN.md individually; defer integration-only choices until evidence exists. Leave extra panel space untouched if no useful content is approved.
+1. Read the sources above and briefly tell CJ the next unresolved item. The All-tab shared-window convention is now confirmed; source boundary compatibility remains an API-test question. Group 1’s required publishing-platform set is also confirmed. The next product item is the WIP/final-asset eligibility rule; defer scanner implementation and freshness thresholds until integration evidence exists. Preserve existing partial-data rules; explain source limitations plainly. Discuss other relevant open items in PLAN.md individually; defer integration-only choices until evidence exists. Leave extra panel space untouched if no useful content is approved.
 2. Once relevant decisions are settled, apply the authorised fixes/changes in a focused code pass. Update affected specifications, usage notes, plan and review resolutions together. Do not request the same approval again.
 3. Reproduce the original bugs and verify the resulting fix: widths 320, 390, 840 and 1280px, intended/fallback fonts, three project dates, enlarged text, no clipping or page overflow, equal normal group card sizes, all platform/batch states, keyboard chips, dialogs/Escape/focus return and honest Sync placeholders. Add relevant widths if a breakpoint changes. Actual Android font scaling/Back and full measured contrast remain unverified; do not claim these passed from browser probes.
 4. Commit code, documents and evidence summary to GemOS; verify the remote branch and linked paths. Retain old report evidence as history and state which findings are fixed with new evidence.
