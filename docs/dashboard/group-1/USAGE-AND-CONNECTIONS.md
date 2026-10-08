@@ -1,6 +1,6 @@
 # Group 1 — release buffer and readiness
 
-Updated 8 October 2026. Visual reference finalised by CJ for this review; live connections are not implemented. Preserve the accepted HTML. Shared design: [master design system](../../DESIGN_SYSTEM.md).
+Updated 9 October 2026. Visual reference finalised by CJ for this review; live connections are not implemented. Preserve the accepted HTML. Shared design: [master design system](../../DESIGN_SYSTEM.md).
 
 ## 1.1 Release Buffer
 
@@ -42,9 +42,13 @@ All seven must pass for 7/7 Files Ready. Multiple missing parts can appear toget
 | Needed information | Intended source | Status |
 |---|---|---|
 | Asset file IDs, project association, type and modification details | Google Drive folder/files plus a project manifest | Intended connection; no scan implemented or tested. |
-| Whether an asset is final/eligible | Agreed unfinished marker and/or approval metadata | Needs exact detection rule. CJ described (WIP) as excluding unfinished files; filename/location matching, case rules and approval handling still need specification. |
-| Seven-part count and missing labels | GemOs validation of the required manifest | Agreed presentation; cannot infer quality or approval from presence alone. |
+| Whether an asset is eligible | Correct project/type match and case-insensitive filename (WIP) check | Automatic eligibility rule confirmed 9 October 2026; no separate manual approval. Scanner implementation untested. |
+| Seven-part count and missing labels | GemOs validation of the required manifest | Agreed presentation; all required eligible files must exist. Does not infer creative quality. |
 | Last successful check and errors | Import/job records | No live freshness state yet. |
+
+### Automatic eligibility — confirmed 9 October 2026
+
+CJ chose automatic file checks: an asset earns Pass when the correct project file exists, matches the required type and contains no literal (WIP) marker anywhere in its filename, checked case-insensitively. No separate manual approval is required. A marker such as (wip) or (WiP) excludes that file. Required sets must be complete: the Shorts part needs all six eligible source files; the WAV-stems part needs the required set defined by the project manifest. These checks establish file eligibility, not creative quality. Project matching, exact format validation and manifest details still need specification during scanner implementation; failed/no-access scans must not masquerade as missing files or a successful check.
 
 An FLP is not one of the seven visible parts and must not be assumed final just because saved. Do not silently add an eighth requirement. A scan must distinguish missing files from no access, scan failure and stale results. File format/quality validation beyond metadata remains to agree.
 
