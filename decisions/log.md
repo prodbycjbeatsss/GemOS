@@ -237,3 +237,13 @@ At CJ’s request, the dashboard handoff now explains GemOs’s broader purpose,
 **Alternatives considered:** Combining each platform’s latest available 28-day window with different date ranges.
 
 **Owner:** CJ
+
+## 8 October 2026 — Full cross-platform release-buffer requirement
+
+**Decision:** CJ chose A. A covered release week requires confirmed scheduling for one main YouTube video plus six Tuesday–Sunday source shorts on each of YouTube Shorts, TikTok and Instagram Reels: 19 platform uploads in total. All required destinations must qualify before the week counts towards the release buffer. Planned uploads, reminder-only tasks and submitted scheduling requests without acceptance confirmation do not qualify. One source short reused across platforms is three platform uploads. Real scheduling support and confirmation records remain untested; this decision defines the requirement, not a working connection.
+
+**Why:** The release buffer should reflect the full intended content cadence across all three short-form platforms.
+
+**Alternatives considered:** Main YouTube video plus YouTube Shorts only, without TikTok/Reels blocking the buffer.
+
+**Owner:** CJ
