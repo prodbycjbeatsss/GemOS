@@ -11,6 +11,7 @@ Group folders, shared design rules and the review report are committed. Current 
 - Preserve the accepted layouts, materials, coloured brand icons, fixed normal group geometry and matched Group 2 panels. Use [shared design rules](../DESIGN_SYSTEM.md) and each group’s spec/usage notes.
 - 2.1 remains overall activity during a rolling last 28 days versus the preceding 28 days; 2.2 follows one release batch. These are not calendar-month or post-publication-cohort reports.
 - Shorts tiles: average percentage viewed, Likes, subscribers gained, shares. TikTok: average watch time, watched full video, followers gained, shares. Reels: average watch time, shares, followers gained, saves. The TikTok Comments replacement is superseded. Unsupported data is unavailable, not zero or a silent substitute.
+- All uses a shared rolling 28-day window ending on the latest complete, compatible date across the required platforms; compare the preceding matched 28 days. Individual platform tabs may use their latest complete window with explicit dates. Validate actual source day boundaries before claiming compatibility; preserve partial-data rules.
 - 2.2 freezes observed view snapshots around 24 hours. Provisional qualifying window: 24:00–24:15; test before locking or widening it. Missed captures stay unranked.
 - Header: Shorts Views (24hrs); subtitle: Snapshot taken at 24h · up to 15 min later; then selected batch dates including year. Actual capture age belongs in clip details.
 - Monday: notify after Sunday’s last clip reaches 24 hours, even if incomplete; rank usable snapshots and explain unranked clips. Label partial results Batch review. Delivery/retry mechanics remain deferred.
@@ -32,7 +33,7 @@ Group folders, shared design rules and the review report are committed. Current 
 
 ## Unresolved items
 
-- All-tab source date boundaries, coverage convention and compatible aggregation; weighted watch reports depend on actual API support. Existing rule: identify partial totals and hide combined growth/target status until required coverage is complete.
+- All-tab shared-window convention is confirmed. Source day boundaries, compatible aggregation and weighted watch reports still need API evidence. Existing rule: identify partial totals and hide combined growth/target status until required coverage is complete.
 - Extra space in 2.1: leave it empty unless CJ approves useful content.
 - Group 1 required publishing-platform set and precise WIP/approval/freshness rules for a future asset scanner.
 - Account types/access, follower period attribution and API limits: test rather than ask CJ to guess.
