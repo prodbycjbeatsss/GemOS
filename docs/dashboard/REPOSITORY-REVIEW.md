@@ -1,5 +1,7 @@
 # GemOs repository review
 
+**Follow-up:** CJ approved R01–R03 and R10 on 8 October; fixes are pending implementation. Subsequent metric, capture and notification decisions are recorded in [HANDOFF.md](HANDOFF.md) and current group usage notes. The findings below preserve the original dated review, including then-open decisions.
+
 8 October 2026. Reviewed baseline: aba3760997cd858d2fb318e96bf569d814ac1900. Reorganisation and documentation corrections are included in this change; the two card previews remain unchanged. This is a reference review, not a production release approval.
 
 [Open the HTML report](REVIEW.html).

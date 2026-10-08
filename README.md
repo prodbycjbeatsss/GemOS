@@ -180,3 +180,5 @@ The Three Ms of AI™ and The Four Cs of an AI OS™ are trademarks of Nate Herk
 The companion masterclass video walks you through the kit step by step. Link will land here once it ships.
 
 - [HTML review report](docs/dashboard/REVIEW.html) — findings, evidence, completed doc fixes and decisions still needed.
+
+For the next dashboard session, start with [the handoff](docs/dashboard/HANDOFF.md).

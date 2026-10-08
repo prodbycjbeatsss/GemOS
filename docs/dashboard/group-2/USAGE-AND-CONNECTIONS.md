@@ -45,7 +45,7 @@ Purpose: compare individual platform uploads within a release batch. All ranks u
 - Capture a cumulative view snapshot around each upload's 24-hour mark; record actual publication/capture times, source and completeness, then freeze it.
 - Rank only once the upload is at least 24 hours old and a valid snapshot has been imported. Missed captures remain unranked. A later lifetime total cannot replace a missed snapshot under a 24-hour label.
 - Newer uploads remain below ranked rows, muted but readable, with age/live count. Completed uploads awaiting a usable snapshot also stay unranked.
-- Timing tolerance is unsettled. The precise title/explanation must be confirmed before HTML edits. Current preview still says Shorts Views (24hrs); it is an illustrative reference, not proof of exact data capture.
+- Provisional capture window approved on 8 October: aim for publication +24 hours; accept a usable capture from 24:00 through 24:15 inclusive. Validate with real imports before locking this tolerance. If failures are too frequent, review widening it with CJ; never widen silently. Heading and subtitle confirmed: Shorts Views (24hrs), then Snapshot taken at 24h · up to 15 min later, then the selected batch date range with year (example: 6–11 October 2026). Actual capture age appears in clip details. The preview update is queued; example counts do not prove exact data capture.
 - Bars compare captured views with the selected-tab leader. No bar for unranked uploads; no rank-change or algorithm-causation claims.
 
 A backend scheduler is intended for dependable captures. Activepieces is optional, only if it saves work; custom scheduler and hosting are undecided. Test a small real import before building the full scheduler.
@@ -54,7 +54,7 @@ A backend scheduler is intended for dependable captures. Activepieces is optiona
 
 Batch picker identifies artist/track; date line shows Tuesday–Sunday range. Examples: Teeth & Claws 6–11 October; Air Max 90s 13–18 October 2026. These are not real scheduling records. Current illustrative leaderboard reference time is 11 October 2026, 18:00 UK; next batch is empty.
 
-Planned Monday notification: offer a final batch review after Sunday's uploads reach the age threshold and required snapshots are usable. Handling missed captures and declaring a partial final batch remains to agree; do not imply complete results or wait forever without a visible status. No notification is implemented in HTML.
+Monday batch review confirmed: once Sunday's last clip reaches 24 hours, notify CJ even if some usable snapshots are missing. Call it Batch review rather than Final leaderboard when incomplete. Rank valid snapshots and list unranked clips with their reason. Do not wait indefinitely for every capture, substitute later lifetime totals or imply complete results. Exact delivery time, retry/update behaviour and notification implementation are deferred until integration testing. No notification is implemented in HTML.
 
 Clip details show exact stored values, publication time in Europe/London and capture/reporting status. Only use a real Watch clip URL when available; do not invent links.
 
@@ -66,4 +66,4 @@ Example views: 92,400 / 54,600 / 26,800 = 173,800; shares 1,260 / 840 / 420 = 2,
 
 ## Next decisions
 
-YouTube Likes replacement is approved. Audience-growth tiles are confirmed across platforms; verify clip-attributed follower reporting, period coverage and aggregation. Then settle snapshot tolerance and wording. Verify account types and real API access. See [PLAN.md](../PLAN.md). No further code changes without CJ's confirmation.
+YouTube Likes replacement is approved. Audience-growth tiles are confirmed across platforms; verify clip-attributed follower reporting, period coverage and aggregation. Snapshot tolerance is provisionally 24:00–24:15, heading/subtitle and partial Monday review are confirmed. Verify account types and real API access. See [PLAN.md](../PLAN.md) and [HANDOFF.md](../HANDOFF.md) for approved fixes, queued changes and unresolved work. CJ approved the listed fixes; clarify only new or unsettled choices.

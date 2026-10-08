@@ -1,6 +1,6 @@
 # Group 2 — visual and interaction specification
 
-Updated 8 October 2026. Latest reviewed reference: [preview.html](preview.html). Read [master design system](../../DESIGN_SYSTEM.md) and [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md). Integration/metric choices are defined there; this document governs presentation. No new code changes are authorised by this split.
+Updated 8 October 2026. Latest reviewed reference: [preview.html](preview.html). Read [master design system](../../DESIGN_SYSTEM.md) and [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md). Integration/metric choices are defined there; this document governs presentation. The split itself authorised no code changes. CJ subsequently approved the specific review fixes and queued changes listed in [HANDOFF.md](../HANDOFF.md).
 
 ## Group geometry and palette
 
@@ -30,7 +30,7 @@ Target bar uses 90°, #818cf8 → #38bdf8 → #34d399. Detail overlay contains p
 
 ## 2.2 presentation
 
-Header currently reads Shorts Views (24hrs), with batch dates only beneath. Revised honest snapshot wording awaits CJ's confirmation; usage notes record the newer approved behaviour.
+Approved header update, not yet implemented: Shorts Views (24hrs), followed by Snapshot taken at 24h · up to 15 min later, then the selected batch dates with year (6–11 October 2026 for the first example). The current preview still has the earlier dates-only secondary header.
 
 Compact artist/track batch picker and chips stay outside the scrolling list. List viewport 360px: five fixed 72px row spaces, manual vertical scrolling and a subtle bottom fade only if content is below. No automatic scroll. Empty/shorter lists retain panel size.
 
@@ -49,3 +49,4 @@ Dialogs support keyboard entry, close, Escape, backdrop dismissal and focus retu
 The matched-panel checks covered 32 batch/platform states at 320, 390, 840 and 1280px: equal slots, aligned panels, one-row chips, 360px viewport/72px rows, pending order, manual scroll, keyboard selection, dialogs/focus return and honest Sync placeholders. No script errors. Mobile/desktop captures were inspected. This evidence applies to the current reference, not live integrations or full contrast compliance.
 
 Earlier detailed review history is retained in [archived Group 2 document](../../../archives/dashboard/2026-10-08/pre-group-folders/GROUP-2.md). Current source authority is this spec, usage notes and master design document.
+

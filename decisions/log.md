@@ -211,3 +211,15 @@ After supplying a TikTok Studio screenshot showing New followers for an individu
 ## 8 October 2026 — Overall performance and batch leaderboard retained
 
 CJ chose A: keep 2.1 as the overall rolling last-28-days performance view and 2.2 as a single-release-batch leaderboard. Do not add a batch filter to 2.1 or convert it to a calendar month. The existing activity-during-period definition remains current; selected-period API coverage still requires validation.
+
+## 8 October 2026 — Provisional capture tolerance
+
+CJ chose A if feasible: aim for 24 hours after publication and provisionally accept usable snapshots up to 15 minutes late. Test before locking this rule. If too many captures fail, discuss a wider tolerance; there is no automatic widening. Captures before 24 hours do not qualify. Record actual capture time and keep missed captures unranked. Platform counter freshness is a separate limitation from request timing.
+
+## 8 October 2026 — Leaderboard header wording confirmed
+
+CJ approved keeping Shorts Views (24hrs), followed by Snapshot taken at 24h · up to 15 min later, followed by the selected batch dates including year (6–11 October 2026 for the first example batch). This replaces the prior dates-only secondary-header rule. The capture tolerance remains provisional pending tests. Queue the change with the approved fixes.
+
+## 8 October 2026 — Partial Monday batch review approved
+
+CJ chose A: after Sunday’s last clip reaches 24 hours, provide the Monday batch-review notification even if some snapshots are missing. Rank only usable snapshots and show unranked clips with their reason. Incomplete results are labelled Batch review rather than Final leaderboard. Exact delivery and retry/update scheduling await integration design/testing; no working notification is claimed. CJ requested a repository handoff, commits of all pending documents, and instructions for context continuity and token efficiency without lowering quality.

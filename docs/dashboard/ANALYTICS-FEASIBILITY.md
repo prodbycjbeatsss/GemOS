@@ -65,7 +65,7 @@ YouTube states that detailed Analytics reports can lag by 48–72 hours. Its dai
 
 A backend could schedule captures near each upload’s 24-hour point. That would produce an **observed count captured around 24 hours**, not a guaranteed exact first-24-hour report. Store publication time, capture time, source and completeness. Missed captures must not be backfilled with later lifetime totals under the existing label. The same requirement needs testing on TikTok and Instagram.
 
-**Decision update — 8 October:** CJ approved a clearly labelled snapshot approach around 24 hours, with capture timestamps and missed captures unranked. Exact timing tolerance and display wording remain to agree; no integration has been tested. Keep the current examples for design review. The Monday review notification must wait for both the age threshold and usable imported results; Monday may arrive before delayed data is ready.
+**Decision update — 8 October:** CJ approved a clearly labelled snapshot approach around 24 hours, with capture timestamps and missed captures unranked. Later on 8 October, CJ provisionally chose captures from 24:00 through 24:15, pending tests, and confirmed the heading/subtitle recorded in group-2/USAGE-AND-CONNECTIONS.md. The Monday batch review occurs after Sunday’s last clip reaches 24 hours even with missing snapshots; partial results must be labelled and unranked clips explained. No integration or notification has been tested or implemented. Keep example data clearly identified.
 
 Source: [YouTube Analytics data model and latency](https://developers.google.com/youtube/analytics/data_model).
 

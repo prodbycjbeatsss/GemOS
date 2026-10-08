@@ -4,6 +4,7 @@ Updated 8 October 2026. Reviewed references belong in GemOS. telemetric-cards-te
 
 | Need | Open |
 |---|---|
+| Resume in a new chat | [HANDOFF.md](HANDOFF.md) |
 | Next work and decisions | [PLAN.md](PLAN.md) |
 | Shared fonts, material, colours and geometry rules | [Master design system](../DESIGN_SYSTEM.md) |
 | Group 1 preview | [group-1/preview.html](group-1/preview.html) |
@@ -20,7 +21,7 @@ Updated 8 October 2026. Reviewed references belong in GemOS. telemetric-cards-te
 
 DESIGN_SYSTEM.md governs reusable appearance. Each SPECIFICATION.md governs that group's presentation, geometry and interactions. Its USAGE-AND-CONNECTIONS.md governs purpose, measurements, eligibility, sources and source limitations. PLAN.md tracks sequence rather than approving requirements. Research establishes documented feasibility rather than approving product changes or proving a working connection. Confirmed later decisions supersede earlier proposals; preserve their rationale in decisions/log.md.
 
-Group 1 is a finalised visual reference, with open integration and accessibility checks. Group 2 is the latest reviewed layout, with open metric replacements and snapshot wording. Neither HTML set has live connections. No Groups 3–5 folders are created before review. Original all-card HTML and audit remain chat source inputs, not finalised card sets.
+Group 1 is a finalised visual reference, with open integration and accessibility checks. Group 2 is the latest reviewed layout; metric choices, snapshot wording and partial-review behaviour are confirmed, with queued preview changes and untested integrations. Neither HTML set has live connections. No Groups 3–5 folders are created before review. Original all-card HTML and audit remain chat source inputs, not finalised card sets.
 
 Current files stay in their group folders. Superseded mixed documents are in archives/dashboard/2026-10-08/pre-group-folders; historical provenance is not current authority. Use Git history for previous HTML versions.
 

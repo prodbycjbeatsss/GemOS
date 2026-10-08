@@ -67,10 +67,13 @@ Match the register in `references/voice.md`:
 - When an operational decision is confirmed, append it to `decisions/log.md`.
 - Apply the Default Shift: Ask *"to what extent could AI assist here?"* before accepting manual repetitive work.
 - Validate every step in an automation chain before linking it to the next.
-- 
 
 ## Dashboard card review
 
 Start at `docs/dashboard/README.md`. Read `docs/DESIGN_SYSTEM.md`, the affected group’s `SPECIFICATION.md` and `USAGE-AND-CONNECTIONS.md` and `docs/dashboard/PLAN.md` before edits. Reviewed references belong in this GemOS repository; telemetric-cards-test-suite is for experiments. Group 1 is a finalised visual reference, Group 2 is the latest reviewed reference with open integration decisions; neither has working live connections. Discuss unsettled choices with CJ and obtain confirmation before code changes. Keep documents consistent with each other, clearly mark proposals and historical source material, and preserve group-specific layouts rather than forcing one template. Update affected specifications and the plan alongside confirmed decisions; append significant decisions to `decisions/log.md`.
 
 Each reviewed group lives at `docs/dashboard/group-N/` with `preview.html`, `SPECIFICATION.md` and `USAGE-AND-CONNECTIONS.md`. Shared visual rules stay in `docs/DESIGN_SYSTEM.md`; review findings live in `docs/dashboard/REPOSITORY-REVIEW.md`. Do not recreate a second current copy under references/dashboard/groups. Repository connection records distinguish reported setup from successful verified access.
+
+## Session continuity and token efficiency
+
+For dashboard continuation, start at `docs/dashboard/HANDOFF.md`. Follow `references/agent-session-guidance.md` for context checkpoints, honest compaction warnings and efficient reading/output without lowering quality. Update current docs and commit a checkpoint before handing work to a new chat.

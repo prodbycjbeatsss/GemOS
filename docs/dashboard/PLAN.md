@@ -1,70 +1,49 @@
 # GemOs card review and integration plan
 
-Updated 8 October 2026. Scope: continue this dashboard-card review, resolve source limitations and validate a small integration before wiring live analytics. This is not a full app architecture or deployment plan.
+Updated 8 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This plan tracks the reference-card work and source validation; it is not a production app or deployment plan.
 
-## Working documents
+## Current status
 
-- ../DESIGN_SYSTEM.md: shared agreed design rules; the original Group 1 specification is retained as a source reference.
-- group-2/SPECIFICATION.md: current Group 2 design and behaviour decisions.
-- ANALYTICS-FEASIBILITY.md: documentation research across all 11 original cards; not tested integrations.
-- group-1/USAGE-AND-CONNECTIONS.md: finalised Group 1 visual behaviour, intended connections and open integration decisions.
-- GemOs-Card-Audit.html: advisory source supplied in the review chat, not an authoritative current specification.
-- group-2/preview.html: current isolated preview containing only Group 2; all figures illustrative.
-- This document: review order, status, open decisions and next action.
-
-## How we work
-
-Explain purpose, problems and recommendations in plain language. Discuss one consequential decision at a time with CJ, using A/B/C options when useful. Read the current design rules before edits. Ask about unsettled choices rather than inventing them. Never change code without CJ’s confirmation. Keep confirmed decisions separate from proposals and feasibility assumptions. Update the specification and this plan when decisions change. Keep cards fixed within their group and check relevant mobile/desktop behaviour after layout changes. Defer animation planning until the app works.
+Group folders, shared design rules and the review report are committed. Current previews contain mock figures and placeholder Sync actions. CJ approved R01–R03 and R10 fixes and the specific Group 2 changes below, but they have **not been implemented**. Continue open decisions one at a time before applying the agreed changes together.
 
 ## Confirmed direction
 
-- Group 2 keeps the accepted purple material, chips, fixed group geometry and matched recessed panels. Both cards have left footer Sync controls; dashboard Sync all is planned, with no extra group Sync.
-- Direct platform APIs first; no paid analytics provider selected.
-- For 2.2 use frozen view snapshots captured around each upload’s 24-hour mark, recording the actual capture time. Missed captures stay unranked rather than using a later lifetime count.
-- Activepieces is optional, to be adopted only if it saves work. A custom scheduler is also an option. Neither is committed.
-- TikTok Business and Instagram Creator/Business are provisional, not verified account facts.
-- Displayed example metrics have not been replaced following research; further code edits require confirmation.
+- Preserve the accepted layouts, materials, coloured brand icons, fixed normal group geometry and matched Group 2 panels. Use [shared design rules](../DESIGN_SYSTEM.md) and each group’s spec/usage notes.
+- 2.1 remains overall activity during a rolling last 28 days versus the preceding 28 days; 2.2 follows one release batch. These are not calendar-month or post-publication-cohort reports.
+- Shorts tiles: average percentage viewed, Likes, subscribers gained, shares. TikTok: average watch time, watched full video, followers gained, shares. Reels: average watch time, shares, followers gained, saves. The TikTok Comments replacement is superseded. Unsupported data is unavailable, not zero or a silent substitute.
+- 2.2 freezes observed view snapshots around 24 hours. Provisional qualifying window: 24:00–24:15; test before locking or widening it. Missed captures stay unranked.
+- Header: Shorts Views (24hrs); subtitle: Snapshot taken at 24h · up to 15 min later; then selected batch dates including year. Actual capture age belongs in clip details.
+- Monday: notify after Sunday’s last clip reaches 24 hours, even if incomplete; rank usable snapshots and explain unranked clips. Label partial results Batch review. Delivery/retry mechanics remain deferred.
+- Direct APIs first. Activepieces is optional. Accounts, permissions and imports are unverified; no provider, scheduler or hosting is selected. Defer animation until the app works.
 
-## Sequence and completion criteria
+## Ordered work
 
-| Step | Status | Work and completion criterion |
-|---|---|---|
-| 1. Review Group 1 and establish shared rules | Completed in this review | Agreed Group 1 reference and shared specification exist. |
-| 2. Refine Group 2 layout and interactions | Implemented; reference preview | Original material retained, chips reviewed, panels matched, Sync controls added. Mobile/desktop checks passed; no live imports. |
-| 3. Research data feasibility across original cards | Documentation review completed | Every original card covered; assumptions and source limits listed. Account access remains untested. |
-| 4. Resolve 2.1 metrics and reporting scope | **Current** | Agree four useful metrics per platform, replacements for unsupported tiles, true selected-window scope and partial coverage behaviour. |
-| 5. Finish 2.2 snapshot rules | Partly agreed | Agree timing tolerance, honest heading/detail wording, missed/late captures and final-review notification behaviour. |
-| 6. Validate one real YouTube import | Not started | Verify authorised access; fetch a small sample and compare source, period and definitions against the dashboard. CJ must authorise any test code/account setup. |
-| 7. Validate TikTok and Instagram coverage | Not started | Verify account types/access; test watch metrics, attribution, selected-period reports and post-count snapshots. Record unavailable fields explicitly. |
-| 8. Choose scheduler and hosting | Deferred | Compare the concrete tested workflow with Activepieces versus a small custom scheduler. Select only after reviewing setup, maintenance, hosting and reuse. |
-| 9. Update Group 2 preview | Awaiting metric decisions and code approval | Implement only agreed changes; update spec; verify fixed sizing, mobile/desktop, keyboard and loading/missing-data states as applicable. |
-| 10. Review Groups 3–5 | Not started | Work card by card through purpose, data definition, feasible sources, design and confirmed edits. Use the existing all-card research. |
-| 11. Plan app implementation and animations | Deferred | Confirm stack, broader app scope and build plan separately; plan motion after a working app exists. |
+| Step | Status / completion criterion |
+|---|---|
+| 1. Resume open choices | Clarify only unresolved items below, one at a time. Do not reopen confirmed metric or scope choices. |
+| 2. Apply approved reference fixes | R01: Group 1 third-date clipping with fallback fonts. R02: enlarged-text access/reflow. R03: unavailable CDN error. R10: stale gap-count comment. Preserve accepted normal appearance; verify conditions in the review. |
+| 3. Apply queued Group 2 changes | Replace Stayed to watch with Likes; retain audience-growth tiles; update Reels label as agreed; add confirmed snapshot subtitle/year dates. Preserve panel/header alignment and fixed sizing; test actual rendered fit. |
+| 4. Verify and document | Exercise relevant widths, states, enlarged text, keyboard/dialogs and no-overflow conditions. Record evidence and limits, update specs/report resolution notes and commit. |
+| 5. Scope a small YouTube import | Present concrete test scope to CJ, verify authorised access and compare a sample’s source, period and definitions with Studio. No new account/test setup has been authorised yet. |
+| 6. Validate TikTok/Reels | Check account eligibility, follower attribution, watch metrics, activity-window support and snapshot freshness. Revise feasibility evidence, not product choices silently. |
+| 7. Choose automation | After useful imports work, agree scheduler/hosting, notification delivery and retries. Assess Activepieces only if it saves work. |
+| 8. Review Groups 3–5 | Continue purpose/data/design decisions card by card using the all-card feasibility research. These groups have no approved final implementation. |
+| 9. App and motion | Agree stack and broader implementation separately; animation planning remains deferred. |
 
-The minimal YouTube test can run before every cross-platform metric is settled if it helps resolve a decision. Do not build a complete automation system before this test establishes useful data.
+## Unresolved items
 
-## Current open decisions
+- All-tab source date boundaries, coverage convention and compatible aggregation; weighted watch reports depend on actual API support. Existing rule: identify partial totals and hide combined growth/target status until required coverage is complete.
+- Extra space in 2.1: leave it empty unless CJ approves useful content.
+- Group 1 required publishing-platform set and precise WIP/approval/freshness rules for a future asset scanner.
+- Account types/access, follower period attribution and API limits: test rather than ask CJ to guess.
+- Snapshot failure rate and platform-counter freshness: provisional window, review after evidence.
+- Monday delivery time, notification channel and retry/update policy; scheduler/hosting: integration-stage decisions.
+- Inherited intake and missing contract material: defer until their workflow is in scope; do not invent answers/templates.
 
-- YouTube replacement for Stayed to watch: Likes approved; real report validation and preview implementation pending.
-- TikTok and Instagram clip-attributed Followers gained are retained; verify imports and show unavailable if unsupported.
-- Last-28-days activity reporting versus post-publication cohorts: these are different definitions, not interchangeable.
-- Weighted watch aggregates, date boundaries and partial data in All.
-- 24-hour capture tolerance; late/missed snapshots; precise label and review notification handling.
-- API account permissions, hosting and workflow engine.
-- Content to fill 2.1’s extra recessed space: unresolved; do not fill it arbitrarily.
+## Working rules
 
-## Next action
+Explain purpose, problems and recommendations plainly. Ask one consequential unsettled question at a time, using A/B choices where useful. Significant decisions go in [decisions/log.md](../../decisions/log.md). Record visual rules in each SPECIFICATION.md and data/source rules in USAGE-AND-CONNECTIONS.md; compare related documents before committing. Previously approved work does not need repeated permission. New product choices and unrelated code changes need CJ’s confirmation.
 
-YouTube Likes replacement is approved. CJ retained audience-growth tiles for Shorts, TikTok and Reels, superseding the TikTok Comments choice. Review reporting scope next; follower-import capability remains to test. Implement agreed changes together after the decision review.
+## Sources
 
-## Repository organisation — 8 October
-
-CJ confirmed that reviewed/finished references belong in prodbycjbeatsss/GemOS, while telemetric-cards-test-suite is for experiments. Use docs/dashboard/README.md as the file index, docs/DESIGN_SYSTEM.md as the shared visual reference and docs/dashboard/group-1/ and group-2/ for current HTML sets. Existing repository material is preserved. Group 2 remains a reference with unresolved integration choices, not a finished live module.
-
-## Per-group folders and review — 8 October
-
-CJ approved a folder per reviewed group, containing preview.html, SPECIFICATION.md and USAGE-AND-CONNECTIONS.md. Older mixed documents are archived; shared design rules remain in docs/DESIGN_SYSTEM.md. A review using App Code Review and UI Verification checks document consistency, structure, known connections, skill mirror routing and browser behaviour. Open findings are in REPOSITORY-REVIEW.md. Review findings are not automatic permission for visual/product code changes.
-
-## Review follow-up — 8 October
-
-CJ approved the proposed existing-code fixes R01–R03 and R10. Settle open product decisions first, then implement approved fixes and newly agreed changes with relevant browser verification. Pending decisions remain pending; this approval does not establish working API connections.
+[File index](README.md) · [Review findings](REPOSITORY-REVIEW.md) · [HTML report](REVIEW.html) · [API feasibility research](ANALYTICS-FEASIBILITY.md). Earlier source/audit material and decision history are provenance; current group documents and confirmed later decisions govern. Reviewed references belong in GemOS, experiments in telemetric-cards-test-suite. No live dashboard connections are implemented.
