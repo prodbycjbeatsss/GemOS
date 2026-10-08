@@ -5,11 +5,11 @@ Updated 8 October 2026. Scope: continue this dashboard-card review, resolve sour
 ## Working documents
 
 - ../DESIGN_SYSTEM.md: shared agreed design rules; the original Group 1 specification is retained as a source reference.
-- GROUP-2.md: current Group 2 design and behaviour decisions.
+- group-2/SPECIFICATION.md: current Group 2 design and behaviour decisions.
 - ANALYTICS-FEASIBILITY.md: documentation research across all 11 original cards; not tested integrations.
-- GROUP-1.md: finalised Group 1 visual behaviour, intended connections and open integration decisions.
+- group-1/USAGE-AND-CONNECTIONS.md: finalised Group 1 visual behaviour, intended connections and open integration decisions.
 - GemOs-Card-Audit.html: advisory source supplied in the review chat, not an authoritative current specification.
-- ../../references/dashboard/groups/group-2.html: current isolated preview containing only Group 2; all figures illustrative.
+- group-2/preview.html: current isolated preview containing only Group 2; all figures illustrative.
 - This document: review order, status, open decisions and next action.
 
 ## How we work
@@ -59,4 +59,8 @@ Explain replacement choices for YouTube’s Stayed to watch tile in card 2.1. CJ
 
 ## Repository organisation — 8 October
 
-CJ confirmed that reviewed/finished references belong in prodbycjbeatsss/GemOS, while telemetric-cards-test-suite is for experiments. Use docs/dashboard/README.md as the file index, docs/DESIGN_SYSTEM.md as the shared visual reference and references/dashboard/groups/ for current HTML sets. Existing repository material is preserved. Group 2 remains a reference with unresolved integration choices, not a finished live module.
+CJ confirmed that reviewed/finished references belong in prodbycjbeatsss/GemOS, while telemetric-cards-test-suite is for experiments. Use docs/dashboard/README.md as the file index, docs/DESIGN_SYSTEM.md as the shared visual reference and docs/dashboard/group-1/ and group-2/ for current HTML sets. Existing repository material is preserved. Group 2 remains a reference with unresolved integration choices, not a finished live module.
+
+## Per-group folders and review — 8 October
+
+CJ approved a folder per reviewed group, containing preview.html, SPECIFICATION.md and USAGE-AND-CONNECTIONS.md. Older mixed documents are archived; shared design rules remain in docs/DESIGN_SYSTEM.md. A review using App Code Review and UI Verification checks document consistency, structure, known connections, skill mirror routing and browser behaviour. Open findings are in REPOSITORY-REVIEW.md. Review findings are not automatic permission for visual/product code changes.

@@ -1,6 +1,8 @@
+> Historical pre-folder document. Start at docs/dashboard/README.md for current files.
+
 # Group 1 — release buffer and readiness
 
-Updated 8 October 2026. Visual reference finalised by CJ for this review; live connections are not implemented. Preserve the accepted HTML. Shared design: [master design system](../DESIGN_SYSTEM.md).
+Updated 8 October 2026. Visual reference finalised by CJ for this review; live connections are not implemented. Preserve the accepted HTML. Shared design: [master design system](../../../../docs/DESIGN_SYSTEM.md).
 
 ## 1.1 Release Buffer
 
@@ -52,4 +54,4 @@ An FLP is not one of the seven visible parts and must not be assumed final just 
 
 The existing standalone HTML is a design reference with examples, not a functioning release manager or Drive integration. Google Drive detection/matching, authoritative release store, required platform set, stale-data threshold and upload failure handling must be decided before live implementation.
 
-Group 1's accepted visual layout does not need redesign to document these connections. Use [the plan](PLAN.md) for review order and [API feasibility](ANALYTICS-FEASIBILITY.md) for research limitations.
+Group 1's accepted visual layout does not need redesign to document these connections. Use [the plan](../../../../docs/dashboard/PLAN.md) for review order and [API feasibility](../../../../docs/dashboard/ANALYTICS-FEASIBILITY.md) for research limitations.

@@ -178,3 +178,5 @@ MIT License. © 2026 Nate Herk.
 The Three Ms of AI™ and The Four Cs of an AI OS™ are trademarks of Nate Herk. Both frameworks ship in this repo with attribution. Use freely; don't repackage as your own.
 
 The companion masterclass video walks you through the kit step by step. Link will land here once it ships.
+
+- [HTML review report](docs/dashboard/REVIEW.html) — findings, evidence, completed doc fixes and decisions still needed.

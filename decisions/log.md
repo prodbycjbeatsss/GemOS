@@ -170,3 +170,24 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 **Alternatives considered:** Exact-window-only results and a paid analytics provider first.
 
 **Owner:** CJ
+
+
+## 2026-10-08 — One folder per reviewed card group
+
+**Decision:** Each reviewed group lives under docs/dashboard/group-N/ with preview.html, SPECIFICATION.md and USAGE-AND-CONNECTIONS.md. Shared rules stay in docs/DESIGN_SYSTEM.md. Older mixed documents are archived. The folder paths in the earlier organisation entry are superseded by these current routes.
+
+**Why:** CJ asked for easy discovery and explicit separation of visual rules from purpose/data connections. Cross-document and repository review must accompany organisation changes.
+
+**Alternatives considered:** Shared flat HTML/spec folders or duplicated current specifications.
+
+**Owner:** CJ
+
+## 2026-10-08 — Evidence limits from repository review
+
+**Decision:** Connection setup claims and dated entries are not verified live integrations; use explicit current evidence in connections.md. Prior design-token compliance aspirations are not proof of WCAG compliance. Current card checks and open findings are recorded in docs/dashboard/REPOSITORY-REVIEW.md.
+
+**Why:** Avoid misleading future agents into treating proposed rules, historical configuration or example figures as tested behaviour.
+
+**Alternatives considered:** Keeping ambiguous connected-status dates or treating a design-system document as a completed accessibility audit.
+
+**Owner:** CJ

@@ -1,3 +1,5 @@
+> Historical pre-folder document. Start at docs/dashboard/README.md for current files.
+
 # GemOs Section 2 — refinement specification
 
 Updated 8 October 2026. Companion to ../DESIGN_SYSTEM.md. Shared agreed rules remain authoritative; the older audit is advisory. No further code changes without CJ’s confirmation. Ask about unsettled product decisions.

@@ -44,7 +44,7 @@ Status must be expressed in text. Group 1 uses restrained green for confirmed re
 
 - Sync: small icon plus label, no circular button background; visible result and freshness. Placeholder controls must not pretend an import succeeded. Dashboard Sync all is planned; no group-level Sync.
 - Details: right footer action with arrow. Both Group 2 actions are white. Group 1 retains its reviewed treatment rather than being restyled by this consolidation.
-- Group 2 platform selector: All / Shorts / TikTok / Reels, one row and one selection. Brand icons retained. Visible height 36px, radius 12px, extended 44px tap height, #ffffff1a selected fill. Responsive padding/gaps and keyboard rules are defined in GROUP-2.md.
+- Group 2 platform selector: All / Shorts / TikTok / Reels, one row and one selection. Brand icons retained. Visible height 36px, radius 12px, extended 44px tap height, #ffffff1a selected fill. Responsive padding/gaps and keyboard rules are defined in dashboard/group-2/SPECIFICATION.md.
 - Informational asset rows do not act as buttons. Interactive clip rows are real controls.
 - Overlays: labelled, scrollable within the viewport, with close control, keyboard focus, Escape dismissal and focus return. Android Back requires native verification.
 
@@ -66,7 +66,7 @@ Animation planning is deferred until a working app. Existing reference CSS may c
 ## Supporting documents
 
 - [Card index](dashboard/README.md)
-- [Group 1 usage and connections](dashboard/GROUP-1.md)
-- [Group 2 specification](dashboard/GROUP-2.md)
+- [Group 1 usage and connections](dashboard/group-1/USAGE-AND-CONNECTIONS.md)
+- [Group 2 specification](dashboard/group-2/SPECIFICATION.md)
 - [Review plan](dashboard/PLAN.md)
 - [Original Group 1 specification](../references/dashboard/source/group-1-spec-2026-10-05.md): provenance; superseded where current specifications record later decisions. Its proposals remain proposals.

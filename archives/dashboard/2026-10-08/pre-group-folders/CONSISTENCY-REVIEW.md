@@ -1,3 +1,5 @@
+> Historical pre-folder document. Start at docs/dashboard/README.md for current files.
+
 # Cross-document consistency review
 
 8 October 2026. Compared the shared Group 1 source specification, accepted Group 1 HTML, latest Group 2 HTML/specification, API feasibility review, review plan and existing repository guidance/decision log.
