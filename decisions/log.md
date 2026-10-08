@@ -203,3 +203,7 @@ CJ chose B: replace Stayed to watch with Likes in card 2.1’s Shorts selection.
 ## 8 October 2026 — TikTok metric replacement
 
 CJ chose B: replace Followers gained with Comments in card 2.1’s TikTok selection. Other TikTok tiles remain average watch time, watched full video and shares, conditional on supported reports. Comment counts are documented, but selected-period activity still needs validation. Queue the preview change until the remaining decision review is complete.
+
+## 8 October 2026 — Audience-growth consistency supersedes TikTok replacement
+
+After supplying a TikTok Studio screenshot showing New followers for an individual video, CJ confirmed that Shorts, TikTok and Reels should all retain an audience-growth metric. Use Subscribers gained for Shorts and Followers gained for TikTok/Reels, attributed to the selected short-form content rather than silently substituting whole-account growth. This supersedes the earlier TikTok Comments replacement. YouTube Likes still replaces Stayed to watch. TikTok/Reels API access and selected-period attribution remain unverified; unsupported data shows unavailable, never a fabricated value or automatic replacement.

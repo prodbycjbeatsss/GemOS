@@ -46,7 +46,7 @@ The minimal YouTube test can run before every cross-platform metric is settled i
 ## Current open decisions
 
 - YouTube replacement for Stayed to watch: Likes approved; real report validation and preview implementation pending.
-- TikTok and Instagram clip-attributed followers versus obtainable alternatives.
+- TikTok and Instagram clip-attributed Followers gained are retained; verify imports and show unavailable if unsupported.
 - Last-28-days activity reporting versus post-publication cohorts: these are different definitions, not interchangeable.
 - Weighted watch aggregates, date boundaries and partial data in All.
 - 24-hour capture tolerance; late/missed snapshots; precise label and review notification handling.
@@ -55,7 +55,7 @@ The minimal YouTube test can run before every cross-platform metric is settled i
 
 ## Next action
 
-YouTube Likes replacement is approved. TikTok Comments replacement is also approved. Review Reels’ follower tile next, then remaining platform metrics and reporting scope. Implement agreed changes together after the decision review.
+YouTube Likes replacement is approved. CJ retained audience-growth tiles for Shorts, TikTok and Reels, superseding the TikTok Comments choice. Review reporting scope next; follower-import capability remains to test. Implement agreed changes together after the decision review.
 
 ## Repository organisation — 8 October
 

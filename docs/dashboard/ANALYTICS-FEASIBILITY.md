@@ -110,3 +110,7 @@ Direct APIs first. TikTok Business and Instagram Creator/Business remain provisi
 CJ approved Likes as the replacement for YouTube Stayed to watch. The table above preserves the reviewed original choices; current choices are in group-2/USAGE-AND-CONNECTIONS.md. The standard YouTube metric is documented; the authorised account report and selected Shorts scope still require validation. Preview update is queued after the remaining decision review.
 
 CJ also approved Comments as the replacement for TikTok Followers gained. TikTok’s video object documents comment_count; a lifetime count does not by itself meet the last-28-days activity definition. Current decisions supersede the original-choice table above.
+
+## Superseding audience-growth decision — 8 October 2026
+
+CJ subsequently retained Subscribers gained on Shorts and Followers gained on TikTok/Reels. The TikTok Comments replacement above is superseded. The supplied screenshot confirms a per-video New followers display in TikTok Studio; it does not establish API access or last-28-days activity coverage. Current standard and business API evidence does not justify claiming the metric impossible. Validate supported permissions, field, attribution and period before live use; show unavailable if not obtainable. YouTube Likes replacement remains approved.
