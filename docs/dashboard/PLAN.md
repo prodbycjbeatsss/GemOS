@@ -69,3 +69,8 @@ CJ approved 7/28/90/365-day ranges with 28 as default, placed beneath platform p
 ### Latest controls and scope follow-up
 
 The isolated importer replaces the disliked dropdown with compact range pills and adds import stages, spinner and completion/failure feedback. Normal recess is explicitly matched to 2.2 (575/583px); controlled state checks passed, revised browser fit remains unverified. Next: CJ phone review, supported browser verification, then scope whole-channel short-form import. 2.1 is overall selected-platform activity; 2.2 is release-specific. Proposed shared header roles: scope label, main result, timing/freshness; record confirmed wording before altering the canonical references.
+
+
+### Alignment and reduced repeat setup — 9 October 2026
+
+The Android screenshot showed first-row value misalignment; matching metric text rows and the short Average viewed label are now implemented in the isolated test. Selected links, confirmation, end date and range persist within the browser tab, separately from auth, without automatic queries/consent on reload. Controlled state/syntax checks passed; revised browser alignment remains unverified. Stop requesting new manual sample links. Next scope longer-lived login and automatic whole-channel Shorts imports; API coverage, TikTok/Reels and frozen snapshots remain unimplemented/unverified.

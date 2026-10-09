@@ -71,3 +71,8 @@ CJ confirmed 7/28/90/365-day ranges, 28 default, and placement directly below pl
 CJ rejected the native dropdown. The isolated test now uses compact 7d/28d/90d/365d pills under the platforms, 44px tap rows with 28px selected surfaces and 4px to the metric grid. Match normal 2.2 recess dimensions (575px below 640px, 583px above); permit reflow for overflowing accessible content. Keep metrics near the top; a small lower status area provides the requested progress/completion feedback, with remaining space left clear. Sync rotates only during actual requests and respects reduced motion. Browser verification is pending; state checks passed. Canonical HTML remains unchanged.
 
 CJ raised reusable card text roles. Proposed: scope label → main result → timing/freshness. Main results can be numbers, readiness or rankings; do not impose identical sentences or replace useful date/snapshot lines. Suggested final scope wording varies with selection: All your short-form videos / All your Shorts on 2.1; Selected release on 2.2. These final labels/template are proposals. The current sample test uses Selected Shorts only.
+
+
+### Metric-row alignment — 9 October 2026
+
+User Android evidence showed independent tile content centring misaligns values when label/note line counts differ. In the isolated test, reserve equal label and note rows (34px minimum) with a shared 24px value slot. Use Average viewed visibly, retain Average percentage viewed for accessible naming and its definition in details. Allow text reflow rather than clipping under enlarged text. Source metric and canonical preview are unchanged. State/syntax checks passed; revised rendered alignment remains to verify.

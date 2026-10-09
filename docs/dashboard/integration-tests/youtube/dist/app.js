@@ -7,6 +7,19 @@
   let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
   const configKey = 'gemos-youtube-client-v1';
+  const selectionKey = 'gemos-youtube-selection-v1';
+  function rememberSelection() {
+    try { sessionStorage.setItem(selectionKey, JSON.stringify({ videos: $('videos').value, confirmed: $('confirm-shorts').checked, requestedEnd: $('end-date').value, rangeDays: Number(document.querySelector('[data-range][aria-checked=true]').dataset.range) })); } catch {}
+  }
+  function restoreSelection() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(selectionKey) || 'null');
+      if (!saved || typeof saved !== 'object') return;
+      if (typeof saved.videos === 'string' && saved.videos.length <= 4096) { $('videos').value = saved.videos; $('confirm-shorts').checked = saved.confirmed === true; }
+      if (typeof saved.requestedEnd === 'string') { try { $('end-date').value = date(saved.requestedEnd); } catch {} }
+      if ([7,28,90,365].includes(saved.rangeDays)) document.querySelectorAll('[data-range]').forEach(button => { const selected = Number(button.dataset.range) === saved.rangeDays; button.setAttribute('aria-checked', String(selected)); button.tabIndex = selected ? 0 : -1; });
+    } catch {}
+  }
   function removeSession() { try { sessionStorage.removeItem(sessionKey); } catch {} }
   function rememberSession() {
     try {
@@ -183,6 +196,7 @@
       if (!$('confirm-shorts').checked) throw new Error('Check the selected videos are Shorts in Studio, then tick the confirmation.');
       if (!$('channel').value) throw new Error('Connect and choose your channel.');
     } catch (error) { feedback(error.message); showSync('Check your selection', error.message, 'Not synced'); return; }
+    rememberSelection();
     const session = generation, channel = $('channel').value;
     busy = true; syncing = true; controls(); feedback('Checking videos and importing reports…'); showSync('Syncing', 'Checking the selected videos belong to your channel…', 'Syncing…');
     try {
@@ -231,10 +245,10 @@
     $('growth').hidden = true;
     $('period').textContent = report ? report.currentPeriod.start + ' – ' + report.currentPeriod.end : 'Not imported';
     $('freshness').textContent = report ? 'Latest returned day · ' + report.latestReturnedDay : 'No live data loaded';
-    const tiles = [['Average percentage viewed', 'averageViewPercentage'], ['Likes', 'likes'], ['Subscribers gained', 'subscribersGained'], ['Shares', 'shares']];
+    const tiles = [['Average viewed', 'averageViewPercentage'], ['Likes', 'likes'], ['Subscribers gained', 'subscribersGained'], ['Shares', 'shares']];
     $('metrics').replaceChildren(...tiles.map(([label, key]) => {
       const tile = document.createElement('div'); tile.className = 'tile';
-      const heading = document.createElement('p'); heading.className = 'tile-label'; heading.textContent = label;
+      const heading = document.createElement('p'); heading.className = 'tile-label'; heading.textContent = label; if (key === 'averageViewPercentage') { heading.setAttribute('aria-label', 'Average percentage viewed'); heading.title = 'Average percentage of the video watched, reported by YouTube.'; }
       const value = document.createElement('strong'); value.className = 'tile-value'; value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
       const note = document.createElement('p'); note.className = 'tile-note'; note.textContent = report ? key === 'likes' ? 'Source-reported period value' : 'Selected-period activity' : 'Not imported';
       tile.append(heading, value, note); return tile;
@@ -261,6 +275,7 @@
   function chooseRange(button) {
     if (busy || button.getAttribute('aria-checked') === 'true') return;
     rangeButtons.forEach(item => { const selected = item === button; item.setAttribute('aria-checked', String(selected)); item.tabIndex = selected ? 0 : -1; });
+    rememberSelection();
     const hadReport = Boolean(report);
     report = null; render();
     feedback('Date range changed. Sync to import this range.');
@@ -285,9 +300,12 @@
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
     if (id === 'client-id') { clearConnection(); return; }
     if (id === 'channel' && token) rememberSession();
+    rememberSelection();
     report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });
+  for (const id of ['videos', 'end-date']) $(id).addEventListener('input', rememberSelection);
   $('end-date').value = shift(new Date().toISOString().slice(0, 10), -3);
+  restoreSelection();
   $('origin').textContent = location.origin;
   // Tab-session storage retains only short-lived auth/config, never a refresh token.
   window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; });

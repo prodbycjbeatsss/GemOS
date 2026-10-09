@@ -85,6 +85,8 @@ const assert = require('node:assert/strict');
     assert.ok(range.y >= pills.y+pills.height, 'range below platforms'); assert.ok(tiles.y >= range.y+range.height+3, 'tiles below range');
     const control = await page.locator('[data-range="28"]').boundingBox(); assert.ok(control.height >=44);
     const dock = await page.locator('.dock').boundingBox(); assert.equal(dock.height,width>=640?583:575,'matched recess height');
+    const labels = await page.locator('.tile-label').allTextContents(); assert.equal(labels[0],'Average viewed');
+    const values = await page.locator('.tile-value').all(); const first = await values[0].boundingBox(), second = await values[1].boundingBox(); assert.equal(first.y,second.y,'first-row value alignment');
     const cardHeight = (await page.locator('.card').boundingBox()).height;
     await page.locator('[data-range="365"]').click(); await page.waitForFunction(() => document.querySelector('#feedback').textContent.startsWith('Imported selected'));
     assert.equal((await page.locator('.card').boundingBox()).height,cardHeight,'stable card size');
@@ -111,6 +113,7 @@ const assert = require('node:assert/strict');
   assert.equal(await page.evaluate(() => Boolean(sessionStorage.getItem('gemos-youtube-session-v1'))), true);
   await page.reload(); await page.waitForFunction(() => document.querySelector('#connection').textContent.includes('restored')); assert.equal(await page.locator('#channel').inputValue(), 'UC_TEST'); assert.equal(await page.evaluate(() => Boolean(window.testAuth)), false); assert.equal(await page.locator('#sync').isDisabled(), false);
   assert.equal(await page.locator('#included-videos li').count(), 0);
+  assert.equal(await page.locator('#videos').inputValue(), 'https://www.youtube.com/shorts/abcdefghijk'); assert.equal(await page.locator('#end-date').inputValue(),'2026-10-06'); assert.equal(await page.locator('[data-range][aria-checked=true]').getAttribute('data-range'),'28');
   await page.locator('#videos').fill('abcdefghijk bcdefghijkl cdefghijklm defghijklmn efghijklmno'); await page.locator('#confirm-shorts').check(); await page.locator('#end-date').fill('2026-10-06'); await page.locator('#sync').click(); await page.waitForFunction(() => document.querySelector('#included-videos').children.length === 5); assert.match(await page.locator('#included-status').textContent(), /5 videos/);
   for (const width of [320,390,840,1280]) { await page.setViewportSize({width,height:1000}); assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'five long titles overflow '+width); }
   await page.locator('#videos').fill('abcdefghijk'); await page.locator('#videos').blur(); assert.equal(await page.locator('#included-videos li').count(), 0);
