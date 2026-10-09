@@ -292,3 +292,8 @@ User-supplied API details and Studio export confirm signed period Likes. Preserv
 ## 2026-10-09 — Show the imported Shorts scope
 
 CJ requested visible video titles in the importer. Display an Included Shorts list above the isolated test analytics card, with imported titles and IDs for the successful report. Keep scope and results together on failed retry; clear both when the selection changes or disconnects. Render external titles as text. This adds visibility to the manual sample import without changing canonical card designs or metric definitions.
+
+
+## 2026-10-09 — Analytics reporting ranges and placement
+
+CJ confirmed 7, 28, 90 and 365 days, with 28 default, and requested the selector beneath platform pills with metric tiles moved lower inside the recess. Implement this in the existing private YouTube sample importer, preserving normal card size and materials. Use equal-length adjacent current/previous activity windows, exact reporting dates and Google's aggregate percentage unchanged. Changed-range requests must not retain old results under a new range; automatically Sync after a loaded report's range changes. Canonical previews and the frozen 24-hour leaderboard remain unchanged. Source coverage and real longer-range Studio agreement remain to verify.

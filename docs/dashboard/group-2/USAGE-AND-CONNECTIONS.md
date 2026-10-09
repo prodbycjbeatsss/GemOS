@@ -76,3 +76,8 @@ YouTube Likes replacement is approved. Audience-growth tiles are confirmed acros
 ### YouTube Likes evidence — 9 October 2026
 
 Supplied API details and Studio export confirm signed period Likes. The isolated test preserves signed whole-number source values; sample figures and identifiers are omitted. The periods differ, so matched-window verification and metric semantics remain open. Canonical previews remain mock references.
+
+
+### Optional reporting ranges — confirmed 9 October 2026
+
+CJ approved 7/28/90/365-day activity windows with 28 default. Each selected window uses the immediately preceding non-overlapping equal-length window for comparison, only when compatible coverage is verified. This supersedes the 28-day-only restriction for optional analytics ranges; the shared All-tab coverage/boundary rules still apply and cross-platform support is untested. The isolated sample importer implements these ranges with exact dates and source aggregate percentages; no unweighted average is calculated. Range changes clear mismatched results and request new data. The 24-hour leaderboard contract is unchanged. Canonical mock previews remain unchanged.

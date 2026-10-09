@@ -103,3 +103,8 @@ CJ supplied API details and a Studio export establishing that negative period Li
 ## Importer title visibility — 9 October 2026
 
 CJ requested knowing which Shorts contribute to the imported analytics. The isolated test now displays an Included Shorts list above the card with imported titles/video IDs. It follows the successful report, retains that scope on failed retries and clears on selection changes/disconnect. Controlled five-video/long-title/mobile/security checks passed; canonical cards remain unchanged.
+
+
+## Latest range decision and implementation — 9 October 2026
+
+CJ confirmed 7/28/90/365-day ranges (28 default) and requested the date-range control below platform pills, moving the metric tiles lower within the recess. Implemented in the isolated YouTube importer; canonical previews remain unchanged. The current and previous aggregates use the selected equal-length adjacent windows; Google's percentage is displayed unchanged. Latest-day lookup is sorted descending with a one-row limit so long windows cannot omit their newest rows. Changed-range imports clear stale report/scope, then fetch automatically if a report was loaded; failed changed-range requests show no mismatched old data. Existing same-selection failure preservation and tab-session auth remain. See the test README for contract and controlled checks. Next user test: select 90 or 365 days, review exact dates and compare the same scope with Studio. Whole-channel Shorts discovery and complete coverage remain unverified.

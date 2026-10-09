@@ -65,7 +65,7 @@
     $('channel').disabled = !connected || busy;
     $('sync').disabled = !connected || busy || !$('channel').value;
     document.querySelector('[data-sync-card]').disabled = $('sync').disabled;
-    for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date']) $(id).disabled = busy;
+    for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date', 'date-range']) $(id).disabled = busy;
   }
   function clearConnection(message = 'Disconnected. Imported data cleared.') {
     generation++; token = null; expiresAt = 0; busy = false;
@@ -150,9 +150,11 @@
   }
   async function sync() {
     if (busy) return;
-    let ids, requested;
+    let ids, requested, rangeDays;
     try {
       ids = idsFromText($('videos').value); requested = date($('end-date').value);
+      rangeDays = Number($('date-range').value);
+      if (![7, 28, 90, 365].includes(rangeDays)) throw new Error('Choose one of the supported date ranges.');
       if (requested >= new Date().toISOString().slice(0, 10)) throw new Error('Choose a day before today. Recent data may still be unavailable.');
       if (!$('confirm-shorts').checked) throw new Error('Check the selected videos are Shorts in Studio, then tick the confirmation.');
       if (!$('channel').value) throw new Error('Connect and choose your channel.');
@@ -164,17 +166,19 @@
       if (videos.items?.length !== ids.length || videos.items.some(item => item.snippet.channelId !== channel)) throw new Error('Every selected video must be available and owned by the selected channel.');
       const base = { ids: 'channel==' + channel, metrics: metrics.join(','), filters: 'video==' + ids.join(',') };
       const query = params => api('https://youtubeanalytics.googleapis.com/v2/reports', { ...base, ...params }, session);
-      const daily = mappedRows(await query({ startDate: shift(requested, -83), endDate: requested, dimensions: 'day', sort: 'day', maxResults: '200' }), ['day']);
+      // Ask for the newest day first: a long range must not truncate its latest rows.
+      const probeStart = shift(requested, -Math.max(83, rangeDays - 1));
+      const daily = mappedRows(await query({ startDate: probeStart, endDate: requested, dimensions: 'day', sort: '-day', maxResults: '1' }), ['day']);
       const days = daily.map(row => date(row.day));
       if (!days.length) throw new Error('No daily data returned. Missing data has not been treated as zero. Try older Shorts or a different date.');
-      if (days.some(day => day > requested || day < shift(requested, -83))) throw new Error('Unexpected report dates. Import stopped.');
-      const end = days.sort().at(-1), start = shift(end, -27), previousEnd = shift(start, -1), previousStart = shift(start, -28);
+      if (days.some(day => day > requested || day < probeStart)) throw new Error('Unexpected report dates. Import stopped.');
+      const end = days.sort().at(-1), start = shift(end, 1 - rangeDays), previousEnd = shift(start, -1), previousStart = shift(start, -rangeDays);
       const warnings = [];
       const current = aggregate(await query({ startDate: start, endDate: end }), 'current', warnings);
       const previous = aggregate(await query({ startDate: previousStart, endDate: previousEnd }), 'previous', warnings);
       if (session !== generation) return;
       report = { source: 'YouTube Analytics API v2', scope: 'User-confirmed selected Shorts sample; not channel-wide', channelId: channel, channelTitle: $('channel').selectedOptions[0].textContent,
-        videos: videos.items.map(item => ({ id: item.id, title: item.snippet.title })), requestedEnd: requested, currentPeriod: { start, end }, previousPeriod: { start: previousStart, end: previousEnd },
+        videos: videos.items.map(item => ({ id: item.id, title: item.snippet.title })), requestedEnd: requested, rangeDays, currentPeriod: { start, end }, previousPeriod: { start: previousStart, end: previousEnd },
         reportingTimezone: 'America/Los_Angeles', latestReturnedDay: end, fetchedAt: new Date().toISOString(), current, previous, warnings,
         coverage: 'Latest observed daily row; missing days are not proof of zero activity. Comparison and target withheld until coverage is verified.' };
       render(); feedback(warnings.length ? 'Imported with unavailable metrics: ' + [...new Set(warnings.map(item => item.period + ' ' + item.metric))].join(', ') + '. See Analytics details.' : 'Imported selected Shorts. Compare these exact videos and dates with Studio.');
@@ -221,6 +225,12 @@
     if (revokeToken && window.google?.accounts?.oauth2) google.accounts.oauth2.revoke(revokeToken, () => {});
   });
   $('sync').addEventListener('click', sync); document.querySelector('[data-sync-card]').addEventListener('click', sync);
+  $('date-range').addEventListener('change', () => {
+    const hadReport = Boolean(report);
+    report = null; render();
+    feedback('Date range changed. Sync to import this range.');
+    if (hadReport) sync();
+  });
   $('open-analytics').addEventListener('click', details);
   $('close-details').addEventListener('click', () => $('details').close());
   $('details').addEventListener('close', () => opener?.focus());

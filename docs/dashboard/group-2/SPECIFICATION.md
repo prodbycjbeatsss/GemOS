@@ -59,3 +59,8 @@ Earlier detailed review history is retained in [archived Group 2 document](../..
 ## Separate integration experiment
 
 The [YouTube test](../integration-tests/youtube/README.md) reuses 2.1 materials in a standalone working page. Its setup panel, sample-only heading and flexible accessibility layout do not amend this canonical group geometry. Real OAuth and metrics remain to verify.
+
+
+## Approved analytics range control — 9 October 2026
+
+CJ confirmed 7/28/90/365-day ranges, 28 default, and placement directly below platform pills within the analytics recess. Move metric tiles down to accommodate it without enlarging the normal card. The isolated importer implements a labelled native select with a 44px minimum height, existing lavender materials and a 16px gap to tiles. Controlled mobile/desktop tests preserve card height; enlarged text retains reflow. Canonical preview is unchanged; this records the approved direction and the experiment's implementation separately.

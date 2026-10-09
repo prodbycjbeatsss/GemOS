@@ -59,3 +59,8 @@ Explain purpose, problems and recommendations plainly. Ask one consequential uns
 CJ reports real consent/channel connection and one successful selected Short import. An older-video import failed the local metric validator; individual unavailable-metric handling and current/previous diagnostics are now implemented. CJ requested refresh persistence: retain only a short-lived token and config in tab-session storage, revalidate channel after reload, clear invalid sessions. Controlled checks passed; ask CJ to retry older video and refresh, then verify exact Studio dates. Long-lived server refresh remains a separate architecture decision.
 
 Studio follow-up: supplied export confirms negative period Likes, so preserve signed integer Likes in the isolated test rather than showing unavailable. Its dates differ from the API period; exact-window metric/coverage verification is still pending. No replacement with lifetime Likes or inferred net-likes definition.
+
+
+## Confirmed range controls — 9 October 2026
+
+CJ approved 7/28/90/365-day ranges with 28 as default, placed beneath platform pills inside the analytics recess, with tiles moved lower. Implemented in the isolated importer and checked with controlled API responses. Earlier 28-day-only wording describes the canonical preview/default; this decision authorises optional ranges, without claiming cross-platform support or changing the 24-hour leaderboard. Each selected range uses activity within N days, with the preceding N days in details. Source coverage remains unverified; growth/targets stay hidden. Next: user test longer ranges and exact Studio agreement, then scope whole-channel Shorts import.
