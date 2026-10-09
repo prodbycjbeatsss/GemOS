@@ -23,7 +23,7 @@ Updated 9 October 2026. Finalised visual reference: [preview.html](preview.html)
 ## Card 1.2
 
 - Header: Pre Release Checklist, project name and correct n/7 Files Ready count.
-- Seven informational parts, with compact icons, descriptions and Pass/Missing text. Shorts represents six source files, not six additional checklist categories.
+- Seven informational parts, with compact icons, descriptions and Pass/Missing text. Shorts represents six source files, not six additional checklist categories. Current categories: Remix WAV, Beat MP3, Stems archive, Project ZIP, Thumbnail, YouTube video and Shorts.
 - Multiple missing parts can be displayed simultaneously. No overall green-card requirement; missing state uses the reviewed rose treatment.
 - Asset rows are not tappable. One footer: Sync and status left, Release details → right. No dashboard test controls.
 - Sync currently reports Drive not connected. This is a preview result, not a scan.
@@ -34,3 +34,7 @@ At normal text size, preserve equal group slots, no card/footer or row clipping,
 
 The original full specification is retained as [historical provenance](../../../references/dashboard/source/group-1-spec-2026-10-05.md). Its proposals do not silently change this finalised visual reference. Full measured contrast, actual Android scaling/Back and live connections remain unverified. Approved R01–R03/R10 changes are implemented. Enlarged fonts that overflow enable accessible reflow: cards grow, full names/descriptions wrap, checklist parts use one column and footers wrap. Normal font sizes restore fixed slots. See [9 October verification](../verification/2026-10-09.md).
 
+
+## Confirmed readiness states — 9 October 2026
+
+Use the file convention and rules in USAGE-AND-CONNECTIONS.md. A likely filename typo is Needs confirmation, not Pass or a plain Missing result. Keep asset rows informational; candidate review belongs in Release details. Do not count unresolved categories as ready. Folder/filename conventions and this state are approved requirements; live scanner and corresponding preview updates are not yet implemented.
