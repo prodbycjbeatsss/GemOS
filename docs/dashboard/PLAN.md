@@ -121,3 +121,8 @@ Read-only slice built, tested and privately deployed; see [ASSETS.md](integratio
 ## Group 1 hosted scan and UI follow-up
 
 CJ’s Android screenshot shows the expected 3/7 live scan. Track-only heading (48-grapheme display limit/two-line clamp) and Group 1-styled Release details are deployed; full metadata remains available. Next: phone review after refresh, then real candidate association/restoration checks when suitable data exists. No repeated consent is required for this UI update. See integration-tests/youtube/ASSETS.md.
+
+
+## Group 1 pair comparison
+
+CJ approved restoring the Group 1 pair on the private checklist page for comparing proportions. Card 1.1 uses the accepted reference anatomy/material with three illustrative projects/dates/statuses and a visible Example/Preview only label. It performs no live buffer calculation or scheduling query; its rows/footer open an explanatory preview dialog with Escape/close/focus-return behaviour. Card 1.2 continues using the existing Drive result. Desktop is two equal columns from 840px within 960px; mobile stacks 1.1 above 1.2. Normal fixed reference slots remain; when overflow activates the shared one-column asset reflow, both cards receive a shared minimum height calculated from the tallest natural card, including mobile. This is a comparison slice, not approval of a permanent one-column redesign or filler content. Syntax, title regression and production build pass; rendered matching height, enlarged-text behaviour and phone/dialog acceptance remain unverified. Next: CJ refreshes the same /checklist page and reviews both cards together. No new consent or sample link is required.

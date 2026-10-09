@@ -290,7 +290,51 @@
 #asset-dialog :is(button,select,summary):focus-visible{outline:2px solid #7dd3fc;outline-offset:3px}
 @media(max-width:359px){.details-dialog-header{padding:16px}.details-asset-heading{flex-wrap:wrap}#asset-detail-content{padding:16px}}
 .section-one-grid.text-reflow #checklist-project-title{display:block;-webkit-line-clamp:unset;max-height:none;overflow:visible}
-</style></head><body><main class="test-shell"><section class="scan-setup" aria-label="Read-only file scan"><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Asset checklist</h1><p>This checks synced Drive files. It does not upload, schedule or publish.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="https://drive.google.com/drive/folders/…"><p>Enable Google Drive API in the existing Google Cloud project before granting Drive metadata access.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><div class="section-one-grid"><div id="card-prerelease-checklist"
+</style><style>.test-shell{max-width:960px}.scan-setup{max-width:480px;margin-inline:auto}.group-source-note{font-size:12px;line-height:1.5;color:#cbd5e1;margin:0 0 16px}.test-shell .section-one-grid{grid-template-columns:minmax(0,1fr);align-items:stretch}.section-one-grid.text-reflow #card-release-buffer,.section-one-grid.text-reflow #card-prerelease-checklist{min-height:var(--paired-card-height,var(--section-one-card-height))}#card-release-buffer #buffer-metric-val{font-size:24px;line-height:1.25}#card-release-buffer .buffer-project-date{font-size:11px}#buffer-preview-dialog{border:1px solid #ffffff29;background:linear-gradient(155deg,#0369a1,#0f172a);box-shadow:0 24px 48px -12px #0008;border-radius:32px}#buffer-preview-dialog h2{font-family:Poppins,sans-serif;font-size:20px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}#buffer-preview-dialog p{color:#d5e7f5;line-height:1.6}#buffer-preview-dialog button{min-height:44px;font-size:12px}#card-release-buffer .buffer-project-badge{font-size:10px}@media(min-width:640px){#card-release-buffer #buffer-metric-val{font-size:30px}}@media(min-width:840px){.test-shell .section-one-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}</style></head><body><main class="test-shell"><section class="scan-setup" aria-label="Read-only file scan"><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>This checks synced Drive files. It does not upload, schedule or publish.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="https://drive.google.com/drive/folders/…"><p>Enable Google Drive API in the existing Google Cloud project before granting Drive metadata access.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><p class="group-source-note">Release Buffer: example data · Checklist: your Drive scan</p><div class="section-one-grid"><div id="card-release-buffer"
+             class="hero-spotlight-card p-5 sm:p-6 relative flex flex-col justify-between"
+             style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
+          
+          <div class="hero-spotlight-beam" id="buffer-beam"></div>
+
+          <div class="dashboard-card-main">
+            <div class="hero-3d-glyph text-white">
+              <svg class="w-7 h-7 drop-shadow-md text-sky-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            </div>
+
+            <div class="text-center mt-3">
+              <span class="text-[11px] uppercase tracking-wider font-semibold opacity-85 block">
+                Release Buffer
+              </span>
+              <div class="text-2xl sm:text-3xl font-extrabold font-display tracking-tight mt-0.5 text-white" id="buffer-metric-val" role="status" aria-live="polite" aria-atomic="true">
+                Example: 3 Weeks Ahead
+              </div>
+              <p class="text-xs font-medium opacity-90 mt-1" id="buffer-subtitle">
+                Preview only · scheduling not connected
+              </p>
+            </div>
+
+            <!-- Release list: agreed labels and behaviour for card 1.1. -->
+            <div class="recessed-dock mt-4 p-3 sm:p-3.5 space-y-2">
+              <div class="buffer-list-heading">
+                <span>Example Releases</span>
+                <span id="buffer-backlog-tag">3 Examples</span>
+              </div>
+              <div id="pipeline-projects-dock" class="buffer-project-list"><button type="button" data-buffer-sample="Potter Payper – Teeth & Claws" class="buffer-project-row buffer-next"><span class="buffer-project-identity"><span class="buffer-project-copy"><span class="buffer-project-name">Potter Payper – Teeth & Claws</span><span class="buffer-project-date">Example · 12 October 2026</span></span></span><span class="buffer-project-badge is-ready">Next Up</span></button><button type="button" data-buffer-sample="Griminal – 3 Minutes" class="buffer-project-row "><span class="buffer-project-identity"><span class="buffer-project-copy"><span class="buffer-project-name">Griminal – 3 Minutes</span><span class="buffer-project-date">Example · 19 October 2026</span></span></span><span class="buffer-project-badge is-ready">Scheduled</span></button><button type="button" data-buffer-sample="Potter Payper – Air Max 90s" class="buffer-project-row "><span class="buffer-project-identity"><span class="buffer-project-copy"><span class="buffer-project-name">Potter Payper – Air Max 90s</span><span class="buffer-project-date">Example · 26 October 2026</span></span></span><span class="buffer-project-badge is-ready">Scheduled</span></button></div>
+              <button type="button" id="buffer-expand-button" class="buffer-expand"
+                      aria-controls="buffer-all-projects" aria-haspopup="dialog"
+                      hidden>Show all</button>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-white/15 flex items-center justify-end text-[11px]">
+            <button type="button" id="buffer-preview-details" class="release-details-link">
+              <span>Preview details</span><span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div><div id="card-prerelease-checklist"
              class="hero-spotlight-card p-5 sm:p-6 relative flex flex-col justify-between"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
           
@@ -339,4 +383,4 @@
               <span>Release details</span><span aria-hidden="true">→</span>
             </button>
           </div>
-        </div></div></main><dialog id="asset-dialog" aria-labelledby="asset-dialog-title"><header class="details-dialog-header"><h2 id="asset-dialog-title">Release details</h2><button id="asset-close" type="button" aria-label="Close release details">×</button></header><div id="asset-detail-content"></div></dialog><script type="module" src="/checklist.js"></script></body></html>
+        </div></div></main><dialog id="asset-dialog" aria-labelledby="asset-dialog-title"><header class="details-dialog-header"><h2 id="asset-dialog-title">Release details</h2><button id="asset-close" type="button" aria-label="Close release details">×</button></header><div id="asset-detail-content"></div></dialog><dialog id="buffer-preview-dialog" aria-labelledby="buffer-preview-title"><h2 id="buffer-preview-title">Release Buffer preview</h2><p>These are example projects, dates and statuses for comparing the two cards. They are not confirmed scheduling records.</p><p>Live buffer coverage will require the main YouTube video and all six Shorts on each required platform to have confirmed scheduling. File readiness alone does not establish coverage.</p><button id="buffer-preview-close" type="button">Close</button></dialog><script type="module" src="/checklist.js"></script></body></html>

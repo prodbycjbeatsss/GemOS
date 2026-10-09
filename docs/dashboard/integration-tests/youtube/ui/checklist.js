@@ -67,7 +67,21 @@ import { releaseTitle, displayTitle } from '/checklist-title.js';
   $('asset-details').addEventListener('click',()=>{details();$('asset-dialog').showModal();});
   $('asset-close').addEventListener('click',()=>$('asset-dialog').close());
   $('asset-dialog').addEventListener('close',()=>$('asset-details').focus());
-  function reflow(){const grid=document.querySelector('.section-one-grid'),card=$('card-prerelease-checklist');grid.classList.remove('text-reflow');const main=card.querySelector('.dashboard-card-main'),dock=card.querySelector('.recessed-dock');if(main.scrollHeight>main.clientHeight+2||dock.scrollHeight>dock.clientHeight+2)grid.classList.add('text-reflow');}
+  function reflow(){
+    const grid=document.querySelector('.section-one-grid');
+    grid.classList.remove('text-reflow');grid.style.removeProperty('--paired-card-height');
+    if([...grid.querySelectorAll('.dashboard-card-main,.recessed-dock')].some(el=>el.scrollHeight>el.clientHeight+2)){
+      grid.classList.add('text-reflow');
+      const height=Math.ceil(Math.max(...[...grid.querySelectorAll('.hero-spotlight-card')].map(el=>el.getBoundingClientRect().height)));
+      grid.style.setProperty('--paired-card-height',height+'px');
+    }
+  }
+  let bufferTrigger=null;
+  function openBufferPreview(trigger,name='Release Buffer preview'){bufferTrigger=trigger;$('buffer-preview-title').textContent=name;$('buffer-preview-dialog').showModal();}
+  $('buffer-preview-details').addEventListener('click',event=>openBufferPreview(event.currentTarget));
+  document.querySelectorAll('[data-buffer-sample]').forEach(button=>button.addEventListener('click',()=>openBufferPreview(button,button.dataset.bufferSample+' · example')));
+  $('buffer-preview-close').addEventListener('click',()=>$('buffer-preview-dialog').close());
+  $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());
   new ResizeObserver(reflow).observe(document.documentElement);document.fonts?.ready.then(reflow);
   (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
     if(data.folderId)$('project-folder').value='https://drive.google.com/drive/folders/'+data.folderId;

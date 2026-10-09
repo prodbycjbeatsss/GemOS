@@ -1,5 +1,9 @@
 # GemOs dashboard — next-session handoff
 
+## Latest Group 1 pair comparison
+
+CJ approved restoring the Group 1 pair on the private checklist page for comparing proportions. Card 1.1 uses the accepted reference anatomy/material with three illustrative projects/dates/statuses and a visible Example/Preview only label. It performs no live buffer calculation or scheduling query; its rows/footer open an explanatory preview dialog with Escape/close/focus-return behaviour. Card 1.2 continues using the existing Drive result. Desktop is two equal columns from 840px within 960px; mobile stacks 1.1 above 1.2. Normal fixed reference slots remain; when overflow activates the shared one-column asset reflow, both cards receive a shared minimum height calculated from the tallest natural card, including mobile. This is a comparison slice, not approval of a permanent one-column redesign or filler content. Syntax, title regression and production build pass; rendered matching height, enlarged-text behaviour and phone/dialog acceptance remain unverified. Next: CJ refreshes the same /checklist page and reviews both cards together. No new consent or sample link is required.
+
 ## Latest Group 1 phone evidence and UI update
 
 CJ’s screenshot confirms the hosted Drive scan returned the expected 3/7. The revised private /checklist now uses the remix track title (48-grapheme display cap/two-line clamp), full metadata in details and a designed Group 1 details modal; recessed-panel clipping detection is repaired. Title tests/syntax/build pass; refresh the phone page and review all seven categories and details. No new consent or folder link is needed. See [ASSETS.md](integration-tests/youtube/ASSETS.md) for evidence/limits and deployment. Real ambiguous-candidate confirmation and saved-result restoration remain unverified.
