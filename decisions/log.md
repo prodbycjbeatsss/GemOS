@@ -314,3 +314,8 @@ CJ reported phone metric misalignment and fatigue with repeated connections/new 
 ## 2026-10-09 — Analytics-only updates and cached range switching
 
 CJ approved avoiding a full-page/card refresh on each date-range click. Keep titles and prior figures visible with exact old dates and Updating until the new Analytics report succeeds. Reuse verified same-connection video metadata; cache loaded ranges in memory by channel/IDs/end/range and identify cached results with original timestamps. Manual Sync fetches fresh metadata/reports and invalidates other saved ranges. Selection/auth/lifecycle changes clear caches. Preserve clearly labelled old results on failure; never present them as the newly requested period. This supersedes the earlier clear-first range-change behaviour. No persistent report storage or new auth architecture is introduced.
+
+
+## 2026-10-09 — Finalise 2.1 test and authorise 2.2 batch test
+
+CJ finalised the current 2.1 test choices and requested a saved checkpoint, a fresh AGENTS.md read, then 2.2 on the same page. Consolidate current accepted choices in dashboard/integration-tests/youtube/STATUS.md, retaining honest outstanding integration/verification limits. 2.2 accepts 1–6 user-confirmed same-release Shorts; CJ's existing three are sufficient. Import titles/publication metadata and show 24-hour snapshot availability without fabricating historical counts. Existing read-only connection is shared; automatic capture/durable login remain future work.

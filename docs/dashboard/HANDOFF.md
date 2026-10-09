@@ -127,3 +127,8 @@ CJ is tired of repeated connections/link sampling. No more new samples are neede
 ## Latest range-switch optimisation — 9 October 2026
 
 CJ approved updating only range-dependent analytics. The importer keeps previous results/dates/titles visible with Updating and an explicit old-range message until the new report succeeds; failure preserves that clearly labelled report. It reuses same-connection verified metadata and fetches only the three Analytics reports for an uncached range. Loaded ranges switch instantly with Cached/Saved range labels and original timestamps. Manual Sync bypasses/invalidate caches and rechecks metadata. Cache is memory-only, keyed by channel/IDs/end/range and cleared on selection/auth/lifecycle changes. DOM nodes for tiles/unchanged titles remain stable. This supersedes clear-first range changes in earlier checkpoints. Controlled state/request checks and syntax passed; revised browser verification remains unavailable. No new user links needed; durable login and whole-channel import remain next major topics.
+
+
+## 2.1 finalised; 2.2 authorised — 9 October 2026
+
+CJ finalised the current 2.1 test and requested saving all choices before adding 2.2. [Current decisions/limits](integration-tests/youtube/STATUS.md) consolidates the approved material, geometry, labels, source semantics, range caching and persistence. Do not reopen those choices or claim outstanding production integrations are complete. CJ authorised 2.2 on the same page with his three same-release Shorts; six is a future planned size, not a required test count. Import metadata/availability only, without invented 24-hour snapshots. Reread AGENTS.md before implementation as CJ requested.

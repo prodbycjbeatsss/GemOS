@@ -1,5 +1,7 @@
 # YouTube manual import test
 
+Current authority: [finalised decisions and limits](STATUS.md). Later decisions supersede earlier follow-up entries below.
+
 9 October 2026. CJ approved a browser-only OAuth test after comparing simpler alternatives. This is an isolated integration experiment, not the final dashboard, app stack or unattended capture service. Canonical Group 1/2 previews remain unchanged.
 
 Private test: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site

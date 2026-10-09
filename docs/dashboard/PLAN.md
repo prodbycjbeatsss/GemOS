@@ -79,3 +79,8 @@ The Android screenshot showed first-row value misalignment; matching metric text
 ### Range-switch optimisation — 9 October 2026
 
 Implemented CJ's approved analytics-only range refresh: retain explicitly labelled old data while loading, reuse verified video metadata, switch loaded ranges from memory without requests, and let manual Sync fetch fresh metadata/results and invalidate old caches. Controlled state/request checks passed; browser rendering remains unverified. Auth architecture, source scope and canonical previews are unchanged.
+
+
+### 2.1 design checkpoint and 2.2 authorisation
+
+The current 2.1 test is finalised by CJ; [STATUS.md](integration-tests/youtube/STATUS.md) consolidates accepted choices and remaining verification/integration limits. Next authorised slice is 2.2 on the same test page: 1–6 selected same-release Shorts, including CJ's existing three, title/publication metadata and honest unavailable/waiting states. No auto-capture or historical 24-hour backfill is authorised by this UI slice.

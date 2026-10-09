@@ -81,3 +81,8 @@ User Android evidence showed independent tile content centring misaligns values 
 ### Range switching without full-card refresh — 9 October 2026
 
 Approved and implemented in the isolated test: keep platform controls, title list and metric nodes in place. During uncached range loading retain old figures with their exact dates and an explicit Updating/old-range label; replace values together on success. Cached range selection shows Saved range with original timestamp; Sync requests fresh data. Failure preserves clearly identified old results. Memory cache is cleared by changed selection/auth/lifecycle. State checks passed; rendered verification remains pending. Canonical preview is unchanged.
+
+
+## Finalised 2.1 test checkpoint
+
+CJ finalised the current importer design on 9 October; [STATUS.md](../integration-tests/youtube/STATUS.md) is the consolidated authority for its agreed controls/materials/labels/geometry. Outstanding browser/integration checks remain explicit. Canonical mock HTML is unchanged. 2.2's selected-release metadata/availability test is authorised alongside it, accepting three actual Shorts rather than inventing six records.
