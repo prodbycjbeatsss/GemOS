@@ -12,7 +12,8 @@
 </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
+    // Embedded utilities keep this reference usable if the optional CDN fails.
+    if (window.tailwind) window.tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
@@ -159,10 +160,11 @@
       font-size:12px;line-height:1.5;font-weight:600;padding:0 2px;color:rgba(255,255,255,.9);
     }
     #card-release-buffer #buffer-backlog-tag {color:rgba(255,255,255,.9);white-space:nowrap}
-    #card-release-buffer .buffer-project-list {display:flex;flex-direction:column;gap:6px}
+    #card-release-buffer .buffer-project-list {display:flex;flex-direction:column;gap:4px}
+    #card-release-buffer #pipeline-projects-dock {margin-top:4px}
     #card-release-buffer .buffer-project-row {
       display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
-      padding:8px 10px;text-align:left;min-height:54px;border-radius:12px;
+      padding:4px 10px;text-align:left;min-height:50px;border-radius:12px;
       background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);color:#fff;
       transition:background .2s;cursor:pointer;
     }
@@ -175,10 +177,10 @@
 
 
     #card-release-buffer .buffer-project-copy {display:block;min-width:0;flex:1}
-    #card-release-buffer .buffer-project-name {display:block;font-size:14px;font-weight:600;line-height:1.4;overflow-wrap:anywhere}
+    #card-release-buffer .buffer-project-name {display:block;font-size:14px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
     #card-release-buffer .buffer-project-name {display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
     #card-release-buffer .buffer-next .buffer-project-name {font-weight:700}
-    #card-release-buffer .buffer-project-date {display:block;font-size:12px;line-height:1.5;color:rgba(255,255,255,.85)}
+    #card-release-buffer .buffer-project-date {display:block;font-size:12px;line-height:1.4;color:rgba(255,255,255,.85)}
     #card-release-buffer .buffer-project-badge {
       display:inline-block;flex-shrink:0;font-size:11px;font-weight:600;line-height:1.4;
       padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.13);white-space:nowrap;
@@ -243,6 +245,26 @@
     #card-release-buffer .dashboard-card-main {flex:1;justify-content:flex-start}
     #card-release-buffer .recessed-dock,#card-prerelease-checklist .recessed-dock {min-height:0;overflow:hidden}
     @media(max-width:359px){:root{--section-one-card-height:532px}}
+
+    /* Accessibility exception: normal slots stay fixed; enlarged text can reflow. */
+    .section-one-grid.text-reflow #card-release-buffer,
+    .section-one-grid.text-reflow #card-prerelease-checklist {height:auto;min-height:var(--section-one-card-height)}
+    .section-one-grid.text-reflow .dashboard-card-main {overflow:visible;flex:none}
+    .section-one-grid.text-reflow .recessed-dock {overflow:visible;flex:none}
+    .section-one-grid.text-reflow #card-release-buffer .buffer-project-name {display:block;-webkit-line-clamp:unset;overflow:visible}
+    .section-one-grid.text-reflow #card-release-buffer .buffer-project-row {flex-wrap:wrap}
+    .section-one-grid.text-reflow #card-release-buffer .buffer-project-identity {flex-basis:100%}
+    .section-one-grid.text-reflow #selector-pills-container {grid-template-columns:minmax(0,1fr)}
+    .section-one-grid.text-reflow #selector-pills-container>div {grid-column:auto;flex-wrap:wrap}
+    .section-one-grid.text-reflow #selector-pills-container>div>div {flex-wrap:wrap}
+    .section-one-grid.text-reflow .drive-sync-footer {flex-wrap:wrap}
+    .section-one-grid.text-reflow .drive-sync-status {white-space:normal;overflow:visible}
+    .section-one-grid.text-reflow .dashboard-card-main+div {flex-wrap:wrap}
+    .section-one-grid.text-reflow .truncate {white-space:normal;overflow:visible;text-overflow:clip}
+    body:has(.section-one-grid.text-reflow) :is(p,span,div,button,h1,h2,h3,label) {line-height:1.4}
+    body:has(.section-one-grid.text-reflow) .section-one-group>div:first-child {flex-wrap:wrap}
+    .section-one-grid.text-reflow #card-release-buffer .buffer-list-heading {flex-wrap:wrap}
+    .section-one-grid.text-reflow #card-release-buffer #buffer-backlog-tag {white-space:normal}
 
     #buffer-all-projects {width:min(92vw,480px);max-height:85vh;overflow:auto;margin:auto;padding:22px;
       border:1px solid rgba(255,255,255,.25);border-radius:24px;color:#fff;
@@ -595,7 +617,7 @@
      * CARD 1.1 — decisions agreed with CJ, 4 October 2026.
      * Count complete future Monday–Sunday weeks; exclude the current week.
      * Main release + every planned short must have platform scheduling confirmed.
-     * Count scheduled weeks beyond gaps as requested. A week containing multiple
+     * Stop at the first gap or unfinished week. A week containing multiple
      * projects is complete only when all of those projects are fully scheduled.
      * Real upcoming projects stay listed regardless of the buffer count.
      * Test states contain two projects, one project, or no projects.
@@ -641,7 +663,14 @@
       const posts = Array.isArray(project.posts) ? project.posts.filter(p => p.planned !== false &&
         (p.kind === 'main' || p.kind === 'short')) : [];
       return posts.filter(p => p.kind === 'main').length === 1 &&
-        posts.filter(p => p.kind === 'short').length === 6 &&
+        posts.some(p => p.kind === 'main' && p.platform === 'yt') &&
+        posts.filter(p => p.kind === 'short').length === 18 &&
+        ['yt','tiktok','ig'].every(platform => {
+          const shorts = posts.filter(p => p.kind === 'short' && p.platform === platform);
+          return shorts.length === 6 && new Set(shorts.map(p => p.sourceClip)).size === 6 &&
+            shorts.every(p => typeof p.sourceClip === 'string' && p.sourceClip.length > 0);
+        }) &&
+        new Set(posts.filter(p => p.kind === 'short').map(p => p.sourceClip)).size === 6 &&
         posts.every(p => p.platformScheduled === true);
     }
 
@@ -805,17 +834,17 @@
     }
 
     function makeBufferDemoProject(id, artist, track, weekOffset, fullyScheduled, now = new Date()) {
-      const date = bufferWeekStart(bufferToday(now)) + (weekOffset * 7 + 6) * 86400000;
+      const date = bufferWeekStart(bufferToday(now)) + weekOffset * 7 * 86400000;
       return {
         id, artist, track, releaseDate: new Date(date).toISOString().slice(0, 10),
         posts: [
-          {kind: 'main', planned: true, platformScheduled: true,
+          {kind: 'main', platform: 'yt', planned: true, platformScheduled: true,
             scheduledFor: new Date(date).toISOString().slice(0, 10)},
-          ...Array.from({length: 6}, (_, i) => ({
-            kind: 'short', planned: true,
+          ...['yt','tiktok','ig'].flatMap(platform => Array.from({length: 6}, (_, i) => ({
+            kind: 'short', platform, sourceClip: id + '-short-' + (i + 1), planned: true,
             scheduledFor: new Date(date + (i + 1) * 86400000).toISOString().slice(0, 10),
             platformScheduled: fullyScheduled || i < 5
-          }))
+          })))
         ]
       };
     }
@@ -960,7 +989,25 @@
       });
       setBufferSimulation('nominal');
       syncChecklistCard();
+
+      // Observe content, not only fixed containers: font scaling may leave their boxes unchanged.
+      const grid = document.querySelector('.section-one-grid');
+      const checkTextReflow = () => {
+        const enlarged = parseFloat(getComputedStyle(document.querySelector('.buffer-project-name') ||
+          document.getElementById('buffer-subtitle')).fontSize) > 16;
+        if (!enlarged) {grid.classList.remove('text-reflow');return;}
+        if (grid.classList.contains('text-reflow')) return;
+        const crowded = [...grid.querySelectorAll('.dashboard-card-main,.recessed-dock')]
+          .some(el => el.scrollHeight > el.clientHeight + 1);
+        if (enlarged && crowded) grid.classList.add('text-reflow');
+      };
+      const textObserver = new ResizeObserver(checkTextReflow);
+      grid.querySelectorAll('.dashboard-card-main,.recessed-dock,.buffer-project-copy,#selector-pills-container')
+        .forEach(el => textObserver.observe(el));
+      window.addEventListener('resize', checkTextReflow);
+      if (document.fonts) document.fonts.ready.then(checkTextReflow);
     });
   </script>
 </body>
 </html>
+

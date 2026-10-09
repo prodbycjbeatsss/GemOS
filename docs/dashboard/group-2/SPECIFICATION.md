@@ -1,6 +1,6 @@
 # Group 2 — visual and interaction specification
 
-Updated 8 October 2026. Latest reviewed reference: [preview.html](preview.html). Read [master design system](../../DESIGN_SYSTEM.md) and [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md). Integration/metric choices are defined there; this document governs presentation. The split itself authorised no code changes. CJ subsequently approved the specific review fixes and queued changes listed in [HANDOFF.md](../HANDOFF.md).
+Updated 9 October 2026. Latest reviewed reference: [preview.html](preview.html). Read [master design system](../../DESIGN_SYSTEM.md) and [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md). Integration/metric choices are defined there; this document governs presentation. The split itself authorised no code changes. CJ subsequently approved the reference changes listed in [HANDOFF.md](../HANDOFF.md); these are now implemented.
 
 ## Group geometry and palette
 
@@ -26,17 +26,17 @@ Main figure shows views once with unit and growth. Reporting period and data-thr
 
 Target section reserves 128px. Show actual count, target and percentage; below-target/zero/missing neutral lavender, target met or positive growth restrained green, negative growth rose. Signed growth text remains. Hide comparison when missing. No speculative status or countdown.
 
-Target bar uses 90°, #818cf8 → #38bdf8 → #34d399. Detail overlay contains periods, definitions and target editing; local/session persistence is preview behaviour, not a server record. Extra panel space remains unresolved and must not be filled arbitrarily.
+Target bar uses 90°, #818cf8 → #38bdf8 → #34d399. Detail overlay contains periods, definitions and target editing; local/session persistence is preview behaviour, not a server record. Extra panel space remains empty. Partial-data reasons use the existing target note, with an accessible live-region announcement that does not expand the fixed header.
 
 ## 2.2 presentation
 
-Approved header update, not yet implemented: Shorts Views (24hrs), followed by Snapshot taken at 24h · up to 15 min later, then the selected batch dates with year (6–11 October 2026 for the first example). The current preview still has the earlier dates-only secondary header.
+Implemented header: Shorts Views (24hrs), followed by Snapshot taken at 24h · up to 15 min later, then the selected batch dates with year (6–11 October 2026 for the first example). Supporting snapshot text is 11px/1.4, or 10px below 360px; the compact headline uses 22px below 360px to retain 174px headers and 880px slots.
 
 Compact artist/track batch picker and chips stay outside the scrolling list. List viewport 360px: five fixed 72px row spaces, manual vertical scrolling and a subtle bottom fade only if content is below. No automatic scroll. Empty/shorter lists retain panel size.
 
 Rows show rank, clip title, platform and captured-value slot. Preserve podium rings; no rank-change arrows. Unranked rows remain muted but readable beneath completed rows. Relative bars use the exact 2.1 gradient, leader full width, others divided by selected leader's captured views. No unranked bar.
 
-Interactive rows open labelled clip details; never manufacture Watch clip URLs. Comparison definitions and data status belong in details.
+Interactive rows open labelled clip details; never manufacture Watch clip URLs. Comparison definitions and data status belong in details. Frozen mock snapshots include capture time and age; only the inclusive provisional 24:00–24:15 window qualifies.
 
 ## Footer and overlays
 
@@ -44,9 +44,14 @@ One footer per card: icon-plus-text Sync and status left; white Analytics detail
 
 Dialogs support keyboard entry, close, Escape, backdrop dismissal and focus return. Actual Android Back and font scaling remain unverified. Normal fixed geometry must not justify clipping content at enlarged text; browser review findings are recorded separately. Animation planning remains deferred.
 
-## Existing verification
+## Current verification
+
+See [9 October evidence and captures](../verification/2026-10-09.md): 64 Group 2 normal combinations plus 32 additional availability states; normal 880px slots and matching panel offsets retained. Native Android and live integrations remain unverified.
+
+## Historical verification
 
 The matched-panel checks covered 32 batch/platform states at 320, 390, 840 and 1280px: equal slots, aligned panels, one-row chips, 360px viewport/72px rows, pending order, manual scroll, keyboard selection, dialogs/focus return and honest Sync placeholders. No script errors. Mobile/desktop captures were inspected. This evidence applies to the current reference, not live integrations or full contrast compliance.
 
 Earlier detailed review history is retained in [archived Group 2 document](../../../archives/dashboard/2026-10-08/pre-group-folders/GROUP-2.md). Current source authority is this spec, usage notes and master design document.
+
 

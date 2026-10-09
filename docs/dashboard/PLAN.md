@@ -4,7 +4,7 @@ Updated 9 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This 
 
 ## Current status
 
-Group folders, shared design rules and the review report are committed. Current previews contain mock figures and placeholder Sync actions. CJ approved R01–R03 and R10 fixes and the specific Group 2 changes below, but they have **not been implemented**. The shared reporting window, required publishing-platform set and automatic asset-eligibility rule are now confirmed. Proceed with the authorised reference changes; remaining source/scanner/infrastructure choices belong to integration work.
+Group folders, shared design rules and the review report are committed. Current previews contain mock figures and placeholder Sync actions. Approved R01–R03/R10 fixes and Group 2 changes are **implemented and browser-verified**; see [9 October evidence](verification/2026-10-09.md). The shared reporting window, required publishing-platform set and automatic asset-eligibility rule are now confirmed. Reference changes are complete; remaining source/scanner/infrastructure choices belong to integration work.
 
 ## Confirmed direction
 
@@ -24,9 +24,9 @@ Group folders, shared design rules and the review report are committed. Current 
 | Step | Status / completion criterion |
 |---|---|
 | 1. Resume open choices | Relevant pre-edit choices settled. Do not reopen confirmed choices; defer integration-only questions until evidence exists. |
-| 2. Apply approved reference fixes | R01: Group 1 third-date clipping with fallback fonts. R02: enlarged-text access/reflow. R03: unavailable CDN error. R10: stale gap-count comment. Preserve accepted normal appearance; verify conditions in the review. |
-| 3. Apply queued Group 2 changes | Replace Stayed to watch with Likes; retain audience-growth tiles; update Reels label as agreed; add confirmed snapshot subtitle/year dates. Preserve panel/header alignment and fixed sizing; test actual rendered fit. |
-| 4. Verify and document | Exercise relevant widths, states, enlarged text, keyboard/dialogs and no-overflow conditions. Record evidence and limits, update specs/report resolution notes and commit. |
+| 2. Apply approved reference fixes | Completed and browser-verified. R01: Group 1 third-date clipping with fallback fonts. R02: enlarged-text access/reflow. R03: unavailable CDN error. R10: stale gap-count comment. Preserve accepted normal appearance; verify conditions in the review. |
+| 3. Apply Group 2 changes | Completed and browser-verified. Replace Stayed to watch with Likes; retain audience-growth tiles; update Reels label as agreed; add confirmed snapshot subtitle/year dates. Preserve panel/header alignment and fixed sizing; test actual rendered fit. |
+| 4. Verify and document | Completed; evidence linked above. Exercise relevant widths, states, enlarged text, keyboard/dialogs and no-overflow conditions. Record evidence and limits, update specs/report resolution notes and commit. |
 | 5. Scope a small YouTube import | Present concrete test scope to CJ, verify authorised access and compare a sample’s source, period and definitions with Studio. No new account/test setup has been authorised yet. |
 | 6. Validate TikTok/Reels | Check account eligibility, follower attribution, watch metrics, activity-window support and snapshot freshness. Revise feasibility evidence, not product choices silently. |
 | 7. Choose automation | After useful imports work, agree scheduler/hosting, notification delivery and retries. Assess Activepieces only if it saves work. |
@@ -50,3 +50,4 @@ Explain purpose, problems and recommendations plainly. Ask one consequential uns
 ## Sources
 
 [File index](README.md) · [Review findings](REPOSITORY-REVIEW.md) · [HTML report](REVIEW.html) · [API feasibility research](ANALYTICS-FEASIBILITY.md). Earlier source/audit material and decision history are provenance; current group documents and confirmed later decisions govern. Reviewed references belong in GemOS, experiments in telemetric-cards-test-suite. No live dashboard connections are implemented.
+

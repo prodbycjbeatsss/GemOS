@@ -257,3 +257,14 @@ At CJ’s request, the dashboard handoff now explains GemOs’s broader purpose,
 **Alternatives considered:** Automatic checks plus explicit manual approval of each asset.
 
 **Owner:** CJ
+
+## 9 October 2026 — Approved dashboard reference fixes implemented
+
+**Decision:** Apply authorised R01–R03/R10 fixes, Shorts Likes/Reels growth labels and snapshot subtitle/year dates. Keep normal slots; allow Group 1 enlarged-text reflow. Mock scheduling uses 19 uploads. Frozen mock snapshots enforce inclusive 24:00–24:15 capture eligibility and expose capture age. Missing-source reasons use the existing target-note slot to preserve Group 2 geometry.
+
+**Why:** Reproduced bugs and browser checks establish the reference behaviour without claiming live imports. Passed 96 Group 1 normal states, eight enlarged-text probes, 64 Group 2 normal states and 32 availability combinations plus keyboard/dialog checks. Native Android, measured contrast and real account sources remain unverified.
+
+**Evidence:** docs/dashboard/verification/2026-10-09.md and committed captures. Keep REVIEW.html as historical evidence. Next scope a YouTube import test for CJ’s approval.
+
+**Owner:** CJ
+

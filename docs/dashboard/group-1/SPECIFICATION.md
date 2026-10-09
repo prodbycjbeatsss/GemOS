@@ -1,6 +1,6 @@
 # Group 1 — visual and interaction specification
 
-Updated 8 October 2026. Finalised visual reference: [preview.html](preview.html). Master rules: [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md). Purpose, data meanings and integrations: [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md).
+Updated 9 October 2026. Finalised visual reference: [preview.html](preview.html). Master rules: [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md). Purpose, data meanings and integrations: [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md).
 
 ## Geometry and material
 
@@ -13,6 +13,7 @@ Updated 8 October 2026. Finalised visual reference: [preview.html](preview.html)
 ## Card 1.1
 
 - Header: Release Buffer, weeks-ahead answer and coverage date/supporting state.
+- Project rows use 50px minimum height, 4px vertical padding/gaps and 1.3/1.4 name/date line heights so fallback fonts fit the normal slots.
 - At most three project rows. Show artist/track, date and status; names can wrap within the fixed slot.
 - Next Up and Scheduled have restrained green badges; In Progress remains neutral. State eligibility is defined in usage notes, not inferred from colour.
 - More than three projects: Show all opens a labelled scrollable dialog; dashboard slot stays fixed.
@@ -31,4 +32,5 @@ Updated 8 October 2026. Finalised visual reference: [preview.html](preview.html)
 
 At normal text size, preserve equal group slots, no card/footer or row clipping, long-name handling and stable empty/overfull states. Verify informational versus interactive affordances, modal focus/dismissal and visible sync result.
 
-The original full specification is retained as [historical provenance](../../../references/dashboard/source/group-1-spec-2026-10-05.md). Its proposals do not silently change this finalised visual reference. Full measured contrast, actual Android scaling/Back and live connections remain unverified. Existing scaling behaviour is reviewed in [repository review](../REPOSITORY-REVIEW.md); fixes require separate code approval.
+The original full specification is retained as [historical provenance](../../../references/dashboard/source/group-1-spec-2026-10-05.md). Its proposals do not silently change this finalised visual reference. Full measured contrast, actual Android scaling/Back and live connections remain unverified. Approved R01–R03/R10 changes are implemented. Enlarged fonts that overflow enable accessible reflow: cards grow, full names/descriptions wrap, checklist parts use one column and footers wrap. Normal font sizes restore fixed slots. See [9 October verification](../verification/2026-10-09.md).
+

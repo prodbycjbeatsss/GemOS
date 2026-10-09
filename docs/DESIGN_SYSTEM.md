@@ -1,6 +1,6 @@
 # GemOs dashboard card design system
 
-Updated 8 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. No visual/code changes are introduced by this document.
+Updated 9 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
 
 Read this first, then the relevant group specification. Confirmed group-specific choices take precedence over general proposals. The audit is advisory. Unreviewed groups must be discussed before implementation.
 
@@ -53,13 +53,15 @@ Status must be expressed in text. Group 1 uses restrained green for confirmed re
 | Group | Normal card slot | Recess behaviour |
 |---|---|---|
 | 1 | 512px at widths ≥360px; 532px at 320–359px | Up to three projects versus all seven checklist parts; panel heights may differ. |
-| 2 | Equal 880px slots, current implementation geometry subject to further visual review | Matching panel heights: 575px below 640px, 583px from 640px; five 72px leaderboard row spaces within a 360px scroll viewport. |
+| 2 | Equal 880px slots, verified normal reference geometry | Matching panel heights: 575px below 640px, 583px from 640px; five 72px leaderboard row spaces within a 360px scroll viewport. |
 
 For a new group, first settle its useful dashboard content, measure its tallest legitimate state, then agree the group height. Do not force it into either existing slot.
 
 ## Verification and unresolved items
 
 Check relevant mobile/desktop widths, long text, platform/state changes, clipping, overlap, focus and footer alignment. Aim for 44px touch targets; visual chips can be smaller with correctly separated hit areas. Contrast acceptance targets remain 4.5:1 normal text, 3:1 large text and meaningful boundaries/focus. Full measured contrast and actual Android scaling/Back verification remain outstanding; this document does not claim compliance has been proved.
+
+[9 October browser verification](dashboard/verification/2026-10-09.md) covers approved changes and explicit limits.
 
 Animation planning is deferred until a working app. Existing reference CSS may contain transitions; those are not a newly approved native motion specification.
 
@@ -70,3 +72,4 @@ Animation planning is deferred until a working app. Existing reference CSS may c
 - [Group 2 specification](dashboard/group-2/SPECIFICATION.md)
 - [Review plan](dashboard/PLAN.md)
 - [Original Group 1 specification](../references/dashboard/source/group-1-spec-2026-10-05.md): provenance; superseded where current specifications record later decisions. Its proposals remain proposals.
+

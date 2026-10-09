@@ -1,6 +1,6 @@
 # Group 1 — release buffer and readiness
 
-Updated 9 October 2026. Visual reference finalised by CJ for this review; live connections are not implemented. Preserve the accepted HTML. Shared design: [master design system](../../DESIGN_SYSTEM.md).
+Updated 9 October 2026. Visual reference finalised by CJ for this review; live connections are not implemented. Preserve the accepted normal visual layout. Shared design: [master design system](../../DESIGN_SYSTEM.md).
 
 ## 1.1 Release Buffer
 
@@ -19,7 +19,7 @@ Updated 9 October 2026. Visual reference finalised by CJ for this review; live c
 | Scheduled times, destination, source clip and platform post IDs | Scheduling records backed by platform/scheduler confirmation | No integration tested. A requested schedule is not proof of acceptance or publication. |
 | Buffer count, first ready project and coverage date | GemOs calculations from verified records | Agreed behaviour; example records only in HTML. |
 
-Required platform set confirmed by CJ on 8 October 2026: A covered release week requires confirmed scheduling for one main YouTube video plus six Tuesday–Sunday source shorts on each of YouTube Shorts, TikTok and Instagram Reels: 19 platform uploads in total. All required destinations must qualify before the week counts towards the release buffer. Planned uploads, reminder-only tasks and submitted scheduling requests without acceptance confirmation do not qualify. One source short reused across platforms is three platform uploads. Real scheduling support and confirmation records remain untested; this decision defines the requirement, not a working connection. A failed refresh must preserve last-known records with visible freshness; stale-data trust thresholds remain unsettled. This preview does not publish anything.
+Required platform set confirmed by CJ on 8 October 2026: A covered release week requires confirmed scheduling for one main YouTube video plus six Tuesday–Sunday source shorts on each of YouTube Shorts, TikTok and Instagram Reels: 19 platform uploads in total. All required destinations must qualify before the week counts towards the release buffer. Planned uploads, reminder-only tasks and submitted scheduling requests without acceptance confirmation do not qualify. One source short reused across platforms is three platform uploads. Real scheduling support and confirmation records remain untested; this decision defines the requirement, not a working connection. A failed refresh must preserve last-known records with visible freshness; stale-data trust thresholds remain unsettled. The mock preview now uses 19 destination records and matching source IDs, including Monday main and Tuesday–Sunday shorts; its confirmation flags are illustrative. This preview does not publish anything.
 
 ## 1.2 Pre Release Checklist
 
@@ -57,3 +57,4 @@ An FLP is not one of the seven visible parts and must not be assumed final just 
 The existing standalone HTML is a design reference with examples, not a functioning release manager or Drive integration. Google Drive detection/matching, authoritative release store, stale-data threshold and upload failure handling must be decided before live implementation.
 
 Group 1's accepted visual layout does not need redesign to document these connections. Use [the plan](../PLAN.md) for review order and [API feasibility](../ANALYTICS-FEASIBILITY.md) for research limitations.
+

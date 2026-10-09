@@ -1,6 +1,6 @@
 # GemOs repository review
 
-**Follow-up:** CJ approved R01–R03 and R10 on 8 October; fixes are pending implementation. Subsequent metric, capture and notification decisions are recorded in [HANDOFF.md](HANDOFF.md) and current group usage notes. The findings below preserve the original dated review, including then-open decisions.
+**Follow-up 9 October:** R01–R03/R10 fixes and R08 snapshot wording/eligibility are implemented and browser-verified. [Current evidence and captures](verification/2026-10-09.md). R09 remains a live-import evidence gap. Subsequent metric, capture and notification decisions are recorded in [HANDOFF.md](HANDOFF.md) and current group usage notes. The findings below preserve the original dated review, including then-open decisions.
 
 8 October 2026. Reviewed baseline: aba3760997cd858d2fb318e96bf569d814ac1900. Reorganisation and documentation corrections are included in this change; the two card previews remain unchanged. This is a reference review, not a production release approval.
 
@@ -8,7 +8,7 @@
 
 ## R01 — Group 1 can cut off the third project date
 
-- Status: Needs approval; Confirmed in the existing preview.
+- Current status: Fixed in reference, 9 October; original baseline finding below.
 - Priority: Medium.
 - Impact: When the web font cannot load, the third project date extends below the recessed panel at mobile widths and at the desktop breakpoint. You can lose useful scheduling information.
 - Evidence / reproduction: Open the ready state with three projects, block remote fonts, and inspect widths 320, 390 and 840 CSS pixels. At 390 the date bottom is 710.47px while the panel ends at 708.5px; at 840 it extends about 13px below the panel. The normal 1280px desktop test fits.
@@ -18,7 +18,7 @@
 
 ## R02 — Group 1 loses content when text is enlarged
 
-- Status: Needs approval; Confirmed in a controlled browser probe.
+- Current status: Fixed in reference, 9 October; original controlled browser finding below.
 - Priority: Medium.
 - Impact: The fixed panels hide content when text becomes much larger. This matters for someone who needs larger text to read the dashboard.
 - Evidence / reproduction: At 390 CSS pixels, capture each computed font size and double it once. The project and readiness panel content clips; parts of the checklist disappear. This is a controlled font-size probe, not a native Android font-scaling or browser-zoom test.
@@ -78,7 +78,7 @@
 
 ## R08 — The leaderboard heading needs to reflect snapshot timing
 
-- Status: Open decision / evidence gap; Known open product decision.
+- Current status: Reference wording/eligibility implemented, 9 October; tolerance still provisional pending real imports. Original decision gap below.
 - Priority: Decision.
 - Impact: “Shorts Views (24hrs)” can sound like an exact first-24-hour total, while the agreed approach captures a count around that point.
 - Evidence / reproduction: The preview retains the approved earlier heading. The newer snapshot approach records capture time, but its tolerance and honest final label are unsettled.
@@ -98,7 +98,7 @@
 
 ## R10 — A schedule comment describes the opposite of the actual rule
 
-- Status: Needs approval; Confirmed in the existing source.
+- Current status: Fixed in reference, 9 October; original baseline finding below.
 - Priority: Low.
 - Impact: A future developer could follow the stale comment and count scheduled weeks beyond a gap, weakening the agreed buffer rule.
 - Evidence / reproduction: The comment near line 598 says to count beyond gaps; the function near line 664 stops at the first gap. Current behaviour agrees with the usage document.
@@ -131,4 +131,5 @@
 
 ## Next action
 
-CJ reviews and approves any reference-code fixes. Resume the card plan with the YouTube Stayed to watch replacement and source definitions; no live integration or automation is claimed.
+Approved reference fixes and metric/snapshot updates are implemented. Next scope a YouTube import test for CJ’s approval, then validate source periods and attribution. No live integration or automation is claimed.
+

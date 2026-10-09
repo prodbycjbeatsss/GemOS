@@ -1,6 +1,6 @@
 # Group 2 — usage and connections
 
-Updated 8 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). No live imports are implemented.
+Updated 9 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). No live imports are implemented.
 
 ## 2.1 Short-form performance
 
@@ -16,7 +16,7 @@ The All tab uses one shared rolling 28-day date range, ending on the latest date
 
 ### Current metric choices
 
-These are the accepted design choices, still subject to real API validation. CJ approved Likes to replace YouTube Stayed to watch on 8 October; CJ subsequently confirmed audience-growth tiles across all platforms: Subscribers gained for Shorts and Followers gained for TikTok/Reels. This supersedes the TikTok Comments replacement. Unsupported imports show unavailable; there is no automatic replacement. Preview updates are queued until remaining decisions are settled.
+These are the accepted design choices, still subject to real API validation. CJ approved Likes to replace YouTube Stayed to watch on 8 October; CJ subsequently confirmed audience-growth tiles across all platforms: Subscribers gained for Shorts and Followers gained for TikTok/Reels. This supersedes the TikTok Comments replacement. Unsupported imports show unavailable; there is no automatic replacement. Preview updates are implemented; Shorts Likes uses an illustrative 4,200 count, not imported data.
 
 | Selection | Four tiles |
 |---|---|
@@ -49,7 +49,7 @@ Purpose: compare individual platform uploads within a release batch. All ranks u
 - Capture a cumulative view snapshot around each upload's 24-hour mark; record actual publication/capture times, source and completeness, then freeze it.
 - Rank only once the upload is at least 24 hours old and a valid snapshot has been imported. Missed captures remain unranked. A later lifetime total cannot replace a missed snapshot under a 24-hour label.
 - Newer uploads remain below ranked rows, muted but readable, with age/live count. Completed uploads awaiting a usable snapshot also stay unranked.
-- Provisional capture window approved on 8 October: aim for publication +24 hours; accept a usable capture from 24:00 through 24:15 inclusive. Validate with real imports before locking this tolerance. If failures are too frequent, review widening it with CJ; never widen silently. Heading and subtitle confirmed: Shorts Views (24hrs), then Snapshot taken at 24h · up to 15 min later, then the selected batch date range with year (example: 6–11 October 2026). Actual capture age appears in clip details. The preview update is queued; example counts do not prove exact data capture.
+- Provisional capture window approved on 8 October: aim for publication +24 hours; accept a usable capture from 24:00 through 24:15 inclusive. Validate with real imports before locking this tolerance. If failures are too frequent, review widening it with CJ; never widen silently. Heading and subtitle confirmed: Shorts Views (24hrs), then Snapshot taken at 24h · up to 15 min later, then the selected batch date range with year (example: 6–11 October 2026). Actual capture age appears in clip details. The preview update is implemented with stored illustrative capture timestamps and inclusive-window eligibility; example counts do not prove real capture.
 - Bars compare captured views with the selected-tab leader. No bar for unranked uploads; no rank-change or algorithm-causation claims.
 
 A backend scheduler is intended for dependable captures. Activepieces is optional, only if it saves work; custom scheduler and hosting are undecided. Test a small real import before building the full scheduler.
@@ -70,4 +70,5 @@ Example views: 92,400 / 54,600 / 26,800 = 173,800; shares 1,260 / 840 / 420 = 2,
 
 ## Next decisions
 
-YouTube Likes replacement is approved. Audience-growth tiles are confirmed across platforms; verify clip-attributed follower reporting, period coverage and aggregation. Snapshot tolerance is provisionally 24:00–24:15, heading/subtitle and partial Monday review are confirmed. Verify account types and real API access. See [PLAN.md](../PLAN.md) and [HANDOFF.md](../HANDOFF.md) for approved fixes, queued changes and unresolved work. CJ approved the listed fixes; clarify only new or unsettled choices.
+YouTube Likes replacement is approved. Audience-growth tiles are confirmed across platforms; verify clip-attributed follower reporting, period coverage and aggregation. Snapshot tolerance is provisionally 24:00–24:15, heading/subtitle and partial Monday review are confirmed. Verify account types and real API access. See [PLAN.md](../PLAN.md) and [HANDOFF.md](../HANDOFF.md) for approved fixes, implemented reference changes, verification evidence and unresolved integration work. CJ approved the listed fixes; clarify only new or unsettled choices.
+
