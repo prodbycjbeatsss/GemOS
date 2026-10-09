@@ -38,6 +38,8 @@ See [design system](DESIGN_SYSTEM.md) and [Group 2 components](dashboard/group-2
 | Recess inset | --g1-recess-inset: 12px / 14px from 640px |
 | Dialog fill/border | --g1-modal-fill: 155deg #0369a1 to #0f172a; --g1-modal-border: white 0.16 |
 | Shared group measurements | --g1-header-height, --g1-recess-height, --g1-footer-height, --g1-slot-height: largest required geometry across both cards; minimum 512px / 532px below 360px |
-| Asset grid | Two columns; 78px minimum row; 6px gap; wrapped category/status text; Shorts spans both columns |
+| Asset grid | Two columns; 64px minimum row; 6px gap; 10px tile inset; 22px outline icon in 24px slot; 12px tile radius; wrapped category/status text; Shorts spans both columns |
 
 These implement CJ’s approved integration alignment; they do not recolour Group 2. The new group measurement reserves identical header/recess/footer geometry rather than independently expanding cards. Measured contract tests are separate from pending rendered acceptance.
+
+Checklist semantic roles: --g1-asset-fill white .045; --g1-asset-border white .10; --g1-state-ready #a7f3d0; --g1-state-missing #fecdd3; --g1-state-attention #fde68a; --g1-state-unchecked #cbd5e1. Status has wording and a symbol, never colour alone.

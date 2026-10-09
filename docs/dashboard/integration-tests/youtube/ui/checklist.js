@@ -9,18 +9,20 @@ import { groupGeometry } from '/checklist-layout.js';
     const r = await fetch('/api/youtube/' + action, { method: body ? 'POST' : 'GET', headers: body ? {'Content-Type':'application/json'} : {}, ...(body ? {body:JSON.stringify(body)} : {}), cache:'no-store',signal:AbortSignal.timeout(120000)});
     const data = await r.json();if(!r.ok)throw new Error(data.error || 'Unable to check files.');return data;
   }
+  const stateLabel = state => ({Pass:'Ready',Missing:'Missing','Needs confirmation':'Needs attention'})[state] || 'Not checked';
   function render() {
     if(!result)return;
     const title = releaseTitle(result);
     $('checklist-project-title').textContent=displayTitle(title);
     $('checklist-project-title').title=title;
     $('checklist-project-title').setAttribute('aria-label',title);
-    $('checklist-subtitle').textContent=`${result.ready}/7 Files Ready`;
+    $('checklist-subtitle').textContent=`${result.ready}/7 ready`;
     $('drive-sync-status').textContent='Checked '+new Date(result.checkedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
     document.querySelectorAll('[data-asset-index]').forEach((row,i)=>{
       const a=result.assets[i];row.dataset.state=a.state;
-      row.querySelector('.asset-icon').textContent=a.state==='Pass'?'✓':a.state==='Missing'?'!':'?';
-      row.querySelector('.asset-status').textContent=a.role==='shorts'&&a.state!=='Needs confirmation'?`${a.count}/6 ${a.state==='Pass'?'Ready':'Missing'}`:a.state;
+      const status=row.querySelector('.asset-status');
+      status.dataset.symbol=a.state==='Pass'?'✓':a.state==='Missing'?'−':a.state==='Needs confirmation'?'!':'—';
+      status.textContent=stateLabel(a.state)+(a.role==='shorts'&&a.state==='Missing'&&a.count>0?' · '+a.count+'/6':'');
     });
     message(result.ready===7?'All required asset categories qualify. Publishing is not connected.':'Scan complete. Missing or unresolved assets prevent readiness; publishing is not connected.');
     requestAnimationFrame(reflow);
@@ -37,12 +39,12 @@ import { groupGeometry } from '/checklist-layout.js';
     if(!result){host.textContent='Scan a project folder first.';return;}
     const heading=document.createElement('h3');heading.className='details-release-name';heading.textContent=releaseTitle(result);
     const overview=document.createElement('div');overview.className='details-overview';
-    const count=document.createElement('strong');count.textContent=`${result.ready}/7 Files Ready`;
+    const count=document.createElement('strong');count.textContent=`${result.ready}/7 ready`;
     const checked=document.createElement('p');checked.textContent='Last checked '+new Date(result.checkedAt).toLocaleString('en-GB');overview.append(count,checked);
     const folder=document.createElement('details');folder.className='details-folder';const folderLabel=document.createElement('summary');folderLabel.textContent='Original project folder name';const folderName=document.createElement('p');folderName.textContent=result.projectName;folder.append(folderLabel,folderName);
     host.append(heading,overview,folder);
     for(const a of result.assets){
-      const section=document.createElement('section'),line=document.createElement('div'),title=document.createElement('h3'),badge=document.createElement('span'),note=document.createElement('p');section.className='details-asset';section.dataset.state=a.state;line.className='details-asset-heading';title.textContent=a.label;badge.className='details-badge';badge.textContent=a.role==='shorts'?`${a.count}/6 · ${a.state}`:a.state;note.className='details-reason';note.textContent=a.reason;line.append(title,badge);section.append(line,note);
+      const section=document.createElement('section'),line=document.createElement('div'),title=document.createElement('h3'),badge=document.createElement('span'),note=document.createElement('p');section.className='details-asset';section.dataset.state=a.state;line.className='details-asset-heading';title.textContent=a.label;badge.className='details-badge';badge.textContent=a.role==='shorts'?`${a.count}/6 · ${stateLabel(a.state)}`:stateLabel(a.state);note.className='details-reason';note.textContent=a.reason;line.append(title,badge);section.append(line,note);
       if(a.files.length){const list=document.createElement('ul');list.className='details-file-list';for(const f of a.files){const li=document.createElement('li');li.textContent=f.name;list.append(li);}section.append(list);}
       if(a.state==='Needs confirmation'&&a.candidates.length){
         const selects=[];

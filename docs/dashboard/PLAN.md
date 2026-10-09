@@ -138,3 +138,6 @@ verify-layout.mjs passes across 128 combinations of long header/panel/footer dim
 
 
 10 October follow-up: repair the screenshot-confirmed Group 1 regression with explicit full-width stretched grid columns and card-scoped natural-height measurement overrides. Geometry/title/build checks pass; refreshed desktop/mobile alignment still needs rendered verification. See the current ASSETS.md checkpoint.
+
+
+10 October checklist redesign: use compact outlined file icons with one category/format label and Ready/Missing/Needs attention status; no duplicate format subtitles or whole-tile status washes. Two-column, 64px minimum tiles; shared pair geometry remains. Details hold filenames and confirmation. Private integration implemented; rendered acceptance pending. See ASSETS.md and DESIGN_TOKENS.md.

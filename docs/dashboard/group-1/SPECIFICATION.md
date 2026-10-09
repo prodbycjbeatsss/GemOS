@@ -59,3 +59,12 @@ verify-layout.mjs passes across 128 combinations of long header/panel/footer dim
 
 
 10 October follow-up: repair the screenshot-confirmed Group 1 regression with explicit full-width stretched grid columns and card-scoped natural-height measurement overrides. Geometry/title/build checks pass; refreshed desktop/mobile alignment still needs rendered verification. See the current ASSETS.md checkpoint.
+
+
+## 10 October 2026 — compact file checklist redesign
+
+CJ authorised a direct redesign within the accepted system, keeping only useful card information and allowing review afterwards. The private checklist now uses two columns of quiet 12px-radius file tiles: one 22px outline icon in a 24px slot, one category/format label and a compact status. Removed duplicate format subtitles, full-tile missing/ready colour washes and the separate bottom-right status position. Seven categories remain; Shorts ×6 spans the full row. Minimum tile height is 64px, gap 6px and padding 10px. The title remains track-only and capped; the summary is “n/7 ready”.
+
+UI status vocabulary: Ready (backend Pass), Missing, Needs attention (backend Needs confirmation), Not checked before a result. Status wording plus a small check/minus/exclamation/dash distinguishes states without colour alone. Needs attention requires association review in Release details and cannot count as ready. Partial missing Shorts retain n/6 when nonzero; filenames, candidate selection, reasons, timestamps and full metadata remain in Release details. No scanner rules changed.
+
+Shared card/recess/header/footer geometry, responsive breakpoint, blue/glass materials, Inter/Poppins, colours and radii remain. The smaller checklist can reduce the pair’s natural height without independent card sizing. JS syntax, existing geometry/title checks and production build pass. Browser-rendered mobile/desktop appearance and acceptance remain unverified. This is the live integration redesign; the original approved preview remains historical reference.
