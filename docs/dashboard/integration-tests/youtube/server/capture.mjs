@@ -82,7 +82,9 @@ export async function captureHandler(request, env, action) {
         try { await captureRelease(env, row.user_id, row.channel_id); } catch { failures++; }
         const after = await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id = ? AND channel_id = ?').bind(row.user_id, row.channel_id).first(); captured += after.n - before.n;
       }
-      const scheduled = request.headers.get('X-CloudScheduler-JobName')?.endsWith('/jobs/gemos-youtube-capture') === true;
+      // Cloud Scheduler can send the short job ID or the full resource name.
+      const jobName = request.headers.get('X-CloudScheduler-JobName');
+      const scheduled = jobName === 'gemos-youtube-capture' || /^projects\/[^/]+\/locations\/[^/]+\/jobs\/gemos-youtube-capture$/.test(jobName || '');
       await env.DB.prepare('INSERT INTO youtube_capture_runs (id, started_at, finished_at, captured, outcome) VALUES (?, ?, ?, ?, ?)').bind(crypto.randomUUID(), started, Date.now(), captured, failures ? 'error' : scheduled ? 'scheduled' : 'manual-service-check').run();
       await env.DB.prepare('DELETE FROM youtube_capture_runs WHERE finished_at < ?').bind(Date.now() - 30*86400000).run();
       return response({ checked: rows.results.length, captured, failures }, failures ? 503 : 200);

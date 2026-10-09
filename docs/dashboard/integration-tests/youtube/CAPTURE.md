@@ -23,4 +23,8 @@ Run the job once and verify a successful execution and saved last-run status bef
 Verification: node verify-capture.mjs, node verify-backend.mjs, node verify-state.cjs, supported production build. Fixtures are synthetic. Live first-window capture requires a newly published qualifying Short; old releases cannot prove it.
 
 
-Hosted verification on 9 October: protected service POST succeeded and GET read back its persisted manual-service-check run; zero release selections existed, so no real view count was captured. Owner-only scheduler configuration is enabled in runtime. The private deployment succeeded at environment revision 4. Source commit: 44732262b69f09c83af4c6b0ffd53d18c0b4fc8b. No Google Cloud job has been created. Import the release once to save it in the new store. Real scheduled/source capture remains unverified.
+## Completion checkpoint — 9 October
+
+CJ accepts 2.2 implementation as complete, with real first-release snapshot and displayed ranking unverified. Google Scheduler endpoint calls and persisted scheduled classification are verified, including a post-fix run at 20:05 UK; CJ reports the updated sync status. First release check: import a public owned Short before 24h, retain the selection through 24h15m, confirm a stored qualifying count, matching source/timestamps, displayed views/rank, and persistence after refresh. Do not fabricate historical first-day values or describe synthetic checks as live capture proof. Historical release reporting and automatically advancing 2.1 dates are separate proposals, not implemented.
+
+Leaderboard vertical scrolling now uses native scroll chaining: short lists pass gestures to the page; overflowing lists scroll internally and pass scrolling to the page at either end. The 360px list and 575/583px recess dimensions remain. Rendered Android scrolling still needs user verification; no browser QA was available.

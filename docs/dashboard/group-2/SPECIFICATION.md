@@ -95,3 +95,8 @@ CJ finalised the current importer design on 9 October; [STATUS.md](../integratio
 ### 9 October — current integration capture slice
 
 The separate private test now has server-saved selections, immutable qualifying view snapshots and competition rankings, using the shared Google connection. Zero is valid and missed windows remain unavailable. Five-minute Google Cloud Scheduler setup is prepared but not connected. No relative bars or wider platform integrations were added. See [current test status](../integration-tests/youtube/STATUS.md) and [capture contract](../integration-tests/youtube/CAPTURE.md). Earlier infrastructure statements describe the reference-stage proposal.
+
+
+### 9 October — accepted test completion checkpoint
+
+CJ accepts 2.2 implementation complete, with real first-release capture/display unverified. The Google job and persisted scheduled classification are verified. In the private integration test, vertical leaderboard swipes chain to the page when rows fit or either end is reached; internal overflow scrolling and fixed dimensions remain. Android gesture verification is pending. No canonical reference HTML changes or historical reporting mode were added. STATUS.md holds the first-release checklist.

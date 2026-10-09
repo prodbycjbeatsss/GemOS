@@ -339,3 +339,13 @@ CJ authorised upgrading the existing Google connection. The private test now has
 ### 9 October — authorised saved release capture and ranking
 
 CJ authorised the next 2.2 slice after saved shared access was reported restored. Persist one current 1–6-Short release per owner/channel and freeze the first owned public cumulative Data API count whose request and response both lie in the inclusive 24h–24h15m window. Zero ranks; unavailable counts never become zero; ties share competition ranks. Preserve 2.1 and established recess geometry. The hourly built-in runner cannot meet this window: prepare an authenticated five-minute Google Cloud Scheduler job in the existing project. No billing action or external job creation is performed without the user's setup. Automatic capture remains unverified until a successful real job run. Never backfill old counts. CAPTURE.md records the contract and synthetic verification.
+
+
+### 9 October — live Scheduler success and short job-name fix
+
+CJ created the five-minute Google Cloud Scheduler job through the browser console and reported Success. Production logs independently show Google-Cloud-Scheduler POST requests reaching /api/youtube/run-captures with HTTP 200 at 19:55 and 20:00 UK. The run records persisted but were wrongly classified as manual-service-check: Google supplied the short job ID, while the original check expected a full resource path. The status check now accepts the exact short ID or exact full projects/locations/jobs form. Synthetic regressions cover both forms, unknown jobs and missing headers. Existing credentials, schedule, capture window and frozen counts are unchanged. A successful scheduler run does not prove a real qualifying Short was captured. Await a fresh post-fix run before declaring corrected UI status verified.
+
+
+### 9 October — completion status and scroll chaining
+
+CJ accepted 2.2 implementation complete with real view capture/display unverified until the first release, then authorised the scrolling fix and GitHub update in response to the pending main-branch save request. Replace vertical overscroll containment with native auto chaining in the private test: scroll the page when rows fit or the list is at either boundary, while retaining internal scrolling for overflow and the accepted fixed dimensions. Checker runs and post-fix scheduled classification are verified; real qualifying view data is not. Retain the existing Google connection and scheduler. Historical release reporting and automatically moving 2.1 dates are not included in this completion scope.

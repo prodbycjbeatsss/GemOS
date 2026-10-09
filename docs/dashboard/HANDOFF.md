@@ -2,7 +2,7 @@
 
 ## 9 October 2026 — current integration checkpoint
 
-Saved shared Google access has been reported restored by CJ on Android. The private test now persists selected release links/metadata and frozen qualifying 24h–24h15m cumulative view snapshots, including zero and tied rankings. Synthetic tests and the production build pass. The five-minute Google Cloud Scheduler configuration is prepared, but no Google job or real scheduled capture has been verified. Manual Sync can capture within the window; old counts cannot backfill it. See [current decisions](integration-tests/youtube/STATUS.md) and [capture setup](integration-tests/youtube/CAPTURE.md). Current rendering and real token renewal remain unverified. Canonical previews are unchanged.
+CJ accepted 2.2 implementation as complete, with real first-release view capture and displayed ranking unverified. Both cards share saved read-only Google access. The five-minute checker reaches the endpoint, persists runs, and its short job-name classification fix is verified by a scheduled record at 20:05 UK plus CJ's changed sync message. Release selections and qualifying snapshots persist. The leaderboard scrolling fix now lets gestures pass into the page when rows fit or the list reaches either end, preserving normal recess/list dimensions; Android swipe verification is pending. See [STATUS](integration-tests/youtube/STATUS.md) and [CAPTURE](integration-tests/youtube/CAPTURE.md). Next: first-release verification; no need for an extra test upload. 2.1 remains working, with automatic date advancement and historical release reporting separate proposals. Canonical previews remain unchanged.
 
 Updated 9 October 2026 · Repository: [prodbycjbeatsss/GemOS](https://github.com/prodbycjbeatsss/GemOS) · Branch: main.
 
@@ -151,3 +151,6 @@ CJ authorised upgrading the existing Google connection. The private test now has
 ### 9 October — runtime credentials applied
 
 CJ supplied the existing Web OAuth client details and reports adding the authorised callback URL. Client ID and client secret were configured using native Sites runtime tools; the client secret is marked secret. The existing encryption key was retained. Redeployment of the existing private version succeeded with the new environment revision. No credential values or uploaded file contents were added to the repository. Next: CJ opens the same test page, approves Connect YouTube once and verifies restoration after refresh. Real Google callback/token writes and refresh are still unverified; automatic snapshot capture remains pending.
+
+
+Current scheduler follow-up: successful Google job runs reached the endpoint; the short job-name status check has been fixed and a post-fix scheduled run is verified. See STATUS.md.

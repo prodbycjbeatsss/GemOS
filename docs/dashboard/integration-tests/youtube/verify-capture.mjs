@@ -23,7 +23,11 @@ assert.equal((await invoke('release','POST',{name:'Example',ids:[id],confirmed:t
 assert.equal((await captureHandler(request('release?channel=UC_TEST','GET',null,{'oai-authenticated-user-id':'other'}),env,'release')).status,401);
 assert.equal((await invoke('run-captures','POST',null,{Authorization:'Bearer wrong'})).status,401);
 assert.equal((await captureHandler(request('run-captures','POST',null,{Authorization:'Bearer undefined'}),{...env,YOUTUBE_UPDATER_KEY:undefined},'run-captures')).status,401);
-result=await invoke('run-captures','POST',null,{Authorization:'Bearer FAKE_UPDATER','X-CloudScheduler-JobName':'projects/example/locations/europe-west2/jobs/gemos-youtube-capture'});assert.equal(result.status,200);assert.equal(result.data.captured,0);assert.equal(sql.prepare('SELECT outcome FROM youtube_capture_runs').get().outcome,'scheduled');
+for(const [jobName,expected] of [['projects/example/locations/europe-west2/jobs/gemos-youtube-capture','scheduled'],['gemos-youtube-capture','scheduled'],['other-job','manual-service-check'],['/jobs/gemos-youtube-capture','manual-service-check'],[undefined,'manual-service-check']]){
+ const headers={Authorization:'Bearer FAKE_UPDATER',...(jobName?{'X-CloudScheduler-JobName':jobName}:{})};
+ result=await invoke('run-captures','POST',null,headers);assert.equal(result.status,200);assert.equal(result.data.captured,0);assert.equal(sql.prepare('SELECT outcome FROM youtube_capture_runs ORDER BY rowid DESC LIMIT 1').get().outcome,expected);
+}
+
 // New publication timestamps cannot inherit an earlier snapshot. Private/missing/negative/late values do not rank.
 for(const mode of ['private','missing','negative','late','early','foreign','valid']){
  now=Date.parse('2026-02-02T00:00:00Z');publishedAt=new Date(now-WINDOW_START).toISOString();visibility=mode==='private'?'private':'public';viewCount=mode==='missing'?undefined:mode==='negative'?'-1':'5';latency=mode==='late'?900001:0;channelId=mode==='foreign'?'OTHER':'UC_TEST';if(mode==='early')publishedAt=new Date(now-WINDOW_START+1).toISOString();

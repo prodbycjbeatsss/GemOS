@@ -2,7 +2,7 @@
 
 ## 9 October 2026 — current integration checkpoint
 
-Saved shared Google access has been reported restored by CJ on Android. The private test now persists selected release links/metadata and frozen qualifying 24h–24h15m cumulative view snapshots, including zero and tied rankings. Synthetic tests and the production build pass. The five-minute Google Cloud Scheduler configuration is prepared, but no Google job or real scheduled capture has been verified. Manual Sync can capture within the window; old counts cannot backfill it. See [current decisions](integration-tests/youtube/STATUS.md) and [capture setup](integration-tests/youtube/CAPTURE.md). Current rendering and real token renewal remain unverified. Canonical previews are unchanged.
+CJ accepted 2.2 implementation as complete, with real first-release view capture and displayed ranking unverified. Both cards share saved read-only Google access. The five-minute checker reaches the endpoint, persists runs, and its short job-name classification fix is verified by a scheduled record at 20:05 UK plus CJ's changed sync message. Release selections and qualifying snapshots persist. The leaderboard scrolling fix now lets gestures pass into the page when rows fit or the list reaches either end, preserving normal recess/list dimensions; Android swipe verification is pending. See [STATUS](integration-tests/youtube/STATUS.md) and [CAPTURE](integration-tests/youtube/CAPTURE.md). Next: first-release verification; no need for an extra test upload. 2.1 remains working, with automatic date advancement and historical release reporting separate proposals. Canonical previews remain unchanged.
 
 Updated 9 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This plan tracks the reference-card work and source validation; it is not a production app or deployment plan.
 
@@ -93,3 +93,6 @@ The current 2.1 test is finalised by CJ; [STATUS.md](integration-tests/youtube/S
 ### 9 October — one saved connection for both cards
 
 CJ authorised upgrading the existing Google connection. The private test now has a supported Worker/D1 backend, encrypted per-user token storage, offline OAuth callback, server refresh and a bounded read proxy used by both cards after configuration. The legacy browser connection remains active until setup is complete. Runtime encryption key and callback URI are configured; the existing Web client's ID/secret and authorised callback remain required before real saved access can be enabled. [Backend contract and setup](integration-tests/youtube/BACKEND.md) record exact steps. Synthetic backend/frontend checks and production build pass; live Google, hosted token writes/refresh and rendering are unverified. Google Testing mode limits refresh tokens to seven days. No capture scheduler or view rankings are connected by this upgrade.
+
+
+Current scheduler follow-up: successful Google job runs reached the endpoint; the short job-name status check has been fixed and a post-fix scheduled run is verified. See STATUS.md.
