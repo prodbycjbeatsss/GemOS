@@ -29,3 +29,8 @@ The setup asks for a release name and links. Cards appear side by side on deskto
 Public Shorts under 24 hours show Waiting for 24h, with capture explicitly disconnected. Older Shorts show 24-hour snapshot unavailable. Missing, invalid or future publication times are unavailable; private/unlisted publication is not confirmed because reported metadata may reflect upload time. No qualifying snapshots are stored: today's lifetime counts are never backfilled into first-24-hour results. The inclusive 24h–24h15m capture window and automatic durable capture remain a later implementation step. TikTok/Reels remain unconnected.
 
 Controlled state/request checks pass for three/six Shorts, one-request imports, ownership failures, publication states, literal titles, dialog focus, rejected seven-link/unconfirmed selections, no lifetime backfill and unchanged 2.1 range/cache behaviour. JavaScript syntax and duplicate-ID/structure checks pass. These are synthetic fixtures, not Studio validation. Supported rendered-browser verification is unavailable in this environment; current phone/desktop fitting remains unverified. No private analytics payload is committed.
+
+
+### 9 October — phone feedback: icon spacing and sync meaning
+
+CJ confirmed release metadata displays on Android; the trophy lacked the 12px bottom gap used on 2.1 because a shared glyph rule reset its margin. A scoped 2.2 override restores that gap. Completion now says “Titles loaded · views not connected”; the footer says “Titles loaded” to distinguish this metadata import from view capture. No view counts or rankings have been implemented; first-24-hour capture remains pending. Screenshot evidence identifies the pre-fix spacing issue; the corrected rendering remains unverified in this environment.

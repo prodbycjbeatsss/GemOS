@@ -363,7 +363,7 @@
       });
       if (session !== generation) return;
       batchReport = { source: 'YouTube Data API v3', scope: 'User-confirmed selected release Shorts; not channel-wide', channelId: channel, name, videos, fetchedAt: new Date().toISOString(), capture: 'Not connected. No 24-hour view snapshots are stored.', timezone: 'Europe/London' };
-      renderBatch(); batchStatus('Metadata synced', 'Titles and publication times loaded. 24-hour snapshot capture is not connected.', 'Synced · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB'));
+      renderBatch(); batchStatus('Titles loaded · views not connected', 'Publication times loaded. View counts and rankings need 24-hour snapshot capture, which is not connected yet.', 'Titles loaded · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB'));
     } catch (error) { if (session === generation) batchStatus('Import failed', error.message + (batchReport ? ' Previous release retained.' : ''), 'Sync failed'); }
     finally { if (session === generation) { busy = false; batchLoading = false; controls(); } }
   }

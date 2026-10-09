@@ -136,3 +136,8 @@ CJ approved updating only range-dependent analytics. The importer keeps previous
 ## 2.1 finalised; 2.2 authorised — 9 October 2026
 
 CJ finalised the current 2.1 test and requested saving all choices before adding 2.2. [Current decisions/limits](integration-tests/youtube/STATUS.md) consolidates the approved material, geometry, labels, source semantics, range caching and persistence. Do not reopen those choices or claim outstanding production integrations are complete. CJ authorised 2.2 on the same page with his three same-release Shorts; six is a future planned size, not a required test count. Import metadata/availability only, without invented 24-hour snapshots. Reread AGENTS.md before implementation as CJ requested.
+
+
+### 9 October — phone feedback: icon spacing and sync meaning
+
+CJ confirmed release metadata displays on Android; the trophy lacked the 12px bottom gap used on 2.1 because a shared glyph rule reset its margin. A scoped 2.2 override restores that gap. Completion now says “Titles loaded · views not connected”; the footer says “Titles loaded” to distinguish this metadata import from view capture. No view counts or rankings have been implemented; first-24-hour capture remains pending. Screenshot evidence identifies the pre-fix spacing issue; the corrected rendering remains unverified in this environment.

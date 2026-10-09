@@ -324,3 +324,8 @@ CJ finalised the current 2.1 test choices and requested a saved checkpoint, a fr
 ## 2026-10-09 — 2.1 finalised; 2.2 metadata test added
 
 CJ authorised saving all settled 2.1 choices, rereading AGENTS.md, then adding 2.2 to the same private test. A separate 2.1 documentation checkpoint was committed first. The selected-release test accepts 1–6 actual same-release Shorts; CJ's three-Short batch is valid. Reuse the existing read-only connection, retain the established card material/recess/list geometry, show titles/publication metadata and explicit unranked availability states. No invented uploads or substitution of current/lifetime views for missed first-24-hour snapshots. Capture/storage is a later slice. Current decisions and controlled verification limits: docs/dashboard/integration-tests/youtube/STATUS.md. Canonical preview references remain unchanged.
+
+
+### 9 October — phone feedback: icon spacing and sync meaning
+
+CJ confirmed release metadata displays on Android; the trophy lacked the 12px bottom gap used on 2.1 because a shared glyph rule reset its margin. A scoped 2.2 override restores that gap. Completion now says “Titles loaded · views not connected”; the footer says “Titles loaded” to distinguish this metadata import from view capture. No view counts or rankings have been implemented; first-24-hour capture remains pending. Screenshot evidence identifies the pre-fix spacing issue; the corrected rendering remains unverified in this environment.
