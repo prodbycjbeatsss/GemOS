@@ -1,4 +1,5 @@
 import { releaseTitle, displayTitle } from '/checklist-title.js';
+import { groupGeometry } from '/checklist-layout.js';
 (() => {
   const $ = id => document.getElementById(id);
   let result = null, granted = false, busy = false;
@@ -67,22 +68,44 @@ import { releaseTitle, displayTitle } from '/checklist-title.js';
   $('asset-details').addEventListener('click',()=>{details();$('asset-dialog').showModal();});
   $('asset-close').addEventListener('click',()=>$('asset-dialog').close());
   $('asset-dialog').addEventListener('close',()=>$('asset-details').focus());
+  let layoutQueued=false;
+  const grid=document.querySelector('.section-one-grid');
+  const cards=[...grid.querySelectorAll('.hero-spotlight-card')];
+  cards.forEach(card=>card.querySelector('.dashboard-card-main').nextElementSibling.classList.add('group-card-footer'));
   function reflow(){
-    const grid=document.querySelector('.section-one-grid');
-    grid.classList.remove('text-reflow');grid.style.removeProperty('--paired-card-height');
-    if([...grid.querySelectorAll('.dashboard-card-main,.recessed-dock')].some(el=>el.scrollHeight>el.clientHeight+2)){
-      grid.classList.add('text-reflow');
-      const height=Math.ceil(Math.max(...[...grid.querySelectorAll('.hero-spotlight-card')].map(el=>el.getBoundingClientRect().height)));
-      grid.style.setProperty('--paired-card-height',height+'px');
-    }
+    if(layoutQueued)return;
+    layoutQueued=true;
+    requestAnimationFrame(()=>{
+      grid.classList.remove('text-reflow');grid.style.removeProperty('--paired-card-height');
+      grid.classList.add('g1-measuring');
+      const measurements=cards.map(card=>{
+        const style=getComputedStyle(card),rect=el=>el.getBoundingClientRect().height;
+        return {header:rect(card.querySelector('.group-card-header')),recess:rect(card.querySelector('.recessed-dock')),footer:rect(card.querySelector('.group-card-footer')),insets:parseFloat(style.paddingTop)+parseFloat(style.paddingBottom)+parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth)};
+      });
+      const dimensions=groupGeometry(measurements,innerWidth<360?532:512);
+      for(const [key,value] of Object.entries(dimensions))grid.style.setProperty('--g1-'+(key==='slot'?'slot':key)+'-height',value+'px');
+      grid.classList.remove('g1-measuring');layoutQueued=false;
+    });
   }
   let bufferTrigger=null;
-  function openBufferPreview(trigger,name='Release Buffer preview'){bufferTrigger=trigger;$('buffer-preview-title').textContent=name;$('buffer-preview-dialog').showModal();}
+  function bufferDetails(selectedName){
+    const host=$('buffer-detail-content');host.replaceChildren();
+    const overview=document.createElement('div');overview.className='details-overview';const heading=document.createElement('strong');heading.textContent='Scheduling not connected';const note=document.createElement('p');note.textContent='The three weeks and project statuses on the card are illustrative. Your real buffer is not calculated yet.';overview.append(heading,note);host.append(overview);
+    const section=(title,text)=>{const block=document.createElement('section');block.className='details-asset';const line=document.createElement('div');line.className='details-asset-heading';const h=document.createElement('h3');h.textContent=title;line.append(h);const p=document.createElement('p');p.className='details-reason';p.textContent=text;block.append(line,p);host.append(block);return block;};
+    const rows=[...document.querySelectorAll('[data-buffer-sample]')].filter(row=>!selectedName||row.dataset.bufferSample===selectedName);
+    for(const row of rows){const block=section(row.dataset.bufferSample+' · example',row.querySelector('.buffer-project-date').textContent+' · '+row.querySelector('.buffer-project-badge').textContent+' (illustrative)');const p=document.createElement('p');p.className='details-reason';p.textContent='Required: Monday main YouTube release, then six Tuesday–Sunday clips on YouTube Shorts, TikTok and Instagram Reels.';block.append(p);}
+    section('What counts as a covered week','19 confirmed scheduled uploads: one main YouTube video plus six Shorts on each of the three short-form platforms. Every required destination must qualify.');
+    section('How the buffer is counted','Consecutive covered weeks in Europe/London, stopping at the first gap or unfinished week. Later bookings beyond a gap do not extend uninterrupted coverage.');
+    section('What does not count','Planned dates, submitted requests without acceptance, reminder-only tasks and file readiness alone do not establish scheduling confirmation.');
+    if(result)section('Current asset check · '+releaseTitle(result),`${result.ready}/7 categories ready. This is a separate Drive file check, not confirmation that this release is scheduled.`);
+    section('Next connection needed','Choose and connect the authoritative release records and platform or scheduler confirmation source. Then GemOS can show your real coverage date and next releases.');
+  }
+  function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent=name?name+' · example':'Release Buffer details';bufferDetails(name);$('buffer-preview-dialog').showModal();}
   $('buffer-preview-details').addEventListener('click',event=>openBufferPreview(event.currentTarget));
-  document.querySelectorAll('[data-buffer-sample]').forEach(button=>button.addEventListener('click',()=>openBufferPreview(button,button.dataset.bufferSample+' · example')));
+  document.querySelectorAll('[data-buffer-sample]').forEach(button=>button.addEventListener('click',()=>openBufferPreview(button,button.dataset.bufferSample)));
   $('buffer-preview-close').addEventListener('click',()=>$('buffer-preview-dialog').close());
   $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());
-  new ResizeObserver(reflow).observe(document.documentElement);document.fonts?.ready.then(reflow);
+  const layoutObserver=new ResizeObserver(reflow);cards.forEach(card=>card.querySelectorAll('.group-card-header,.recessed-dock>div,.group-card-footer').forEach(el=>layoutObserver.observe(el)));window.addEventListener('resize',reflow);document.fonts?.ready.then(reflow);reflow();
   (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
     if(data.folderId)$('project-folder').value='https://drive.google.com/drive/folders/'+data.folderId;
     if(data.result){result=data.result;render();$('drive-sync-status').textContent='Saved check · not refreshed';message('Saved results restored. Press Sync to check current files.');}

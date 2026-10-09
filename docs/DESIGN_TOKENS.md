@@ -27,3 +27,17 @@ Inter 400/600/700/800 and Poppins 700/800 are loaded through a Google Fonts styl
 Change shared tokens or component rules rather than patching one card ID. Recess reflow may exceed the normal height for overflowing/enlarged text. Shared translucent materials can look different behind dense metric tiles and a mostly empty list; do not lighten one panel independently to compensate.
 
 See [design system](DESIGN_SYSTEM.md) and [Group 2 components](dashboard/group-2/COMPONENTS.md).
+
+## Group 1 integration tokens — 10 October 2026
+
+| Role | Current private test contract |
+|---|---|
+| Card/recess corners | --g1-card-radius: 32px; --g1-recess-radius: 22px |
+| Group/panel gaps | --g1-group-gap: 20px; --g1-panel-gap: 16px |
+| Card inset | --g1-card-inset: 20px / 24px from 640px |
+| Recess inset | --g1-recess-inset: 12px / 14px from 640px |
+| Dialog fill/border | --g1-modal-fill: 155deg #0369a1 to #0f172a; --g1-modal-border: white 0.16 |
+| Shared group measurements | --g1-header-height, --g1-recess-height, --g1-footer-height, --g1-slot-height: largest required geometry across both cards; minimum 512px / 532px below 360px |
+| Asset grid | Two columns; 78px minimum row; 6px gap; wrapped category/status text; Shorts spans both columns |
+
+These implement CJ’s approved integration alignment; they do not recolour Group 2. The new group measurement reserves identical header/recess/footer geometry rather than independently expanding cards. Measured contract tests are separate from pending rendered acceptance.

@@ -290,13 +290,51 @@
 #asset-dialog :is(button,select,summary):focus-visible{outline:2px solid #7dd3fc;outline-offset:3px}
 @media(max-width:359px){.details-dialog-header{padding:16px}.details-asset-heading{flex-wrap:wrap}#asset-detail-content{padding:16px}}
 .section-one-grid.text-reflow #checklist-project-title{display:block;-webkit-line-clamp:unset;max-height:none;overflow:visible}
-</style><style>.test-shell{max-width:960px}.scan-setup{max-width:480px;margin-inline:auto}.group-source-note{font-size:12px;line-height:1.5;color:#cbd5e1;margin:0 0 16px}.test-shell .section-one-grid{grid-template-columns:minmax(0,1fr);align-items:stretch}.section-one-grid.text-reflow #card-release-buffer,.section-one-grid.text-reflow #card-prerelease-checklist{min-height:var(--paired-card-height,var(--section-one-card-height))}#card-release-buffer #buffer-metric-val{font-size:24px;line-height:1.25}#card-release-buffer .buffer-project-date{font-size:11px}#buffer-preview-dialog{border:1px solid #ffffff29;background:linear-gradient(155deg,#0369a1,#0f172a);box-shadow:0 24px 48px -12px #0008;border-radius:32px}#buffer-preview-dialog h2{font-family:Poppins,sans-serif;font-size:20px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}#buffer-preview-dialog p{color:#d5e7f5;line-height:1.6}#buffer-preview-dialog button{min-height:44px;font-size:12px}#card-release-buffer .buffer-project-badge{font-size:10px}@media(min-width:640px){#card-release-buffer #buffer-metric-val{font-size:30px}}@media(min-width:840px){.test-shell .section-one-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}</style></head><body><main class="test-shell"><section class="scan-setup" aria-label="Read-only file scan"><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>This checks synced Drive files. It does not upload, schedule or publish.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="https://drive.google.com/drive/folders/…"><p>Enable Google Drive API in the existing Google Cloud project before granting Drive metadata access.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><p class="group-source-note">Release Buffer: example data · Checklist: your Drive scan</p><div class="section-one-grid"><div id="card-release-buffer"
+</style><style>.test-shell{max-width:960px}.scan-setup{max-width:480px;margin-inline:auto}.group-source-note{font-size:12px;line-height:1.5;color:#cbd5e1;margin:0 0 16px}.test-shell .section-one-grid{grid-template-columns:minmax(0,1fr);align-items:stretch}.section-one-grid.text-reflow #card-release-buffer,.section-one-grid.text-reflow #card-prerelease-checklist{min-height:var(--paired-card-height,var(--section-one-card-height))}#card-release-buffer #buffer-metric-val{font-size:24px;line-height:1.25}#card-release-buffer .buffer-project-date{font-size:11px}#buffer-preview-dialog{border:1px solid #ffffff29;background:linear-gradient(155deg,#0369a1,#0f172a);box-shadow:0 24px 48px -12px #0008;border-radius:32px}#buffer-preview-dialog h2{font-family:Poppins,sans-serif;font-size:20px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}#buffer-preview-dialog p{color:#d5e7f5;line-height:1.6}#buffer-preview-dialog button{min-height:44px;font-size:12px}#card-release-buffer .buffer-project-badge{font-size:10px}@media(min-width:640px){#card-release-buffer #buffer-metric-val{font-size:30px}}@media(min-width:840px){.test-shell .section-one-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}</style><style>
+/* Shared Group 1 geometry; data states cannot independently size a card. */
+:root{--g1-card-radius:32px;--g1-recess-radius:22px;--g1-group-gap:20px;--g1-panel-gap:16px;--g1-recess-inset:12px;--g1-card-inset:20px;--g1-modal-fill:linear-gradient(155deg,#0369a1 0%,#0f172a 100%);--g1-modal-border:rgba(255,255,255,.16)}
+.section-one-grid{--g1-header-height:180px;--g1-recess-height:340px;--g1-footer-height:56px;--g1-slot-height:650px;gap:var(--g1-group-gap)}
+.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist){height:var(--g1-slot-height);min-height:var(--g1-slot-height);display:grid;grid-template-rows:calc(var(--g1-header-height) + var(--g1-recess-height) + var(--g1-panel-gap)) var(--g1-footer-height);gap:16px;padding:var(--g1-card-inset);border-radius:var(--g1-card-radius)}
+.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist) .dashboard-card-main{display:grid;grid-template-rows:var(--g1-header-height) var(--g1-recess-height);gap:var(--g1-panel-gap);overflow:visible;min-height:0}
+.group-card-header{min-width:0;align-self:start}
+.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist) .recessed-dock{margin:0;height:100%;padding:var(--g1-recess-inset);overflow:visible;border-radius:var(--g1-recess-radius)}
+.group-card-footer{margin:0!important;min-height:52px;height:100%;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.group-card-footer .release-details-link{max-width:47%;line-height:1.4;white-space:normal;flex-shrink:0}
+.group-card-footer .drive-sync-footer{flex:1;min-width:0;flex-wrap:wrap;gap:4px 8px}
+#card-release-buffer .group-card-footer{justify-content:flex-end}
+#selector-pills-container{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(78px,auto);gap:6px}
+#selector-pills-container>div{display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:6px;padding:8px;min-width:0;min-height:78px}
+#selector-pills-container>div>div{flex:0;align-items:flex-start;min-width:0;gap:6px}
+#selector-pills-container .asset-icon{margin-top:1px;flex-shrink:0}
+#selector-pills-container .asset-status{max-width:100%;align-self:flex-end;font-size:10px;line-height:1.4;min-height:28px;display:flex;align-items:flex-end;white-space:normal;overflow-wrap:anywhere;text-align:right}
+#selector-pills-container [data-asset-index='6']{grid-column:1/-1}
+.section-one-grid.text-reflow #selector-pills-container{grid-template-columns:repeat(2,minmax(0,1fr))}
+.section-one-grid.text-reflow #selector-pills-container>div{grid-column:auto;flex-wrap:nowrap}
+.section-one-grid.text-reflow #selector-pills-container [data-asset-index='6']{grid-column:1/-1}
+.section-one-grid.text-reflow #checklist-project-title{display:-webkit-box;-webkit-line-clamp:2;max-height:2.5em;overflow:hidden}
+.section-one-grid.g1-measuring :is(#card-release-buffer,#card-prerelease-checklist){height:auto;min-height:0;grid-template-rows:auto auto}
+.section-one-grid.g1-measuring :is(#card-release-buffer,#card-prerelease-checklist) .dashboard-card-main{grid-template-rows:auto auto}
+.section-one-grid.g1-measuring .recessed-dock,.section-one-grid.g1-measuring .group-card-footer{height:auto}
+/* Matching modal materials, typography, insets, close control and content rows. */
+:is(#asset-dialog,#buffer-preview-dialog){padding:0;border:1px solid var(--g1-modal-border);background:var(--g1-modal-fill);box-shadow:0 24px 48px -12px #0008,inset 0 1.5px 1px #ffffff40;border-radius:var(--g1-card-radius);max-width:560px;width:calc(100% - 32px);max-height:85vh;font-family:Inter,system-ui,sans-serif}
+:is(#asset-dialog,#buffer-preview-dialog) .details-dialog-header{position:static;padding:24px 24px 0;background:transparent;border:0;backdrop-filter:none;display:block}
+:is(#asset-dialog,#buffer-preview-dialog) .details-dialog-header h2{font-family:Poppins,system-ui,sans-serif;font-size:20px;line-height:1.4;font-weight:800;overflow-wrap:anywhere;margin:0}
+:is(#asset-detail-content,#buffer-detail-content){padding:20px 24px 12px}
+.details-dialog-footer{padding:0 24px 24px}
+:is(#asset-close,#buffer-preview-close){width:auto;height:auto;min-height:44px;min-width:80px;font-family:Inter,system-ui,sans-serif;font-size:12px;font-weight:600;padding:10px 16px;border-radius:12px;margin:0;background:#ffffff14;border:1px solid #ffffff40}
+:is(#asset-dialog,#buffer-preview-dialog) .details-asset{margin:10px 0;padding:14px;background:#ffffff0a;border:1px solid var(--g1-modal-border);border-radius:16px}
+:is(#asset-dialog,#buffer-preview-dialog) .details-asset-heading h3{font-size:13px;font-family:Inter,system-ui,sans-serif;font-weight:700;line-height:1.4;margin:0}
+:is(#asset-dialog,#buffer-preview-dialog) .details-reason{font-size:12px;color:#cbd5e1;line-height:1.5;margin:9px 0 0}
+:is(#asset-dialog,#buffer-preview-dialog) :is(button,summary,select):focus-visible{outline:2px solid #7dd3fc;outline-offset:3px}
+@media(min-width:640px){:root{--g1-card-inset:24px;--g1-recess-inset:14px}}
+@media(max-width:359px){:is(#asset-dialog,#buffer-preview-dialog) .details-dialog-header{padding:16px 16px 0}:is(#asset-detail-content,#buffer-detail-content){padding:16px 16px 12px}.details-dialog-footer{padding:0 16px 16px}}
+</style></head><body><main class="test-shell"><section class="scan-setup" aria-label="Read-only file scan"><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>This checks synced Drive files. It does not upload, schedule or publish.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="https://drive.google.com/drive/folders/…"><p>Enable Google Drive API in the existing Google Cloud project before granting Drive metadata access.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><p class="group-source-note">Release Buffer: example data · Checklist: your Drive scan</p><div class="section-one-grid"><div id="card-release-buffer"
              class="hero-spotlight-card p-5 sm:p-6 relative flex flex-col justify-between"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
           
           <div class="hero-spotlight-beam" id="buffer-beam"></div>
 
-          <div class="dashboard-card-main">
+          <div class="dashboard-card-main"><div class="group-card-header">
             <div class="hero-3d-glyph text-white">
               <svg class="w-7 h-7 drop-shadow-md text-sky-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -317,7 +355,7 @@
             </div>
 
             <!-- Release list: agreed labels and behaviour for card 1.1. -->
-            <div class="recessed-dock mt-4 p-3 sm:p-3.5 space-y-2">
+            </div><div class="recessed-dock mt-4 p-3 sm:p-3.5 space-y-2">
               <div class="buffer-list-heading">
                 <span>Example Releases</span>
                 <span id="buffer-backlog-tag">3 Examples</span>
@@ -340,7 +378,7 @@
           
           <div class="hero-spotlight-beam" id="checklist-beam"></div>
 
-          <div class="dashboard-card-main">
+          <div class="dashboard-card-main"><div class="group-card-header">
             <!-- Glyph Icon -->
             <div class="hero-3d-glyph text-white">
               <svg class="w-7 h-7 drop-shadow-md text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -364,7 +402,7 @@
             </div>
 
             <!-- Recessed Selector Pills Dock -->
-            <div class="recessed-dock mt-4 p-3 sm:p-3.5 space-y-2">
+            </div><div class="recessed-dock mt-4 p-3 sm:p-3.5 space-y-2">
               <!-- Seven release requirements -->
               <div class="grid grid-cols-2 gap-1.5" id="selector-pills-container"><div data-asset-index="0" class="p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">Remix WAV</div><div class="text-[10px] text-sky-100/80 truncate">WAV</div></div></div><span class="asset-status">Unchecked</span></div><div data-asset-index="1" class="p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">Beat MP3</div><div class="text-[10px] text-sky-100/80 truncate">MP3</div></div></div><span class="asset-status">Unchecked</span></div><div data-asset-index="2" class="p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">Stems archive</div><div class="text-[10px] text-sky-100/80 truncate">ZIP / 7z</div></div></div><span class="asset-status">Unchecked</span></div><div data-asset-index="3" class="p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">Project ZIP</div><div class="text-[10px] text-sky-100/80 truncate">FL Studio export</div></div></div><span class="asset-status">Unchecked</span></div><div data-asset-index="4" class="p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">Thumbnail</div><div class="text-[10px] text-sky-100/80 truncate">Image</div></div></div><span class="asset-status">Unchecked</span></div><div data-asset-index="5" class="p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">YouTube video</div><div class="text-[10px] text-sky-100/80 truncate">MP4</div></div></div><span class="asset-status">Unchecked</span></div><div data-asset-index="6" class="col-span-2 p-2 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-1.5 min-w-0"><div class="flex items-center gap-1.5 min-w-0"><span class="asset-icon w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] shrink-0">?</span><div class="min-w-0"><div class="text-xs font-bold text-white truncate leading-tight">Shorts x6</div><div class="text-[10px] text-sky-100/80 truncate">Tuesday–Sunday</div></div></div><span class="asset-status">Unchecked</span></div></div>
             </div>
@@ -383,4 +421,4 @@
               <span>Release details</span><span aria-hidden="true">→</span>
             </button>
           </div>
-        </div></div></main><dialog id="asset-dialog" aria-labelledby="asset-dialog-title"><header class="details-dialog-header"><h2 id="asset-dialog-title">Release details</h2><button id="asset-close" type="button" aria-label="Close release details">×</button></header><div id="asset-detail-content"></div></dialog><dialog id="buffer-preview-dialog" aria-labelledby="buffer-preview-title"><h2 id="buffer-preview-title">Release Buffer preview</h2><p>These are example projects, dates and statuses for comparing the two cards. They are not confirmed scheduling records.</p><p>Live buffer coverage will require the main YouTube video and all six Shorts on each required platform to have confirmed scheduling. File readiness alone does not establish coverage.</p><button id="buffer-preview-close" type="button">Close</button></dialog><script type="module" src="/checklist.js"></script></body></html>
+        </div></div></main><dialog id="asset-dialog" aria-labelledby="asset-dialog-title"><header class="details-dialog-header"><h2 id="asset-dialog-title">Release details</h2></header><div id="asset-detail-content"></div><footer class="details-dialog-footer"><button id="asset-close" type="button">Close</button></footer></dialog><dialog id="buffer-preview-dialog" aria-labelledby="buffer-preview-title"><header class="details-dialog-header"><h2 id="buffer-preview-title">Release Buffer details</h2></header><div id="buffer-detail-content"></div><footer class="details-dialog-footer"><button id="buffer-preview-close" type="button">Close</button></footer></dialog><script type="module" src="/checklist.js"></script></body></html>

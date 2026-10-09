@@ -1,5 +1,9 @@
 # GemOs dashboard — next-session handoff
 
+## Latest Group 1 alignment update — 10 October 2026
+
+Shared header/recess/footer dimensions and matched pair height now keep the normal checklist in two columns. Both pop-ups share the simpler blue/navy style; 1.1 includes useful buffer rules/example records and separate current Drive readiness. The approved live-test rule supersedes independent recess sizing/one-column overflow switching. Geometry/title/syntax/build checks pass; fresh rendered phone/desktop acceptance remains unverified. See [ASSETS.md](integration-tests/youtube/ASSETS.md).
+
 ## Latest Group 1 pair comparison
 
 CJ approved restoring the Group 1 pair on the private checklist page for comparing proportions. Card 1.1 uses the accepted reference anatomy/material with three illustrative projects/dates/statuses and a visible Example/Preview only label. It performs no live buffer calculation or scheduling query; its rows/footer open an explanatory preview dialog with Escape/close/focus-return behaviour. Card 1.2 continues using the existing Drive result. Desktop is two equal columns from 840px within 960px; mobile stacks 1.1 above 1.2. Normal fixed reference slots remain; when overflow activates the shared one-column asset reflow, both cards receive a shared minimum height calculated from the tallest natural card, including mobile. This is a comparison slice, not approval of a permanent one-column redesign or filler content. Syntax, title regression and production build pass; rendered matching height, enlarged-text behaviour and phone/dialog acceptance remain unverified. Next: CJ refreshes the same /checklist page and reviews both cards together. No new consent or sample link is required.

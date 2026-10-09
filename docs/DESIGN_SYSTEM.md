@@ -77,3 +77,7 @@ The private test now consumes shared semantic tokens for both cards' gradient, g
 - [Review plan](dashboard/PLAN.md)
 - [Original Group 1 specification](../references/dashboard/source/group-1-spec-2026-10-05.md): provenance; superseded where current specifications record later decisions. Its proposals remain proposals.
 
+
+## Group 1 integration alignment — 10 October 2026
+
+CJ approved matching Group 1 recessed panels as well as card heights. In the private test, a shared group measurement governs header, recess, footer and complete slot dimensions; cards grow together to preserve readable content. Normal asset layout is two columns, with full-width Shorts. This supersedes independent Group 1 recess heights/overflow-driven one-column switching in the live integration page; canonical references retain their earlier geometry as provenance. Reuse existing Group 1 materials, typography/insets/glyph and corner tokens. Both detail dialogs share the same simple blue/navy shell and Close control. See DESIGN_TOKENS.md and dashboard/group-1/SPECIFICATION.md for implementation/evidence boundaries.
