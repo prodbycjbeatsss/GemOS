@@ -294,10 +294,10 @@
 /* Shared Group 1 geometry; data states cannot independently size a card. */
 :root{--g1-card-radius:32px;--g1-recess-radius:22px;--g1-group-gap:20px;--g1-panel-gap:16px;--g1-recess-inset:12px;--g1-card-inset:20px;--g1-modal-fill:linear-gradient(155deg,#0369a1 0%,#0f172a 100%);--g1-modal-border:rgba(255,255,255,.16)}
 .section-one-grid{--g1-header-height:180px;--g1-recess-height:340px;--g1-footer-height:56px;--g1-slot-height:650px;gap:var(--g1-group-gap)}
-.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist){height:var(--g1-slot-height);min-height:var(--g1-slot-height);display:grid;grid-template-rows:calc(var(--g1-header-height) + var(--g1-recess-height) + var(--g1-panel-gap)) var(--g1-footer-height);gap:16px;padding:var(--g1-card-inset);border-radius:var(--g1-card-radius)}
-.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist) .dashboard-card-main{display:grid;grid-template-rows:var(--g1-header-height) var(--g1-recess-height);gap:var(--g1-panel-gap);overflow:visible;min-height:0}
+.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist){height:var(--g1-slot-height);min-height:var(--g1-slot-height);display:grid;grid-template-columns:minmax(0,1fr);justify-content:stretch;justify-items:stretch;align-content:start;min-width:0;width:100%;grid-template-rows:calc(var(--g1-header-height) + var(--g1-recess-height) + var(--g1-panel-gap)) var(--g1-footer-height);gap:16px;padding:var(--g1-card-inset);border-radius:var(--g1-card-radius)}
+.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist) .dashboard-card-main{display:grid;grid-template-columns:minmax(0,1fr);justify-content:stretch;justify-items:stretch;align-content:start;min-width:0;width:100%;grid-template-rows:var(--g1-header-height) var(--g1-recess-height);gap:var(--g1-panel-gap);overflow:visible;min-height:0}
 .group-card-header{min-width:0;align-self:start}
-.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist) .recessed-dock{margin:0;height:100%;padding:var(--g1-recess-inset);overflow:visible;border-radius:var(--g1-recess-radius)}
+.section-one-grid :is(#card-release-buffer,#card-prerelease-checklist) .recessed-dock{margin:0;width:100%;min-width:0;align-self:stretch;height:100%;padding:var(--g1-recess-inset);overflow:visible;border-radius:var(--g1-recess-radius)}
 .group-card-footer{margin:0!important;min-height:52px;height:100%;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .group-card-footer .release-details-link{max-width:47%;line-height:1.4;white-space:normal;flex-shrink:0}
 .group-card-footer .drive-sync-footer{flex:1;min-width:0;flex-wrap:wrap;gap:4px 8px}
@@ -314,7 +314,7 @@
 .section-one-grid.text-reflow #checklist-project-title{display:-webkit-box;-webkit-line-clamp:2;max-height:2.5em;overflow:hidden}
 .section-one-grid.g1-measuring :is(#card-release-buffer,#card-prerelease-checklist){height:auto;min-height:0;grid-template-rows:auto auto}
 .section-one-grid.g1-measuring :is(#card-release-buffer,#card-prerelease-checklist) .dashboard-card-main{grid-template-rows:auto auto}
-.section-one-grid.g1-measuring .recessed-dock,.section-one-grid.g1-measuring .group-card-footer{height:auto}
+.section-one-grid.g1-measuring :is(#card-release-buffer,#card-prerelease-checklist) :is(.recessed-dock,.group-card-footer){height:auto;min-height:0;align-self:start}
 /* Matching modal materials, typography, insets, close control and content rows. */
 :is(#asset-dialog,#buffer-preview-dialog){padding:0;border:1px solid var(--g1-modal-border);background:var(--g1-modal-fill);box-shadow:0 24px 48px -12px #0008,inset 0 1.5px 1px #ffffff40;border-radius:var(--g1-card-radius);max-width:560px;width:calc(100% - 32px);max-height:85vh;font-family:Inter,system-ui,sans-serif}
 :is(#asset-dialog,#buffer-preview-dialog) .details-dialog-header{position:static;padding:24px 24px 0;background:transparent;border:0;backdrop-filter:none;display:block}
@@ -329,7 +329,7 @@
 @media(min-width:640px){:root{--g1-card-inset:24px;--g1-recess-inset:14px}}
 @media(max-width:359px){:is(#asset-dialog,#buffer-preview-dialog) .details-dialog-header{padding:16px 16px 0}:is(#asset-detail-content,#buffer-detail-content){padding:16px 16px 12px}.details-dialog-footer{padding:0 16px 16px}}
 </style></head><body><main class="test-shell"><section class="scan-setup" aria-label="Read-only file scan"><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>This checks synced Drive files. It does not upload, schedule or publish.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="https://drive.google.com/drive/folders/…"><p>Enable Google Drive API in the existing Google Cloud project before granting Drive metadata access.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><p class="group-source-note">Release Buffer: example data · Checklist: your Drive scan</p><div class="section-one-grid"><div id="card-release-buffer"
-             class="hero-spotlight-card p-5 sm:p-6 relative flex flex-col justify-between"
+             class="hero-spotlight-card relative"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
           
           <div class="hero-spotlight-beam" id="buffer-beam"></div>
@@ -373,7 +373,7 @@
             </button>
           </div>
         </div><div id="card-prerelease-checklist"
-             class="hero-spotlight-card p-5 sm:p-6 relative flex flex-col justify-between"
+             class="hero-spotlight-card relative"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
           
           <div class="hero-spotlight-beam" id="checklist-beam"></div>

@@ -208,3 +208,10 @@ CJ supplied the existing Web OAuth client details and reports adding the authori
 
 
 Current scheduler follow-up: successful Google job runs reached the endpoint; the short job-name status check has been fixed and a post-fix scheduled run is verified. See STATUS.md.
+
+
+## 10 October 2026 — repair Group 1 width and measurement regression
+
+CJ supplied a phone screenshot showing the checklist recess narrower than the buffer recess, with excessive bottom space despite equal outer slots. The prior geometry checks did not catch this rendered failure. Removed the legacy flex/justify-between utilities from both outer cards and explicitly set a single full-width, stretched grid column on the cards and their main regions. Both recesses now use the complete inner width. The temporary natural-height measurement now uses the same card-scoped selector specificity as the normal stretched-height rule, overriding height:100% with height:auto before measuring. This prevents the previous stretched height from feeding back into shared slot sizing. Accepted colours, radii, two-column checklist, modal content and mobile stacking breakpoint are retained.
+
+Existing geometry/title checks and production build pass. Source/cascade inspection supports the repair, but no supported browser QA was available; corrected desktop/mobile rendering remains unverified. The user screenshot is evidence of the previous regression, not of the fix.
