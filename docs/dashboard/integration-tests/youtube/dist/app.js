@@ -7,6 +7,10 @@
   let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
   const configKey = 'gemos-youtube-client-v1';
+  const reportCache = new Map();
+  let verifiedVideos = null, renderedVideos = null;
+  const metricNodes = [];
+  function invalidateCache() { reportCache.clear(); verifiedVideos = null; }
   const selectionKey = 'gemos-youtube-selection-v1';
   function rememberSelection() {
     try { sessionStorage.setItem(selectionKey, JSON.stringify({ videos: $('videos').value, confirmed: $('confirm-shorts').checked, requestedEnd: $('end-date').value, rangeDays: Number(document.querySelector('[data-range][aria-checked=true]').dataset.range) })); } catch {}
@@ -76,7 +80,8 @@
   function showSync(heading, message, footer) {
     syncState = { heading, message, footer };
     $('sync-heading').textContent = heading;
-    $('sync-message').textContent = message;
+    const selectedDays = Number(document.querySelector('[data-range][aria-checked=true]').dataset.range);
+    $('sync-message').textContent = report && report.rangeDays !== selectedDays ? message + ' Showing ' + report.rangeDays + ' days until the new range is ready.' : message;
     document.querySelector('.sync-status').textContent = footer;
     $('last-import').textContent = report ? 'Last import · ' + new Date(report.fetchedAt).toLocaleString('en-GB') : 'No successful import yet.';
     fitRecess();
@@ -105,14 +110,14 @@
   }
   function clearConnection(message = 'Disconnected. Imported data cleared.') {
     generation++; token = null; expiresAt = 0; busy = false; syncing = false;
-    removeSession();
+    removeSession(); invalidateCache();
     clearTimeout(expiryTimer); clearTimeout(connectTimer);
     $('channel').replaceChildren(new Option('Connect to select your channel', ''));
     report = null; status(message); feedback('Nothing imported yet.'); render(); showSync('Not connected', 'Connect and choose your Shorts to import.', 'Not synced'); controls();
   }
   function expire() {
     generation++; token = null; expiresAt = 0; busy = false; syncing = false;
-    removeSession();
+    removeSession(); invalidateCache();
     status('Session expired. Connect again to Sync.');
     feedback(report ? 'Previous import retained. It has not been refreshed.' : 'Connect again to import.'); showSync('Reconnect to sync', report ? 'Your previous import is still displayed. Connect again to refresh it.' : 'Connect again to import your selected Shorts.', 'Session expired'); controls();
   }
@@ -185,7 +190,7 @@
     }
     return result;
   }
-  async function sync() {
+  async function sync({ rangeChange = false } = {}) {
     if (busy) return;
     let ids, requested, rangeDays;
     try {
@@ -198,30 +203,41 @@
     } catch (error) { feedback(error.message); showSync('Check your selection', error.message, 'Not synced'); return; }
     rememberSelection();
     const session = generation, channel = $('channel').value;
-    busy = true; syncing = true; controls(); feedback('Checking videos and importing reports…'); showSync('Syncing', 'Checking the selected videos belong to your channel…', 'Syncing…');
+    const scopeKey = JSON.stringify([channel, [...ids].sort()]);
+    const cacheKey = JSON.stringify([scopeKey, requested, rangeDays]);
+    if (!rangeChange) invalidateCache(); // Manual Sync always requests fresh metadata and reports.
+    const activity = rangeChange ? 'Updating' : 'Syncing';
+    busy = true; syncing = true; controls(); feedback(activity + ' analytics…');
+    showSync(activity, rangeChange ? 'Updating the selected date range…' : 'Checking the selected videos belong to your channel…', activity + '…');
     try {
-      const videos = await api('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet', id: ids.join(',') }, session);
-      if (videos.items?.length !== ids.length || videos.items.some(item => item.snippet.channelId !== channel)) throw new Error('Every selected video must be available and owned by the selected channel.');
+      let videos;
+      if (rangeChange && verifiedVideos?.scopeKey === scopeKey) videos = verifiedVideos.videos;
+      else {
+        videos = await api('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet', id: ids.join(',') }, session);
+        if (videos.items?.length !== ids.length || videos.items.some(item => item.snippet.channelId !== channel)) throw new Error('Every selected video must be available and owned by the selected channel.');
+        verifiedVideos = { scopeKey, videos };
+      }
       const base = { ids: 'channel==' + channel, metrics: metrics.join(','), filters: 'video==' + ids.join(',') };
       const query = params => api('https://youtubeanalytics.googleapis.com/v2/reports', { ...base, ...params }, session);
       // Ask for the newest day first: a long range must not truncate its latest rows.
       const probeStart = shift(requested, -Math.max(83, rangeDays - 1));
-      showSync('Syncing', 'Finding the latest available reporting day…', 'Syncing…');
+      showSync(activity, 'Finding the latest available reporting day…', activity + '…');
       const daily = mappedRows(await query({ startDate: probeStart, endDate: requested, dimensions: 'day', sort: '-day', maxResults: '1' }), ['day']);
       const days = daily.map(row => date(row.day));
       if (!days.length) throw new Error('No daily data returned. Missing data has not been treated as zero. Try older Shorts or a different date.');
       if (days.some(day => day > requested || day < probeStart)) throw new Error('Unexpected report dates. Import stopped.');
       const end = days.sort().at(-1), start = shift(end, 1 - rangeDays), previousEnd = shift(start, -1), previousStart = shift(start, -rangeDays);
       const warnings = [];
-      showSync('Syncing', 'Importing your selected ' + rangeDays + '-day totals…', 'Syncing…');
+      showSync(activity, 'Importing your selected ' + rangeDays + '-day totals…', activity + '…');
       const current = aggregate(await query({ startDate: start, endDate: end }), 'current', warnings);
-      showSync('Syncing', 'Importing the preceding period for report details…', 'Syncing…');
+      showSync(activity, 'Importing the preceding period for report details…', activity + '…');
       const previous = aggregate(await query({ startDate: previousStart, endDate: previousEnd }), 'previous', warnings);
       if (session !== generation) return;
       report = { source: 'YouTube Analytics API v2', scope: 'User-confirmed selected Shorts sample; not channel-wide', channelId: channel, channelTitle: $('channel').selectedOptions[0].textContent,
         videos: videos.items.map(item => ({ id: item.id, title: item.snippet.title })), requestedEnd: requested, rangeDays, currentPeriod: { start, end }, previousPeriod: { start: previousStart, end: previousEnd },
         reportingTimezone: 'America/Los_Angeles', latestReturnedDay: end, fetchedAt: new Date().toISOString(), current, previous, warnings,
         coverage: 'Latest observed daily row; missing days are not proof of zero activity. Comparison and target withheld until coverage is verified.' };
+      reportCache.set(cacheKey, report);
       render(); showSync(warnings.length ? 'Synced with unavailable metrics' : 'Synced', warnings.length ? 'Some metrics are unavailable. Open Analytics details for the source warnings.' : 'Your selected Shorts are up to date for the returned reporting period.', 'Synced · ' + new Date(report.fetchedAt).toLocaleTimeString('en-GB')); feedback(warnings.length ? 'Imported with unavailable metrics: ' + [...new Set(warnings.map(item => item.period + ' ' + item.metric))].join(', ') + '. See Analytics details.' : 'Imported selected Shorts. Compare these exact videos and dates with Studio.');
     } catch (error) {
       if (session === generation) {
@@ -233,12 +249,14 @@
   }
   function render() {
     $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
-    $('included-videos').replaceChildren(...(report?.videos || []).map(video => {
+    const videoSignature = JSON.stringify(report?.videos || []);
+    if (videoSignature !== renderedVideos) $('included-videos').replaceChildren(...(report?.videos || []).map(video => {
       const item = document.createElement('li');
       const title = document.createElement('span'); title.textContent = video.title || 'Title unavailable';
       const id = document.createElement('span'); id.className = 'video-id'; id.textContent = 'Video ID · ' + video.id;
       item.append(title, id); return item;
     }));
+    renderedVideos = videoSignature;
     const values = report?.current;
     const number = value => value == null ? 'Unavailable' : value.toLocaleString('en-GB');
     $('headline-views').textContent = values?.views == null ? '— views' : number(values.views) + ' views';
@@ -246,13 +264,18 @@
     $('period').textContent = report ? report.currentPeriod.start + ' – ' + report.currentPeriod.end : 'Not imported';
     $('freshness').textContent = report ? 'Latest returned day · ' + report.latestReturnedDay : 'No live data loaded';
     const tiles = [['Average viewed', 'averageViewPercentage'], ['Likes', 'likes'], ['Subscribers gained', 'subscribersGained'], ['Shares', 'shares']];
-    $('metrics').replaceChildren(...tiles.map(([label, key]) => {
+    if (!metricNodes.length) $('metrics').replaceChildren(...tiles.map(([label, key]) => {
       const tile = document.createElement('div'); tile.className = 'tile';
-      const heading = document.createElement('p'); heading.className = 'tile-label'; heading.textContent = label; if (key === 'averageViewPercentage') { heading.setAttribute('aria-label', 'Average percentage viewed'); heading.title = 'Average percentage of the video watched, reported by YouTube.'; }
-      const value = document.createElement('strong'); value.className = 'tile-value'; value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
-      const note = document.createElement('p'); note.className = 'tile-note'; note.textContent = report ? key === 'likes' ? 'Source-reported period value' : 'Selected-period activity' : 'Not imported';
-      tile.append(heading, value, note); return tile;
+      const heading = document.createElement('p'); heading.className = 'tile-label'; heading.textContent = label;
+      if (key === 'averageViewPercentage') { heading.setAttribute('aria-label', 'Average percentage viewed'); heading.title = 'Average percentage of the video watched, reported by YouTube.'; }
+      const value = document.createElement('strong'); value.className = 'tile-value';
+      const note = document.createElement('p'); note.className = 'tile-note';
+      metricNodes.push({ key, value, note }); tile.append(heading, value, note); return tile;
     }));
+    metricNodes.forEach(({ key, value, note }) => {
+      value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
+      note.textContent = report ? key === 'likes' ? 'Source-reported period value' : 'Selected-period activity' : 'Not imported';
+    });
     $('target-label').textContent = 'Selected Shorts only'; $('target-value').textContent = report ? report.videos.length + ' videos' : 'No sample imported';
     $('target-state').textContent = 'Test'; $('target-bar').hidden = true;
     $('target-note').textContent = 'Comparison and target hidden until report coverage is verified. TikTok and Reels are not connected.';
@@ -276,11 +299,18 @@
     if (busy || button.getAttribute('aria-checked') === 'true') return;
     rangeButtons.forEach(item => { const selected = item === button; item.setAttribute('aria-checked', String(selected)); item.tabIndex = selected ? 0 : -1; });
     rememberSelection();
-    const hadReport = Boolean(report);
-    report = null; render();
-    feedback('Date range changed. Sync to import this range.');
-    showSync('Ready to sync', 'Import your selected ' + button.dataset.range + '-day range.', 'Not synced');
-    if (hadReport) sync();
+    if (!report) {
+      feedback('Date range changed. Sync to import this range.');
+      showSync('Ready to sync', 'Import your selected ' + button.dataset.range + '-day range.', 'Not synced');
+      return;
+    }
+    let cached;
+    try { const scopeKey = JSON.stringify([$('channel').value, idsFromText($('videos').value).sort()]); cached = reportCache.get(JSON.stringify([scopeKey, date($('end-date').value), Number(button.dataset.range)])); } catch {}
+    if (cached) {
+      report = cached; render();
+      feedback('Loaded the saved ' + report.rangeDays + '-day range. Sync fetches fresh data.');
+      showSync('Saved range', 'Showing the saved ' + report.rangeDays + '-day report. Sync fetches fresh data.', 'Cached · ' + new Date(report.fetchedAt).toLocaleTimeString('en-GB'));
+    } else sync({ rangeChange: true });
   }
   rangeButtons.forEach((button, index) => {
     button.addEventListener('click', () => chooseRange(button));
@@ -300,7 +330,7 @@
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
     if (id === 'client-id') { clearConnection(); return; }
     if (id === 'channel' && token) rememberSession();
-    rememberSelection();
+    rememberSelection(); invalidateCache();
     report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });
   for (const id of ['videos', 'end-date']) $(id).addEventListener('input', rememberSelection);
@@ -308,8 +338,8 @@
   restoreSelection();
   $('origin').textContent = location.origin;
   // Tab-session storage retains only short-lived auth/config, never a refresh token.
-  window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; });
-  window.addEventListener('pageshow', event => { if (event.persisted) { report = null; render(); restoreSession(); } });
+  window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; invalidateCache(); });
+  window.addEventListener('pageshow', event => { if (event.persisted) { report = null; invalidateCache(); render(); restoreSession(); } });
   render(); controls();
   restoreSession();
   if (document.modelContext?.registerTool) {

@@ -74,3 +74,8 @@ The isolated importer replaces the disliked dropdown with compact range pills an
 ### Alignment and reduced repeat setup — 9 October 2026
 
 The Android screenshot showed first-row value misalignment; matching metric text rows and the short Average viewed label are now implemented in the isolated test. Selected links, confirmation, end date and range persist within the browser tab, separately from auth, without automatic queries/consent on reload. Controlled state/syntax checks passed; revised browser alignment remains unverified. Stop requesting new manual sample links. Next scope longer-lived login and automatic whole-channel Shorts imports; API coverage, TikTok/Reels and frozen snapshots remain unimplemented/unverified.
+
+
+### Range-switch optimisation — 9 October 2026
+
+Implemented CJ's approved analytics-only range refresh: retain explicitly labelled old data while loading, reuse verified video metadata, switch loaded ranges from memory without requests, and let manual Sync fetch fresh metadata/results and invalidate old caches. Controlled state/request checks passed; browser rendering remains unverified. Auth architecture, source scope and canonical previews are unchanged.

@@ -309,3 +309,8 @@ Clarify scope without jargon: intended 2.1 is all short-form content for selecte
 ## 2026-10-09 — Align metric rows and reduce repeated sample setup
 
 CJ reported phone metric misalignment and fatigue with repeated connections/new links. Give tile labels/values/notes matching rows and a shorter Average viewed label while retaining the full definition/accessibility name. Remember links, classification confirmation and date settings in tab sessionStorage separately from tokens; restore locally without starting consent or requests. Reports remain in memory, and existing token expiry is unchanged. No new manual sample links are needed. Durable login and whole-channel Shorts discovery are next implementation topics; no backend choice or broader integration is locked by this fix. Canonical references remain unchanged.
+
+
+## 2026-10-09 — Analytics-only updates and cached range switching
+
+CJ approved avoiding a full-page/card refresh on each date-range click. Keep titles and prior figures visible with exact old dates and Updating until the new Analytics report succeeds. Reuse verified same-connection video metadata; cache loaded ranges in memory by channel/IDs/end/range and identify cached results with original timestamps. Manual Sync fetches fresh metadata/reports and invalidates other saved ranges. Selection/auth/lifecycle changes clear caches. Preserve clearly labelled old results on failure; never present them as the newly requested period. This supersedes the earlier clear-first range-change behaviour. No persistent report storage or new auth architecture is introduced.

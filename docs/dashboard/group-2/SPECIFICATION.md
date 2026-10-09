@@ -76,3 +76,8 @@ CJ raised reusable card text roles. Proposed: scope label → main result → ti
 ### Metric-row alignment — 9 October 2026
 
 User Android evidence showed independent tile content centring misaligns values when label/note line counts differ. In the isolated test, reserve equal label and note rows (34px minimum) with a shared 24px value slot. Use Average viewed visibly, retain Average percentage viewed for accessible naming and its definition in details. Allow text reflow rather than clipping under enlarged text. Source metric and canonical preview are unchanged. State/syntax checks passed; revised rendered alignment remains to verify.
+
+
+### Range switching without full-card refresh — 9 October 2026
+
+Approved and implemented in the isolated test: keep platform controls, title list and metric nodes in place. During uncached range loading retain old figures with their exact dates and an explicit Updating/old-range label; replace values together on success. Cached range selection shows Saved range with original timestamp; Sync requests fresh data. Failure preserves clearly identified old results. Memory cache is cleared by changed selection/auth/lifecycle. State checks passed; rendered verification remains pending. Canonical preview is unchanged.

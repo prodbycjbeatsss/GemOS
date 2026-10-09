@@ -86,3 +86,8 @@ CJ approved 7/28/90/365-day activity windows with 28 default. Each selected wind
 ### Scope clarity and sync stages — 9 October 2026
 
 2.1 is intended to cover all short-form content on the selected platform(s) for the reporting period, independently of project selection. 2.2 covers one selected release: six source clips across three platforms, up to 18 short uploads. The live test remains a 1–5-video sample and now says Selected Shorts only; this update adds no channel-wide enumeration. Sync feedback reflects actual ownership/cutoff/current/previous requests, followed by success, warnings or failure; last import time does not imply the source has data through today. The status area uses a small part of the lower recess and leaves other space clear.
+
+
+### Cached range selection — 9 October 2026
+
+In the isolated importer, range changes update Analytics only and reuse previously verified same-connection channel/video metadata. Loaded ranges are cached by channel, selected IDs, requested end and day range, in memory only. Display Cached with the original fetch time; manual Sync revalidates ownership and fetches fresh reports while invalidating other cached ranges. An uncached range keeps the old period visible with an explicit updating label, and a failed request preserves those old figures without claiming the requested range succeeded. All metrics still share one atomic source/report scope. Cache is cleared on selection/auth/lifecycle changes; it does not provide persistent login, whole-channel discovery or coverage verification.
