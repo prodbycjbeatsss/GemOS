@@ -1,6 +1,6 @@
 # Group 2 — usage and connections
 
-Updated 9 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). Canonical previews have no live connection. A separate [manual YouTube sample test](../integration-tests/youtube/README.md) has been built; real authentication/import verification remains pending.
+Updated 9 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). Canonical previews have no live connection. A separate [manual YouTube sample test](../integration-tests/youtube/README.md) has been built; CJ reports a real connection and six-view sample import; raw response/Studio agreement and a failing older-video retry remain unverified.
 
 ## 2.1 Short-form performance
 
@@ -33,7 +33,7 @@ Missing is not zero. Partial totals identify missing sources; combined growth an
 
 | Source | Intended use | Verification status |
 |---|---|---|
-| YouTube Analytics/Data APIs | Selected-period views, supported watch/engagement metrics and post IDs/counts | Browser-only selected-video test built and checked with controlled responses; real query and Studio agreement not tested. Test cutoff is observed, not guaranteed complete coverage; growth/targets withheld. Stayed to watch has no established standard metric in the review. |
+| YouTube Analytics/Data APIs | Selected-period views, supported watch/engagement metrics and post IDs/counts | Browser-only selected-video test built and checked with controlled responses; CJ reports a real six-view sample; raw response and Studio agreement remain unverified. Supporting-metric validation was made partial after an older-video failure. Test cutoff is observed, not guaranteed complete coverage; growth/targets withheld. Stayed to watch has no established standard metric in the review. |
 | TikTok approved APIs | View/share counts; business watch/completion metrics where available | CJ is fairly sure the account is Business; verify account/access. Per-clip followers and selected-period coverage remain unverified. |
 | Meta Insights | Reels engagement/watch fields where supported | Creator/Business account type is provisional. Specific media/period and follower attribution need real-query validation. |
 | GemOs records | Targets, comparisons, partial coverage and freshness | Example calculations in HTML only; real records/backend not built. |

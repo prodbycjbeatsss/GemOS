@@ -4,6 +4,34 @@
   const scopes = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
   const metrics = ['views', 'averageViewPercentage', 'likes', 'subscribersGained', 'shares'];
   let token = null, expiresAt = 0, expiryTimer, connectTimer, generation = 0, busy = false, report = null, opener;
+  const sessionKey = 'gemos-youtube-session-v1';
+  const configKey = 'gemos-youtube-client-v1';
+  function removeSession() { try { sessionStorage.removeItem(sessionKey); } catch {} }
+  function rememberSession() {
+    try {
+      sessionStorage.setItem(configKey, $('client-id').value.trim());
+      sessionStorage.setItem(sessionKey, JSON.stringify({ clientId: $('client-id').value.trim(), token, expiresAt, channel: $('channel').value }));
+      return true;
+    } catch { return false; }
+  }
+  async function restoreSession() {
+    controls();
+    let saved;
+    try { $('client-id').value = sessionStorage.getItem(configKey) || ''; saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null'); } catch { removeSession(); return; }
+    if (!saved) return;
+    if (typeof saved.token !== 'string' || !saved.token || !Number.isFinite(saved.expiresAt) || saved.expiresAt <= Date.now() || saved.expiresAt > Date.now() + 86400000 || saved.clientId !== $('client-id').value) { removeSession(); status('Saved session expired. Connect again.'); return; }
+    token = saved.token; expiresAt = saved.expiresAt; busy = true; status('Restoring your connection…'); controls();
+    clearTimeout(expiryTimer); expiryTimer = setTimeout(expire, expiresAt - Date.now());
+    const session = generation;
+    try {
+      const data = await api('https://www.googleapis.com/youtube/v3/channels', { part: 'snippet', mine: 'true', maxResults: '50' }, session);
+      if (!data.items?.length) throw new Error('No owned channel returned. Connect again.');
+      $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
+      if (data.items.some(item => item.id === saved.channel)) $('channel').value = saved.channel;
+      status('Connected · read-only. Session restored after refresh.');
+    } catch (error) { if (session === generation) clearConnection(error.message); }
+    finally { if (session === generation) { busy = false; controls(); } }
+  }
   const status = message => { $('connection').textContent = message; };
   const feedback = message => { $('feedback').textContent = message; };
   const date = value => {
@@ -41,12 +69,14 @@
   }
   function clearConnection(message = 'Disconnected. Imported data cleared.') {
     generation++; token = null; expiresAt = 0; busy = false;
+    removeSession();
     clearTimeout(expiryTimer); clearTimeout(connectTimer);
     $('channel').replaceChildren(new Option('Connect to select your channel', ''));
     report = null; status(message); feedback('Nothing imported yet.'); render(); controls();
   }
   function expire() {
     generation++; token = null; expiresAt = 0; busy = false;
+    removeSession();
     status('Session expired. Connect again to Sync.');
     feedback(report ? 'Previous import retained. It has not been refreshed.' : 'Connect again to import.'); controls();
   }
@@ -87,12 +117,12 @@
           const data = await api('https://www.googleapis.com/youtube/v3/channels', { part: 'snippet', mine: 'true', maxResults: '50' }, session);
           if (!data.items?.length) throw new Error('No owned YouTube channel was returned for this account.');
           $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
-          status('Connected · read-only. Choose your channel and Shorts.');
+          status(rememberSession() ? 'Connected · read-only. Kept across refreshes in this tab until expiry.' : 'Connected · read-only. Browser storage is blocked; refresh will require reconnecting.');
         } catch (error) { if (session === generation) clearConnection(error.message); }
         finally { if (session === generation) { busy = false; controls(); } }
       }
     });
-    try { client.requestAccessToken({ prompt: 'consent' }); } catch { clearConnection('Google consent could not open. Try Connect again.'); }
+    try { client.requestAccessToken({ prompt: '' }); } catch { clearConnection('Google consent could not open. Try Connect again.'); }
   }
   function mappedRows(data, required) {
     if (!Array.isArray(data.columnHeaders)) throw new Error('Google returned a report without column definitions.');
@@ -100,14 +130,19 @@
     if (required.some(key => !columns.includes(key))) throw new Error('A required metric was unavailable. No substitute has been used.');
     return (data.rows || []).map(row => Object.fromEntries(columns.map((key, index) => [key, row[index]])));
   }
-  function aggregate(data) {
-    const rows = mappedRows(data, metrics);
+  function aggregate(data, period, warnings) {
+    const rows = mappedRows(data, []);
     if (!rows.length) return Object.fromEntries(metrics.map(key => [key, null]));
     if (rows.length !== 1) throw new Error('Expected one aggregate row. Import stopped.');
     const result = {};
     for (const key of metrics) {
-      const value = rows[0][key];
-      if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || (key !== 'averageViewPercentage' && !Number.isInteger(value))) throw new Error('Google returned an invalid metric. Import stopped.');
+      const raw = rows[0][key];
+      const value = typeof raw === 'number' ? raw : typeof raw === 'string' && /^\d+(?:\.\d+)?$/.test(raw.trim()) ? Number(raw) : null;
+      if (value === null || !Number.isFinite(value) || value < 0 || (key !== 'averageViewPercentage' && !Number.isSafeInteger(value))) {
+        result[key] = null;
+        warnings.push({ period, metric: key, reason: raw == null ? 'Not provided by Google' : typeof raw === 'number' && raw < 0 ? 'Negative source value; not displayed as a count' : 'Unexpected source value or type', sourceValue: typeof raw === 'number' && Number.isFinite(raw) ? raw : typeof raw === 'string' && /^-?\d+(?:\.\d+)?$/.test(raw.trim()) ? raw.slice(0, 80) : null, sourceType: typeof raw });
+        continue;
+      }
       result[key] = value;
     }
     return result;
@@ -128,19 +163,20 @@
       if (videos.items?.length !== ids.length || videos.items.some(item => item.snippet.channelId !== channel)) throw new Error('Every selected video must be available and owned by the selected channel.');
       const base = { ids: 'channel==' + channel, metrics: metrics.join(','), filters: 'video==' + ids.join(',') };
       const query = params => api('https://youtubeanalytics.googleapis.com/v2/reports', { ...base, ...params }, session);
-      const daily = mappedRows(await query({ startDate: shift(requested, -83), endDate: requested, dimensions: 'day', sort: 'day', maxResults: '200' }), ['day', ...metrics]);
+      const daily = mappedRows(await query({ startDate: shift(requested, -83), endDate: requested, dimensions: 'day', sort: 'day', maxResults: '200' }), ['day']);
       const days = daily.map(row => date(row.day));
       if (!days.length) throw new Error('No daily data returned. Missing data has not been treated as zero. Try older Shorts or a different date.');
       if (days.some(day => day > requested || day < shift(requested, -83))) throw new Error('Unexpected report dates. Import stopped.');
       const end = days.sort().at(-1), start = shift(end, -27), previousEnd = shift(start, -1), previousStart = shift(start, -28);
-      const current = aggregate(await query({ startDate: start, endDate: end }));
-      const previous = aggregate(await query({ startDate: previousStart, endDate: previousEnd }));
+      const warnings = [];
+      const current = aggregate(await query({ startDate: start, endDate: end }), 'current', warnings);
+      const previous = aggregate(await query({ startDate: previousStart, endDate: previousEnd }), 'previous', warnings);
       if (session !== generation) return;
       report = { source: 'YouTube Analytics API v2', scope: 'User-confirmed selected Shorts sample; not channel-wide', channelId: channel, channelTitle: $('channel').selectedOptions[0].textContent,
         videos: videos.items.map(item => ({ id: item.id, title: item.snippet.title })), requestedEnd: requested, currentPeriod: { start, end }, previousPeriod: { start: previousStart, end: previousEnd },
-        reportingTimezone: 'America/Los_Angeles', latestReturnedDay: end, fetchedAt: new Date().toISOString(), current, previous,
+        reportingTimezone: 'America/Los_Angeles', latestReturnedDay: end, fetchedAt: new Date().toISOString(), current, previous, warnings,
         coverage: 'Latest observed daily row; missing days are not proof of zero activity. Comparison and target withheld until coverage is verified.' };
-      render(); feedback('Imported selected Shorts. Compare these exact videos and dates with Studio.');
+      render(); feedback(warnings.length ? 'Imported with unavailable metrics: ' + [...new Set(warnings.map(item => item.period + ' ' + item.metric))].join(', ') + '. See Analytics details.' : 'Imported selected Shorts. Compare these exact videos and dates with Studio.');
     } catch (error) { if (session === generation) feedback((error.name === 'TimeoutError' ? 'Google timed out. Try Sync again.' : error.message) + (report ? ' Previous successful import retained.' : '')); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
@@ -155,7 +191,7 @@
     $('metrics').replaceChildren(...tiles.map(([label, key]) => {
       const tile = document.createElement('div'); tile.className = 'tile';
       const heading = document.createElement('p'); heading.className = 'tile-label'; heading.textContent = label;
-      const value = document.createElement('strong'); value.className = 'tile-value'; value.textContent = values?.[key] == null ? '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
+      const value = document.createElement('strong'); value.className = 'tile-value'; value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
       const note = document.createElement('p'); note.className = 'tile-note'; note.textContent = report ? 'Selected-period activity' : 'Not imported';
       tile.append(heading, value, note); return tile;
     }));
@@ -183,13 +219,16 @@
   $('details').addEventListener('click', event => { if (event.target === $('details')) { const b = $('details').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('details').close(); } });
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
     if (id === 'client-id') { clearConnection(); return; }
+    if (id === 'channel' && token) rememberSession();
     report = null; render(); feedback('Selection changed. Sync to import this sample.');
   });
   $('end-date').value = shift(new Date().toISOString().slice(0, 10), -3);
   $('origin').textContent = location.origin;
-  // No browser storage, cookies, URL tokens, telemetry or third-party proxy.
+  // Tab-session storage retains only short-lived auth/config, never a refresh token.
   window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; });
+  window.addEventListener('pageshow', event => { if (event.persisted) { report = null; render(); restoreSession(); } });
   render(); controls();
+  restoreSession();
   if (document.modelContext?.registerTool) {
     try { Promise.resolve(document.modelContext.registerTool({ name: 'read_import_status', description: 'Read the visible import status and sample scope. Does not connect, sync or disclose credentials.', inputSchema: { type: 'object', properties: {}, additionalProperties: false }, annotations: { readOnlyHint: true, untrustedContentHint: true }, execute(input) { if (!input || typeof input !== 'object' || Object.keys(input).length) throw new Error('No arguments accepted.'); return { connected: Boolean(token && Date.now() < expiresAt), status: $('feedback').textContent, imported: Boolean(report), scope: report?.scope || null, period: report?.currentPeriod || null }; } })).catch(() => {}); } catch {}
   }
