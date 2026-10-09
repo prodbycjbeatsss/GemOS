@@ -1,4 +1,6 @@
 export const SCOPES = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+const DRIVE_RETURN = '__Host-gemos-drive-return';
 const COOKIE = '__Host-gemos-youtube-state';
 const HEADERS = { 'Cache-Control': 'no-store', 'Content-Type': 'application/json', 'X-Content-Type-Options': 'nosniff' };
 class SafeError extends Error { constructor(message, status = 400) { super(message); this.status = status; } }
@@ -83,8 +85,8 @@ async function callback(request, env, owner) {
   const owned = await google('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&maxResults=50', { headers: { Authorization: 'Bearer ' + data.access_token } });
   if (!Array.isArray(owned.items) || !owned.items.length || owned.items.some(c => typeof c.id !== 'string' || typeof c.snippet?.title !== 'string')) throw new SafeError('No owned YouTube channel returned.', 400);
   const channels = owned.items.map(c => ({ id: c.id, title: c.snippet.title }));
-  await env.DB.prepare('INSERT INTO youtube_connections (user_id, client_id, refresh_ciphertext, access_ciphertext, expires_at, scopes, channels_json, updated_at, revision) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET client_id=excluded.client_id, refresh_ciphertext=excluded.refresh_ciphertext, access_ciphertext=excluded.access_ciphertext, expires_at=excluded.expires_at, scopes=excluded.scopes, channels_json=excluded.channels_json, updated_at=excluded.updated_at, revision=excluded.revision').bind(owner, env.GOOGLE_CLIENT_ID, await seal(data.refresh_token, env, owner), await seal(data.access_token, env, owner), expiry, SCOPES.join(' '), JSON.stringify(channels), Date.now(), nonce()).run();
-  return new Response(null, { status: 303, headers: { Location: '/?youtube=connected', 'Set-Cookie': cookie('', 0), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
+  await env.DB.prepare('INSERT INTO youtube_connections (user_id, client_id, refresh_ciphertext, access_ciphertext, expires_at, scopes, channels_json, updated_at, revision) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET client_id=excluded.client_id, refresh_ciphertext=excluded.refresh_ciphertext, access_ciphertext=excluded.access_ciphertext, expires_at=excluded.expires_at, scopes=excluded.scopes, channels_json=excluded.channels_json, updated_at=excluded.updated_at, revision=excluded.revision').bind(owner, env.GOOGLE_CLIENT_ID, await seal(data.refresh_token, env, owner), await seal(data.access_token, env, owner), expiry, data.scope, JSON.stringify(channels), Date.now(), nonce()).run();
+  return new Response(null, { status: 303, headers: { Location: (request.headers.get('Cookie') || '').split(';').some(v => v.trim() === DRIVE_RETURN + '=' + state) ? '/checklist' : '/?youtube=connected', 'Set-Cookie': cookie('', 0), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
 }
 export async function handle(request, env, action) {
   try {
@@ -101,11 +103,16 @@ export async function handle(request, env, action) {
     if (action === 'callback' && request.method === 'GET') return await callback(request, env, owner);
     if (request.method !== 'POST') throw new SafeError('Method not allowed.', 405);
     sameOrigin(request);
-    if (action === 'start') {
+    if (action === 'start' || action === 'start-drive') {
       const state = nonce(), now = Date.now();
       await env.DB.batch([env.DB.prepare('DELETE FROM youtube_oauth_states WHERE expires_at <= ? OR user_id = ?').bind(now, owner), env.DB.prepare('INSERT INTO youtube_oauth_states (state_hash, user_id, expires_at) VALUES (?, ?, ?)').bind(await hash(state), owner, now + 600000)]);
-      const url = new URL('https://accounts.google.com/o/oauth2/v2/auth'); url.search = new URLSearchParams({ client_id: env.GOOGLE_CLIENT_ID, redirect_uri: env.GOOGLE_REDIRECT_URI, response_type: 'code', scope: SCOPES.join(' '), access_type: 'offline', prompt: 'consent', state, include_granted_scopes: 'false' });
-      return json({ url: url.href }, 200, { 'Set-Cookie': cookie(state) });
+      const existing = await rowFor(env, owner);
+      const wantsDrive = action === 'start-drive' || (existing?.scopes || '').split(' ').includes(DRIVE_SCOPE);
+      const requestedScopes = wantsDrive ? [...SCOPES, DRIVE_SCOPE] : SCOPES;
+      const url = new URL('https://accounts.google.com/o/oauth2/v2/auth'); url.search = new URLSearchParams({ client_id: env.GOOGLE_CLIENT_ID, redirect_uri: env.GOOGLE_REDIRECT_URI, response_type: 'code', scope: requestedScopes.join(' '), access_type: 'offline', prompt: 'consent', state, include_granted_scopes: 'false' });
+      const reply = json({ url: url.href }, 200, { 'Set-Cookie': cookie(state) });
+      if (action === 'start-drive') reply.headers.append('Set-Cookie', `${DRIVE_RETURN}=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
+      return reply;
     }
     if (action === 'disconnect') {
       const row = await rowFor(env, owner);
