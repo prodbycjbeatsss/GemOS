@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {releaseTitle,displayTitle,TITLE_LIMIT} from './ui/checklist-title.mjs';
+const result={projectName:'Artist x Other Type Beat - Track Title [87BPM] [B#m] [x @collaborator]',assets:[{role:'remix',state:'Pass',files:[{name:'[REMIX] Artist - Track Title.wav'}]}]};
+assert.equal(releaseTitle(result),'Track Title');
+assert.equal(releaseTitle({...result,assets:[]}),'Track Title');
+assert.equal(releaseTitle({projectName:'Artist - Teeth & Claws - Remix',assets:[]}),'Teeth & Claws');
+assert.equal(releaseTitle({projectName:'Artist - Song - Part Two',assets:[]}),'Song - Part Two');
+assert.equal(displayTitle('A'.repeat(60)).length,TITLE_LIMIT);
+assert.equal(displayTitle('Track Title'),'Track Title');
+assert.equal(displayTitle('A'.repeat(60)).at(-1),'…');
+assert.equal(releaseTitle({...result,assets:[{role:'remix',state:'Needs confirmation',files:[{name:'Wrong - Candidate.wav'}]}]}),'Track Title');
+assert.ok(result.projectName.includes('87BPM'));
+assert.ok(result.assets[0].files[0].name.startsWith('[REMIX]'));
+console.log(JSON.stringify({passed:true,checks:['remix title precedence','metadata-free folder fallback','optional Remix suffix','track subtitle preserved','48-character display cap and ellipsis','full metadata untouched','ambiguous asset not used for title'],renderedLayoutVerified:false}));

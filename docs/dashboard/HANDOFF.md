@@ -1,5 +1,9 @@
 # GemOs dashboard — next-session handoff
 
+## Latest Group 1 phone evidence and UI update
+
+CJ’s screenshot confirms the hosted Drive scan returned the expected 3/7. The revised private /checklist now uses the remix track title (48-grapheme display cap/two-line clamp), full metadata in details and a designed Group 1 details modal; recessed-panel clipping detection is repaired. Title tests/syntax/build pass; refresh the phone page and review all seven categories and details. No new consent or folder link is needed. See [ASSETS.md](integration-tests/youtube/ASSETS.md) for evidence/limits and deployment. Real ambiguous-candidate confirmation and saved-result restoration remain unverified.
+
 ## Current Group 1 implementation checkpoint
 
 Read-only checklist scanner is privately deployed at https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/checklist. See [ASSETS.md](integration-tests/youtube/ASSETS.md) for contract, tests and consent steps. User next: enable Drive API if needed, add Drive metadata read permission to the existing Google connection, paste the supplied Gelato 41 folder and Sync. Its observed sample should yield 3/7 with no renaming. Hosted Drive consent/scan and rendered appearance remain unverified; assistant connector reads are separate evidence. Buffer/scheduling remains unconnected. No new credentials or sample links are needed.

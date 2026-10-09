@@ -38,3 +38,7 @@ The original full specification is retained as [historical provenance](../../../
 ## Confirmed readiness states — 9 October 2026
 
 Use the file convention and rules in USAGE-AND-CONNECTIONS.md. Filename differences alone do not block readiness. An unclear asset role or competing eligible candidates show Needs confirmation, not Pass or a plain Missing result. Keep asset rows informational; candidate review belongs in Release details. Do not count unresolved categories as ready. Folder/filename conventions and this state are approved requirements; the separate private scanner page now implements these states; canonical preview labels remain legacy. Hosted scan and rendered acceptance remain unverified. See ../integration-tests/youtube/ASSETS.md.
+
+## Checklist title and Release details — 9 October 2026
+
+The private test uses the remix track title, with original project folder metadata retained in details. Display cap: 48 graphemes including ellipsis; maximum two visual heading lines; full title available in details and accessible naming. This limits display only, not input filenames. Asset labels may wrap. Release details uses Group 1 materials/type, sticky heading/44px close target, readiness/freshness summary, status badges, wrapped filenames and styled candidate selectors. Informational dashboard rows remain untappable. Overflow detection includes the recessed panel. These changes are implemented in the private test; revised rendered fit is not yet verified. See ../integration-tests/youtube/ASSETS.md.

@@ -117,3 +117,7 @@ Next: scope read-only scanning against the supplied Gelato 41 folder using flexi
 ## Current Group 1 checklist implementation
 
 Read-only slice built, tested and privately deployed; see [ASSETS.md](integration-tests/youtube/ASSETS.md). Next: Drive metadata consent and hosted Gelato 41 scan; expected sample 3/7. Browser/phone layout and live access unverified. Continue release-buffer source decisions after this test; no publishing is connected.
+
+## Group 1 hosted scan and UI follow-up
+
+CJ’s Android screenshot shows the expected 3/7 live scan. Track-only heading (48-grapheme display limit/two-line clamp) and Group 1-styled Release details are deployed; full metadata remains available. Next: phone review after refresh, then real candidate association/restoration checks when suitable data exists. No repeated consent is required for this UI update. See integration-tests/youtube/ASSETS.md.

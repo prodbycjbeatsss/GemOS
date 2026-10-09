@@ -1,6 +1,6 @@
 # Group 1 — release buffer and readiness
 
-Updated 9 October 2026. Visual reference finalised by CJ for this review; the separate read-only scanner is implemented/deployed, with hosted Drive access still unverified; the release buffer remains unconnected. Preserve the accepted normal visual layout. Shared design: [master design system](../../DESIGN_SYSTEM.md).
+Updated 9 October 2026. Visual reference finalised by CJ for this review; the separate read-only scanner is implemented/deployed, with a successful hosted sample scan evidenced by CJ’s screenshot; the release buffer remains unconnected. Preserve the accepted normal visual layout. Shared design: [master design system](../../DESIGN_SYSTEM.md).
 
 ## 1.1 Release Buffer
 
@@ -94,3 +94,7 @@ The manifest records asset roles, chosen Drive folder/file IDs and required sets
 ## Current implementation evidence
 
 See [ASSETS.md](../integration-tests/youtube/ASSETS.md). The scoped test stores one project selection/associations/check result per owner in existing D1; it does not settle a full release catalogue store. Eligible unique role matches, ZIP/7z, WIP exclusion, ambiguity review and six-clip checks are covered by controlled tests. Assistant Drive reads succeeded, but deployed Drive consent/scan, real association restoration and phone fit remain unverified. No publisher or scheduling connection exists.
+
+### Latest hosted evidence — 9 October 2026
+
+CJ supplied an Android screenshot showing saved Drive read permission, successful scan completion and 3/7 for the sample. This verifies that sample’s hosted read/display, not all file rules, archive contents, ambiguous association or refresh restoration. Title/details UI changes are deployed; refreshed rendered acceptance remains open. See ../integration-tests/youtube/ASSETS.md.
