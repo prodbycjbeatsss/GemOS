@@ -146,3 +146,8 @@ CJ confirmed release metadata displays on Android; the trophy lacked the 12px bo
 ### 9 October — one saved connection for both cards
 
 CJ authorised upgrading the existing Google connection. The private test now has a supported Worker/D1 backend, encrypted per-user token storage, offline OAuth callback, server refresh and a bounded read proxy used by both cards after configuration. The legacy browser connection remains active until setup is complete. Runtime encryption key and callback URI are configured; the existing Web client's ID/secret and authorised callback remain required before real saved access can be enabled. [Backend contract and setup](integration-tests/youtube/BACKEND.md) record exact steps. Synthetic backend/frontend checks and production build pass; live Google, hosted token writes/refresh and rendering are unverified. Google Testing mode limits refresh tokens to seven days. No capture scheduler or view rankings are connected by this upgrade.
+
+
+### 9 October — runtime credentials applied
+
+CJ supplied the existing Web OAuth client details and reports adding the authorised callback URL. Client ID and client secret were configured using native Sites runtime tools; the client secret is marked secret. The existing encryption key was retained. Redeployment of the existing private version succeeded with the new environment revision. No credential values or uploaded file contents were added to the repository. Next: CJ opens the same test page, approves Connect YouTube once and verifies restoration after refresh. Real Google callback/token writes and refresh are still unverified; automatic snapshot capture remains pending.

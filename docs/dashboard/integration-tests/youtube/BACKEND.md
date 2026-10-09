@@ -8,7 +8,7 @@ The private test has been migrated from static HTML to the supported Sites Vinex
 
 Routes: `/api/youtube/status`, `/start`, `/callback`, `/query`, `/disconnect` under the same prefix. The callback is not the platform-reserved `/callback`. Sites still handles access to this private page. No second Google connection is added for 2.2.
 
-## Remaining Google setup
+## Google setup — credentials configured; live approval pending
 
 On the **existing Web application OAuth client**, add this exact authorised redirect URI:
 
@@ -16,7 +16,7 @@ On the **existing Web application OAuth client**, add this exact authorised redi
 
 The existing authorised JavaScript origin stays unchanged. Server runtime needs `GOOGLE_CLIENT_ID` and secret `GOOGLE_CLIENT_SECRET` for that same client. Configure these through native Sites runtime environment tools; never commit client credential JSON, secrets, real token data or private reports. `GOOGLE_REDIRECT_URI` and secret `YOUTUBE_TOKEN_KEY` are already configured via the supported runtime tools. The encryption key must be retained; replacing it invalidates decryptability of stored connections. No credentials are in this repository.
 
-After those values are set and the saved version deployed to apply them, Connect YouTube requests Google's offline read-only authorisation once. A successful callback saves access and refresh tokens, after checking both scopes and owned channels. Both cards then use the same server connection. Existing browser tokens cannot be converted into refresh tokens.
+The client ID and client secret were configured through native Sites runtime tools on 9 October and applied by redeploying the existing version. CJ reports adding the callback URI. The uploaded credential contents were not placed in repository files. Connect YouTube now requests Google's offline read-only authorisation once. A successful callback saves access and refresh tokens, after checking both scopes and owned channels. Both cards then use the same server connection. Existing browser tokens cannot be converted into refresh tokens.
 
 Google external **Testing** mode expires refresh tokens after seven days for these scopes. Production consent status requires a separate explicit change; do not promise permanent login or silently change the consent status. Revocation/expiry shows Connect again. See [Google's server flow](https://developers.google.com/identity/protocols/oauth2/web-server) and [refresh-token expiry](https://developers.google.com/identity/protocols/oauth2#expiration).
 
