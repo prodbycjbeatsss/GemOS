@@ -297,3 +297,10 @@ CJ requested visible video titles in the importer. Display an Included Shorts li
 ## 2026-10-09 — Analytics reporting ranges and placement
 
 CJ confirmed 7, 28, 90 and 365 days, with 28 default, and requested the selector beneath platform pills with metric tiles moved lower inside the recess. Implement this in the existing private YouTube sample importer, preserving normal card size and materials. Use equal-length adjacent current/previous activity windows, exact reporting dates and Google's aggregate percentage unchanged. Changed-range requests must not retain old results under a new range; automatically Sync after a loaded report's range changes. Canonical previews and the frozen 24-hour leaderboard remain unchanged. Source coverage and real longer-range Studio agreement remain to verify.
+
+
+## 2026-10-09 — Compact ranges and honest sync feedback
+
+CJ rejected the range dropdown as visually dull and too tall, required the recess to remain matched to 2.2, and requested a rotating circular-arrow Sync icon with current-stage/final-status feedback. Replace the dropdown with compact single-select day pills, preserve the chosen day windows, set normal recess to 575/583px and retain accessibility reflow. Drive messages from actual requests, stop animation on success/failure/cancellation, honour reduced motion, and show last successful import time in a small lower-recess status area. Leave the remaining space clear.
+
+Clarify scope without jargon: intended 2.1 is all short-form content for selected platforms/date range; test remains selected Shorts only; 2.2 is one release's six clips across three platforms (up to 18 short uploads). CJ raised a shared header template; scope label/main result/timing is a proposal pending final wording, not a new channel-wide connection or canonical redesign.

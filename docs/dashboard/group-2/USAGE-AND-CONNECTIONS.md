@@ -81,3 +81,8 @@ Supplied API details and Studio export confirm signed period Likes. The isolated
 ### Optional reporting ranges — confirmed 9 October 2026
 
 CJ approved 7/28/90/365-day activity windows with 28 default. Each selected window uses the immediately preceding non-overlapping equal-length window for comparison, only when compatible coverage is verified. This supersedes the 28-day-only restriction for optional analytics ranges; the shared All-tab coverage/boundary rules still apply and cross-platform support is untested. The isolated sample importer implements these ranges with exact dates and source aggregate percentages; no unweighted average is calculated. Range changes clear mismatched results and request new data. The 24-hour leaderboard contract is unchanged. Canonical mock previews remain unchanged.
+
+
+### Scope clarity and sync stages — 9 October 2026
+
+2.1 is intended to cover all short-form content on the selected platform(s) for the reporting period, independently of project selection. 2.2 covers one selected release: six source clips across three platforms, up to 18 short uploads. The live test remains a 1–5-video sample and now says Selected Shorts only; this update adds no channel-wide enumeration. Sync feedback reflects actual ownership/cutoff/current/previous requests, followed by success, warnings or failure; last import time does not imply the source has data through today. The status area uses a small part of the lower recess and leaves other space clear.

@@ -3,7 +3,8 @@
   const $ = id => document.getElementById(id);
   const scopes = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
   const metrics = ['views', 'averageViewPercentage', 'likes', 'subscribersGained', 'shares'];
-  let token = null, expiresAt = 0, expiryTimer, connectTimer, generation = 0, busy = false, report = null, opener;
+  let token = null, expiresAt = 0, expiryTimer, connectTimer, generation = 0, busy = false, report = null, opener, syncing = false;
+  let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
   const configKey = 'gemos-youtube-client-v1';
   function removeSession() { try { sessionStorage.removeItem(sessionKey); } catch {} }
@@ -29,6 +30,7 @@
       $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
       if (data.items.some(item => item.id === saved.channel)) $('channel').value = saved.channel;
       status('Connected · read-only. Session restored after refresh.');
+      showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
@@ -58,27 +60,48 @@
     if (!unique.length || unique.length > 5) throw new Error('Select 1–5 distinct Shorts.');
     return unique;
   }
+  function showSync(heading, message, footer) {
+    syncState = { heading, message, footer };
+    $('sync-heading').textContent = heading;
+    $('sync-message').textContent = message;
+    document.querySelector('.sync-status').textContent = footer;
+    $('last-import').textContent = report ? 'Last import · ' + new Date(report.fetchedAt).toLocaleString('en-GB') : 'No successful import yet.';
+    fitRecess();
+  }
+  function fitRecess() {
+    // Normal geometry matches 2.2; only enlarged/overflowing content invokes reflow.
+    requestAnimationFrame(() => {
+      const dock = document.querySelector('.dock');
+      dock.classList.remove('needs-reflow');
+      if (dock.scrollHeight > dock.clientHeight + 1) dock.classList.add('needs-reflow');
+    });
+  }
   function controls() {
     const connected = Boolean(token && Date.now() < expiresAt);
     $('connect').disabled = busy;
     $('disconnect').disabled = !connected && !busy;
     $('channel').disabled = !connected || busy;
     $('sync').disabled = !connected || busy || !$('channel').value;
-    document.querySelector('[data-sync-card]').disabled = $('sync').disabled;
-    for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date', 'date-range']) $(id).disabled = busy;
+    const cardSync = document.querySelector('[data-sync-card]');
+    cardSync.disabled = $('sync').disabled;
+    cardSync.classList.toggle('is-syncing', syncing);
+    cardSync.setAttribute('aria-busy', String(syncing));
+    cardSync.querySelector('span').textContent = syncing ? 'Syncing' : 'Sync';
+    document.querySelectorAll('[data-range]').forEach(button => { button.disabled = busy; });
+    for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date']) $(id).disabled = busy;
   }
   function clearConnection(message = 'Disconnected. Imported data cleared.') {
-    generation++; token = null; expiresAt = 0; busy = false;
+    generation++; token = null; expiresAt = 0; busy = false; syncing = false;
     removeSession();
     clearTimeout(expiryTimer); clearTimeout(connectTimer);
     $('channel').replaceChildren(new Option('Connect to select your channel', ''));
-    report = null; status(message); feedback('Nothing imported yet.'); render(); controls();
+    report = null; status(message); feedback('Nothing imported yet.'); render(); showSync('Not connected', 'Connect and choose your Shorts to import.', 'Not synced'); controls();
   }
   function expire() {
-    generation++; token = null; expiresAt = 0; busy = false;
+    generation++; token = null; expiresAt = 0; busy = false; syncing = false;
     removeSession();
     status('Session expired. Connect again to Sync.');
-    feedback(report ? 'Previous import retained. It has not been refreshed.' : 'Connect again to import.'); controls();
+    feedback(report ? 'Previous import retained. It has not been refreshed.' : 'Connect again to import.'); showSync('Reconnect to sync', report ? 'Your previous import is still displayed. Connect again to refresh it.' : 'Connect again to import your selected Shorts.', 'Session expired'); controls();
   }
   async function api(base, params, session) {
     if (!token || Date.now() >= expiresAt) { expire(); throw new Error('Session expired. Connect again.'); }
@@ -117,6 +140,7 @@
           const data = await api('https://www.googleapis.com/youtube/v3/channels', { part: 'snippet', mine: 'true', maxResults: '50' }, session);
           if (!data.items?.length) throw new Error('No owned YouTube channel was returned for this account.');
           $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
+          showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
           status(rememberSession() ? 'Connected · read-only. Kept across refreshes in this tab until expiry.' : 'Connected · read-only. Browser storage is blocked; refresh will require reconnecting.');
         } catch (error) { if (session === generation) clearConnection(error.message); }
         finally { if (session === generation) { busy = false; controls(); } }
@@ -153,14 +177,14 @@
     let ids, requested, rangeDays;
     try {
       ids = idsFromText($('videos').value); requested = date($('end-date').value);
-      rangeDays = Number($('date-range').value);
+      rangeDays = Number(document.querySelector('[data-range][aria-checked=true]').dataset.range);
       if (![7, 28, 90, 365].includes(rangeDays)) throw new Error('Choose one of the supported date ranges.');
       if (requested >= new Date().toISOString().slice(0, 10)) throw new Error('Choose a day before today. Recent data may still be unavailable.');
       if (!$('confirm-shorts').checked) throw new Error('Check the selected videos are Shorts in Studio, then tick the confirmation.');
       if (!$('channel').value) throw new Error('Connect and choose your channel.');
-    } catch (error) { feedback(error.message); return; }
+    } catch (error) { feedback(error.message); showSync('Check your selection', error.message, 'Not synced'); return; }
     const session = generation, channel = $('channel').value;
-    busy = true; controls(); feedback('Checking videos and importing reports…');
+    busy = true; syncing = true; controls(); feedback('Checking videos and importing reports…'); showSync('Syncing', 'Checking the selected videos belong to your channel…', 'Syncing…');
     try {
       const videos = await api('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet', id: ids.join(',') }, session);
       if (videos.items?.length !== ids.length || videos.items.some(item => item.snippet.channelId !== channel)) throw new Error('Every selected video must be available and owned by the selected channel.');
@@ -168,22 +192,30 @@
       const query = params => api('https://youtubeanalytics.googleapis.com/v2/reports', { ...base, ...params }, session);
       // Ask for the newest day first: a long range must not truncate its latest rows.
       const probeStart = shift(requested, -Math.max(83, rangeDays - 1));
+      showSync('Syncing', 'Finding the latest available reporting day…', 'Syncing…');
       const daily = mappedRows(await query({ startDate: probeStart, endDate: requested, dimensions: 'day', sort: '-day', maxResults: '1' }), ['day']);
       const days = daily.map(row => date(row.day));
       if (!days.length) throw new Error('No daily data returned. Missing data has not been treated as zero. Try older Shorts or a different date.');
       if (days.some(day => day > requested || day < probeStart)) throw new Error('Unexpected report dates. Import stopped.');
       const end = days.sort().at(-1), start = shift(end, 1 - rangeDays), previousEnd = shift(start, -1), previousStart = shift(start, -rangeDays);
       const warnings = [];
+      showSync('Syncing', 'Importing your selected ' + rangeDays + '-day totals…', 'Syncing…');
       const current = aggregate(await query({ startDate: start, endDate: end }), 'current', warnings);
+      showSync('Syncing', 'Importing the preceding period for report details…', 'Syncing…');
       const previous = aggregate(await query({ startDate: previousStart, endDate: previousEnd }), 'previous', warnings);
       if (session !== generation) return;
       report = { source: 'YouTube Analytics API v2', scope: 'User-confirmed selected Shorts sample; not channel-wide', channelId: channel, channelTitle: $('channel').selectedOptions[0].textContent,
         videos: videos.items.map(item => ({ id: item.id, title: item.snippet.title })), requestedEnd: requested, rangeDays, currentPeriod: { start, end }, previousPeriod: { start: previousStart, end: previousEnd },
         reportingTimezone: 'America/Los_Angeles', latestReturnedDay: end, fetchedAt: new Date().toISOString(), current, previous, warnings,
         coverage: 'Latest observed daily row; missing days are not proof of zero activity. Comparison and target withheld until coverage is verified.' };
-      render(); feedback(warnings.length ? 'Imported with unavailable metrics: ' + [...new Set(warnings.map(item => item.period + ' ' + item.metric))].join(', ') + '. See Analytics details.' : 'Imported selected Shorts. Compare these exact videos and dates with Studio.');
-    } catch (error) { if (session === generation) feedback((error.name === 'TimeoutError' ? 'Google timed out. Try Sync again.' : error.message) + (report ? ' Previous successful import retained.' : '')); }
-    finally { if (session === generation) { busy = false; controls(); } }
+      render(); showSync(warnings.length ? 'Synced with unavailable metrics' : 'Synced', warnings.length ? 'Some metrics are unavailable. Open Analytics details for the source warnings.' : 'Your selected Shorts are up to date for the returned reporting period.', 'Synced · ' + new Date(report.fetchedAt).toLocaleTimeString('en-GB')); feedback(warnings.length ? 'Imported with unavailable metrics: ' + [...new Set(warnings.map(item => item.period + ' ' + item.metric))].join(', ') + '. See Analytics details.' : 'Imported selected Shorts. Compare these exact videos and dates with Studio.');
+    } catch (error) {
+      if (session === generation) {
+        const message = (error.name === 'TimeoutError' ? 'Google timed out. Try Sync again.' : error.message) + (report ? ' Previous successful import retained.' : '');
+        feedback(message); showSync('Sync failed', report ? 'Could not refresh. Your previous import is still displayed.' : 'Could not import. See the message above the card.', 'Sync failed');
+      }
+    }
+    finally { if (session === generation) { busy = false; syncing = false; controls(); } }
   }
   function render() {
     $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
@@ -210,7 +242,7 @@
     $('target-label').textContent = 'Selected Shorts only'; $('target-value').textContent = report ? report.videos.length + ' videos' : 'No sample imported';
     $('target-state').textContent = 'Test'; $('target-bar').hidden = true;
     $('target-note').textContent = 'Comparison and target hidden until report coverage is verified. TikTok and Reels are not connected.';
-    document.querySelector('.sync-status').textContent = report ? 'Imported · ' + new Date(report.fetchedAt).toLocaleTimeString('en-GB') : 'Not synced';
+    showSync(syncState.heading, syncState.message, syncState.footer);
   }
   function details() {
     opener = document.activeElement;
@@ -225,12 +257,27 @@
     if (revokeToken && window.google?.accounts?.oauth2) google.accounts.oauth2.revoke(revokeToken, () => {});
   });
   $('sync').addEventListener('click', sync); document.querySelector('[data-sync-card]').addEventListener('click', sync);
-  $('date-range').addEventListener('change', () => {
+  const rangeButtons = [...document.querySelectorAll('[data-range]')];
+  function chooseRange(button) {
+    if (busy || button.getAttribute('aria-checked') === 'true') return;
+    rangeButtons.forEach(item => { const selected = item === button; item.setAttribute('aria-checked', String(selected)); item.tabIndex = selected ? 0 : -1; });
     const hadReport = Boolean(report);
     report = null; render();
     feedback('Date range changed. Sync to import this range.');
+    showSync('Ready to sync', 'Import your selected ' + button.dataset.range + '-day range.', 'Not synced');
     if (hadReport) sync();
+  }
+  rangeButtons.forEach((button, index) => {
+    button.addEventListener('click', () => chooseRange(button));
+    button.addEventListener('keydown', event => {
+      const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
+      if (!keys.includes(event.key) || busy) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? rangeButtons.length-1 : (index + (['ArrowRight','ArrowDown'].includes(event.key) ? 1 : -1) + rangeButtons.length) % rangeButtons.length;
+      rangeButtons[next].focus(); chooseRange(rangeButtons[next]);
+    });
   });
+  window.addEventListener('resize', fitRecess);
   $('open-analytics').addEventListener('click', details);
   $('close-details').addEventListener('click', () => $('details').close());
   $('details').addEventListener('close', () => opener?.focus());
@@ -238,7 +285,7 @@
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
     if (id === 'client-id') { clearConnection(); return; }
     if (id === 'channel' && token) rememberSession();
-    report = null; render(); feedback('Selection changed. Sync to import this sample.');
+    report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });
   $('end-date').value = shift(new Date().toISOString().slice(0, 10), -3);
   $('origin').textContent = location.origin;

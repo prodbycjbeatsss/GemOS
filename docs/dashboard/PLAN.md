@@ -64,3 +64,8 @@ Studio follow-up: supplied export confirms negative period Likes, so preserve si
 ## Confirmed range controls — 9 October 2026
 
 CJ approved 7/28/90/365-day ranges with 28 as default, placed beneath platform pills inside the analytics recess, with tiles moved lower. Implemented in the isolated importer and checked with controlled API responses. Earlier 28-day-only wording describes the canonical preview/default; this decision authorises optional ranges, without claiming cross-platform support or changing the 24-hour leaderboard. Each selected range uses activity within N days, with the preceding N days in details. Source coverage remains unverified; growth/targets stay hidden. Next: user test longer ranges and exact Studio agreement, then scope whole-channel Shorts import.
+
+
+### Latest controls and scope follow-up
+
+The isolated importer replaces the disliked dropdown with compact range pills and adds import stages, spinner and completion/failure feedback. Normal recess is explicitly matched to 2.2 (575/583px); controlled state checks passed, revised browser fit remains unverified. Next: CJ phone review, supported browser verification, then scope whole-channel short-form import. 2.1 is overall selected-platform activity; 2.2 is release-specific. Proposed shared header roles: scope label, main result, timing/freshness; record confirmed wording before altering the canonical references.

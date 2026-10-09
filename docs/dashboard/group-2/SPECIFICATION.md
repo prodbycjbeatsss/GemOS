@@ -64,3 +64,10 @@ The [YouTube test](../integration-tests/youtube/README.md) reuses 2.1 materials 
 ## Approved analytics range control — 9 October 2026
 
 CJ confirmed 7/28/90/365-day ranges, 28 default, and placement directly below platform pills within the analytics recess. Move metric tiles down to accommodate it without enlarging the normal card. The isolated importer implements a labelled native select with a 44px minimum height, existing lavender materials and a 16px gap to tiles. Controlled mobile/desktop tests preserve card height; enlarged text retains reflow. Canonical preview is unchanged; this records the approved direction and the experiment's implementation separately.
+
+
+### Range-control refinement and status — 9 October 2026
+
+CJ rejected the native dropdown. The isolated test now uses compact 7d/28d/90d/365d pills under the platforms, 44px tap rows with 28px selected surfaces and 4px to the metric grid. Match normal 2.2 recess dimensions (575px below 640px, 583px above); permit reflow for overflowing accessible content. Keep metrics near the top; a small lower status area provides the requested progress/completion feedback, with remaining space left clear. Sync rotates only during actual requests and respects reduced motion. Browser verification is pending; state checks passed. Canonical HTML remains unchanged.
+
+CJ raised reusable card text roles. Proposed: scope label → main result → timing/freshness. Main results can be numbers, readiness or rankings; do not impose identical sentences or replace useful date/snapshot lines. Suggested final scope wording varies with selection: All your short-form videos / All your Shorts on 2.1; Selected release on 2.2. These final labels/template are proposals. The current sample test uses Selected Shorts only.
