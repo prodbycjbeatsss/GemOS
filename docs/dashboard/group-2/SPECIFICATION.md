@@ -55,3 +55,7 @@ The matched-panel checks covered 32 batch/platform states at 320, 390, 840 and 1
 Earlier detailed review history is retained in [archived Group 2 document](../../../archives/dashboard/2026-10-08/pre-group-folders/GROUP-2.md). Current source authority is this spec, usage notes and master design document.
 
 
+
+## Separate integration experiment
+
+The [YouTube test](../integration-tests/youtube/README.md) reuses 2.1 materials in a standalone working page. Its setup panel, sample-only heading and flexible accessibility layout do not amend this canonical group geometry. Real OAuth and metrics remain to verify.

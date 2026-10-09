@@ -268,3 +268,10 @@ At CJ’s request, the dashboard handoff now explains GemOs’s broader purpose,
 
 **Owner:** CJ
 
+
+
+## 2026-10-09 — Browser-only YouTube validation checkpoint
+
+CJ accepted a minimal browser-only Google Identity Services OAuth test after requesting easier alternatives to a backend-first setup. Build and test it now; guide Google project/client configuration and user consent next; compare a real selected Shorts sample with Studio before expanding. Manual Connect/Sync uses only `yt-analytics.readonly` and `youtube.readonly`, a public client ID and in-memory short-lived access token. No client secret, refresh-token storage, paid analytics product or final backend/hosting architecture is selected. Private Sites hosts this isolated test only.
+
+Implementation scopes the initial query to 1–5 user-confirmed Shorts, with ownership checked; it is explicitly a sample, not the accepted whole-channel card. Google basic report combinations support selected-video aggregate percentage/engagement; the test must not average daily percentages. Probe all metrics together for an observed daily cutoff, then import adjacent current/previous 28-day aggregates. Missing is unavailable; comparison and targets withheld pending coverage verification. Canonical reviewed previews stay unchanged. Controlled browser checks passed; real account setup, API imports, Studio agreement and unattended snapshots are not yet verified. See `docs/dashboard/integration-tests/youtube/README.md`.

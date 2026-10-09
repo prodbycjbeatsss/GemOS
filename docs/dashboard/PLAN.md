@@ -6,6 +6,8 @@ Updated 9 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This 
 
 Group folders, shared design rules and the review report are committed. Current previews contain mock figures and placeholder Sync actions. Approved R01–R03/R10 fixes and Group 2 changes are **implemented and browser-verified**; see [9 October evidence](verification/2026-10-09.md). The shared reporting window, required publishing-platform set and automatic asset-eligibility rule are now confirmed. Reference changes are complete; remaining source/scanner/infrastructure choices belong to integration work.
 
+A separate browser-only [YouTube integration test](integration-tests/youtube/README.md) is now built and privately hosted. Controlled responses passed browser checks. It imports a selected Shorts sample, with no secret or refresh-token backend. This does not change the canonical previews, final app stack or unattended capture requirements. Real Google access and Studio comparison are next.
+
 ## Confirmed direction
 
 - Preserve the accepted layouts, materials, coloured brand icons, fixed normal group geometry and matched Group 2 panels. Use [shared design rules](../DESIGN_SYSTEM.md) and each group’s spec/usage notes.
@@ -27,7 +29,7 @@ Group folders, shared design rules and the review report are committed. Current 
 | 2. Apply approved reference fixes | Completed and browser-verified. R01: Group 1 third-date clipping with fallback fonts. R02: enlarged-text access/reflow. R03: unavailable CDN error. R10: stale gap-count comment. Preserve accepted normal appearance; verify conditions in the review. |
 | 3. Apply Group 2 changes | Completed and browser-verified. Replace Stayed to watch with Likes; retain audience-growth tiles; update Reels label as agreed; add confirmed snapshot subtitle/year dates. Preserve panel/header alignment and fixed sizing; test actual rendered fit. |
 | 4. Verify and document | Completed; evidence linked above. Exercise relevant widths, states, enlarged text, keyboard/dialogs and no-overflow conditions. Record evidence and limits, update specs/report resolution notes and commit. |
-| 5. Scope a small YouTube import | Present concrete test scope to CJ, verify authorised access and compare a sample’s source, period and definitions with Studio. No new account/test setup has been authorised yet. |
+| 5. Scope a small YouTube import | Present concrete test scope to CJ, verify authorised access and compare a sample’s source, period and definitions with Studio. CJ authorised a browser-only OAuth/manual test. [Source/setup/evidence](integration-tests/youtube/README.md) and private page are built; real Google setup, consent, API and Studio verification remain pending. |
 | 6. Validate TikTok/Reels | Check account eligibility, follower attribution, watch metrics, activity-window support and snapshot freshness. Revise feasibility evidence, not product choices silently. |
 | 7. Choose automation | After useful imports work, agree scheduler/hosting, notification delivery and retries. Assess Activepieces only if it saves work. |
 | 8. Review Groups 3–5 | Continue purpose/data/design decisions card by card using the all-card feasibility research. These groups have no approved final implementation. |

@@ -32,3 +32,7 @@ Read the master and both documents for the affected group before changes. Update
 
 - [HTML review report](REVIEW.html) — findings, evidence, completed doc fixes and decisions still needed.
 
+
+## First integration test
+
+[YouTube manual import test — setup, source and controlled verification](integration-tests/youtube/README.md). Private hosted experiment; actual Google authorisation and Studio comparison pending. Reviewed previews remain mock references.
