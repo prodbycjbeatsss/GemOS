@@ -53,3 +53,9 @@ Additional controlled checks passed: nullable/negative supporting metrics, stric
 ## Studio export evidence — 9 October 2026
 
 CJ supplied API details and a Studio export confirming that period Likes can be negative. Private sample figures, titles and identifiers are omitted from this repository. The export and API periods differ, so exact-window agreement remains unverified. Preserve signed whole-number Likes with the note **Source-reported period value**; do not infer removals, corrections or net-likes semantics. Controlled regressions cover numeric/string signed Likes, partial missing metrics and fractional-count rejection.
+
+## Included Shorts — 9 October 2026
+
+CJ requested visible titles so the contributing videos are clear. An Included Shorts panel now sits immediately above the analytics card, showing the full imported title and video ID for each selected video after successful Sync. It identifies the videos in the currently displayed report, not a pending selection. Failed retries retain the last successful report/list; selection changes and disconnect clear both. Titles are rendered as text, so returned markup cannot become executable HTML. The canonical preview is unchanged.
+
+Controlled browser checks passed for one and five videos, long titles at 320/390/840/1280px without page horizontal overflow, literal markup in titles, failed-import preservation, clearing after selection changes and refresh, plus existing import/auth regressions. No private user titles or figures were added to source or fixtures.

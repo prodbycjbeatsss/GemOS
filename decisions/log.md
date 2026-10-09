@@ -287,3 +287,8 @@ The strict aggregate validator was a local failure point. Unexpected/missing sup
 ## 2026-10-09 — Preserve signed source-reported YouTube Likes
 
 User-supplied API details and Studio export confirm signed period Likes. Preserve signed whole-number Likes in the isolated test, with source-reported wording and no inferred cause or net-likes definition. Other invalid/missing metrics remain unavailable. Export/API periods differ; exact-window verification remains pending. Private figures and identifiers are omitted. Controlled regressions passed.
+
+
+## 2026-10-09 — Show the imported Shorts scope
+
+CJ requested visible video titles in the importer. Display an Included Shorts list above the isolated test analytics card, with imported titles and IDs for the successful report. Keep scope and results together on failed retry; clear both when the selection changes or disconnects. Render external titles as text. This adds visibility to the manual sample import without changing canonical card designs or metric definitions.

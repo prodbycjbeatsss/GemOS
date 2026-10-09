@@ -182,6 +182,13 @@
     finally { if (session === generation) { busy = false; controls(); } }
   }
   function render() {
+    $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
+    $('included-videos').replaceChildren(...(report?.videos || []).map(video => {
+      const item = document.createElement('li');
+      const title = document.createElement('span'); title.textContent = video.title || 'Title unavailable';
+      const id = document.createElement('span'); id.className = 'video-id'; id.textContent = 'Video ID · ' + video.id;
+      item.append(title, id); return item;
+    }));
     const values = report?.current;
     const number = value => value == null ? 'Unavailable' : value.toLocaleString('en-GB');
     $('headline-views').textContent = values?.views == null ? '— views' : number(values.views) + ' views';

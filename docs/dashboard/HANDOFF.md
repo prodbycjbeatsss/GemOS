@@ -99,3 +99,7 @@ Current captures are committed under docs/dashboard/verification/2026-10-09/. Te
 ## Latest Studio evidence — 9 October 2026
 
 CJ supplied API details and a Studio export establishing that negative period Likes are displayed by Studio. Private sample figures and identifiers are omitted. The periods differ, so exact-window agreement remains unverified. The isolated test preserves signed whole-number Likes without inferring their cause. Next: retry signed Likes, verify refresh, then assess channel-wide import and coverage.
+
+## Importer title visibility — 9 October 2026
+
+CJ requested knowing which Shorts contribute to the imported analytics. The isolated test now displays an Included Shorts list above the card with imported titles/video IDs. It follows the successful report, retains that scope on failed retries and clears on selection changes/disconnect. Controlled five-video/long-title/mobile/security checks passed; canonical cards remain unchanged.
