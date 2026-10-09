@@ -1,12 +1,36 @@
 # GemOs dashboard — next-session handoff
 
+## Next session: review and connect Group 1 (CJ's “1.0”)
+
+CJ approved moving back to Group 1 on 9 October 2026 after the Group 2 design repair. Do not keep asking for new YouTube links or reconnecting accounts to finish this chat. Group 2 is parked with explicit verification limits; it does not block Group 1 review/integration scoping.
+
+| Card | Handoff status | Remaining check |
+|---|---|---|
+| 2.1 | Current selected-Shorts test design/behaviour finalised; CJ reports real imports working. | Refreshed Android appearance after shared styling/font changes; complete coverage/Studio agreement and production whole-channel scope remain open. |
+| 2.2 | Implementation accepted as complete; schedule reaches the endpoint and saves scheduled run records. | Real qualifying view capture, displayed count/rank and frozen-result restoration at the first release. Do not call this verified until that happens. |
+| Shared design | Matching gradient/glass tokens, header anatomy, recess insets and status styles implemented; source/state checks and production build pass. | Rendered Android/desktop comparison, font delivery, enlarged-text fit and list-edge swipe confirmation. No supported current screenshot capture was available. |
+
+### Start the new session here
+
+1. Read AGENTS.md, the dashboard index, DESIGN_SYSTEM.md, DESIGN_TOKENS.md, PLAN.md, and Group 1's SPECIFICATION.md / USAGE-AND-CONNECTIONS.md; inspect its accepted preview. Preserve Group 1's distinct layout and materials.
+2. Review what 1.1 Release Buffer and 1.2 Pre Release Checklist need from real records before changing code. Identify the authoritative project/release store, asset folder/manifest, and actual scheduling-confirmation source. Check available connections rather than assuming access.
+3. Resolve one current mismatch with CJ: Group 1's earlier accepted contract requires six Tuesday–Sunday Shorts and 19 platform uploads, while CJ now makes three Shorts per release. Three is already valid in the 2.2 test. Do not silently rewrite the Group 1 buffer/checklist requirement or impose six on CJ; confirm whether its release manifest should support a variable required count.
+4. Recommend a small read-only asset/checklist slice first if the file source is available, then release-buffer calculations backed by confirmed scheduling records. This ordering is a recommendation, not a new locked product decision. Scheduling requests, planned dates and YouTube authentication alone do not prove scheduled uploads.
+5. Reuse the saved Google identity/connection architecture where appropriate. The existing read-only YouTube grant does not establish Drive access; determine the additional permission/consent needed before a real file scan. Keep secrets in runtime configuration and out of chat/repository files. Do not rebuild login or request credentials by default.
+
+No Group 1 connection or publication is claimed working yet. Asset eligibility remains correct project/type, no case-insensitive literal (WIP) in the filename, and a complete required manifest; scanner failure/no access must not appear as missing files. Stem-set/type matching and freshness rules still need definition.
+
+For the first future release, keep a public owned Short selected before 24h through 24h15m; verify the stored source/timestamps/count, ranking and refresh persistence. Missed July snapshots cannot be recreated from today's lifetime counts. No extra upload is required just to close this session. Automatic advancement of 2.1's date cutoff and historical release reporting remain proposals.
+
+Private test: [GemOS YouTube import test](https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site). Latest design source checkpoint: [cc4616c](https://github.com/prodbycjbeatsss/GemOS/commit/cc4616c6386b0c153c6dc8316cb340c8f05fe28c). Sites source SHA: `4ae76d96cf075cb6147c68e3b90de0445881ce69`; successfully deployed saved version: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_5cffddb9361c8191888bc4ce0151011d`. Private audience and runtime credentials are unchanged.
+
 ## Latest design checkpoint — 9 October 2026
 
 CJ requested cross-card design consistency. The private test now uses shared Group 2 material/geometry/typography tokens and header anatomy. Fixed unequal desktop recess padding, divergent heading overrides and status styles; loaded the documented fonts and rechecks overflow after loading. Accepted purple/glass colours and card-specific contents remain. See [tokens](../DESIGN_TOKENS.md), [components](group-2/COMPONENTS.md) and [current status](integration-tests/youtube/STATUS.md). CSS/state checks and build pass; supported rendered comparison remains unavailable, so verify the refreshed page on Android next. No new authentication or sample links are needed for this review. First-release real capture verification stays open.
 
 ## 9 October 2026 — current integration checkpoint
 
-CJ accepted 2.2 implementation as complete, with real first-release view capture and displayed ranking unverified. Both cards share saved read-only Google access. The five-minute checker reaches the endpoint, persists runs, and its short job-name classification fix is verified by a scheduled record at 20:05 UK plus CJ's changed sync message. Release selections and qualifying snapshots persist. The leaderboard scrolling fix now lets gestures pass into the page when rows fit or the list reaches either end, preserving normal recess/list dimensions; Android swipe verification is pending. See [STATUS](integration-tests/youtube/STATUS.md) and [CAPTURE](integration-tests/youtube/CAPTURE.md). Next: first-release verification; no need for an extra test upload. 2.1 remains working, with automatic date advancement and historical release reporting separate proposals. Canonical previews remain unchanged.
+CJ accepted 2.2 implementation as complete, with real first-release view capture and displayed ranking unverified. Both cards share saved read-only Google access. The five-minute checker reaches the endpoint, persists runs, and its short job-name classification fix is verified by a scheduled record at 20:05 UK plus CJ's changed sync message. Release selections and qualifying snapshots persist. The leaderboard scrolling fix now lets gestures pass into the page when rows fit or the list reaches either end, preserving normal recess/list dimensions; Android swipe verification is pending. See [STATUS](integration-tests/youtube/STATUS.md) and [CAPTURE](integration-tests/youtube/CAPTURE.md). First-release verification remains open without blocking the next Group 1 session; no extra test upload is needed. 2.1 remains working, with automatic date advancement and historical release reporting separate proposals. Canonical previews remain unchanged.
 
 Updated 9 October 2026 · Repository: [prodbycjbeatsss/GemOS](https://github.com/prodbycjbeatsss/GemOS) · Branch: main.
 
@@ -21,14 +45,14 @@ The original dashboard concepts cover five groups:
 | Group | Intended job | Current maturity |
 |---|---|---|
 | 1 | Release buffer, upcoming projects and asset readiness | Reviewed visual reference; approved fixes verified, live connections pending. |
-| 2 | Overall short-form performance and a release-batch leaderboard | Reviewed layout; latest reference changes implemented/verified; real imports untested. |
+| 2 | Overall short-form performance and a release-batch leaderboard | Working private selected-Shorts import test and implemented snapshot capture; first-release capture and latest rendered design remain unverified. |
 | 3 | Store revenue, email-list growth and YouTube revenue | Original concepts plus feasibility research; detailed review still ahead. |
 | 4 | AI costs and studio subscriptions | Original concepts; real billing definitions/sources still to settle. |
 | 5 | Publishing cadence and automation performance | Original concepts; require verified publications and instrumented jobs. |
 
 Longer-term direction: connect selected tools and AI assistance to the workflow, with durable knowledge/decision records and human control over consequential actions. Keep useful deterministic workflows ahead of unnecessary agent complexity. This is direction, not approval to build a full autonomous platform, send messages, publish releases or purchase services.
 
-Current work is the **design-reference and data-definition stage**. The repository contains operating instructions and reference HTML, not a finished Android app or live dashboard. CJ works primarily on a phone, so mobile usability matters, alongside the agreed desktop card groups. Final app stack, Android implementation, backend, authentication, hosting and automation engine are not settled; do not treat Kotlin or the current standalone HTML as a locked architecture. Animation planning is deferred until the app works.
+Current work combines **reviewed design references and scoped integration tests**. The repository contains operating instructions, reference HTML and a privately hosted Worker/D1 YouTube test; it is not a finished Android app or full production dashboard. CJ works primarily on a phone, so mobile usability matters, alongside the agreed desktop card groups. The final app stack and Android implementation are not settled; the private test already uses Worker/D1 hosting, saved Google OAuth and an external five-minute checker. Do not treat these test choices as a decision for the entire app; do not treat Kotlin or the current standalone HTML as a locked architecture. Animation planning is deferred until the app works.
 
 Success means the cards accurately answer what is ready, what is scheduled/published, how the content performed and what needs attention—using honest source/period/freshness labels rather than attractive mock claims. Follow the accepted design system, preserve group-specific layouts and seek confirmation for new product decisions. [Operator context](../../context/profile.md) and [priorities](../../context/priorities.md) provide wider background; older CJ-OS naming or platform lists do not override current GemOs card decisions (Group 2 covers Shorts, TikTok and Reels).
 
@@ -46,13 +70,17 @@ Continue the existing reference-card review; do not restart the project or redes
 
 Completion: distinguish implemented reference behaviour, approved queued changes, deferred product choices and untested API claims before proposing the next action. If live files disagree with this checkpoint, inspect history and later confirmed decisions; ask about a real unresolved conflict rather than guessing.
 
-## YouTube test checkpoint — 9 October 2026
+## Historical YouTube test checkpoint — initial browser-only iteration
+
+Superseded for current authentication/capture by the checkpoints above and integration STATUS.md. Do not repeat this initial setup or treat its “no backend/no client secret” statements as current.
 
 CJ approved the browser-only OAuth/manual import route after reviewing alternatives. The isolated [YouTube test and setup guide](integration-tests/youtube/README.md) now contains Connect, channel selection, 1–5 user-confirmed Shorts, manual Sync, the five requested Analytics metrics, source/period details and disconnect/expiry handling. Private test URL: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site. Controlled browser/API-fixture checks passed; CJ now reports successful read-only connection and one live successful import; agent has not inspected raw responses or verified Studio agreement. A second older video exposed the strict validator; updated handling marks only affected metrics unavailable and exposes diagnostics. Canonical previews are unchanged.
 
 Use this test for the next step: CJ reports completing his Google Cloud project, two APIs, public Web OAuth client and read-only consent. Retry the updated older-video handling and tab refresh persistence, then compare with Studio. No client secret is used. Verify the same videos/period in Studio, then document actual access and metric definitions. This is a selected sample, not whole-channel Shorts. Latest returned day is an observed cutoff, not guaranteed complete coverage; growth/targets remain hidden. No backend or unattended snapshot scheduler was selected. CJ subsequently requested refresh persistence: the short-lived token/expiry/public client ID are now retained in tab sessionStorage, restored only after a channel check, cleared on expiry/revocation/disconnect; results stay in memory. Final app hosting/stack remain open; Sites hosts only the isolated experiment.
 
-## Latest decision
+## Earlier confirmed reference decisions
+
+The next-session priorities above supersede the work order here; these product rules remain recorded unless CJ explicitly changes them.
 
 9 October 2026: CJ chose automatic file checks: an asset earns Pass when the correct project file exists, matches the required type and contains no literal (WIP) marker anywhere in its filename, checked case-insensitively. No separate manual approval is required. A marker such as (wip) or (WiP) excludes that file. Required sets must be complete: the Shorts part needs all six eligible source files; the WAV-stems part needs the required set defined by the project manifest. These checks establish file eligibility, not creative quality. Project matching, exact format validation and manifest details still need specification during scanner implementation; failed/no-access scans must not masquerade as missing files or a successful check.
 

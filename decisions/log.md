@@ -354,3 +354,8 @@ CJ accepted 2.2 implementation complete with real view capture/display unverifie
 ### 2026-10-09 — shared Group 2 design contract
 
 CJ requested fixing inconsistencies across cards 2.1/2.2. Retain the accepted purple gradient and glass fill; consolidate their shared surface, header/icon, responsive recess inset and status rules into one token/component contract. Load the already documented Inter/Poppins fonts. Preserve distinct metrics/list contents and existing source/capture behaviour. Source inspection and controlled checks are evidence; rendered phone/desktop acceptance and first-release capture remain open. See docs/DESIGN_TOKENS.md and docs/dashboard/group-2/COMPONENTS.md.
+
+
+### 2026-10-09 — move next session to Group 1
+
+CJ approved updating the handoff and returning to Group 1 review/connections in a new chat. Park 2.1 as finalised for the current selected-Shorts test and 2.2 as implementation-complete but unverified for the first real release capture. Latest rendered shared-design checks remain open. Do not block Group 1 on a new test upload or repeat Google setup. Review real Group 1 data sources and confirm the earlier six-Shorts contract against CJ's current three-Short releases before implementing it; variable manifest counts are not yet approved.
