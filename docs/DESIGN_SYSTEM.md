@@ -84,3 +84,6 @@ CJ approved matching Group 1 recessed panels as well as card heights. In the pri
 
 
 10 October checklist redesign: use compact outlined file icons with one category/format label and Ready/Missing/Needs attention status; no duplicate format subtitles or whole-tile status washes. Two-column, 64px minimum tiles; shared pair geometry remains. Details hold filenames and confirmation. Private integration implemented; rendered acceptance pending. See ASSETS.md and DESIGN_TOKENS.md.
+
+
+Current 10 October checklist amendment: eight checks in four two-column rows; Shorts uses a normal tile. File type is a muted caption under the name. Project/Stems, Beat WAV/MP3, Remix/Thumbnail, Video/Shorts order. This supersedes the seven-item full-width Shorts tile; shared pair geometry and all material tokens remain.

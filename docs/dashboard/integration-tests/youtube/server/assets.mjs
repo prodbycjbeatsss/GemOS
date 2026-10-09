@@ -1,8 +1,8 @@
 import { access, configured } from './youtube.mjs';
 export const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 const folderMime = 'application/vnd.google-apps.folder';
-const roles = ['remix','mp3','stems','project','thumbnail','video','shorts'];
-export const LABELS = ['Remix WAV','Beat MP3','Stems archive','Project ZIP','Thumbnail','YouTube video','Six Shorts'];
+const roles = ['project','stems','beatwav','mp3','remix','thumbnail','video','shorts'];
+export const LABELS = ['Project ZIP','Stems archive','Beat WAV','Beat MP3','Remix WAV','Thumbnail','YouTube video','Six Shorts'];
 class AssetError extends Error { constructor(message, status = 400) { super(message); this.status = status; } }
 const validId = value => typeof value === 'string' && /^[A-Za-z0-9_-]{10,200}$/.test(value);
 export function folderId(value) {
@@ -13,22 +13,24 @@ export function folderId(value) {
 export function compatible(file, role) {
   if (file.trashed || file.mimeType === folderMime || /\(wip\)/i.test(file.name) || !Number.isFinite(Number(file.size)) || Number(file.size) <= 0) return false;
   const ext = file.name.split('.').at(-1).toLowerCase(), mime = file.mimeType;
-  const extensions = {remix:['wav'],mp3:['mp3'],stems:['zip','7z'],project:['zip'],thumbnail:['jpg','jpeg','png','webp'],video:['mp4'],shorts:['mp4']}[role];
+  const extensions = {remix:['wav'],beatwav:['wav'],mp3:['mp3'],stems:['zip','7z'],project:['zip'],thumbnail:['jpg','jpeg','png','webp'],video:['mp4'],shorts:['mp4']}[role];
   const mimes = {wav:['audio/wav','audio/x-wav','audio/wave','audio/vnd.wave'],mp3:['audio/mpeg','audio/mp3'],zip:['application/zip','application/x-zip-compressed'], '7z':['application/x-7z-compressed'],jpg:['image/jpeg'],jpeg:['image/jpeg'],png:['image/png'],webp:['image/webp'],mp4:['video/mp4']};
   // Generic MIME does not establish a format; such files require deeper validation.
   return extensions.includes(ext) && mimes[ext].includes(mime);
 }
 function marker(file, role) {
   const name = file.name.toLowerCase();
+  if(role==='beatwav')return !marker(file,'remix') && /\[beat\]|\b(?:type beat|beat|tagged)\b/.test(name);
   return ({remix:/\[remix\]|\bremix\b/,mp3:/\[beat\]|\b(?:type beat|beat|tagged)\b/,stems:/\bstems?\b/,project:/\[zip\]|\b(?:project|release)\b/,thumbnail:/\b(?:thumbnail|artwork|cover)\b/,video:/\b(?:youtube|main)\b/,shorts:/\bshorts?\b/}[role]).test(name);
 }
 export function evaluate(files, mappings = {}, folderProblems = {}) {
-  const directories = {remix:'audio',mp3:'audio',stems:'stems',project:'project',thumbnail:'artwork',video:'artwork',shorts:'shorts'};
-  return roles.map((role,index) => {
+  const directories = {remix:'audio',beatwav:'audio',mp3:'audio',stems:'stems',project:'project',thumbnail:'artwork',video:'artwork',shorts:'shorts'};
+  const assets = roles.map((role,index) => {
     const candidates = files.filter(f=>f.directory===directories[role] && compatible(f,role));
     const marked = candidates.filter(f=>marker(f,role));
     const selectedIds = mappings[role] || [], selected = candidates.filter(f=>selectedIds.includes(f.id));
     const base = {role,label:LABELS[index],candidates:candidates.map(f=>({id:f.id,name:f.name})),files:[],count:0};
+    if(['remix','beatwav'].includes(role)&&selectedIds.some(id=>(mappings[role==='remix'?'beatwav':'remix']||[]).includes(id)))return {...base,state:'Needs confirmation',reason:'Beat WAV and Remix WAV require distinct files.'};
     if(folderProblems[directories[role]]) return {...base,state:'Needs confirmation',reason:'Multiple matching subfolders; use one designated folder.'};
     if(selectedIds.length && selected.length !== selectedIds.length) return {...base,state:'Needs confirmation',reason:'A confirmed file is missing, moved, empty, WIP or has an incompatible type.'};
     if(role==='shorts') {
@@ -45,6 +47,15 @@ export function evaluate(files, mappings = {}, folderProblems = {}) {
     const wip = files.some(f=>f.directory===directories[role] && /\(wip\)/i.test(f.name));
     return {...base,state:'Missing',reason:wip?'No eligible file; unfinished (WIP) files are excluded.':'No eligible file found'};
   });
+  const beat=assets.find(a=>a.role==='beatwav'),remix=assets.find(a=>a.role==='remix');
+  if(beat.files.some(f=>remix.files.some(other=>other.id===f.id))){for(const asset of [beat,remix]){asset.state='Needs confirmation';asset.reason='Beat WAV and Remix WAV require distinct files.';}}
+  return assets;
+}
+// A saved seven-category scan cannot qualify the newly required Beat WAV.
+export function currentResult(result) {
+  if(!result)return null;
+  const assets=roles.map((role,index)=>result.assets.find(a=>a.role===role)||{role,label:LABELS[index],state:'Unchecked',reason:'Sync to check this newly required file.',files:[],candidates:[],count:0});
+  return {...result,assets,total:roles.length,ready:assets.filter(a=>a.state==='Pass').length,needsRescan:assets.some(a=>a.state==='Unchecked')};
 }
 async function tables(env) {
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS drive_asset_state (user_id TEXT PRIMARY KEY, folder_id TEXT NOT NULL, mappings_json TEXT NOT NULL, result_json TEXT, checked_at INTEGER)').run();
@@ -80,7 +91,7 @@ export async function scan(env,owner,id,mappings={}) {
     if(folders.length===1)files.push(...(await children(env,owner,folders[0].id)).map(f=>({...f,directory})));
   }
   const assets=evaluate(files,mappings,problems);
-  return {folderId:id,projectName:root.name,checkedAt:Date.now(),assets,ready:assets.filter(a=>a.state==='Pass').length,total:7,source:'Google Drive metadata',publicationConnected:false};
+  return {folderId:id,projectName:root.name,checkedAt:Date.now(),assets,ready:assets.filter(a=>a.state==='Pass').length,total:roles.length,source:'Google Drive metadata',publicationConnected:false};
 }
 export async function assetHandler(request,env,action) {
   const headers={'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
@@ -91,7 +102,7 @@ export async function assetHandler(request,env,action) {
     const saved=await env.DB.prepare('SELECT * FROM drive_asset_state WHERE user_id = ?').bind(owner).first();
     if(action==='drive-status'&&request.method==='GET') {
       const connection=await env.DB.prepare('SELECT scopes FROM youtube_connections WHERE user_id = ?').bind(owner).first();
-      return Response.json({driveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_SCOPE)),folderId:saved?.folder_id||'',result:saved?.result_json?JSON.parse(saved.result_json):null},{headers});
+      return Response.json({driveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_SCOPE)),folderId:saved?.folder_id||'',result:saved?.result_json?currentResult(JSON.parse(saved.result_json)):null},{headers});
     }
     if(request.method!=='POST')throw new AssetError('Method not allowed.',405);
     if(request.headers.get('Origin')!==new URL(request.url).origin)throw new AssetError('Request origin does not match.',403);

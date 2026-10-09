@@ -1,5 +1,14 @@
 # Group 1 — release buffer and readiness
 
+## Current checklist contract — 10 October 2026, eight required categories
+
+CJ confirmed Beat WAV is required alongside Beat MP3 for future automated beat sales. This supersedes every earlier seven-category/7-of-7 contract and statement that Beat WAV is informational. The eight checks are ordered in four equal two-column rows: Project ZIP | Stems ZIP; Beat WAV | Beat MP3; Remix WAV | Thumbnail PNG; YouTube video MP4 | Shorts ×6 MP4. Shorts no longer spans two columns. File type is separate muted 10px supporting text below the 12px file name. “7z” is removed from the tile label only: stems still accept ZIP or 7z. Thumbnail PNG is the requested tile label; existing JPG/JPEG/PNG/WebP compatibility is retained, not narrowed by this presentation change.
+
+Readiness denominator is eight everywhere. Beat WAV uses AUDIO plus compatible nonempty WAV metadata, excludes WIP and automatically recognises clear beat markers while excluding remix markers. Unclear files require association confirmation, and beat/remix WAV must be distinct files. MP3 cannot substitute for WAV. FLP remains outside the readiness total. Saved seven-category results are normalised by role into the new order, retain their original check timestamp, and leave Beat WAV Not checked until Sync; they cannot qualify as 8/8 from the old scan. The UI binds by role rather than array position. No forced consent or renaming is needed.
+
+Synthetic asset checks cover full 8/8, independent WAV/MP3 eligibility, WIP/MIME mismatches, distinct audio, legacy migration, existing scan/auth/persistence behaviour. Existing title/geometry checks, syntax and production build pass. Live new Beat WAV scan and refreshed mobile/desktop rendering remain unverified. Previous 3/7 screenshots and seven-category notes below describe historical evidence.
+
+
 Updated 9 October 2026. Visual reference finalised by CJ for this review; the separate read-only scanner is implemented/deployed, with a successful hosted sample scan evidenced by CJ’s screenshot; the release buffer remains unconnected. Preserve the accepted normal visual layout. Shared design: [master design system](../../DESIGN_SYSTEM.md).
 
 ## 1.1 Release Buffer

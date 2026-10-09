@@ -16,15 +16,15 @@ import { groupGeometry } from '/checklist-layout.js';
     $('checklist-project-title').textContent=displayTitle(title);
     $('checklist-project-title').title=title;
     $('checklist-project-title').setAttribute('aria-label',title);
-    $('checklist-subtitle').textContent=`${result.ready}/7 ready`;
+    $('checklist-subtitle').textContent=`${result.ready}/${result.total} ready`;
     $('drive-sync-status').textContent='Checked '+new Date(result.checkedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    document.querySelectorAll('[data-asset-index]').forEach((row,i)=>{
-      const a=result.assets[i];row.dataset.state=a.state;
+    document.querySelectorAll('[data-asset-index]').forEach(row=>{
+      const a=result.assets.find(asset=>asset.role===row.dataset.role);row.dataset.state=a.state;
       const status=row.querySelector('.asset-status');
       status.dataset.symbol=a.state==='Pass'?'✓':a.state==='Missing'?'−':a.state==='Needs confirmation'?'!':'—';
       status.textContent=stateLabel(a.state)+(a.role==='shorts'&&a.state==='Missing'&&a.count>0?' · '+a.count+'/6':'');
     });
-    message(result.ready===7?'All required asset categories qualify. Publishing is not connected.':'Scan complete. Missing or unresolved assets prevent readiness; publishing is not connected.');
+    message(result.ready===result.total?'All required asset categories qualify. Publishing is not connected.':'Scan complete. Missing or unresolved assets prevent readiness; publishing is not connected.');
     requestAnimationFrame(reflow);
   }
   async function scan(body,action='drive-scan') {
@@ -39,7 +39,7 @@ import { groupGeometry } from '/checklist-layout.js';
     if(!result){host.textContent='Scan a project folder first.';return;}
     const heading=document.createElement('h3');heading.className='details-release-name';heading.textContent=releaseTitle(result);
     const overview=document.createElement('div');overview.className='details-overview';
-    const count=document.createElement('strong');count.textContent=`${result.ready}/7 ready`;
+    const count=document.createElement('strong');count.textContent=`${result.ready}/${result.total} ready`;
     const checked=document.createElement('p');checked.textContent='Last checked '+new Date(result.checkedAt).toLocaleString('en-GB');overview.append(count,checked);
     const folder=document.createElement('details');folder.className='details-folder';const folderLabel=document.createElement('summary');folderLabel.textContent='Original project folder name';const folderName=document.createElement('p');folderName.textContent=result.projectName;folder.append(folderLabel,folderName);
     host.append(heading,overview,folder);
@@ -99,7 +99,7 @@ import { groupGeometry } from '/checklist-layout.js';
     section('What counts as a covered week','19 confirmed scheduled uploads: one main YouTube video plus six Shorts on each of the three short-form platforms. Every required destination must qualify.');
     section('How the buffer is counted','Consecutive covered weeks in Europe/London, stopping at the first gap or unfinished week. Later bookings beyond a gap do not extend uninterrupted coverage.');
     section('What does not count','Planned dates, submitted requests without acceptance, reminder-only tasks and file readiness alone do not establish scheduling confirmation.');
-    if(result)section('Current asset check · '+releaseTitle(result),`${result.ready}/7 categories ready. This is a separate Drive file check, not confirmation that this release is scheduled.`);
+    if(result)section('Current asset check · '+releaseTitle(result),`${result.ready}/${result.total} categories ready. This is a separate Drive file check, not confirmation that this release is scheduled.`);
     section('Next connection needed','Choose and connect the authoritative release records and platform or scheduler confirmation source. Then GemOS can show your real coverage date and next releases.');
   }
   function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent=name?name+' · example':'Release Buffer details';bufferDetails(name);$('buffer-preview-dialog').showModal();}
@@ -110,6 +110,6 @@ import { groupGeometry } from '/checklist-layout.js';
   const layoutObserver=new ResizeObserver(reflow);cards.forEach(card=>card.querySelectorAll('.group-card-header,.recessed-dock>div,.group-card-footer').forEach(el=>layoutObserver.observe(el)));window.addEventListener('resize',reflow);document.fonts?.ready.then(reflow);reflow();
   (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
     if(data.folderId)$('project-folder').value='https://drive.google.com/drive/folders/'+data.folderId;
-    if(data.result){result=data.result;render();$('drive-sync-status').textContent='Saved check · not refreshed';message('Saved results restored. Press Sync to check current files.');}
+    if(data.result){result=data.result;render();$('drive-sync-status').textContent=data.result.needsRescan?'Sync needed · Beat WAV unchecked':'Saved check · not refreshed';message(data.result.needsRescan?'Saved results restored. Press Sync to check the new Beat WAV requirement.':'Saved results restored. Press Sync to check current files.');}
   }catch(e){$('drive-access').textContent=e.message;}finally{controls();}})();
 })();
