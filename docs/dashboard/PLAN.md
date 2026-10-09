@@ -56,4 +56,6 @@ Explain purpose, problems and recommendations plainly. Ask one consequential uns
 
 ## 9 October import follow-up
 
-CJ reports real consent/channel connection and one six-view selected Short import. An older-video import failed the local metric validator; individual unavailable-metric handling and current/previous diagnostics are now implemented. CJ requested refresh persistence: retain only a short-lived token and config in tab-session storage, revalidate channel after reload, clear invalid sessions. Controlled checks passed; ask CJ to retry older video and refresh, then verify exact Studio dates. Long-lived server refresh remains a separate architecture decision.
+CJ reports real consent/channel connection and one successful selected Short import. An older-video import failed the local metric validator; individual unavailable-metric handling and current/previous diagnostics are now implemented. CJ requested refresh persistence: retain only a short-lived token and config in tab-session storage, revalidate channel after reload, clear invalid sessions. Controlled checks passed; ask CJ to retry older video and refresh, then verify exact Studio dates. Long-lived server refresh remains a separate architecture decision.
+
+Studio follow-up: supplied export confirms negative period Likes, so preserve signed integer Likes in the isolated test rather than showing unavailable. Its dates differ from the API period; exact-window metric/coverage verification is still pending. No replacement with lifetime Likes or inferred net-likes definition.

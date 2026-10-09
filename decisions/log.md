@@ -279,6 +279,11 @@ Implementation scopes the initial query to 1–5 user-confirmed Shorts, with own
 
 ## 2026-10-09 — YouTube refresh persistence and partial metric validation
 
-CJ reported successful read-only connection, a six-view older Short import and a failed three-year-old video import, then explicitly requested keeping login across refreshes. Same-tab sessionStorage now retains the short-lived access token, expiry, public client ID and selected channel; owned-channel API lookup revalidates restoration, and expiry/revocation/disconnect clear it. No refresh token or localStorage token is stored; long-lived unattended access still requires a separate server design. This supersedes memory-only auth for the isolated experiment.
+CJ reported successful read-only connection, a successful older Short import and a failed three-year-old video import, then explicitly requested keeping login across refreshes. Same-tab sessionStorage now retains the short-lived access token, expiry, public client ID and selected channel; owned-channel API lookup revalidates restoration, and expiry/revocation/disconnect clear it. No refresh token or localStorage token is stored; long-lived unattended access still requires a separate server design. This supersedes memory-only auth for the isolated experiment.
 
 The strict aggregate validator was a local failure point. Unexpected/missing supporting metrics now become unavailable individually, with safe metric/period/type diagnostics; valid numeric strings are accepted, and malformed/negative/fractional count values remain unavailable rather than zero. Exact live response cause is not yet established; retry and Studio comparison remain pending.
+
+
+## 2026-10-09 — Preserve signed source-reported YouTube Likes
+
+User-supplied API details and Studio export confirm signed period Likes. Preserve signed whole-number Likes in the isolated test, with source-reported wording and no inferred cause or net-likes definition. Other invalid/missing metrics remain unavailable. Export/API periods differ; exact-window verification remains pending. Private figures and identifiers are omitted. Controlled regressions passed.

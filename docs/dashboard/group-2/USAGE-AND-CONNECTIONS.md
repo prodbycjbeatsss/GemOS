@@ -1,6 +1,6 @@
 # Group 2 — usage and connections
 
-Updated 9 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). Canonical previews have no live connection. A separate [manual YouTube sample test](../integration-tests/youtube/README.md) has been built; CJ reports a real connection and six-view sample import; raw response/Studio agreement and a failing older-video retry remain unverified.
+Updated 9 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). Canonical previews have no live connection. A separate [manual YouTube sample test](../integration-tests/youtube/README.md) has been built; CJ reports a real connection and successful sample import; raw response/Studio agreement and a failing older-video retry remain unverified.
 
 ## 2.1 Short-form performance
 
@@ -33,7 +33,7 @@ Missing is not zero. Partial totals identify missing sources; combined growth an
 
 | Source | Intended use | Verification status |
 |---|---|---|
-| YouTube Analytics/Data APIs | Selected-period views, supported watch/engagement metrics and post IDs/counts | Browser-only selected-video test built and checked with controlled responses; CJ reports a real six-view sample; raw response and Studio agreement remain unverified. Supporting-metric validation was made partial after an older-video failure. Test cutoff is observed, not guaranteed complete coverage; growth/targets withheld. Stayed to watch has no established standard metric in the review. |
+| YouTube Analytics/Data APIs | Selected-period views, supported watch/engagement metrics and post IDs/counts | Browser-only selected-video test built and checked with controlled responses; CJ reports a real successful sample; raw response and Studio agreement remain unverified. Supporting-metric validation was made partial after an older-video failure. Test cutoff is observed, not guaranteed complete coverage; growth/targets withheld. Stayed to watch has no established standard metric in the review. |
 | TikTok approved APIs | View/share counts; business watch/completion metrics where available | CJ is fairly sure the account is Business; verify account/access. Per-clip followers and selected-period coverage remain unverified. |
 | Meta Insights | Reels engagement/watch fields where supported | Creator/Business account type is provisional. Specific media/period and follower attribution need real-query validation. |
 | GemOs records | Targets, comparisons, partial coverage and freshness | Example calculations in HTML only; real records/backend not built. |
@@ -72,3 +72,7 @@ Example views: 92,400 / 54,600 / 26,800 = 173,800; shares 1,260 / 840 / 420 = 2,
 
 YouTube Likes replacement is approved. Audience-growth tiles are confirmed across platforms; verify clip-attributed follower reporting, period coverage and aggregation. Snapshot tolerance is provisionally 24:00–24:15, heading/subtitle and partial Monday review are confirmed. Verify account types and real API access. See [PLAN.md](../PLAN.md) and [HANDOFF.md](../HANDOFF.md) for approved fixes, implemented reference changes, verification evidence and unresolved integration work. CJ approved the listed fixes; clarify only new or unsettled choices.
 
+
+### YouTube Likes evidence — 9 October 2026
+
+Supplied API details and Studio export confirm signed period Likes. The isolated test preserves signed whole-number source values; sample figures and identifiers are omitted. The periods differ, so matched-window verification and metric semantics remain open. Canonical previews remain mock references.

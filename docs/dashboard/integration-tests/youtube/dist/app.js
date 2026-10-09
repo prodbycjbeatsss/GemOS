@@ -137,8 +137,9 @@
     const result = {};
     for (const key of metrics) {
       const raw = rows[0][key];
-      const value = typeof raw === 'number' ? raw : typeof raw === 'string' && /^\d+(?:\.\d+)?$/.test(raw.trim()) ? Number(raw) : null;
-      if (value === null || !Number.isFinite(value) || value < 0 || (key !== 'averageViewPercentage' && !Number.isSafeInteger(value))) {
+      const value = typeof raw === 'number' ? raw : typeof raw === 'string' && /^-?\d+(?:\.\d+)?$/.test(raw.trim()) ? Number(raw) : null;
+      // Studio export confirms signed Likes. Preserve Google's value without inferring its cause.
+      if (value === null || !Number.isFinite(value) || (value < 0 && key !== 'likes') || (key !== 'averageViewPercentage' && !Number.isSafeInteger(value))) {
         result[key] = null;
         warnings.push({ period, metric: key, reason: raw == null ? 'Not provided by Google' : typeof raw === 'number' && raw < 0 ? 'Negative source value; not displayed as a count' : 'Unexpected source value or type', sourceValue: typeof raw === 'number' && Number.isFinite(raw) ? raw : typeof raw === 'string' && /^-?\d+(?:\.\d+)?$/.test(raw.trim()) ? raw.slice(0, 80) : null, sourceType: typeof raw });
         continue;
@@ -192,7 +193,7 @@
       const tile = document.createElement('div'); tile.className = 'tile';
       const heading = document.createElement('p'); heading.className = 'tile-label'; heading.textContent = label;
       const value = document.createElement('strong'); value.className = 'tile-value'; value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
-      const note = document.createElement('p'); note.className = 'tile-note'; note.textContent = report ? 'Selected-period activity' : 'Not imported';
+      const note = document.createElement('p'); note.className = 'tile-note'; note.textContent = report ? key === 'likes' ? 'Source-reported period value' : 'Selected-period activity' : 'Not imported';
       tile.append(heading, value, note); return tile;
     }));
     $('target-label').textContent = 'Selected Shorts only'; $('target-value').textContent = report ? report.videos.length + ' videos' : 'No sample imported';
@@ -203,7 +204,7 @@
   function details() {
     opener = document.activeElement;
     const area = $('details-content'); area.replaceChildren();
-    const p = document.createElement('p'); p.textContent = 'Values are period activity for your selected videos. Average percentage viewed is Google’s aggregate, not an average of daily percentages. Subscribers gained are attributed to the selected content. This is not a frozen 24-hour snapshot.';
+    const p = document.createElement('p'); p.textContent = 'Values are period activity for your selected videos. Likes preserves Google’s signed value; Studio can report a negative value. Its cause is not inferred. Average percentage viewed is Google’s aggregate, not an average of daily percentages. Subscribers gained are attributed to the selected content. This is not a frozen 24-hour snapshot.';
     const pre = document.createElement('pre'); pre.textContent = report ? JSON.stringify(report, null, 2) : 'No report imported.';
     area.append(p, pre); $('details').showModal();
   }
