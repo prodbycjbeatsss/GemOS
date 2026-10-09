@@ -359,3 +359,8 @@ CJ requested fixing inconsistencies across cards 2.1/2.2. Retain the accepted pu
 ### 2026-10-09 — move next session to Group 1
 
 CJ approved updating the handoff and returning to Group 1 review/connections in a new chat. Park 2.1 as finalised for the current selected-Shorts test and 2.2 as implementation-complete but unverified for the first real release capture. Latest rendered shared-design checks remain open. Do not block Group 1 on a new test upload or repeat Google setup. Review real Group 1 data sources and confirm the earlier six-Shorts contract against CJ's current three-Short releases before implementing it; variable manifest counts are not yet approved.
+
+
+## 2026-10-09 — Group 1 retains six Tuesday–Sunday Shorts
+
+CJ confirmed that three clips describe his past upload schedule. Once the system is in place he intends six clips each week, Tuesday–Sunday. Preserve Group 1's six eligible short source files as one of the seven checklist categories and one main YouTube video plus those six shorts on each of Shorts, TikTok and Reels: 19 confirmed scheduled uploads for a covered release week. No variable required-count change is approved. Existing three-clip Group 2 test batches remain valid historical samples. Live asset scanning and scheduling confirmations remain unconnected.
