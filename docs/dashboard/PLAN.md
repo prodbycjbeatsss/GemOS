@@ -2,7 +2,7 @@
 
 ## Next priority — Group 1, approved 9 October 2026
 
-CJ is moving to a new chat to review and connect Group 1 (1.1 Release Buffer / 1.2 Pre Release Checklist). Preserve the accepted reference layout; ground the first slice in the actual release/project store, asset manifest/source and scheduling-confirmation records. Confirm how the older six-Shorts requirement should relate to CJ's current three-Short releases before implementing that rule. A read-only checklist scan is the recommended first slice if its source is available, not an already approved data-model decision.
+CJ is moving to a new chat to review and connect Group 1 (1.1 Release Buffer / 1.2 Pre Release Checklist). Preserve the accepted reference layout; ground the first slice in the actual release/project store, asset manifest/source and scheduling-confirmation records. CJ confirmed on 9 October that the future system requires six source Shorts per release, Tuesday–Sunday. Three clips describe his past upload schedule and remain historical test data; retain the six-file checklist and 19-confirmed-upload buffer requirement. A read-only checklist scan is the recommended first slice if its source is available, not an already approved data-model decision.
 
 Group 2 does not block this work: 2.1's current selected-Shorts test is finalised; 2.2 is implementation-complete with first-release real capture still unverified. Shared styling is deployed, with rendered phone/desktop acceptance still open. Keep these checks visible, without requesting more sample links or rebuilding authentication. The latest HANDOFF and integration STATUS supersede the historical browser-only/no-backend descriptions below.
 
