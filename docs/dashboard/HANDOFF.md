@@ -1,5 +1,9 @@
 # GemOs dashboard — next-session handoff
 
+## 9 October 2026 — current integration checkpoint
+
+Current checkpoint: 2.1 test design and interaction choices are finalised and consolidated in [STATUS](integration-tests/youtube/STATUS.md). AGENTS.md was reread after saving that checkpoint. 2.2 now sits on the same private page: shared read-only connection, selected release name and 1–6 same-release Shorts (three valid), ownership-checked metadata, actual titles/count/publication states and unranked details. No historical first-24-hour figures, scheduler or durable snapshot store exists. Controlled state checks pass; current rendered verification remains pending. Next integration slice is capture/storage, after reviewing this first metadata slice.
+
 Updated 9 October 2026 · Repository: [prodbycjbeatsss/GemOS](https://github.com/prodbycjbeatsss/GemOS) · Branch: main.
 
 ## What GemOs is building towards

@@ -82,15 +82,15 @@ const assert = require('node:assert/strict');
   mode = 'ok'; await page.locator('[data-range="28"]').click(); await page.locator('#end-date').fill('2026-10-06'); await page.locator('#sync').click(); await page.waitForFunction(() => document.querySelector('#feedback').textContent.startsWith('Imported selected') || document.querySelector('#feedback').textContent.startsWith('Loaded the saved'));
   for (const width of [320,390,840,1280]) {
     await page.setViewportSize({width,height:1000});
-    const pills = await page.locator('.platforms').boundingBox(), range = await page.locator('.range-control').boundingBox(), tiles = await page.locator('#metrics').boundingBox();
+    const pills = await page.locator('#card-monthly-shortform .platforms').boundingBox(), range = await page.locator('.range-control').boundingBox(), tiles = await page.locator('#metrics').boundingBox();
     assert.ok(range.y >= pills.y+pills.height, 'range below platforms'); assert.ok(tiles.y >= range.y+range.height+3, 'tiles below range');
     const control = await page.locator('[data-range="28"]').boundingBox(); assert.ok(control.height >=44);
     const dock = await page.locator('.dock').boundingBox(); assert.equal(dock.height,width>=640?583:575,'matched recess height');
     const labels = await page.locator('.tile-label').allTextContents(); assert.equal(labels[0],'Average viewed');
     const values = await page.locator('.tile-value').all(); const first = await values[0].boundingBox(), second = await values[1].boundingBox(); assert.equal(first.y,second.y,'first-row value alignment');
-    const cardHeight = (await page.locator('.card').boundingBox()).height;
+    const cardHeight = (await page.locator('#card-monthly-shortform').boundingBox()).height;
     await page.locator('[data-range="365"]').click(); await page.waitForFunction(() => document.querySelector('#feedback').textContent.startsWith('Imported selected') || document.querySelector('#feedback').textContent.startsWith('Loaded the saved'));
-    assert.equal((await page.locator('.card').boundingBox()).height,cardHeight,'stable card size');
+    assert.equal((await page.locator('#card-monthly-shortform').boundingBox()).height,cardHeight,'stable card size');
     await page.locator('[data-range="28"]').click(); await page.waitForFunction(() => document.querySelector('#feedback').textContent.startsWith('Imported selected') || document.querySelector('#feedback').textContent.startsWith('Loaded the saved'));
   }
   await page.setViewportSize({ width: 390, height: 1000 });

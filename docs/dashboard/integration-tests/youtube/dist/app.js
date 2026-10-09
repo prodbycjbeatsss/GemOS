@@ -7,6 +7,8 @@
   let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
   const configKey = 'gemos-youtube-client-v1';
+  let batchReport = null, batchLoading = false, batchOpener;
+  const batchSelectionKey = 'gemos-youtube-batch-v1';
   const reportCache = new Map();
   let verifiedVideos = null, renderedVideos = null;
   const metricNodes = [];
@@ -48,6 +50,7 @@
       if (data.items.some(item => item.id === saved.channel)) $('channel').value = saved.channel;
       status('Connected · read-only. Session restored after refresh.');
       showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+      batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
@@ -62,7 +65,7 @@
   const shift = (value, days) => {
     const d = new Date(date(value) + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10);
   };
-  function idsFromText(value) {
+  function idsFromText(value, limit = 5) {
     const parts = value.trim().split(/[\s,]+/).filter(Boolean);
     const ids = parts.map(part => {
       if (/^[\w-]{11}$/.test(part)) return part;
@@ -74,7 +77,7 @@
       return id;
     });
     const unique = [...new Set(ids)];
-    if (!unique.length || unique.length > 5) throw new Error('Select 1–5 distinct Shorts.');
+    if (!unique.length || unique.length > limit) throw new Error('Select 1–' + limit + ' distinct Shorts.');
     return unique;
   }
   function showSync(heading, message, footer) {
@@ -89,9 +92,10 @@
   function fitRecess() {
     // Normal geometry matches 2.2; only enlarged/overflowing content invokes reflow.
     requestAnimationFrame(() => {
-      const dock = document.querySelector('.dock');
-      dock.classList.remove('needs-reflow');
-      if (dock.scrollHeight > dock.clientHeight + 1) dock.classList.add('needs-reflow');
+      for (const dock of document.querySelectorAll('.dock')) {
+        dock.classList.remove('needs-reflow');
+        if (dock.scrollHeight > dock.clientHeight + 1) dock.classList.add('needs-reflow');
+      }
     });
   }
   function controls() {
@@ -106,18 +110,25 @@
     cardSync.setAttribute('aria-busy', String(syncing));
     cardSync.querySelector('span').textContent = syncing ? 'Syncing' : 'Sync';
     document.querySelectorAll('[data-range]').forEach(button => { button.disabled = busy; });
-    for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date']) $(id).disabled = busy;
+    for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date', 'batch-name-input', 'batch-videos', 'batch-confirm']) $(id).disabled = busy;
+    $('batch-import').disabled = !connected || busy || !$('channel').value;
+    $('batch-sync').disabled = $('batch-import').disabled;
+    $('batch-sync').classList.toggle('is-syncing', batchLoading);
+    $('batch-sync').setAttribute('aria-busy', String(batchLoading));
+    $('batch-sync').querySelector('span').textContent = batchLoading ? 'Syncing' : 'Sync';
   }
   function clearConnection(message = 'Disconnected. Imported data cleared.') {
-    generation++; token = null; expiresAt = 0; busy = false; syncing = false;
+    generation++; token = null; expiresAt = 0; busy = false; syncing = false; batchLoading = false;
     removeSession(); invalidateCache();
     clearTimeout(expiryTimer); clearTimeout(connectTimer);
     $('channel').replaceChildren(new Option('Connect to select your channel', ''));
+    batchReport = null; renderBatch(); batchStatus('Not connected', 'Connect YouTube to import a release.', 'Not synced');
     report = null; status(message); feedback('Nothing imported yet.'); render(); showSync('Not connected', 'Connect and choose your Shorts to import.', 'Not synced'); controls();
   }
   function expire() {
-    generation++; token = null; expiresAt = 0; busy = false; syncing = false;
+    generation++; token = null; expiresAt = 0; busy = false; syncing = false; batchLoading = false;
     removeSession(); invalidateCache();
+    batchStatus('Reconnect to sync', batchReport ? 'Previous release metadata remains visible. Connect again to refresh.' : 'Connect YouTube to import a release.', 'Session expired');
     status('Session expired. Connect again to Sync.');
     feedback(report ? 'Previous import retained. It has not been refreshed.' : 'Connect again to import.'); showSync('Reconnect to sync', report ? 'Your previous import is still displayed. Connect again to refresh it.' : 'Connect again to import your selected Shorts.', 'Session expired'); controls();
   }
@@ -159,6 +170,7 @@
           if (!data.items?.length) throw new Error('No owned YouTube channel was returned for this account.');
           $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
           showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+          batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
           status(rememberSession() ? 'Connected · read-only. Kept across refreshes in this tab until expiry.' : 'Connected · read-only. Browser storage is blocked; refresh will require reconnecting.');
         } catch (error) { if (session === generation) clearConnection(error.message); }
         finally { if (session === generation) { busy = false; controls(); } }
@@ -288,6 +300,89 @@
     const pre = document.createElement('pre'); pre.textContent = report ? JSON.stringify(report, null, 2) : 'No report imported.';
     area.append(p, pre); $('details').showModal();
   }
+  function rememberBatch() {
+    try { sessionStorage.setItem(batchSelectionKey, JSON.stringify({ name: $('batch-name-input').value, videos: $('batch-videos').value, confirmed: $('batch-confirm').checked })); } catch {}
+  }
+  function restoreBatch() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(batchSelectionKey) || 'null');
+      if (!saved || typeof saved !== 'object') return;
+      if (typeof saved.name === 'string' && saved.name.length <= 120) $('batch-name-input').value = saved.name;
+      if (typeof saved.videos === 'string' && saved.videos.length <= 4096) { $('batch-videos').value = saved.videos; $('batch-confirm').checked = saved.confirmed === true; }
+    } catch {}
+  }
+  function batchStatus(title, message, footer) {
+    $('batch-status-title').textContent = title; $('batch-status-message').textContent = message; $('batch-sync-status').textContent = footer;
+    $('batch-feedback').textContent = message; fitRecess();
+  }
+  function publicationStatus(video, now = Date.now()) {
+    if (video.visibility !== 'public') return { label: 'Publication not confirmed', reason: 'The video is not public, or its visibility is unavailable. The reported time may be an upload time.' };
+    const published = new Date(video.publishedAt).getTime();
+    if (!video.publishedAt || !Number.isFinite(published) || published > now) return { label: 'Publication time unavailable', reason: 'YouTube has not returned a usable past publication time.' };
+    if (now - published < 86400000) return { label: 'Waiting for 24h', reason: 'This Short is under 24 hours old. Automatic snapshot capture is not connected.' };
+    return { label: '24-hour snapshot unavailable', reason: 'No view count was saved in this Short’s 24h–24h 15m capture window. Current counts cannot replace it.' };
+  }
+  const batchDate = value => new Date(value).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
+  function renderBatch() {
+    const list = batchReport?.videos || [];
+    $('batch-name').textContent = batchReport?.name || 'Choose a release above';
+    $('batch-summary').textContent = list.length ? list.length + (list.length === 1 ? ' Short in this release' : ' Shorts in this release') + ' · none ranked' : 'No Shorts imported.';
+    const dates = list.filter(v => v.visibility === 'public' && v.publishedAt && new Date(v.publishedAt).getTime() <= Date.now()).map(v => new Date(v.publishedAt)).sort((a,b) => a-b);
+    const formatter = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/London' });
+    $('batch-dates').textContent = dates.length ? formatter.formatRange(dates[0], dates.at(-1)) : batchReport ? 'Public release dates unavailable' : 'No release imported';
+    $('batch-list').replaceChildren(...list.map(video => {
+      const state = publicationStatus(video), row = document.createElement('button'); row.type = 'button'; row.className = 'clip-row'; row.dataset.pending = 'true';
+      const marker = document.createElement('span'); marker.className = 'clip-medal'; marker.textContent = '—'; marker.setAttribute('aria-hidden', 'true');
+      const body = document.createElement('span'); body.className = 'batch-row-copy';
+      const title = document.createElement('span'); title.className = 'clip-name'; title.textContent = video.title || 'Title unavailable'; title.title = video.title || '';
+      const meta = document.createElement('span'); meta.className = 'clip-meta'; meta.textContent = state.label;
+      const published = document.createElement('span'); published.className = 'batch-row-date'; published.textContent = video.publishedAt ? (video.visibility === 'public' ? 'Published · ' : 'YouTube time · ') + batchDate(video.publishedAt) + ' UK' : 'Publication time unavailable';
+      body.append(title, meta, published); row.append(marker, body);
+      row.setAttribute('aria-label', 'Unranked, ' + (video.title || 'Title unavailable') + ', ' + state.label + '. Open details');
+      row.addEventListener('click', () => openBatchDetails(video)); return row;
+    }));
+    if (!list.length) { const p = document.createElement('p'); p.className = 'batch-empty'; p.textContent = 'Import your release’s Shorts above. Three Shorts are fine. Titles and publication times will appear here.'; $('batch-list').append(p); }
+  }
+  async function importBatch() {
+    if (busy) return;
+    let ids;
+    try {
+      ids = idsFromText($('batch-videos').value, 6);
+      if (!$('batch-confirm').checked) throw new Error('Confirm these are Shorts from the same release.');
+      if (!$('channel').value) throw new Error('Connect and choose your channel first.');
+    } catch (error) { batchStatus('Check your selection', error.message, 'Not synced'); return; }
+    rememberBatch(); const session = generation, channel = $('channel').value, name = $('batch-name-input').value.trim() || 'Selected release';
+    busy = true; batchLoading = true; controls(); batchStatus('Importing release', 'Checking ownership and loading titles and publication times…', 'Syncing…');
+    try {
+      const data = await api('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet,status', id: ids.join(',') }, session);
+      if (!Array.isArray(data.items) || data.items.length !== ids.length || data.items.some(v => !ids.includes(v.id) || v.snippet?.channelId !== channel) || new Set(data.items.map(v=>v.id)).size !== ids.length) throw new Error('Every release Short must be available and owned by the selected channel.');
+      const videos = ids.map(id => {
+        const v = data.items.find(item => item.id === id), published = v.snippet.publishedAt;
+        const publishedAt = typeof published === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(published) && Number.isFinite(new Date(published).getTime()) ? published : null;
+        return { id, title: typeof v.snippet.title === 'string' ? v.snippet.title : 'Title unavailable', publishedAt, visibility: ['public','private','unlisted'].includes(v.status?.privacyStatus) ? v.status.privacyStatus : 'unavailable', snapshotViews: null, capturedAt: null };
+      });
+      if (session !== generation) return;
+      batchReport = { source: 'YouTube Data API v3', scope: 'User-confirmed selected release Shorts; not channel-wide', channelId: channel, name, videos, fetchedAt: new Date().toISOString(), capture: 'Not connected. No 24-hour view snapshots are stored.', timezone: 'Europe/London' };
+      renderBatch(); batchStatus('Metadata synced', 'Titles and publication times loaded. 24-hour snapshot capture is not connected.', 'Synced · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB'));
+    } catch (error) { if (session === generation) batchStatus('Import failed', error.message + (batchReport ? ' Previous release retained.' : ''), 'Sync failed'); }
+    finally { if (session === generation) { busy = false; batchLoading = false; controls(); } }
+  }
+  function openBatchDetails(video = null) {
+    batchOpener = document.activeElement;
+    $('batch-dialog-title').textContent = video ? video.title : 'Ranking details';
+    const area = $('batch-dialog-content'); area.replaceChildren();
+    const lines = video ? ['Release: ' + batchReport.name, 'Video ID: ' + video.id, 'Visibility: ' + video.visibility, 'YouTube publication metadata: ' + (video.publishedAt ? batchDate(video.publishedAt) + ' UK (' + video.publishedAt + ')' : 'Unavailable'), '24-hour views: unavailable', publicationStatus(video).reason] : ['This card covers one selected release, independently of 2.1’s reporting range.', 'Any 1–6 actual Shorts can form the selected test batch. Three is valid; no missing uploads are invented.', 'No qualifying 24-hour snapshots are stored, so every imported Short remains unranked.', 'A qualifying snapshot must be captured from 24h through 24h 15m after publication. Current or later lifetime counts cannot replace a missed capture.', 'Automatic capture, TikTok and Reels are not connected. Public publication times are reported by YouTube; private/unlisted metadata may instead reflect upload time.', batchReport ? 'Metadata imported: ' + batchDate(batchReport.fetchedAt) + ' UK' : 'No release imported yet.'];
+    for (const text of lines) { const p = document.createElement('p'); p.textContent = text; area.append(p); }
+    if (video) { const link = document.createElement('a'); link.href = 'https://www.youtube.com/shorts/' + video.id; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Watch Short ↗'; area.append(link); }
+    $('batch-dialog').showModal();
+  }
+  $('batch-import').addEventListener('click', importBatch); $('batch-sync').addEventListener('click', importBatch);
+  $('batch-details').addEventListener('click', () => openBatchDetails());
+  $('batch-dialog-close').addEventListener('click', () => $('batch-dialog').close());
+  $('batch-dialog').addEventListener('close', () => batchOpener?.focus());
+  $('batch-dialog').addEventListener('click', event => { if (event.target === $('batch-dialog')) { const b = $('batch-dialog').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('batch-dialog').close(); } });
+  for (const id of ['batch-name-input','batch-videos','batch-confirm']) $(id).addEventListener('change', () => { rememberBatch(); batchReport = null; renderBatch(); batchStatus('Ready to import', 'Release selection changed. Import to load these Shorts.', 'Not synced'); });
+  for (const id of ['batch-name-input','batch-videos']) $(id).addEventListener('input', rememberBatch);
   $('connect').addEventListener('click', connect);
   $('disconnect').addEventListener('click', () => {
     const revokeToken = token; clearConnection();
@@ -329,17 +424,17 @@
   $('details').addEventListener('click', event => { if (event.target === $('details')) { const b = $('details').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('details').close(); } });
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
     if (id === 'client-id') { clearConnection(); return; }
-    if (id === 'channel' && token) rememberSession();
+    if (id === 'channel') { batchReport = null; renderBatch(); batchStatus('Ready to import', 'Channel changed. Import to load this release.', 'Not synced'); if (token) rememberSession(); }
     rememberSelection(); invalidateCache();
     report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });
   for (const id of ['videos', 'end-date']) $(id).addEventListener('input', rememberSelection);
   $('end-date').value = shift(new Date().toISOString().slice(0, 10), -3);
-  restoreSelection();
+  restoreSelection(); restoreBatch(); renderBatch();
   $('origin').textContent = location.origin;
   // Tab-session storage retains only short-lived auth/config, never a refresh token.
-  window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; invalidateCache(); });
-  window.addEventListener('pageshow', event => { if (event.persisted) { report = null; invalidateCache(); render(); restoreSession(); } });
+  window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; batchReport = null; invalidateCache(); });
+  window.addEventListener('pageshow', event => { if (event.persisted) { report = null; batchReport = null; invalidateCache(); render(); renderBatch(); restoreSession(); } });
   render(); controls();
   restoreSession();
   if (document.modelContext?.registerTool) {

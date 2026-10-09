@@ -1,5 +1,9 @@
 # Group 2 — usage and connections
 
+## 9 October 2026 — current integration checkpoint
+
+The private test now offers 2.2 metadata import using the same connection: enter a release name and 1–6 same-release Shorts, confirm, import. Three is valid. One ownership-checked YouTube Data API request reads snippet/status only. Public publication metadata is displayed in UK time; private/unlisted times are not treated as confirmed publication. There are no stored qualifying 24-hour views or rankings; old current counts cannot substitute. The two cards keep separate selections and periods. See [STATUS](../integration-tests/youtube/STATUS.md) for current behaviour and limits.
+
 Updated 9 October 2026. Current visual reference: [preview.html](preview.html). Visual rules: [SPECIFICATION.md](SPECIFICATION.md). API evidence: [ANALYTICS-FEASIBILITY.md](../ANALYTICS-FEASIBILITY.md). Canonical previews have no live connection. A separate [manual YouTube sample test](../integration-tests/youtube/README.md) has been built; CJ reports a real connection and successful sample import; raw response/Studio agreement and a failing older-video retry remain unverified.
 
 ## 2.1 Short-form performance

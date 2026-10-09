@@ -1,5 +1,9 @@
 # Group 2 — visual and interaction specification
 
+## 9 October 2026 — current integration checkpoint
+
+The separate integration test now includes 2.1 finalised test interactions and 2.2 release metadata. See [current test authority](../integration-tests/youtube/STATUS.md). 2.2 accepts 1–6 actual same-release Shorts, including a three-Short batch; shows actual titles, publication metadata, availability and full row details; leaves every row unranked until a qualifying snapshot exists. Uses the existing platform pills and purple/glass material, normal 575/583px recess and 360px list region. Canonical preview.html remains unchanged; capture and rendered fit are unverified.
+
 Updated 9 October 2026. Latest reviewed reference: [preview.html](preview.html). Read [master design system](../../DESIGN_SYSTEM.md) and [USAGE-AND-CONNECTIONS.md](USAGE-AND-CONNECTIONS.md). Integration/metric choices are defined there; this document governs presentation. The split itself authorised no code changes. CJ subsequently approved the reference changes listed in [HANDOFF.md](../HANDOFF.md); these are now implemented.
 
 ## Group geometry and palette

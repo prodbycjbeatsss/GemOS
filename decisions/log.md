@@ -319,3 +319,8 @@ CJ approved avoiding a full-page/card refresh on each date-range click. Keep tit
 ## 2026-10-09 — Finalise 2.1 test and authorise 2.2 batch test
 
 CJ finalised the current 2.1 test choices and requested a saved checkpoint, a fresh AGENTS.md read, then 2.2 on the same page. Consolidate current accepted choices in dashboard/integration-tests/youtube/STATUS.md, retaining honest outstanding integration/verification limits. 2.2 accepts 1–6 user-confirmed same-release Shorts; CJ's existing three are sufficient. Import titles/publication metadata and show 24-hour snapshot availability without fabricating historical counts. Existing read-only connection is shared; automatic capture/durable login remain future work.
+
+
+## 2026-10-09 — 2.1 finalised; 2.2 metadata test added
+
+CJ authorised saving all settled 2.1 choices, rereading AGENTS.md, then adding 2.2 to the same private test. A separate 2.1 documentation checkpoint was committed first. The selected-release test accepts 1–6 actual same-release Shorts; CJ's three-Short batch is valid. Reuse the existing read-only connection, retain the established card material/recess/list geometry, show titles/publication metadata and explicit unranked availability states. No invented uploads or substitution of current/lifetime views for missed first-24-hour snapshots. Capture/storage is a later slice. Current decisions and controlled verification limits: docs/dashboard/integration-tests/youtube/STATUS.md. Canonical preview references remain unchanged.

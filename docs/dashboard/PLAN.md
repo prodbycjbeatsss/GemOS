@@ -1,5 +1,9 @@
 # GemOs card review and integration plan
 
+## 9 October 2026 — current integration checkpoint
+
+2.1 current test choices are finalised; 2.2 selected-release metadata slice is implemented on the same private test. See [current decisions and limits](integration-tests/youtube/STATUS.md). Three Shorts are accepted as the complete selected test batch. Remaining: supported rendered QA, accurate publication/capture handling, durable storage and unattended capture in the inclusive 24h–24h15m window; source/Studio agreement and broader connections remain open. Do not mark 2.2 first-24-hour analytics connected.
+
 Updated 9 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This plan tracks the reference-card work and source validation; it is not a production app or deployment plan.
 
 ## Current status

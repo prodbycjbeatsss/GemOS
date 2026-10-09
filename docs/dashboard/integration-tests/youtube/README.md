@@ -6,6 +6,12 @@ Current authority: [finalised decisions and limits](STATUS.md). Later decisions 
 
 Private test: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site
 
+## Test 2.2 with an existing three-Short release
+
+Use the same connection. Open **2.2 · Release Shorts**, enter a release name and its three Shorts links, tick the same-release confirmation, then choose **Import release Shorts**. The second card shows titles, source publication times and snapshot availability. Tap a row for full details. No new Google project, permissions or reconnect is needed while the existing token is valid.
+
+This first slice imports metadata only. Existing older Shorts do not acquire historical 24-hour counts; unattended capture and durable storage are not connected. Exact behaviour and verification limits are recorded in [STATUS.md](STATUS.md).
+
 ## Google setup
 
 1. Open [Google Cloud Console](https://console.cloud.google.com/) and create or select your own project. Enable **YouTube Data API v3** and **YouTube Analytics API** in its API Library.
