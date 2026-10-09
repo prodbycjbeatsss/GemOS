@@ -95,3 +95,8 @@ CJ approved 7/28/90/365-day activity windows with 28 default. Each selected wind
 ### Cached range selection — 9 October 2026
 
 In the isolated importer, range changes update Analytics only and reuse previously verified same-connection channel/video metadata. Loaded ranges are cached by channel, selected IDs, requested end and day range, in memory only. Display Cached with the original fetch time; manual Sync revalidates ownership and fetches fresh reports while invalidating other cached ranges. An uncached range keeps the old period visible with an explicit updating label, and a failed request preserves those old figures without claiming the requested range succeeded. All metrics still share one atomic source/report scope. Cache is cleared on selection/auth/lifecycle changes; it does not provide persistent login, whole-channel discovery or coverage verification.
+
+
+### 9 October — current integration capture slice
+
+The separate private test now has server-saved selections, immutable qualifying view snapshots and competition rankings, using the shared Google connection. Zero is valid and missed windows remain unavailable. Five-minute Google Cloud Scheduler setup is prepared but not connected. No relative bars or wider platform integrations were added. See [current test status](../integration-tests/youtube/STATUS.md) and [capture contract](../integration-tests/youtube/CAPTURE.md). Earlier infrastructure statements describe the reference-stage proposal.

@@ -1,5 +1,6 @@
 # YouTube manual import test
 
+Current checkpoint: [STATUS.md](STATUS.md) and [CAPTURE.md](CAPTURE.md) supersede historical browser-only setup below. Shared server access is configured; saved releases and qualifying frozen rankings are deployed. Five-minute Google Cloud Scheduler setup remains outstanding.
 Current authority: [finalised decisions and limits](STATUS.md). Saved-connection upgrade: [BACKEND.md](BACKEND.md). Later decisions supersede earlier follow-up entries below.
 
 9 October 2026. CJ approved a browser-only OAuth test after comparing simpler alternatives. This is an isolated integration experiment, not the final dashboard, app stack or unattended capture service. Canonical Group 1/2 previews remain unchanged.

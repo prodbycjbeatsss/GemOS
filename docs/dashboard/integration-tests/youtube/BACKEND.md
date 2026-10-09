@@ -1,6 +1,6 @@
 # Shared YouTube connection — server upgrade
 
-9 October 2026. CJ authorised upgrading the existing connection so 2.1 and 2.2 share saved Google access. The original project, client and private Site URL are retained. No capture scheduler is connected by this change.
+9 October 2026. CJ authorised upgrading the existing connection so 2.1 and 2.2 share saved Google access. The original project, client and private Site URL are retained. The later capture slice is documented in [CAPTURE.md](CAPTURE.md); its external schedule remains unconnected.
 
 ## Current state
 
@@ -8,7 +8,7 @@ The private test has been migrated from static HTML to the supported Sites Vinex
 
 Routes: `/api/youtube/status`, `/start`, `/callback`, `/query`, `/disconnect` under the same prefix. The callback is not the platform-reserved `/callback`. Sites still handles access to this private page. No second Google connection is added for 2.2.
 
-## Google setup — credentials configured; live approval pending
+## Google setup — credentials configured; connection restoration reported
 
 On the **existing Web application OAuth client**, add this exact authorised redirect URI:
 
@@ -32,6 +32,6 @@ The proxy allows only the three existing read endpoints with bounded parameter a
 
 Passed: production Worker build, synthetic SQLite/D1 OAuth/refresh/encryption tests (`node verify-backend.mjs`), and existing plus shared-backend DOM/request regressions (`node verify-state.cjs`). The server tests cover identity, state replay/ownership, cookie, ciphertext binding, proxy rejection, refresh, revoked access and disconnect versus in-flight refresh. Browser tests remain prepared but are not run in the managed environment without supported browser control.
 
-Not yet verified: actual Google callback/credentials, actual hosted D1 connection writes and refresh, current phone/desktop rendering. These need completed Google setup and one live approval. Automatic 24-hour capture, scheduler, durable view snapshots/rankings and persistence of release links across devices remain later work. The database currently stores connection credentials and pending authorisation only.
+CJ's Android screenshot reports saved connection restored for both cards, establishing successful live callback/storage/restoration. Actual token renewal and current rendered fit remain unverified. D1 now also stores selected releases, qualifying frozen view snapshots and checker run logs; see CAPTURE.md. The external five-minute schedule remains to be created and verified.
 
 Source: `ui/`, `server/youtube.mjs`, `app/`, `db/schema.ts` and immutable generated `drizzle/` migrations. The retained Sites build/plugin scripts provide deployment and identity integration. Install/build through the Sites workflow. For local D1 previews follow the supported starter instructions; do not create tables inside requests. Never regenerate or edit an applied migration.

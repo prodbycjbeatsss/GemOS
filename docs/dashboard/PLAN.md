@@ -2,7 +2,7 @@
 
 ## 9 October 2026 — current integration checkpoint
 
-2.1 current test choices are finalised; 2.2 selected-release metadata slice is implemented on the same private test. See [current decisions and limits](integration-tests/youtube/STATUS.md). Three Shorts are accepted as the complete selected test batch. Remaining: supported rendered QA, accurate publication/capture handling, durable storage and unattended capture in the inclusive 24h–24h15m window; source/Studio agreement and broader connections remain open. Do not mark 2.2 first-24-hour analytics connected.
+Saved shared Google access has been reported restored by CJ on Android. The private test now persists selected release links/metadata and frozen qualifying 24h–24h15m cumulative view snapshots, including zero and tied rankings. Synthetic tests and the production build pass. The five-minute Google Cloud Scheduler configuration is prepared, but no Google job or real scheduled capture has been verified. Manual Sync can capture within the window; old counts cannot backfill it. See [current decisions](integration-tests/youtube/STATUS.md) and [capture setup](integration-tests/youtube/CAPTURE.md). Current rendering and real token renewal remain unverified. Canonical previews are unchanged.
 
 Updated 9 October 2026. Start a new session with [HANDOFF.md](HANDOFF.md). This plan tracks the reference-card work and source validation; it is not a production app or deployment plan.
 

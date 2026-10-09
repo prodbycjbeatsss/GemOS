@@ -2,7 +2,7 @@
 
 ## 9 October 2026 — current integration checkpoint
 
-Current checkpoint: 2.1 test design and interaction choices are finalised and consolidated in [STATUS](integration-tests/youtube/STATUS.md). AGENTS.md was reread after saving that checkpoint. 2.2 now sits on the same private page: shared read-only connection, selected release name and 1–6 same-release Shorts (three valid), ownership-checked metadata, actual titles/count/publication states and unranked details. No historical first-24-hour figures, scheduler or durable snapshot store exists. Controlled state checks pass; current rendered verification remains pending. Next integration slice is capture/storage, after reviewing this first metadata slice.
+Saved shared Google access has been reported restored by CJ on Android. The private test now persists selected release links/metadata and frozen qualifying 24h–24h15m cumulative view snapshots, including zero and tied rankings. Synthetic tests and the production build pass. The five-minute Google Cloud Scheduler configuration is prepared, but no Google job or real scheduled capture has been verified. Manual Sync can capture within the window; old counts cannot backfill it. See [current decisions](integration-tests/youtube/STATUS.md) and [capture setup](integration-tests/youtube/CAPTURE.md). Current rendering and real token renewal remain unverified. Canonical previews are unchanged.
 
 Updated 9 October 2026 · Repository: [prodbycjbeatsss/GemOS](https://github.com/prodbycjbeatsss/GemOS) · Branch: main.
 
