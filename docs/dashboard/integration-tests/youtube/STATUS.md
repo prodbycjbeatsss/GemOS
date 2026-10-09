@@ -15,7 +15,7 @@ Updated 9 October 2026. This is the current checkpoint; older follow-up notes in
 | Lower recess | Small request-stage/completion/failure status and last successful import time; remaining space clear. |
 | Sync | Circular-arrow rotation during requests, reduced-motion alternative; manual Sync revalidates ownership and fetches fresh reports. |
 | Range changes | Retain clearly labelled old values until an atomic replacement; reuse verified metadata; memory cache enables zero-request switching to loaded ranges, explicitly marked cached. |
-| Persistence | Tab-session input preferences and short-lived token restoration; reports/range cache remain memory-only. No new links required for development. |
+| Persistence | Tab-session input preferences; legacy short-lived token restoration until the shared backend is configured, then saved server connection restoration. Reports/range cache remain memory-only. No new links required for development. |
 | Missing/coverage | Missing is unavailable, not zero. Growth/target remain hidden pending coverage checks. All/TikTok/Reels remain unconnected. |
 
 Finalised refers to the current test design and behaviour, not a finished production connection. Controlled state/request checks pass. Earlier browser evidence covers prior iterations; the latest rendered alignment/cache interaction still lacks supported-browser verification. Exact Studio agreement, complete coverage, whole-channel discovery, persistent backend login and TikTok/Reels remain outstanding. CJ's real imports establish successful source-to-screen activity, not those remaining claims. No private analytics figures or identifiers are stored here.
@@ -34,3 +34,8 @@ Controlled state/request checks pass for three/six Shorts, one-request imports, 
 ### 9 October — phone feedback: icon spacing and sync meaning
 
 CJ confirmed release metadata displays on Android; the trophy lacked the 12px bottom gap used on 2.1 because a shared glyph rule reset its margin. A scoped 2.2 override restores that gap. Completion now says “Titles loaded · views not connected”; the footer says “Titles loaded” to distinguish this metadata import from view capture. No view counts or rankings have been implemented; first-24-hour capture remains pending. Screenshot evidence identifies the pre-fix spacing issue; the corrected rendering remains unverified in this environment.
+
+
+### 9 October — one saved connection for both cards
+
+CJ authorised upgrading the existing Google connection. The private test now has a supported Worker/D1 backend, encrypted per-user token storage, offline OAuth callback, server refresh and a bounded read proxy used by both cards after configuration. The legacy browser connection remains active until setup is complete. Runtime encryption key and callback URI are configured; the existing Web client's ID/secret and authorised callback remain required before real saved access can be enabled. [Backend contract and setup](BACKEND.md) record exact steps. Synthetic backend/frontend checks and production build pass; live Google, hosted token writes/refresh and rendering are unverified. Google Testing mode limits refresh tokens to seven days. No capture scheduler or view rankings are connected by this upgrade.

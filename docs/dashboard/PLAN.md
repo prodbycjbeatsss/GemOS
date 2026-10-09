@@ -88,3 +88,8 @@ Implemented CJ's approved analytics-only range refresh: retain explicitly labell
 ### 2.1 design checkpoint and 2.2 authorisation
 
 The current 2.1 test is finalised by CJ; [STATUS.md](integration-tests/youtube/STATUS.md) consolidates accepted choices and remaining verification/integration limits. Next authorised slice is 2.2 on the same test page: 1–6 selected same-release Shorts, including CJ's existing three, title/publication metadata and honest unavailable/waiting states. No auto-capture or historical 24-hour backfill is authorised by this UI slice.
+
+
+### 9 October — one saved connection for both cards
+
+CJ authorised upgrading the existing Google connection. The private test now has a supported Worker/D1 backend, encrypted per-user token storage, offline OAuth callback, server refresh and a bounded read proxy used by both cards after configuration. The legacy browser connection remains active until setup is complete. Runtime encryption key and callback URI are configured; the existing Web client's ID/secret and authorised callback remain required before real saved access can be enabled. [Backend contract and setup](integration-tests/youtube/BACKEND.md) record exact steps. Synthetic backend/frontend checks and production build pass; live Google, hosted token writes/refresh and rendering are unverified. Google Testing mode limits refresh tokens to seven days. No capture scheduler or view rankings are connected by this upgrade.

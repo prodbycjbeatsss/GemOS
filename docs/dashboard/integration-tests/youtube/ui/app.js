@@ -3,6 +3,7 @@
   const $ = id => document.getElementById(id);
   const scopes = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
   const metrics = ['views', 'averageViewPercentage', 'likes', 'subscribersGained', 'shares'];
+  let backendMode = window.GEMOS_BACKEND_CONFIGURED === true;
   let token = null, expiresAt = 0, expiryTimer, connectTimer, generation = 0, busy = false, report = null, opener, syncing = false;
   let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
@@ -28,6 +29,7 @@
   }
   function removeSession() { try { sessionStorage.removeItem(sessionKey); } catch {} }
   function rememberSession() {
+    if (backendMode) { removeSession(); return true; }
     try {
       sessionStorage.setItem(configKey, $('client-id').value.trim());
       sessionStorage.setItem(sessionKey, JSON.stringify({ clientId: $('client-id').value.trim(), token, expiresAt, channel: $('channel').value }));
@@ -35,6 +37,8 @@
     } catch { return false; }
   }
   async function restoreSession() {
+    if (backendMode) return restoreBackend();
+    if (window.GEMOS_SERVER_AVAILABLE) $('persistent-connection').textContent = 'Background access awaits Google setup. Your existing browser connection still works.';
     controls();
     let saved;
     try { $('client-id').value = sessionStorage.getItem(configKey) || ''; saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null'); } catch { removeSession(); return; }
@@ -49,6 +53,31 @@
       $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
       if (data.items.some(item => item.id === saved.channel)) $('channel').value = saved.channel;
       status('Connected · read-only. Session restored after refresh.');
+      showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+      batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
+    } catch (error) { if (session === generation) clearConnection(error.message); }
+    finally { if (session === generation) { busy = false; controls(); } }
+  }
+  async function backend(action, params) {
+    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json' } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
+    let data; try { data = await response.json(); } catch { throw new Error('The connection service returned an unreadable response.'); }
+    if (!response.ok) { const error = new Error(data.error || 'The connection service is unavailable.'); error.status = response.status; throw error; }
+    return data;
+  }
+  async function restoreBackend() {
+    const session = generation;
+    removeSession(); busy = true; controls(); status('Restoring your saved YouTube connection…');
+    $('persistent-connection').textContent = 'One saved Google connection serves both cards. Automatic 24-hour capture is not connected yet.';
+    try {
+      const data = await backend('status'); if (session !== generation) return;
+      if (!data.configured) throw new Error('Background connection setup is incomplete.');
+      $('client-id').value = data.clientId || ''; $('client-id').readOnly = true;
+      if (!data.connected) { status('Google setup ready. Connect once to enable saved access for both cards.'); return; }
+      if (!Array.isArray(data.channels) || !data.channels.length) throw new Error('No owned YouTube channel returned. Connect again.');
+      const previous = $('channel').value || sessionStorage.getItem('gemos-youtube-channel-v1');
+      $('channel').replaceChildren(...data.channels.map(c => new Option(c.title, c.id)));
+      if (data.channels.some(c => c.id === previous)) $('channel').value = previous;
+      token = 'server-connection'; expiresAt = Infinity; status('Connected · read-only. Saved connection restored for both cards.');
       showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
     } catch (error) { if (session === generation) clearConnection(error.message); }
@@ -133,6 +162,10 @@
     feedback(report ? 'Previous import retained. It has not been refreshed.' : 'Connect again to import.'); showSync('Reconnect to sync', report ? 'Your previous import is still displayed. Connect again to refresh it.' : 'Connect again to import your selected Shorts.', 'Session expired'); controls();
   }
   async function api(base, params, session) {
+    if (backendMode) {
+      try { const result = await backend('query', { base, params }); if (session !== generation) throw new Error('Connection changed. Import cancelled.'); return result; }
+      catch (error) { if (session !== generation) throw new Error('Connection changed. Import cancelled.'); if (error.status === 401) expire(); throw error; }
+    }
     if (!token || Date.now() >= expiresAt) { expire(); throw new Error('Session expired. Connect again.'); }
     const url = new URL(base); url.search = new URLSearchParams(params);
     const response = await fetch(url, { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store', signal: AbortSignal.timeout(30000) });
@@ -148,6 +181,12 @@
     return body;
   }
   async function connect() {
+    if (backendMode) {
+      rememberSelection(); rememberBatch(); busy = true; controls(); status('Opening Google to save one connection for both cards…');
+      try { const data = await backend('start', {}); const url = new URL(data.url); if (url.origin !== 'https://accounts.google.com' || url.pathname !== '/o/oauth2/v2/auth') throw new Error('Invalid Google connection link.'); location.assign(url.href); }
+      catch (error) { status(error.message); busy = false; controls(); }
+      return;
+    }
     const clientId = $('client-id').value.trim();
     if (!/^[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/.test(clientId)) return status('Enter your public Web application OAuth client ID.');
     if (!window.google?.accounts?.oauth2) return status('Google sign-in has not loaded. Check your connection and try again.');
@@ -384,7 +423,13 @@
   for (const id of ['batch-name-input','batch-videos','batch-confirm']) $(id).addEventListener('change', () => { rememberBatch(); batchReport = null; renderBatch(); batchStatus('Ready to import', 'Release selection changed. Import to load these Shorts.', 'Not synced'); });
   for (const id of ['batch-name-input','batch-videos']) $(id).addEventListener('input', rememberBatch);
   $('connect').addEventListener('click', connect);
-  $('disconnect').addEventListener('click', () => {
+  $('disconnect').addEventListener('click', async () => {
+    if (backendMode) {
+      generation++; busy = true; controls();
+      try { const result = await backend('disconnect', {}); clearConnection(result.revoked ? 'Disconnected. Saved Google access removed.' : 'Disconnected locally. Google revocation was not confirmed; remove access in your Google Account if needed.'); }
+      catch (error) { busy = false; controls(); status('Could not disconnect: ' + error.message); }
+      return;
+    }
     const revokeToken = token; clearConnection();
     if (revokeToken && window.google?.accounts?.oauth2) google.accounts.oauth2.revoke(revokeToken, () => {});
   });
@@ -424,7 +469,7 @@
   $('details').addEventListener('click', event => { if (event.target === $('details')) { const b = $('details').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('details').close(); } });
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
     if (id === 'client-id') { clearConnection(); return; }
-    if (id === 'channel') { batchReport = null; renderBatch(); batchStatus('Ready to import', 'Channel changed. Import to load this release.', 'Not synced'); if (token) rememberSession(); }
+    if (id === 'channel') { batchReport = null; renderBatch(); batchStatus('Ready to import', 'Channel changed. Import to load this release.', 'Not synced'); if (token) { if (backendMode) { try { sessionStorage.setItem('gemos-youtube-channel-v1', $('channel').value); } catch {} } else rememberSession(); } }
     rememberSelection(); invalidateCache();
     report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });

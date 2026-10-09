@@ -1,6 +1,6 @@
 # YouTube manual import test
 
-Current authority: [finalised decisions and limits](STATUS.md). Later decisions supersede earlier follow-up entries below.
+Current authority: [finalised decisions and limits](STATUS.md). Saved-connection upgrade: [BACKEND.md](BACKEND.md). Later decisions supersede earlier follow-up entries below.
 
 9 October 2026. CJ approved a browser-only OAuth test after comparing simpler alternatives. This is an isolated integration experiment, not the final dashboard, app stack or unattended capture service. Canonical Group 1/2 previews remain unchanged.
 
@@ -40,7 +40,7 @@ CJ reports creating the Google project/client, granting the two read permissions
 
 ## Verification
 
-`dist/index.html` and `dist/app.js` are the hosted source. `verify.cjs` uses Playwright with controlled Google responses; it contains only fake identifiers/token. Run `node verify.cjs` with Playwright and a browser installed; optionally set `GEMOS_CHROMIUM_PATH` to an existing Chromium executable. To run the page locally: `python -m http.server 8000 --directory dist`; authorise the local origin separately for real OAuth. Never open the HTML via `file://` for OAuth.
+Current source is `ui/index.html`, `ui/app.js`, `app/` and `server/youtube.mjs`, hosted through the supported Sites Worker build. See [server connection setup and checks](BACKEND.md). `verify-state.cjs` and `verify-backend.mjs` use synthetic fixtures; `verify.cjs` remains prepared browser QA, not current evidence. Do not start an unsupported preview/browser in managed Linux.
 
 Passed in Chromium 153: empty/validation states, mocked consent and channel lookup, ownership rejection, mapping five metrics, sample filtering, adjacent 28-day windows and observed cutoff, hidden comparison/target, escaped external video titles, dialog Escape/focus return, widths 320/390/840/1280 with no page horizontal overflow, a controlled enlarged-text probe, 403 and empty-data preservation, 401 expiry, reconnect/disconnect, no browser storage and no script errors. WebMCP read-status tool registered and passed valid/invalid input checks with a simulated registry; native browser WebMCP is unverified. Syntax check passed. Mobile capture inspected before closing the blurred dialog; this Chromium build produced stale compositor layers in a later capture, so that later capture was not retained as evidence.
 
