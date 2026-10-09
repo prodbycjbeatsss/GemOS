@@ -100,3 +100,8 @@ The separate private test now has server-saved selections, immutable qualifying 
 ### 9 October — accepted test completion checkpoint
 
 CJ accepts 2.2 implementation complete, with real first-release capture/display unverified. The Google job and persisted scheduled classification are verified. In the private integration test, vertical leaderboard swipes chain to the page when rows fit or either end is reached; internal overflow scrolling and fixed dimensions remain. Android gesture verification is pending. No canonical reference HTML changes or historical reporting mode were added. STATUS.md holds the first-release checklist.
+
+
+### 9 October — shared integration design contract
+
+CJ authorised repairing inconsistencies between the two test cards. Shared Group 2 tokens now govern gradient/materials, matching 12/16px recess insets, 174px header minimum, 58px icons with 12px gap, and common 24/30px headings (22px below 360px). Both use the same header anatomy and sync-status treatment; Inter/Poppins loading is explicit. Metrics and leaderboard content remain distinct. See DESIGN_TOKENS.md, group-2/COMPONENTS.md and the current integration STATUS. Source/state checks and build are separate from pending rendered Android/desktop verification. Canonical previews are unchanged; real first-release capture remains unverified.

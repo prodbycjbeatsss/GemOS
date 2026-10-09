@@ -494,6 +494,8 @@
     });
   });
   window.addEventListener('resize', fitRecess);
+  // Loaded fonts can change wrapping after the first layout.
+  document.fonts?.ready.then(fitRecess);
   $('open-analytics').addEventListener('click', details);
   $('close-details').addEventListener('click', () => $('details').close());
   $('details').addEventListener('close', () => opener?.focus());

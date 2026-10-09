@@ -96,3 +96,8 @@ CJ authorised upgrading the existing Google connection. The private test now has
 
 
 Current scheduler follow-up: successful Google job runs reached the endpoint; the short job-name status check has been fixed and a post-fix scheduled run is verified. See STATUS.md.
+
+
+### 9 October — shared integration design contract
+
+CJ authorised repairing inconsistencies between the two test cards. Shared Group 2 tokens now govern gradient/materials, matching 12/16px recess insets, 174px header minimum, 58px icons with 12px gap, and common 24/30px headings (22px below 360px). Both use the same header anatomy and sync-status treatment; Inter/Poppins loading is explicit. Metrics and leaderboard content remain distinct. See DESIGN_TOKENS.md, group-2/COMPONENTS.md and the current integration STATUS. Source/state checks and build are separate from pending rendered Android/desktop verification. Canonical previews are unchanged; real first-release capture remains unverified.

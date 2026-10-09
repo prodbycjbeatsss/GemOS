@@ -65,6 +65,10 @@ Check relevant mobile/desktop widths, long text, platform/state changes, clippin
 
 Animation planning is deferred until a working app. Existing reference CSS may contain transitions; those are not a newly approved native motion specification.
 
+## Group 2 integration enforcement — 9 October
+
+The private test now consumes shared semantic tokens for both cards' gradient, glass materials, header/icon geometry, responsive insets and typography. See [tokens](DESIGN_TOKENS.md) and [component contracts](dashboard/group-2/COMPONENTS.md). The shared heading exception below 360px is 22px on both cards. Inter/Poppins font delivery is explicit; system fonts are fallback only. The canonical visual references are unchanged. Source verification is distinct from rendered acceptance; current phone/desktop appearance remains to be checked.
+
 ## Supporting documents
 
 - [Card index](dashboard/README.md)

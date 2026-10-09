@@ -349,3 +349,8 @@ CJ created the five-minute Google Cloud Scheduler job through the browser consol
 ### 9 October — completion status and scroll chaining
 
 CJ accepted 2.2 implementation complete with real view capture/display unverified until the first release, then authorised the scrolling fix and GitHub update in response to the pending main-branch save request. Replace vertical overscroll containment with native auto chaining in the private test: scroll the page when rows fit or the list is at either boundary, while retaining internal scrolling for overflow and the accepted fixed dimensions. Checker runs and post-fix scheduled classification are verified; real qualifying view data is not. Retain the existing Google connection and scheduler. Historical release reporting and automatically moving 2.1 dates are not included in this completion scope.
+
+
+### 2026-10-09 — shared Group 2 design contract
+
+CJ requested fixing inconsistencies across cards 2.1/2.2. Retain the accepted purple gradient and glass fill; consolidate their shared surface, header/icon, responsive recess inset and status rules into one token/component contract. Load the already documented Inter/Poppins fonts. Preserve distinct metrics/list contents and existing source/capture behaviour. Source inspection and controlled checks are evidence; rendered phone/desktop acceptance and first-release capture remain open. See docs/DESIGN_TOKENS.md and docs/dashboard/group-2/COMPONENTS.md.

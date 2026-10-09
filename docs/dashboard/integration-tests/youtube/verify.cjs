@@ -85,9 +85,18 @@ const assert = require('node:assert/strict');
     const pills = await page.locator('#card-monthly-shortform .platforms').boundingBox(), range = await page.locator('.range-control').boundingBox(), tiles = await page.locator('#metrics').boundingBox();
     assert.ok(range.y >= pills.y+pills.height, 'range below platforms'); assert.ok(tiles.y >= range.y+range.height+3, 'tiles below range');
     const control = await page.locator('[data-range="28"]').boundingBox(); assert.ok(control.height >=44);
-    const dock = await page.locator('.dock').boundingBox(); assert.equal(dock.height,width>=640?583:575,'matched recess height');
+    const dock = await page.locator('#card-monthly-shortform .dock').boundingBox(); assert.equal(dock.height,width>=640?583:575,'matched recess height');
     const labels = await page.locator('.tile-label').allTextContents(); assert.equal(labels[0],'Average viewed');
     const values = await page.locator('.tile-value').all(); const first = await values[0].boundingBox(), second = await values[1].boundingBox(); assert.equal(first.y,second.y,'first-row value alignment');
+    // Paired-card regression: shared materials and header geometry at every width.
+    const pair = await page.evaluate(() => [...document.querySelectorAll('.results > .card')].map(card => {
+      const style = selector => { const e=card.querySelector(selector), c=getComputedStyle(e), r=e.getBoundingClientRect(); return {background:c.backgroundImage,fill:c.backgroundColor,border:c.borderColor,radius:c.borderRadius,shadow:c.boxShadow,padding:c.padding,font:c.fontSize,weight:c.fontWeight,color:c.color,top:r.top-card.getBoundingClientRect().top,height:r.height}; };
+      return {surface:getComputedStyle(card).backgroundImage,dock:style('.dock'),glyph:style('.glyph'),label:style('.label'),title:style('.headline'),context:style('.scope'),freshness:style('.freshness'),status:style('.sync-status')};
+    }));
+    assert.equal(pair.length,2);
+    assert.equal(pair[0].surface,pair[1].surface,'same card gradient');
+    for (const part of ['dock','glyph','label','title','context','freshness']) assert.deepEqual(pair[0][part],pair[1][part], 'matched '+part+' at '+width);
+    for (const property of ['font','weight','color']) assert.equal(pair[0].status[property],pair[1].status[property],'matching footer '+property);
     const cardHeight = (await page.locator('#card-monthly-shortform').boundingBox()).height;
     await page.locator('[data-range="365"]').click(); await page.waitForFunction(() => document.querySelector('#feedback').textContent.startsWith('Imported selected') || document.querySelector('#feedback').textContent.startsWith('Loaded the saved'));
     assert.equal((await page.locator('#card-monthly-shortform').boundingBox()).height,cardHeight,'stable card size');

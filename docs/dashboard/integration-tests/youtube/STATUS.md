@@ -22,18 +22,26 @@ Finalised refers to the current test design and behaviour, not a finished produc
 
 ## 2.2 — implementation complete; first-release verification pending
 
-CJ accepted this implementation as complete on 9 October. Real first-release view capture and displayed ranking are unverified; keep that verification open. The scrolling change is implemented but awaits Android swipe confirmation.
+CJ accepted this implementation as complete on 9 October. Real first-release view capture and displayed ranking are unverified; keep that verification open. CJ reports the latest page looks good; explicit Android edge-swipe verification remains open.
 
 The private test accepts 1–6 user-confirmed same-release Shorts; three is valid. One shared saved read-only Google connection serves both cards. Release name, links and imported metadata now persist per owner/channel in D1 and restore after refresh. Reports/range caches on 2.1 remain memory-only. Canonical design previews and the finalised 2.1 interactions are unchanged.
 
 Manual import/Sync can save a public owned Short's cumulative Data API view count when both the request and return occur from publication +24h through +24h15m inclusive. This is an observed count around 24 hours, not an exact reconstructed first-day Analytics total. The first qualifying count is frozen. Zero is valid; missing, invalid, early, late or nonpublic counts stay unavailable. Old lifetime counts never replace missed snapshots. Saved counts rank descending; ties share competition ranks (1,1,3). Tap for exact capture timestamps and the full title. Unavailable entries remain below ranked entries in selection order. No fabricated growth or rank changes. No relative bars were added in this test slice.
 
-Normal recess dimensions remain 575/583px, with the established 360px scroll region and 72px rows. The scoped 12px trophy gap is retained. Vertical swipes now chain to the page when the list fits or reaches either end; only overflowing rows scroll inside the list. Six Shorts are optional. TikTok/Reels remain unconnected.
+Normal recess dimensions remain 575/583px, with the established 360px scroll region and 72px rows. Both icons now consume the shared 12px glyph-to-label token. Vertical swipes now chain to the page when the list fits or reaches either end; only overflowing rows scroll inside the list. Six Shorts are optional. TikTok/Reels remain unconnected.
 
 A protected unattended writer and owner-only private scheduler-configuration download are implemented. The built-in hourly task runner cannot meet the capture window. The five-minute Google Cloud Scheduler job has been created in the existing project; live logs verify successful endpoint calls. The short job-name fix is deployed; a post-fix run at 20:05 UK persisted as scheduled and CJ reports the updated sync message. Manual Sync works during the window without that schedule. [Capture contract and setup](CAPTURE.md) is the authority for storage, permissions, run status and verification limits. Successful scheduled endpoint calls are verified; a real qualifying Short capture remains pending.
 
 Controlled capture tests pass for boundaries, return lateness, zero, invalid/missing/private/foreign counts, immutable storage, ownership, saved selections, service key checks, scheduled run logging, old-release query avoidance and disconnect races. Frontend regressions pass including saved-release restoration, tie ranks and zero, plus unchanged 2.1 range/cache behaviour. Production build passes. Fixtures are synthetic. Rendered phone/desktop layout and a real newly published Short's capture remain unverified.
 
+
+## 9 October — shared design consistency repair
+
+CJ requested a comparison of colours, gradients, recess darkness and header spacing. Source inspection found matching declared gradients/fills, but unequal recess padding at ≥640px (16px on 2.1 versus 12px on the actual 2.2), divergent narrow/desktop heading overrides, different footer status colour/weight and 8px versus 12px lower-status padding. A broad leaderboard `span:last-child` rule also affected status text. The CSS named Inter/Poppins without loading either font.
+
+Both cards now consume one Group 2 token set and matching header anatomy, recess padding, heading scale and status styles. The accepted gradient/fill is retained; icon containers already matched in size. Font loading is explicit and triggers overflow reflow when ready. Card-specific metric/list content, source definitions, captures and scroll chaining are unchanged. [Tokens](../../../DESIGN_TOKENS.md) and [components](../../group-2/COMPONENTS.md) record the contract.
+
+CSS parsing/token references and controlled state/capture checks pass. Paired rendered-style/geometry checks were added to the existing browser suite but could not be run: supported screenshot/browser capture is unavailable. This is a source consistency review, not a completed rendered Product Design audit. Phone appearance, font delivery, contrast and enlarged-text fit remain open. Real first-release capture verification remains open independently.
 
 ## Historical checkpoints
 

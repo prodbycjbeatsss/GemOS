@@ -1,5 +1,9 @@
 # GemOs dashboard — next-session handoff
 
+## Latest design checkpoint — 9 October 2026
+
+CJ requested cross-card design consistency. The private test now uses shared Group 2 material/geometry/typography tokens and header anatomy. Fixed unequal desktop recess padding, divergent heading overrides and status styles; loaded the documented fonts and rechecks overflow after loading. Accepted purple/glass colours and card-specific contents remain. See [tokens](../DESIGN_TOKENS.md), [components](group-2/COMPONENTS.md) and [current status](integration-tests/youtube/STATUS.md). CSS/state checks and build pass; supported rendered comparison remains unavailable, so verify the refreshed page on Android next. No new authentication or sample links are needed for this review. First-release real capture verification stays open.
+
 ## 9 October 2026 — current integration checkpoint
 
 CJ accepted 2.2 implementation as complete, with real first-release view capture and displayed ranking unverified. Both cards share saved read-only Google access. The five-minute checker reaches the endpoint, persists runs, and its short job-name classification fix is verified by a scheduled record at 20:05 UK plus CJ's changed sync message. Release selections and qualifying snapshots persist. The leaderboard scrolling fix now lets gestures pass into the page when rows fit or the list reaches either end, preserving normal recess/list dimensions; Android swipe verification is pending. See [STATUS](integration-tests/youtube/STATUS.md) and [CAPTURE](integration-tests/youtube/CAPTURE.md). Next: first-release verification; no need for an extra test upload. 2.1 remains working, with automatic date advancement and historical release reporting separate proposals. Canonical previews remain unchanged.
