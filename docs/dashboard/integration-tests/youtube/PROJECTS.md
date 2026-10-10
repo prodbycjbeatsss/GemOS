@@ -1,5 +1,10 @@
 # Music-release discovery and project selection
 
+## Current empty-state refinement — 10 October 2026
+
+CJ's Android screenshots show the new picker/file popup and empty buffer rendered, with the empty message near the top, a redundant count dash, left-aligned file popup and overly instructional buffer details. CJ authorised centring the buffer content within its matched recess with a calendar icon, removing the dash, centring file-popup content with a missing-file icon, and making buffer details a breakdown of actual buffered projects. Implemented the centred states using existing Group 1 materials, 58px/18px supporting icon shell, type/insets and modal controls. Buffer details currently shows only a compact centred empty state plus Scheduling not connected; removed FAQ/rules blocks and unrelated currently selected Drive check. Populated project breakdown awaits an authoritative confirmed scheduling source; no queue folder or file-ready project is inferred scheduled. Eligibility, picker persistence and paired sizing remain unchanged. Controlled UI/geometry checks and production build pass; updated phone/desktop centring remains unverified. Earlier FAQ instructions are superseded; screenshots do not prove real second-project switching.
+
+
 ## Current picker, file popups and empty buffer — 10 October 2026
 
 CJ confirmed stage-folder setup and supplied Android screenshots showing saved connections, a saved discovery timestamp and a fresh Gelato 41 scan. This is evidence of that setup/read/display, not complete catalogue, switching, archive contents or scheduling verification. The parent may be a yearly folder such as 2027; connect its three stage folders separately. Gelato 41 is the current test project; Teeth & Claws remains incomplete.
@@ -93,3 +98,6 @@ Private deployment succeeded on 10 October 2026. Sites source SHA be0c5f9cc81b6d
 
 
 Current private popup/empty-buffer deployment — 10 October 2026: source `8fc844e184e2d657741b1b3694d120f5d9ca67d5`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_01d3a713b0b081919ac38b5358156a91`, deployment `appgdep_6aca4aeb84248191836bd982fae1c303` succeeded. Google configuration/environment revision 4 retained. Refreshed chooser/file-popup Android appearance and independent real second-project checks remain unverified.
+
+
+Current empty-state deployment — 10 October 2026: source `831466bbc4b6287c9068e1d91d0bf6d7dee2e061`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_260036a91a508191b8b97ac1b4ca6e8e`, deployment `appgdep_6aca4d3736fc8191becade162ba3cd7d` succeeded. Environment revision 4 retained. Updated icon/centring phone review remains pending.

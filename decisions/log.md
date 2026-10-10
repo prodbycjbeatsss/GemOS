@@ -450,3 +450,8 @@ See [PROJECTS.md](../docs/dashboard/integration-tests/youtube/PROJECTS.md) for s
 ## 10 October 2026 — app release chooser, connected-file inspection and empty buffer
 
 CJ authorised an app-styled release selector popup and clickable checklist tiles showing connected filenames or No file connected. Preserve the existing design system, project isolation and eight-role readiness contract. Needs-attention association stays in Release details. CJ identified that the buffer should currently show no releases: remove illustrative rows/coverage from the live page and explicitly state scheduling is unconnected. A yearly 2027 parent is accepted above the three separately connected stage folders; use Gelato 41 for current testing. Supplied phone screenshots establish saved connections and one fresh scan; second-project switching and new dialogs still need real-user verification. No publisher, scheduler, automatic moves or new Drive scope added.
+
+
+## 10 October 2026 — centred empty states and project-focused buffer details
+
+CJ requested centred empty-buffer text with an icon, removal of the white count dash, centred missing-file popup with a file icon, and a buffer project breakdown instead of FAQ. Implemented centred icon/copy states within established Group 1 geometry/materials; the empty buffer dialog now shows no projects and Scheduling not connected. Removed explanatory FAQ and selected checklist readiness from buffer details. Actual project/date/platform breakdown remains dependent on confirmed scheduling records; no fictional rows or queue-folder scheduling inference. Controlled UI/geometry/build pass; refreshed phone centring not yet verified.

@@ -150,7 +150,9 @@ import { groupGeometry } from '/checklist-layout.js';
     $('file-dialog-title').textContent=tile.querySelector('.asset-name').textContent+' · '+tile.querySelector('.asset-type').textContent;
     const badge=document.createElement('span');badge.className='details-badge';badge.textContent=stateLabel(asset?.state);host.dataset.state=asset?.state || 'Unchecked';host.append(badge);
     if(asset?.files?.length){for(const file of asset.files){const name=document.createElement('p');name.className='file-connected-name';name.textContent=file.name;host.append(name);}}
-    else {const empty=document.createElement('p');empty.textContent='No file connected';host.append(empty);}
+    else {const empty=document.createElement('p');empty.textContent='No file connected';host.append(empty);
+      const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 14l6 4m0-4-6 4"/></svg>';host.append(icon);
+    }
     if(!result || asset?.state==='Unchecked' || asset?.state==='Needs confirmation'){
       const note=document.createElement('p');note.className='details-reason';note.textContent=asset?.state==='Needs confirmation'?'Choose the correct file in Release details.':selectedId?'Press Sync to check this release.':'Choose a release first.';host.append(note);
     }
@@ -181,17 +183,15 @@ import { groupGeometry } from '/checklist-layout.js';
     });
   }
   let bufferTrigger=null;
-  function bufferDetails(selectedName){
+  function bufferDetails(){
     const host=$('buffer-detail-content');host.replaceChildren();
-    const overview=document.createElement('div');overview.className='details-overview';const heading=document.createElement('strong');heading.textContent='Scheduling not connected';const note=document.createElement('p');note.textContent='No scheduled releases are shown. GemOS cannot calculate coverage until scheduling confirmations are connected.';overview.append(heading,note);host.append(overview);
-    const section=(title,text)=>{const block=document.createElement('section');block.className='details-asset';const line=document.createElement('div');line.className='details-asset-heading';const h=document.createElement('h3');h.textContent=title;line.append(h);const p=document.createElement('p');p.className='details-reason';p.textContent=text;block.append(line,p);host.append(block);return block;};
-    section('What counts as a covered week','19 confirmed scheduled uploads: one main YouTube video plus six Shorts on each of the three short-form platforms. Every required destination must qualify.');
-    section('How the buffer is counted','Consecutive covered weeks in Europe/London, stopping at the first gap or unfinished week. Later bookings beyond a gap do not extend uninterrupted coverage.');
-    section('What does not count','Planned dates, submitted requests without acceptance, reminder-only tasks and file readiness alone do not establish scheduling confirmation.');
-    if(result)section('Current asset check · '+releaseTitle(result),`${result.ready}/${result.total} categories ready. This is a separate Drive file check, not confirmation that this release is scheduled.`);
-    section('Next connection needed','Choose and connect the authoritative release records and platform or scheduler confirmation source. Then GemOS can show your real coverage date and next releases.');
+    const empty=document.createElement('div');empty.className='buffer-empty';
+    const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-12 5h6"/></svg>';
+    const title=document.createElement('strong');title.textContent='No releases to show';
+    const note=document.createElement('p');note.textContent='Your scheduled projects will appear here.';empty.append(icon,title,note);
+    const status=document.createElement('p');status.className='buffer-source-status';status.textContent='Scheduling not connected';host.append(empty,status);
   }
-  function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent='Release Buffer details';bufferDetails(name);$('buffer-preview-dialog').showModal();}
+  function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent='Release buffer';bufferDetails(name);$('buffer-preview-dialog').showModal();}
   $('buffer-preview-details').addEventListener('click',event=>openBufferPreview(event.currentTarget));
   $('buffer-preview-close').addEventListener('click',()=>$('buffer-preview-dialog').close());
   $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());

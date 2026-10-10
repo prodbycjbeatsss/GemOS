@@ -52,3 +52,6 @@ Project selector: 12px-radius panel/control, panel inset 12px/16px, 8px control 
 
 
 10 October current live integration: release picker and small connected-file dialog reuse Group 1 blue/navy modal tokens, 32px shell radius, 20/24px insets, Inter/Poppins and 44px Close/choice targets. All eight file tiles are now native buttons; this supersedes earlier informational-only tile guidance for the private integration. Clickability preserves tile dimensions/order and shared pair geometry. Release buffer uses a truthful unconnected empty state, without examples or a fabricated numerical coverage count. Native dialog keyboard behaviour is implemented; rendered/mobile verification remains pending.
+
+
+10 October empty-state refinement: buffer recess centres calendar icon and short empty copy within shared recess; no count dash or unnecessary heading. Supporting icon uses 58px size/18px corner with quiet glass material and 28px outline. File popup centres contents/Close and places a file-X icon first when no connected filenames exist. Buffer details is a project-breakdown route, presently a compact centred empty state; remove FAQ and unrelated selected-project scan. Preserve native dialog behaviour and group-owned measurements. Current rendered centring awaits user review.

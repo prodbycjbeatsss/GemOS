@@ -1,5 +1,10 @@
 # Group 1 asset checklist test
 
+## Current empty-state refinement — 10 October 2026
+
+CJ's Android screenshots show the new picker/file popup and empty buffer rendered, with the empty message near the top, a redundant count dash, left-aligned file popup and overly instructional buffer details. CJ authorised centring the buffer content within its matched recess with a calendar icon, removing the dash, centring file-popup content with a missing-file icon, and making buffer details a breakdown of actual buffered projects. Implemented the centred states using existing Group 1 materials, 58px/18px supporting icon shell, type/insets and modal controls. Buffer details currently shows only a compact centred empty state plus Scheduling not connected; removed FAQ/rules blocks and unrelated currently selected Drive check. Populated project breakdown awaits an authoritative confirmed scheduling source; no queue folder or file-ready project is inferred scheduled. Eligibility, picker persistence and paired sizing remain unchanged. Controlled UI/geometry checks and production build pass; updated phone/desktop centring remains unverified. Earlier FAQ instructions are superseded; screenshots do not prove real second-project switching.
+
+
 ## Current picker, file popups and empty buffer — 10 October 2026
 
 CJ confirmed stage-folder setup and supplied Android screenshots showing saved connections, a saved discovery timestamp and a fresh Gelato 41 scan. This is evidence of that setup/read/display, not complete catalogue, switching, archive contents or scheduling verification. The parent may be a yearly folder such as 2027; connect its three stage folders separately. Gelato 41 is the current test project; Teeth & Claws remains incomplete.
