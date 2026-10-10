@@ -1,5 +1,10 @@
 # Music-release discovery and project selection
 
+## Current minimal Drive links — 10 October 2026
+
+CJ authorised minimal folder/file links, then clarified: links belong inside the click popups and Release details, not on checklist tiles. Implemented borderless blue text actions with 44px targets, hover underline and visible focus. Every connected file with a valid saved Drive ID gets Open file ↗ in both dialogs, including individual Shorts. Missing/unchecked files have no invented link; invalid/missing IDs keep readable filenames only. Fixed Google origin and validated IDs generate folder or /file/d/ID/view URLs; new tabs use noopener/noreferrer and descriptive accessible names. No Drive sharing/write scope, API calls, tile anatomy or readiness changes. Controlled UI tests check matching links across both dialogs, distinct Shorts URLs, target/rel and invalid-ID omission; title checks and production build pass. Supplied screenshot confirms previous metadata layout rendered, not new link appearance or actual Google destination opening. Phone review remains pending.
+
+
 ## Current release details presentation — 10 October 2026
 
 CJ authorised replacing Suggested details / Original project folder name with a centred release header (artist - track), separate beat description, n/8 PASSED and relevant next action, Last checked timestamp, Project metadata (Artist, Track Name, combined BPM & Key, Credits) and a working Drive-folder link. Passing asset sections show category, PASS and connected filenames; nonpassing/ambiguous sections retain reasons and association controls. Remove redundant source-caption/stage and generic boundary copy from this popup. All asset file popups now include the same 58px/18px icon shell; connected files reuse their category SVG, absent files retain file-X. Centre metadata, asset/status/file sections and Close using existing blue/navy shell, fonts and insets. Missing data says Not available rather than inventing metadata; invalid/missing folder IDs omit the link. Drive URLs use a fixed Google origin and validated stored folder ID, opening in a new tab with noopener/noreferrer.
@@ -113,3 +118,6 @@ Current empty-state deployment — 10 October 2026: source `831466bbc4b6287c9068
 
 
 Current metadata/file-icon deployment — 10 October 2026: source `913b066c5f2a7f8c9f1863fe73d12041863d98b3`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_5ddf4b62134081918f9fb8c5fc4681e6`, deployment `appgdep_6aca6c9e8704819196bfae92224838f4` succeeded. Google environment revision 4 retained. New centred metadata/file-icon phone appearance remains unverified.
+
+
+Current minimal-links deployment — 10 October 2026: source `e2a1d78a3a82cfa9471d54b1b6dadef89aa811a7`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_a1b4a3f38c3881918447c0c55520c239`, deployment `appgdep_6aca6e69737081918a14bb3955d8cbe8` succeeded. Google environment revision 4 retained. Actual Drive destination opening and phone link appearance remain pending.

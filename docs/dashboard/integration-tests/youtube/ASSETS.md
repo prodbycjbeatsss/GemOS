@@ -1,5 +1,10 @@
 # Group 1 asset checklist test
 
+## Current minimal Drive links — 10 October 2026
+
+CJ authorised minimal folder/file links, then clarified: links belong inside the click popups and Release details, not on checklist tiles. Implemented borderless blue text actions with 44px targets, hover underline and visible focus. Every connected file with a valid saved Drive ID gets Open file ↗ in both dialogs, including individual Shorts. Missing/unchecked files have no invented link; invalid/missing IDs keep readable filenames only. Fixed Google origin and validated IDs generate folder or /file/d/ID/view URLs; new tabs use noopener/noreferrer and descriptive accessible names. No Drive sharing/write scope, API calls, tile anatomy or readiness changes. Controlled UI tests check matching links across both dialogs, distinct Shorts URLs, target/rel and invalid-ID omission; title checks and production build pass. Supplied screenshot confirms previous metadata layout rendered, not new link appearance or actual Google destination opening. Phone review remains pending.
+
+
 ## Current release details presentation — 10 October 2026
 
 CJ authorised replacing Suggested details / Original project folder name with a centred release header (artist - track), separate beat description, n/8 PASSED and relevant next action, Last checked timestamp, Project metadata (Artist, Track Name, combined BPM & Key, Credits) and a working Drive-folder link. Passing asset sections show category, PASS and connected filenames; nonpassing/ambiguous sections retain reasons and association controls. Remove redundant source-caption/stage and generic boundary copy from this popup. All asset file popups now include the same 58px/18px icon shell; connected files reuse their category SVG, absent files retain file-X. Centre metadata, asset/status/file sections and Close using existing blue/navy shell, fonts and insets. Missing data says Not available rather than inventing metadata; invalid/missing folder IDs omit the link. Drive URLs use a fixed Google origin and validated stored folder ID, opening in a new tab with noopener/noreferrer.

@@ -24,7 +24,7 @@ const rows=roles.map(role=>{const e=new Element();e.dataset.role=role;e.child=ne
 const cards=[new Element(),new Element()];cards.forEach(card=>{card.child=new Element();card.child.nextElementSibling=new Element();});
 const grid=new Element();grid.querySelectorAll=()=>cards;
 const A='release_a_0001',B='release_b_0001';
-const result=(id,title,ready)=>({folderId:id,projectName:'Artist - '+title,checkedAt:123,total:8,ready,assets:roles.map(role=>({role,state:ready===8?'Pass':'Missing',files:ready===8?[{name:role+' - '+title+(role==='remix'?'.wav':'.zip')},...(role==='shorts'?[{name:'Short 02.mp4'}]:[])]:[],count:ready===8?6:0}))});
+const result=(id,title,ready)=>({folderId:id,projectName:'Artist - '+title,checkedAt:123,total:8,ready,assets:roles.map(role=>({role,state:ready===8?'Pass':'Missing',files:ready===8?[{id:'file_'+role+'_track_a_0001',name:role+' - '+title+(role==='remix'?'.wav':'.zip')},...(role==='shorts'?[{id:'short_02_track_a_0001',name:'Short 02.mp4'}]:[])]:[],count:ready===8?6:0}))});
 const saved=new Map([[A,result(A,'Track A',8)]]);let selected=A,gate=null,failSelect=false;
 const projects=[{id:A,name:'Artist - Track A',stage:'manual',metadata:{title:'Track A',credits:[]}},{id:B,name:'Artist - Track B',stage:'manual',metadata:{title:'Track B',credits:[]}}];
 const status=()=>({driveGranted:true,projects,folders:{production:'',queue:'',released:''},folderId:selected,result:saved.get(selected)||null});
@@ -50,8 +50,13 @@ const choices=elements['release-picker-content'].children[0].children.slice(1);a
 assert.equal(choices[0].children[0].children[0].textContent,'Track A');
 await elements['release-picker-close'].listeners.click();assert.equal(elements['release-picker-dialog'].open,false);assert.equal(elements['release-picker'].focused,true);
 await rows[0].listeners.click();assert.equal(elements['file-dialog'].open,true);assert.equal(elements['file-detail-content'].children[1].textContent,'project - Track A.zip');
+const fileLink=elements['file-detail-content'].children[1].children[0];assert.equal(fileLink.href,'https://drive.google.com/file/d/file_project_track_a_0001/view');assert.equal(fileLink.target,'_blank');assert.equal(fileLink.rel,'noopener noreferrer');assert.equal(fileLink.attributes['aria-label'],'Open project - Track A.zip in Google Drive');
 assert.equal(elements['file-detail-content'].children.at(-1).innerHTML,'<svg data-test-icon></svg>');assert.equal(elements['file-detail-content'].children[0].textContent,'PASS');await elements['file-close'].listeners.click();assert.equal(rows[0].focused,true);
 await rows[7].listeners.click();assert.equal(elements['file-detail-content'].children.length,4,'Shorts shows all connected filenames');
+assert.equal(elements['file-detail-content'].children[1].children[0].href,'https://drive.google.com/file/d/file_shorts_track_a_0001/view');assert.equal(elements['file-detail-content'].children[2].children[0].href,'https://drive.google.com/file/d/short_02_track_a_0001/view');
+await elements['file-close'].listeners.click();await elements['asset-details'].listeners.click();
+const projectSection=elements['asset-detail-content'].children[4];const detailLink=projectSection.children[1].children[0].children[0];assert.equal(detailLink.href,fileLink.href,'same connected file link in both dialogs');elements['asset-dialog'].open=false;
+saved.get(A).assets[0].files[0].id='javascript:bad';elements['release-selector'].value=B;await elements['release-selector'].listeners.change();elements['release-selector'].value=A;await elements['release-selector'].listeners.change();await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[1].children.length,0,'invalid file ID stays text without link');await elements['file-close'].listeners.click();
 let unblock;gate=new Promise(resolve=>unblock=resolve);elements['release-selector'].value=B;
 const pending=elements['release-selector'].listeners.change();
 assert.equal(elements['checklist-subtitle'].textContent,'Not checked');assert.equal(elements['file-dialog'].open,false);assert.equal(elements['release-picker'].disabled,true);assert.equal(elements['release-selector'].disabled,true);assert.ok(rows.every(row=>row.child.textContent==='-'));

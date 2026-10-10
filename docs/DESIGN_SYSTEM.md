@@ -102,3 +102,6 @@ Current 10 October checklist amendment: eight checks in four two-column rows; Sh
 
 
 10 October release details: centred artist/track heading, muted beat subtitle, pass summary/timestamp, centred metadata rows with working Drive button, centred category/PASS/file sections and Close. Reuse established Group 1 modal surfaces, fonts, insets and icon shell for both connected and absent file popups. Category icons use the trusted tile SVG; no new materials or pair geometry. Ambiguous file confirmation remains functional. Current phone appearance remains to review.
+
+
+10 October Drive links: use minimal borderless blue text actions only inside release/file dialogs, 44px tap target, hover underline and visible focus. Folder link drops button fill/border; every valid connected filename has its own Open file action, including Shorts. Checklist tiles remain unchanged per CJ clarification.

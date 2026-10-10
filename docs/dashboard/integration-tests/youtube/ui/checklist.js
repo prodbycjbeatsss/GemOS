@@ -4,6 +4,13 @@ import { groupGeometry } from '/checklist-layout.js';
   const $ = id => document.getElementById(id);
   let result = null, granted = false, busy = false, projects = [], selectedId = '', folders = {}, discoveredAt = null;
   const message = text => { $('scan-message').textContent = text; };
+  function driveLink(id,kind,text,label){
+    if(typeof id!=='string'||!/^[A-Za-z0-9_-]{6,200}$/.test(id))return null;
+    const link=document.createElement('a');link.className='details-drive-link';link.href=kind==='folder'?'https://drive.google.com/drive/folders/'+encodeURIComponent(id):'https://drive.google.com/file/d/'+encodeURIComponent(id)+'/view';link.target='_blank';link.rel='noopener noreferrer';link.textContent=text;link.setAttribute('aria-label',label);return link;
+  }
+  function appendFileLink(host,file){
+    const link=driveLink(file.id,'file','Open file ↗','Open '+file.name+' in Google Drive');if(link){link.className+=' drive-file-link';host.append(link);}
+  }
   function controls() {
     $('release-selector').disabled=busy || !projects.length;
     $('release-picker').disabled=busy || !projects.length;
@@ -108,12 +115,12 @@ import { groupGeometry } from '/checklist-layout.js';
     const folderId=result?.folderId || project?.id;
     if(typeof folderId==='string'&&/^[A-Za-z0-9_-]{6,200}$/.test(folderId)){
       const row=document.createElement('p');row.className='metadata-line';const name=document.createElement('span');name.className='metadata-label';name.textContent='Drive Link: ';
-      const link=document.createElement('a');link.href='https://drive.google.com/drive/folders/'+encodeURIComponent(folderId);link.target='_blank';link.rel='noopener noreferrer';link.className='details-drive-link';link.textContent='Open folder ↗';row.append(name,link);metadata.append(row);
+      const link=driveLink(folderId,'folder','Open folder ↗','Open this release folder in Google Drive');row.append(name,link);metadata.append(row);
     }
     host.append(metadata);
     for(const a of result?.assets || []){
       const section=document.createElement('section'),line=document.createElement('div'),title=document.createElement('h3'),badge=document.createElement('span'),note=document.createElement('p');section.className='details-asset';section.dataset.state=a.state;line.className='details-asset-heading';title.textContent=a.role==='project'?'Project ZIP':a.label;badge.className='details-badge';badge.textContent=a.role==='shorts'?`${a.count}/6 · ${a.state==='Pass'?'PASS':stateLabel(a.state)}`:a.state==='Pass'?'PASS':stateLabel(a.state);note.className='details-reason';note.textContent=a.reason;line.append(title,badge);section.append(line);if(a.state!=='Pass')section.append(note);
-      if(a.files.length){const list=document.createElement('ul');list.className='details-file-list';for(const f of a.files){const li=document.createElement('li');li.textContent=f.name;list.append(li);}section.append(list);}else {const empty=document.createElement('p');empty.className='details-reason';empty.textContent='No file connected';section.append(empty);}
+      if(a.files.length){const list=document.createElement('ul');list.className='details-file-list';for(const f of a.files){const li=document.createElement('li');li.textContent=f.name;appendFileLink(li,f);list.append(li);}section.append(list);}else {const empty=document.createElement('p');empty.className='details-reason';empty.textContent='No file connected';section.append(empty);}
       if(a.state==='Needs confirmation'&&a.candidates.length){
         const selects=[];
         const total=a.role==='shorts'?6:1;
@@ -156,7 +163,7 @@ import { groupGeometry } from '/checklist-layout.js';
     fileTrigger=tile;const asset=result?.assets.find(a=>a.role===tile.dataset.role),host=$('file-detail-content');host.replaceChildren();
     $('file-dialog-title').textContent=tile.querySelector('.asset-name').textContent+' · '+tile.querySelector('.asset-type').textContent;
     const badge=document.createElement('span');badge.className='details-badge';badge.textContent=asset?.state==='Pass'?'PASS':stateLabel(asset?.state);host.dataset.state=asset?.state || 'Unchecked';host.append(badge);
-    if(asset?.files?.length){for(const file of asset.files){const name=document.createElement('p');name.className='file-connected-name';name.textContent=file.name;host.append(name);}const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML=tile.querySelector('.asset-icon').innerHTML;host.append(icon);}
+    if(asset?.files?.length){for(const file of asset.files){const name=document.createElement('p');name.className='file-connected-name';name.textContent=file.name;appendFileLink(name,file);host.append(name);}const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML=tile.querySelector('.asset-icon').innerHTML;host.append(icon);}
     else {const empty=document.createElement('p');empty.textContent='No file connected';host.append(empty);
       const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 14l6 4m0-4-6 4"/></svg>';host.append(icon);
     }

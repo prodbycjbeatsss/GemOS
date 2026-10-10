@@ -460,3 +460,8 @@ CJ requested centred empty-buffer text with an icon, removal of the white count 
 ## 10 October 2026 — clean release metadata and connected-file icon
 
 CJ specified artist/track heading, separate beat description, PASSED summary/next action/last-check timestamp, Project metadata with artist/track/combined BPM-key/clean credits and clickable Drive link, and category/PASS/filename sections. Remove Suggested details / original-folder block; preserve parsed raw metadata without granting publishing approval. Source title remains Gelato 41; Gelato 42 in example treated as typo. Artist display prefers confirmed remix filename, with first named artist fallback for x-separated Type Beat descriptor; retain full beat descriptor separately. Connected file popups receive matching category icon and centred content/Close. Controlled metadata/UI/geometry/build verification passed; fresh phone review pending.
+
+
+## 10 October 2026 — minimal file links inside popups only
+
+CJ requested quieter folder link and individual file links; clarified that smaller cards means their click popup, not dashboard tiles. Added borderless text links in Release details and per-tile file popup using valid saved folder/file IDs, with each Shorts file linked separately. No tile shortcuts added. New-tab links use fixed Google origin, ID validation, noopener/noreferrer and descriptive accessible names. Missing IDs/files get no fabricated link. Controlled link/state/title checks and production build pass; actual Google opening and new phone link styling remain unverified.
