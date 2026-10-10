@@ -1,4 +1,5 @@
 import { access, configured } from './youtube.mjs';
+import { projectMetadata } from './project-name.mjs';
 export const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 const folderMime = 'application/vnd.google-apps.folder';
 const roles = ['project','stems','beatwav','mp3','remix','thumbnail','video','shorts'];
@@ -57,8 +58,51 @@ export function currentResult(result) {
   const assets=roles.map((role,index)=>result.assets.find(a=>a.role===role)||{role,label:LABELS[index],state:'Unchecked',reason:'Sync to check this newly required file.',files:[],candidates:[],count:0});
   return {...result,assets,total:roles.length,ready:assets.filter(a=>a.state==='Pass').length,needsRescan:assets.some(a=>a.state==='Unchecked')};
 }
-async function tables(env) {
+async function tables(env,owner) {
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS drive_asset_state (user_id TEXT PRIMARY KEY, folder_id TEXT NOT NULL, mappings_json TEXT NOT NULL, result_json TEXT, checked_at INTEGER)').run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_projects (user_id TEXT NOT NULL, folder_id TEXT NOT NULL, name TEXT NOT NULL, stage TEXT NOT NULL DEFAULT 'manual', mappings_json TEXT NOT NULL DEFAULT '{}', result_json TEXT, checked_at INTEGER, PRIMARY KEY(user_id,folder_id))").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_settings (user_id TEXT PRIMARY KEY, production_id TEXT NOT NULL DEFAULT '', queue_id TEXT NOT NULL DEFAULT '', released_id TEXT NOT NULL DEFAULT '', selected_id TEXT NOT NULL DEFAULT '', catalogue_json TEXT NOT NULL DEFAULT '[]', discovered_at INTEGER)").run();
+  const legacy=await env.DB.prepare('SELECT * FROM drive_asset_state WHERE user_id = ?').bind(owner).first();
+  // Copy the old result once without replacing newer per-project scans/selections.
+  if(legacy)await env.DB.prepare('INSERT OR IGNORE INTO drive_release_projects (user_id,folder_id,name,mappings_json,result_json,checked_at) VALUES (?,?,?,?,?,?)').bind(owner,legacy.folder_id,legacy.result_json?JSON.parse(legacy.result_json).projectName:'Saved project',legacy.mappings_json,legacy.result_json,legacy.checked_at).run();
+  await env.DB.prepare('INSERT OR IGNORE INTO drive_release_settings (user_id,selected_id) VALUES (?,?)').bind(owner,legacy?.folder_id || '').run();
+}
+async function projectStatus(env,owner) {
+  const settings=await env.DB.prepare('SELECT * FROM drive_release_settings WHERE user_id = ?').bind(owner).first();
+  const rows=(await env.DB.prepare('SELECT * FROM drive_release_projects WHERE user_id = ? ORDER BY name,folder_id LIMIT 201').bind(owner).all()).results;
+  if(rows.length>200)throw new AssetError('The test catalogue is limited to 200 projects.',422);
+  const catalogue=JSON.parse(settings.catalogue_json),live=new Map(catalogue.map(p=>[p.id,p]));
+  const projects=rows.map(row=>({id:row.folder_id,name:row.name,stage:live.get(row.folder_id)?.stage || (row.stage==='manual'?'manual':'unavailable'),metadata:projectMetadata(row.name),checkedAt:row.checked_at || null}));
+  const selected=rows.find(row=>row.folder_id===settings.selected_id);
+  return {folders:{production:settings.production_id,queue:settings.queue_id,released:settings.released_id},projects,discoveredAt:settings.discovered_at,folderId:settings.selected_id,result:selected?.result_json?currentResult(JSON.parse(selected.result_json)):null};
+}
+async function discoverProjects(env,owner,folders) {
+  const values=Object.values(folders).filter(Boolean);
+  if(!folders.production)throw new AssetError('Connect the In Production folder first.');
+  if(new Set(values).size!==values.length)throw new AssetError('Use different folders for each release stage.');
+  const catalogue=[],roots=[];
+  for(const [stage,id] of Object.entries(folders)){
+    if(!id)continue;
+    const root=await drive(env,owner,'files/'+id,{fields:'id,name,mimeType,trashed,parents',supportsAllDrives:'true'});
+    if(root.trashed||root.mimeType!==folderMime)throw new AssetError('Each connection must be a music-release stage folder.');
+    roots.push(root);
+    for(const file of await children(env,owner,id))if(!file.trashed&&file.mimeType===folderMime){
+      if(!validId(file.id)||typeof file.name!=='string')throw new AssetError('Drive returned an invalid project folder.',502);
+      if(values.includes(file.id))throw new AssetError('Stage folders must be separate, not nested inside each other.');
+      catalogue.push({id:file.id,name:file.name,stage});
+      if(catalogue.length>200)throw new AssetError('The test catalogue is limited to 200 release folders.',422);
+    }
+  }
+  if(roots.some(root=>root.parents?.some(id=>values.includes(id))))throw new AssetError('Stage folders must be separate, not nested inside each other.');
+  if(new Set(catalogue.map(p=>p.id)).size!==catalogue.length)throw new AssetError('A project appeared in multiple stages. Refresh after Drive finishes syncing.',409);
+  const now=Date.now();
+  // Publish the complete discovery snapshot atomically; a failed listing changes nothing.
+  const statements=[env.DB.prepare('UPDATE drive_release_settings SET production_id=?,queue_id=?,released_id=?,catalogue_json=?,discovered_at=? WHERE user_id=?').bind(folders.production,folders.queue,folders.released,JSON.stringify(catalogue),now,owner)];
+  for(const project of catalogue)statements.push(env.DB.prepare('INSERT INTO drive_release_projects (user_id,folder_id,name,stage) VALUES (?,?,?,?) ON CONFLICT(user_id,folder_id) DO UPDATE SET name=excluded.name,stage=excluded.stage').bind(owner,project.id,project.name,project.stage));
+  const existing=(await env.DB.prepare('SELECT folder_id FROM drive_release_projects WHERE user_id=? LIMIT 201').bind(owner).all()).results;
+  if(new Set([...existing.map(p=>p.folder_id),...catalogue.map(p=>p.id)]).size>200)throw new AssetError('The test catalogue is limited to 200 saved projects.',422);
+  await env.DB.batch(statements);
+  return projectStatus(env,owner);
 }
 async function drive(env,owner,path,params={}) {
   const session=await access(env,owner);
@@ -98,18 +142,32 @@ export async function assetHandler(request,env,action) {
   try {
     const owner=request.headers.get('oai-authenticated-user-id');if(!owner)throw new AssetError('Sign in to this private page.',401);
     if(!configured(env))throw new AssetError('Google connection setup is incomplete.',503);
-    await tables(env);
-    const saved=await env.DB.prepare('SELECT * FROM drive_asset_state WHERE user_id = ?').bind(owner).first();
+    await tables(env,owner);
     if(action==='drive-status'&&request.method==='GET') {
       const connection=await env.DB.prepare('SELECT scopes FROM youtube_connections WHERE user_id = ?').bind(owner).first();
-      return Response.json({driveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_SCOPE)),folderId:saved?.folder_id||'',result:saved?.result_json?currentResult(JSON.parse(saved.result_json)):null},{headers});
+      return Response.json({driveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_SCOPE)),...await projectStatus(env,owner)},{headers});
     }
     if(request.method!=='POST')throw new AssetError('Method not allowed.',405);
     if(request.headers.get('Origin')!==new URL(request.url).origin)throw new AssetError('Request origin does not match.',403);
     const text=await request.text();if(text.length>8192)throw new AssetError('Request too large.',413);
     let input;try{input=JSON.parse(text);}catch{throw new AssetError('Invalid request.');}
+    if(!input||typeof input!=='object'||Array.isArray(input))throw new AssetError('Send an object with the folder settings.');
+    if(action==='drive-folders'){
+      const folders={production:folderId(input.production),queue:input.queue?folderId(input.queue):'',released:input.released?folderId(input.released):''};
+      return Response.json(await discoverProjects(env,owner,folders),{headers});
+    }
+    if(action==='drive-discover'){
+      const current=await projectStatus(env,owner);
+      return Response.json(await discoverProjects(env,owner,current.folders),{headers});
+    }
     const id=folderId(input.folder);
-    let mappings=saved?.folder_id===id?JSON.parse(saved.mappings_json):{};
+    const saved=await env.DB.prepare('SELECT * FROM drive_release_projects WHERE user_id=? AND folder_id=?').bind(owner,id).first();
+    if(action==='drive-select'){
+      if(!saved)throw new AssetError('Refresh the release list before selecting this project.',404);
+      await env.DB.prepare('UPDATE drive_release_settings SET selected_id=? WHERE user_id=?').bind(id,owner).run();
+      return Response.json(await projectStatus(env,owner),{headers});
+    }
+    let mappings=saved?JSON.parse(saved.mappings_json):{};
     if(action==='drive-confirm') {
       if(!roles.includes(input.role)||!Array.isArray(input.ids)||input.ids.some(v=>!validId(v))||new Set(input.ids).size!==input.ids.length||input.ids.length!==(input.role==='shorts'?6:1))throw new AssetError('Choose the required distinct files.');
       // Re-scan before accepting an association; client-supplied IDs are never authority.
@@ -120,7 +178,12 @@ export async function assetHandler(request,env,action) {
     const result=await scan(env,owner,id,mappings);
     // Apply the explicitly selected Short order to day assignments.
     if(mappings.shorts){const a=result.assets.find(a=>a.role==='shorts');a.files.sort((x,y)=>mappings.shorts.indexOf(x.id)-mappings.shorts.indexOf(y.id));}
-    await env.DB.prepare('INSERT INTO drive_asset_state (user_id,folder_id,mappings_json,result_json,checked_at) VALUES (?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET folder_id=excluded.folder_id,mappings_json=excluded.mappings_json,result_json=excluded.result_json,checked_at=excluded.checked_at').bind(owner,id,JSON.stringify(mappings),JSON.stringify(result),result.checkedAt).run();
+    const count=(await env.DB.prepare('SELECT folder_id FROM drive_release_projects WHERE user_id=? LIMIT 201').bind(owner).all()).results.length;
+    if(!saved&&count>=200)throw new AssetError('The test catalogue is limited to 200 saved projects.',422);
+    await env.DB.batch([
+      env.DB.prepare('INSERT INTO drive_release_projects (user_id,folder_id,name,mappings_json,result_json,checked_at) VALUES (?,?,?,?,?,?) ON CONFLICT(user_id,folder_id) DO UPDATE SET name=excluded.name,mappings_json=excluded.mappings_json,result_json=excluded.result_json,checked_at=excluded.checked_at').bind(owner,id,result.projectName,JSON.stringify(mappings),JSON.stringify(result),result.checkedAt),
+      env.DB.prepare('UPDATE drive_release_settings SET selected_id=? WHERE user_id=?').bind(id,owner)
+    ]);
     return Response.json(result,{headers});
   }catch(error){return Response.json({error:error instanceof AssetError?error.message:'The file scan failed. Last successful results were not changed.'},{status:error instanceof AssetError?error.status:502,headers});}
 }

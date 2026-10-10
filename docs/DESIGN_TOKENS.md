@@ -47,3 +47,5 @@ Checklist semantic roles: --g1-asset-fill white .045; --g1-asset-border white .1
 File-type caption: 10px / 1.4, weight 400, muted #bae6fd beneath the 12px category name. Stems label ZIP; thumbnail PNG; video and Shorts MP4.
 
 Current checklist alignment: centred icon/name/type/status stack; icon-to-copy 3px; name 12px/1.2, type 10px/1.2, symbol 15px in 20×16px box, 2px top gap. Symbol states ✓ / × / ! / - retain accessible wording.
+
+Project selector: 12px-radius panel/control, panel inset 12px/16px, 8px control gap, 44px select/button targets, 12px label/select text and 11px status/refresh text; existing modal border, asset fill and sky supporting-text tokens.

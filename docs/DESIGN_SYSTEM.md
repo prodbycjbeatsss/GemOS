@@ -90,3 +90,6 @@ Current 10 October checklist amendment: eight checks in four two-column rows; Sh
 
 
 10 October checklist presentation amendment: centre icons, names, muted types and status symbols in each tile. Use green tick, red cross, amber exclamation and neutral dash with accessible labels. Status wording is shown in details. Current tokens supersede earlier compact left-aligned tile geometry; shared group sizing remains.
+
+
+10 October project selector: checklist-local Check release control lives outside the card, immediately above 1.2. Both desktop card slots share the row below it; mobile order is Buffer, selector, Checklist. Use existing Inter, 12px controls, 44px targets, restrained blue supporting text and visible focus. Collapsible connections keep stage setup off the normal dashboard. Selection preserves other cards’ scope.

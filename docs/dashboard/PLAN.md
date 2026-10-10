@@ -1,5 +1,12 @@
 # GemOs card review and integration plan
 
+## Current project discovery slice — 10 October 2026
+
+CJ approved implementing read-only release discovery, a checklist-local selector and per-project saved checks before approval/moves. Music Releases uses In Production, Release Queue and Released stage connections; only In Production is required now. Existing Drive metadata scope is sufficient. The project list refreshes on page opening and manually, with cached-list failure handling. Current D1 storage is per owner + project folder ID and preserves the old scan/associations through lazy migration. Folder metadata is explicitly suggested, not publishing authority. The selector does not change 1.1 coverage, 2.1 analytics or 2.2 batch selection.
+
+See [PROJECTS.md](integration-tests/youtube/PROJECTS.md) for setup, boundaries, API, migration, tests and user verification. Approval, automatic moves, scheduling and publication remain unimplemented; no new Google write scope was requested. Eight-item readiness and centred symbol tiles remain. Controlled project/asset/frontend/backend/capture/state checks and production build pass; live stage discovery/migration and rendered phone/desktop appearance are unverified. User next: create/connect stage folders, then select and Sync one release.
+
+
 ## Next priority — Group 1, approved 9 October 2026
 
 CJ is moving to a new chat to review and connect Group 1 (1.1 Release Buffer / 1.2 Pre Release Checklist). Preserve the accepted reference layout; ground the first slice in the actual release/project store, asset manifest/source and scheduling-confirmation records. CJ confirmed on 9 October that the future system requires six source Shorts per release, Tuesday–Sunday. Three clips describe his past upload schedule and remain historical test data; retain the six-file checklist and 19-confirmed-upload buffer requirement. A read-only checklist scan is the recommended first slice if its source is available, not an already approved data-model decision.

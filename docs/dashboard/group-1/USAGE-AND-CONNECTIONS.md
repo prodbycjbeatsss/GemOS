@@ -1,5 +1,12 @@
 # Group 1 — release buffer and readiness
 
+## Current project discovery slice — 10 October 2026
+
+CJ approved implementing read-only release discovery, a checklist-local selector and per-project saved checks before approval/moves. Music Releases uses In Production, Release Queue and Released stage connections; only In Production is required now. Existing Drive metadata scope is sufficient. The project list refreshes on page opening and manually, with cached-list failure handling. Current D1 storage is per owner + project folder ID and preserves the old scan/associations through lazy migration. Folder metadata is explicitly suggested, not publishing authority. The selector does not change 1.1 coverage, 2.1 analytics or 2.2 batch selection.
+
+See [PROJECTS.md](../integration-tests/youtube/PROJECTS.md) for setup, boundaries, API, migration, tests and user verification. Approval, automatic moves, scheduling and publication remain unimplemented; no new Google write scope was requested. Eight-item readiness and centred symbol tiles remain. Controlled project/asset/frontend/backend/capture/state checks and production build pass; live stage discovery/migration and rendered phone/desktop appearance are unverified. User next: create/connect stage folders, then select and Sync one release.
+
+
 ## Current checklist contract — 10 October 2026, eight required categories
 
 CJ confirmed Beat WAV is required alongside Beat MP3 for future automated beat sales. This supersedes every earlier seven-category/7-of-7 contract and statement that Beat WAV is informational. The eight checks are ordered in four equal two-column rows: Project ZIP | Stems ZIP; Beat WAV | Beat MP3; Remix WAV | Thumbnail PNG; YouTube video MP4 | Shorts ×6 MP4. Shorts no longer spans two columns. File type is separate muted 10px supporting text below the 12px file name. “7z” is removed from the tile label only: stems still accept ZIP or 7z. Thumbnail PNG is the requested tile label; existing JPG/JPEG/PNG/WebP compatibility is retained, not narrowed by this presentation change.

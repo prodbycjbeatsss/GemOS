@@ -5,6 +5,7 @@ Updated 9 October 2026. Reviewed references belong in GemOS. telemetric-cards-te
 | Need | Open |
 |---|---|
 | Resume in a new chat | [HANDOFF.md](HANDOFF.md) |
+| Music-release discovery, selector and folder setup | [PROJECTS.md](integration-tests/youtube/PROJECTS.md) |
 | Next work and decisions | [PLAN.md](PLAN.md) |
 | Shared fonts, material, colours and geometry rules | [Master design system](../DESIGN_SYSTEM.md) |
 | Group 1 preview | [group-1/preview.html](group-1/preview.html) |

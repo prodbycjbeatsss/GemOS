@@ -1,5 +1,12 @@
 # GemOs dashboard — next-session handoff
 
+## Current project discovery slice — 10 October 2026
+
+CJ approved implementing read-only release discovery, a checklist-local selector and per-project saved checks before approval/moves. Music Releases uses In Production, Release Queue and Released stage connections; only In Production is required now. Existing Drive metadata scope is sufficient. The project list refreshes on page opening and manually, with cached-list failure handling. Current D1 storage is per owner + project folder ID and preserves the old scan/associations through lazy migration. Folder metadata is explicitly suggested, not publishing authority. The selector does not change 1.1 coverage, 2.1 analytics or 2.2 batch selection.
+
+See [PROJECTS.md](integration-tests/youtube/PROJECTS.md) for setup, boundaries, API, migration, tests and user verification. Approval, automatic moves, scheduling and publication remain unimplemented; no new Google write scope was requested. Eight-item readiness and centred symbol tiles remain. Controlled project/asset/frontend/backend/capture/state checks and production build pass; live stage discovery/migration and rendered phone/desktop appearance are unverified. User next: create/connect stage folders, then select and Sync one release.
+
+
 ## Latest Group 1 alignment update — 10 October 2026
 
 Shared header/recess/footer dimensions and matched pair height now keep the normal checklist in two columns. Both pop-ups share the simpler blue/navy style; 1.1 includes useful buffer rules/example records and separate current Drive readiness. The approved live-test rule supersedes independent recess sizing/one-column overflow switching. Geometry/title/syntax/build checks pass; fresh rendered phone/desktop acceptance remains unverified. See [ASSETS.md](integration-tests/youtube/ASSETS.md).

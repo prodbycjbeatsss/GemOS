@@ -1,5 +1,12 @@
 # Connections registry
 
+## Current Group 1 connection checkpoint — 10 October 2026
+
+Google Drive metadata-read access is implemented on the shared saved Google connection; CJ's earlier screenshot verifies a hosted sample asset scan. Release-stage discovery and per-project scan persistence are now implemented/deployed with controlled tests. Stage folder links have not yet been supplied, so real discovery and computer-sync behaviour remain unverified. Configure In Production, optionally Release Queue and Released in the app; no new OAuth scope is needed for this slice. The existing D1 backend holds the current discovery/check catalogue. No new Notion connection is established and no full scheduling/publishing authority is claimed. Folder write permission, approval/move actions and platform scheduling/publication connections remain future work. See [project setup](docs/dashboard/integration-tests/youtube/PROJECTS.md).
+
+The older registry below describes its dated review checkpoint.
+
+
 Reviewed 8 October 2026. Distinguish this assistant's verified working-session tools from integrations implemented inside GemOs. A date, saved key or intended endpoint is not proof of successful access. Older reported setup is preserved in archives/dashboard/2026-10-08/connections-before-review.md.
 
 | System | Purpose/route | Status | Evidence / next check |

@@ -334,7 +334,21 @@
 :is(#asset-dialog,#buffer-preview-dialog) :is(button,summary,select):focus-visible{outline:2px solid #7dd3fc;outline-offset:3px}
 @media(min-width:640px){:root{--g1-card-inset:24px;--g1-recess-inset:14px}}
 @media(max-width:359px){:is(#asset-dialog,#buffer-preview-dialog) .details-dialog-header{padding:16px 16px 0}:is(#asset-detail-content,#buffer-detail-content){padding:16px 16px 12px}.details-dialog-footer{padding:0 16px 16px}}
-</style></head><body><main class="test-shell"><section class="scan-setup" aria-label="Read-only file scan"><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>This checks synced Drive files. It does not upload, schedule or publish.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="https://drive.google.com/drive/folders/…"><p>Enable Google Drive API in the existing Google Cloud project before granting Drive metadata access.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><p class="group-source-note">Release Buffer: example data · Checklist: your Drive scan</p><div class="section-one-grid"><div id="card-release-buffer"
+
+/* The project selector belongs to 1.2; both card slots share the row below it. */
+.scan-setup>summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;gap:8px}
+.scan-setup>summary::before{content:'+'}.scan-setup[open]>summary::before{content:'−'}
+.individual-folder{margin-top:16px;border-top:1px solid #ffffff26;padding-top:12px}.individual-folder>summary{cursor:pointer;min-height:44px;font-size:13px}
+.checklist-selection{min-width:0;padding:12px 16px;border:1px solid var(--g1-modal-border);border-radius:12px;background:var(--g1-asset-fill);align-self:end}
+.checklist-selection>label{display:block;margin-bottom:8px;font-size:12px;font-weight:600;color:#e0f2fe}
+.release-picker-row{display:flex;gap:8px;align-items:center;min-width:0}
+.release-picker-row select{flex:1;min-width:0;width:100%;height:44px;padding:8px 10px;border:1px solid #ffffff26;border-radius:12px;background:#0f172a;color:#fff;font:inherit;font-size:12px}
+.release-picker-row button{flex-shrink:0;min-height:44px;padding:8px;font-size:11px;color:#7dd3fc;font-weight:600}
+.checklist-selection p{font-size:11px;line-height:1.5;color:#cbd5e1;margin:8px 0 0;overflow-wrap:anywhere}
+.checklist-selection :is(select,button):focus-visible,.scan-setup :is(summary,button,input):focus-visible{outline:2px solid #7dd3fc;outline-offset:3px}
+@media(min-width:840px){.section-one-grid>.checklist-selection{grid-column:2;grid-row:1}.section-one-grid>#card-release-buffer{grid-column:1;grid-row:2}.section-one-grid>#card-prerelease-checklist{grid-column:2;grid-row:2}}
+@media(max-width:359px){.release-picker-row{flex-wrap:wrap}.release-picker-row select{flex-basis:100%}}
+</style></head><body><main class="test-shell"><details class="scan-setup" id="release-connections"><summary>Music release folders</summary><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>Connect the stage folders once. Release folders directly inside them appear in Check release. Checks are read-only; approval, folder moves and publishing are not connected yet.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><form id="release-folder-form"><label for="production-folder">In Production folder</label><input id="production-folder" type="url" required placeholder="Google Drive folder link"><label for="queue-folder">Release Queue folder · optional for now</label><input id="queue-folder" type="url" placeholder="Google Drive folder link"><label for="released-folder">Released folder · optional for now</label><input id="released-folder" type="url" placeholder="Google Drive folder link"><button id="save-release-folders" type="submit">Connect folders</button></form><p id="folder-message" role="status" aria-live="polite">No music-release folders connected.</p><details class="individual-folder"><summary>Check an individual folder</summary><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="Google Drive release folder link"><button id="scan-individual" type="button">Check folder</button><p>Your saved test project stays available here and in the selector. This does not queue a release.</p></details></details><p class="group-source-note">Release Buffer: example data · Checklist: your Drive scan</p><div class="section-one-grid"><div id="card-release-buffer"
              class="hero-spotlight-card relative"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
           
@@ -378,7 +392,7 @@
               <span>Preview details</span><span aria-hidden="true">→</span>
             </button>
           </div>
-        </div><div id="card-prerelease-checklist"
+        </div><section class="checklist-selection" aria-label="Checklist project selection"><label for="release-selector">Check release</label><div class="release-picker-row"><select id="release-selector"><option value="">Choose a release…</option></select><button id="refresh-release-list" type="button">Refresh list</button></div><p id="project-list-status" role="status" aria-live="polite">Connect your music-release folders to discover projects.</p><p id="scan-message" role="status" aria-live="polite">No file scan yet.</p></section><div id="card-prerelease-checklist"
              class="hero-spotlight-card relative"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">
           

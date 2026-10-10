@@ -28,7 +28,8 @@ const legacy=currentResult({assets:complete.filter(a=>a.role!=='beatwav'),total:
 assert.equal(legacy.total,8);assert.equal(legacy.ready,7);assert.equal(legacy.needsRescan,true);assert.equal(legacy.checkedAt,123);assert.equal(legacy.assets.find(a=>a.role==='beatwav').state,'Unchecked');
 assert.equal(currentResult({assets:complete,total:8,ready:8}).needsRescan,false);
 const sql=new DatabaseSync(':memory:');sql.exec(readFileSync('drizzle/0000_yummy_tusk.sql','utf8'));
-const DB={prepare(query){let values=[];return {bind(...args){values=args;return this;},async first(){return sql.prepare(query).get(...values)||null;},async run(){return {meta:{changes:Number(sql.prepare(query).run(...values).changes)}};}};}};
+const DB={prepare(query){let values=[];return {bind(...args){values=args;return this;},async first(){return sql.prepare(query).get(...values)||null;},async all(){return {results:sql.prepare(query).all(...values)};},async run(){return {meta:{changes:Number(sql.prepare(query).run(...values).changes)}};}};}};
+DB.batch=async statements=>{sql.exec('BEGIN');try{const values=[];for(const statement of statements)values.push(await statement.run());sql.exec('COMMIT');return values;}catch(error){sql.exec('ROLLBACK');throw error;}};
 const origin='https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site';
 const env={DB,GOOGLE_CLIENT_ID:'fake.apps.googleusercontent.com',GOOGLE_CLIENT_SECRET:'FAKE_SECRET',YOUTUBE_TOKEN_KEY:'ab'.repeat(32),GOOGLE_REDIRECT_URI:origin+'/api/youtube/callback'};
 sql.prepare('INSERT INTO youtube_connections VALUES (?,?,?,?,?,?,?,?,?)').run('owner',env.GOOGLE_CLIENT_ID,await seal('FAKE_REFRESH',env,'owner'),await seal('FAKE_ACCESS',env,'owner'),Date.now()+3600000,[...SCOPES,DRIVE_SCOPE].join(' '),'[]',Date.now(),'revision');

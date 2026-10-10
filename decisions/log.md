@@ -434,3 +434,14 @@ Synthetic asset checks cover full 8/8, independent WAV/MP3 eligibility, WIP/MIME
 CJ requested centred text/icons and only a tick, red X or dash for status. Each of the eight tiles now centres the file icon, name, muted format caption and status vertically in a compact stack. Status uses a green ✓ for Ready, red × for Missing, amber ! for Needs attention and - for Not checked. Needs attention remains distinct from absent files. Status text and Shorts counts remain in accessible labels/title and Release details; colour is not the only distinction. No tile click target was added. Four-row ordering and eight required categories are unchanged. Shared pair measurement still owns recess/slot geometry. Tile minimum is 88px with 8px vertical/10px horizontal inset and 3px icon-to-copy gap; names use 12px/1.2, types 10px/1.2, and centred symbols 15px in a 20×16px box. Missing colour uses #fb7185.
 
 JS syntax, existing title/layout checks and production build pass. Updated browser appearance remains unverified; private test is the review surface. Scanner eligibility, legacy scan handling and confirmation logic are unchanged.
+
+
+## 2026-10-10 — approved release discovery and checklist-local project selection
+
+
+
+## Current project discovery slice — 10 October 2026
+
+CJ approved implementing read-only release discovery, a checklist-local selector and per-project saved checks before approval/moves. Music Releases uses In Production, Release Queue and Released stage connections; only In Production is required now. Existing Drive metadata scope is sufficient. The project list refreshes on page opening and manually, with cached-list failure handling. Current D1 storage is per owner + project folder ID and preserves the old scan/associations through lazy migration. Folder metadata is explicitly suggested, not publishing authority. The selector does not change 1.1 coverage, 2.1 analytics or 2.2 batch selection.
+
+See [PROJECTS.md](../docs/dashboard/integration-tests/youtube/PROJECTS.md) for setup, boundaries, API, migration, tests and user verification. Approval, automatic moves, scheduling and publication remain unimplemented; no new Google write scope was requested. Eight-item readiness and centred symbol tiles remain. Controlled project/asset/frontend/backend/capture/state checks and production build pass; live stage discovery/migration and rendered phone/desktop appearance are unverified. User next: create/connect stage folders, then select and Sync one release.

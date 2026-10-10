@@ -2,16 +2,29 @@ import { releaseTitle, displayTitle } from '/checklist-title.js';
 import { groupGeometry } from '/checklist-layout.js';
 (() => {
   const $ = id => document.getElementById(id);
-  let result = null, granted = false, busy = false;
+  let result = null, granted = false, busy = false, projects = [], selectedId = '', folders = {}, discoveredAt = null;
   const message = text => { $('scan-message').textContent = text; };
-  function controls() { $('asset-sync').disabled = busy || !granted; $('drive-connect').disabled = busy; $('project-folder').disabled = busy; document.querySelectorAll('.details-confirm').forEach(b=>b.disabled=busy); }
+  function controls() {
+    $('release-selector').disabled=busy || !projects.length;
+    $('refresh-release-list').disabled=busy || !granted || !folders.production;
+    $('save-release-folders').disabled=busy || !granted;
+    $('scan-individual').disabled=busy || !granted;
+    ['production-folder','queue-folder','released-folder'].forEach(id=>$(id).disabled=busy); $('asset-sync').disabled = busy || !granted || !selectedId; $('drive-connect').disabled = busy; $('project-folder').disabled = busy; document.querySelectorAll('.details-confirm').forEach(b=>b.disabled=busy); }
   async function api(action, body) {
     const r = await fetch('/api/youtube/' + action, { method: body ? 'POST' : 'GET', headers: body ? {'Content-Type':'application/json'} : {}, ...(body ? {body:JSON.stringify(body)} : {}), cache:'no-store',signal:AbortSignal.timeout(120000)});
     const data = await r.json();if(!r.ok)throw new Error(data.error || 'Unable to check files.');return data;
   }
   const stateLabel = state => ({Pass:'Ready',Missing:'Missing','Needs confirmation':'Needs attention'})[state] || 'Not checked';
   function render() {
-    if(!result)return;
+    if(!result){
+      const project=projects.find(p=>p.id===selectedId);
+      $('checklist-project-title').textContent=project?displayTitle(project.metadata.title):'Choose a release';
+      $('checklist-project-title').title=project?.name || '';
+      $('checklist-project-title').setAttribute('aria-label',project?.name || 'Choose a release');
+      $('checklist-subtitle').textContent='Not checked';$('drive-sync-status').textContent='Not checked';
+      document.querySelectorAll('[data-asset-index]').forEach(row=>{row.dataset.state='Unchecked';const status=row.querySelector('.asset-status');status.textContent='-';status.setAttribute('aria-label','Not checked');status.title='Not checked';});
+      requestAnimationFrame(reflow);return;
+    }
     const title = releaseTitle(result);
     $('checklist-project-title').textContent=displayTitle(title);
     $('checklist-project-title').title=title;
@@ -31,20 +44,62 @@ import { groupGeometry } from '/checklist-layout.js';
   async function scan(body,action='drive-scan') {
     if(busy)return;
     busy=true;controls();message('Checking Drive files…');
-    try { result=await api(action,body);render();if($('asset-dialog').open)details(); }
+    try { result=await api(action,body);selectedId=result.folderId;render();if($('asset-dialog').open)details();
+      try{applyCatalogue(await api('drive-status'),false);if($('asset-dialog').open)details();}catch{ $('project-list-status').textContent='File check saved. Release list could not refresh; reload to restore the selection.';}
+    }
     catch(e){message(e.message+(result?' Previous results remain visible and are stale.':''));$('drive-sync-status').textContent=result?'Refresh failed · stale':'Unable to check';}
     finally {busy=false;controls();}
   }
+  const stageLabels={production:'In Production',queue:'Release Queue',released:'Released',manual:'Individual folders',unavailable:'Not in connected folders'};
+  function applyCatalogue(data,restore=true){
+    projects=data.projects || [];folders=data.folders || {};discoveredAt=data.discoveredAt;
+    if(restore){selectedId=data.folderId || '';result=data.result || null;}
+    const picker=$('release-selector');picker.replaceChildren();
+    const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a release…';placeholder.disabled=true;picker.append(placeholder);
+    for(const stage of ['production','queue','released','manual','unavailable']){
+      const matches=projects.filter(p=>p.stage===stage).sort((a,b)=>a.name.localeCompare(b.name));if(!matches.length)continue;
+      const group=document.createElement('optgroup');group.label=stageLabels[stage];
+      for(const project of matches){const option=document.createElement('option');option.value=project.id;option.textContent=project.name+(matches.filter(p=>p.name===project.name).length>1?' · '+project.id.slice(-4):'');group.append(option);}picker.append(group);
+    }
+    picker.value=selectedId;
+    for(const [stage,id] of Object.entries(folders))$(stage==='production'?'production-folder':stage==='queue'?'queue-folder':'released-folder').value=id?'https://drive.google.com/drive/folders/'+id:'';
+    if(selectedId)$('project-folder').value='https://drive.google.com/drive/folders/'+selectedId;
+    $('folder-message').textContent=folders.production?'Connected music-release stage folders.':'Connect In Production to start discovery. Queue and Released can be added later.';
+    $('project-list-status').textContent=discoveredAt?'Saved release list · '+new Date(discoveredAt).toLocaleString('en-GB')+(projects.some(p=>p.stage==='unavailable')?' · some saved projects are outside the connected folders.':''):projects.length?'Your existing project is saved. Connect stage folders to discover more.':'Connect your music-release folders to discover projects.';
+    if(restore){render();if(result){$('drive-sync-status').textContent=result.needsRescan?'Sync needed · Beat WAV unchecked':'Saved check · not refreshed';message('Saved results for this release. Press Sync to check current files.');}else message(selectedId?'Select Sync to check this release.':'Choose a release to check.');}
+    controls();
+  }
+  async function discover(body,action){
+    if(busy)return;busy=true;controls();$('project-list-status').textContent='Reading release folders…';$('folder-message').textContent='Checking folder connections…';
+    try{const data=await api(action,body);applyCatalogue(data,false);$('project-list-status').textContent='Release list refreshed · '+projects.filter(p=>!['manual','unavailable'].includes(p.stage)).length+' projects found.';$('release-connections').open=false;}
+    catch(e){$('project-list-status').textContent=e.message+' Last saved list retained.';$('folder-message').textContent=e.message;}
+    finally{busy=false;controls();}
+  }
+  $('release-folder-form').addEventListener('submit',event=>{event.preventDefault();discover({production:$('production-folder').value.trim(),queue:$('queue-folder').value.trim(),released:$('released-folder').value.trim()},'drive-folders');});
+  $('refresh-release-list').addEventListener('click',()=>discover({},'drive-discover'));
+  $('release-selector').addEventListener('change',async()=>{
+    if(busy)return;const id=$('release-selector').value,previous=selectedId;busy=true;selectedId=id;result=null;render();controls();message('Loading saved checks…');
+    try{applyCatalogue(await api('drive-select',{folder:id}));if($('asset-dialog').open)details();}
+    catch(e){selectedId=previous;try{applyCatalogue(await api('drive-status'));}catch{selectedId='';result=null;render();}message(e.message);}
+    finally{busy=false;controls();}
+  });
+  $('scan-individual').addEventListener('click',()=>scan({folder:$('project-folder').value.trim()}));
   function details() {
     const host=$('asset-detail-content');host.replaceChildren();
-    if(!result){host.textContent='Scan a project folder first.';return;}
-    const heading=document.createElement('h3');heading.className='details-release-name';heading.textContent=releaseTitle(result);
+    const project=projects.find(p=>p.id===selectedId);
+    if(!result&&!project){host.textContent='Choose a release first.';return;}
+    const heading=document.createElement('h3');heading.className='details-release-name';heading.textContent=result?releaseTitle(result):project.metadata.title;
     const overview=document.createElement('div');overview.className='details-overview';
-    const count=document.createElement('strong');count.textContent=`${result.ready}/${result.total} ready`;
-    const checked=document.createElement('p');checked.textContent='Last checked '+new Date(result.checkedAt).toLocaleString('en-GB');overview.append(count,checked);
-    const folder=document.createElement('details');folder.className='details-folder';const folderLabel=document.createElement('summary');folderLabel.textContent='Original project folder name';const folderName=document.createElement('p');folderName.textContent=result.projectName;folder.append(folderLabel,folderName);
+    const count=document.createElement('strong');count.textContent=result?`${result.ready}/${result.total} ready`:'Not checked';
+    const checked=document.createElement('p');checked.textContent=result?'Last checked '+new Date(result.checkedAt).toLocaleString('en-GB'):'No saved file check for this release.';overview.append(count,checked);
+    const folder=document.createElement('details');folder.className='details-folder';const folderLabel=document.createElement('summary');folderLabel.textContent='Original project folder name';const folderName=document.createElement('p');folderName.textContent=result?.projectName || project.name;folder.append(folderLabel,folderName);
     host.append(heading,overview,folder);
-    for(const a of result.assets){
+    if(project){
+      const metadata=document.createElement('section');metadata.className='details-asset';const label=document.createElement('h3');label.textContent='Suggested details · folder name';
+      metadata.append(label);for(const [key,value] of [['Artist',project.metadata.artist],['Track',project.metadata.title],['BPM',project.metadata.bpm],['Key',project.metadata.key],['Credits',project.metadata.credits.join(' · ')],['Folder stage',stageLabels[project.stage]]])if(value){const p=document.createElement('p');p.className='details-reason';p.textContent=key+': '+value;metadata.append(p);}
+      const note=document.createElement('p');note.className='details-reason';note.textContent='Suggestions only. Approval and publishing metadata are not connected.';metadata.append(note);host.append(metadata);
+    }
+    for(const a of result?.assets || []){
       const section=document.createElement('section'),line=document.createElement('div'),title=document.createElement('h3'),badge=document.createElement('span'),note=document.createElement('p');section.className='details-asset';section.dataset.state=a.state;line.className='details-asset-heading';title.textContent=a.label;badge.className='details-badge';badge.textContent=a.role==='shorts'?`${a.count}/6 · ${stateLabel(a.state)}`:stateLabel(a.state);note.className='details-reason';note.textContent=a.reason;line.append(title,badge);section.append(line,note);
       if(a.files.length){const list=document.createElement('ul');list.className='details-file-list';for(const f of a.files){const li=document.createElement('li');li.textContent=f.name;list.append(li);}section.append(list);}
       if(a.state==='Needs confirmation'&&a.candidates.length){
@@ -64,7 +119,7 @@ import { groupGeometry } from '/checklist-layout.js';
     }
     const boundary=document.createElement('p');boundary.className='details-boundary';boundary.textContent='Checks file metadata only. Audio quality and archive contents have not been inspected.';host.append(boundary);
   }
-  $('asset-sync').addEventListener('click',()=>scan({folder:$('project-folder').value.trim()}));
+  $('asset-sync').addEventListener('click',()=>scan({folder:selectedId}));
   $('drive-connect').addEventListener('click',async()=>{
     busy=true;controls();try{const data=await api('start-drive',{});const u=new URL(data.url);if(u.origin!=='https://accounts.google.com'||u.pathname!=='/o/oauth2/v2/auth')throw new Error('Invalid Google connection link.');location.assign(u.href);}catch(e){message(e.message);busy=false;controls();}
   });
@@ -110,7 +165,7 @@ import { groupGeometry } from '/checklist-layout.js';
   $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());
   const layoutObserver=new ResizeObserver(reflow);cards.forEach(card=>card.querySelectorAll('.group-card-header,.recessed-dock>div,.group-card-footer').forEach(el=>layoutObserver.observe(el)));window.addEventListener('resize',reflow);document.fonts?.ready.then(reflow);reflow();
   (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
-    if(data.folderId)$('project-folder').value='https://drive.google.com/drive/folders/'+data.folderId;
-    if(data.result){result=data.result;render();$('drive-sync-status').textContent=data.result.needsRescan?'Sync needed · Beat WAV unchecked':'Saved check · not refreshed';message(data.result.needsRescan?'Saved results restored. Press Sync to check the new Beat WAV requirement.':'Saved results restored. Press Sync to check current files.');}
+    applyCatalogue(data);$('release-connections').open=!data.folders?.production;
+    if(data.folders?.production&&granted)await discover({},'drive-discover');
   }catch(e){$('drive-access').textContent=e.message;}finally{controls();}})();
 })();
