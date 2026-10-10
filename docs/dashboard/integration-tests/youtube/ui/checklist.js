@@ -21,8 +21,9 @@ import { groupGeometry } from '/checklist-layout.js';
     document.querySelectorAll('[data-asset-index]').forEach(row=>{
       const a=result.assets.find(asset=>asset.role===row.dataset.role);row.dataset.state=a.state;
       const status=row.querySelector('.asset-status');
-      status.dataset.symbol=a.state==='Pass'?'✓':a.state==='Missing'?'−':a.state==='Needs confirmation'?'!':'—';
-      status.textContent=stateLabel(a.state)+(a.role==='shorts'&&a.state==='Missing'&&a.count>0?' · '+a.count+'/6':'');
+      status.textContent=a.state==='Pass'?'✓':a.state==='Missing'?'×':a.state==='Needs confirmation'?'!':'-';
+      const description=stateLabel(a.state)+(a.role==='shorts'?' · '+a.count+'/6 clips':'');
+      status.setAttribute('aria-label',description);status.title=description;
     });
     message(result.ready===result.total?'All required asset categories qualify. Publishing is not connected.':'Scan complete. Missing or unresolved assets prevent readiness; publishing is not connected.');
     requestAnimationFrame(reflow);

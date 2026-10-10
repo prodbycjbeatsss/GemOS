@@ -87,3 +87,6 @@ CJ approved matching Group 1 recessed panels as well as card heights. In the pri
 
 
 Current 10 October checklist amendment: eight checks in four two-column rows; Shorts uses a normal tile. File type is a muted caption under the name. Project/Stems, Beat WAV/MP3, Remix/Thumbnail, Video/Shorts order. This supersedes the seven-item full-width Shorts tile; shared pair geometry and all material tokens remain.
+
+
+10 October checklist presentation amendment: centre icons, names, muted types and status symbols in each tile. Use green tick, red cross, amber exclamation and neutral dash with accessible labels. Status wording is shown in details. Current tokens supersede earlier compact left-aligned tile geometry; shared group sizing remains.

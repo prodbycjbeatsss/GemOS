@@ -71,3 +71,10 @@ CJ authorised a direct redesign within the accepted system, keeping only useful 
 UI status vocabulary: Ready (backend Pass), Missing, Needs attention (backend Needs confirmation), Not checked before a result. Status wording plus a small check/minus/exclamation/dash distinguishes states without colour alone. Needs attention requires association review in Release details and cannot count as ready. Partial missing Shorts retain n/6 when nonzero; filenames, candidate selection, reasons, timestamps and full metadata remain in Release details. No scanner rules changed.
 
 Shared card/recess/header/footer geometry, responsive breakpoint, blue/glass materials, Inter/Poppins, colours and radii remain. The smaller checklist can reduce the pair’s natural height without independent card sizing. JS syntax, existing geometry/title checks and production build pass. Browser-rendered mobile/desktop appearance and acceptance remain unverified. This is the live integration redesign; the original approved preview remains historical reference.
+
+
+## 10 October — centred checklist tiles and symbol-only status
+
+CJ requested centred text/icons and only a tick, red X or dash for status. Each of the eight tiles now centres the file icon, name, muted format caption and status vertically in a compact stack. Status uses a green ✓ for Ready, red × for Missing, amber ! for Needs attention and - for Not checked. Needs attention remains distinct from absent files. Status text and Shorts counts remain in accessible labels/title and Release details; colour is not the only distinction. No tile click target was added. Four-row ordering and eight required categories are unchanged. Shared pair measurement still owns recess/slot geometry. Tile minimum is 88px with 8px vertical/10px horizontal inset and 3px icon-to-copy gap; names use 12px/1.2, types 10px/1.2, and centred symbols 15px in a 20×16px box. Missing colour uses #fb7185.
+
+JS syntax, existing title/layout checks and production build pass. Updated browser appearance remains unverified; private test is the review surface. Scanner eligibility, legacy scan handling and confirmation logic are unchanged.
