@@ -30,7 +30,7 @@ D1 identity is owner + Drive folder ID. Existing lazy migration preserves the pr
 |---|---|
 | GET drive-status | Scopes, folders, project reviews/preparation status, selected saved result |
 | POST drive-folders / drive-discover | Validate all roots, enumerate direct ordinary folders and publish complete catalogue atomically |
-| POST drive-select | Choose only an existing owner project; no asset scan or other-card request |
+| POST drive-select | Choose only an existing owner project; frontend follows success with drive-scan, never an other-card request |
 | POST drive-scan / drive-confirm | Scan eight categories / validate fresh candidate association |
 | POST drive-review | Validate metadata, rescan displayed snapshot, record explicit Shorts-order review |
 | POST drive-ready | Recheck saved review version/snapshot and 8/8; approve queued project or move production project |
@@ -42,7 +42,7 @@ Metadata: artist/title required, each max160; optional whole BPM30–300, key ma
 
 200 retained/discovered projects per owner; four ×100 pages per folder. Validate distinct nontrashed roots, reject nested stages/cross-stage duplicates/incomplete lists; skip files/shortcuts. Read all configured stages before a single D1 catalogue batch. Renames/moves update name/stage by ID without losing mappings/reviews. Unavailable projects keep saved checks separately.
 
-Open-page/manual refresh only, no watcher. Selecting clears old results immediately and restores only the chosen cache. Failed selection restores prior saved selection where possible; failed discovery retains last complete catalogue. Sync updates the selected project. Other cards remain independent: buffer overall schedule; analytics overall activity with current sample limitation; leaderboard separate release/batch.
+Open-page/manual refresh only, no watcher. Selecting clears old results immediately, restores only the chosen cache, then automatically performs one fresh scan. Busy controls serialize selection and scan; failed selection never scans, while failed automatic scans retain the newly selected project with stale saved checks. Re-selecting the current project sends no duplicate scan. Failed selection restores prior saved selection where possible; failed discovery retains last complete catalogue. Sync updates the selected project. Other cards remain independent: buffer overall schedule; analytics overall activity with current sample limitation; leaderboard separate release/batch.
 
 ## Confirmation and move safeguards
 

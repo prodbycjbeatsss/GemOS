@@ -39,3 +39,5 @@ All use the existing blue/navy modal material, 32px shell, responsive insets, vi
 ## Evidence
 
 CJ reported the prior picker, file links and metadata UI working and supplied successful Gelato 41 4/8 scan screenshots. Controlled DOM/source tests cover state and focus logic; geometry tests cover paired measurements. The new preparation/move flow requires real Google consent, a complete test project, phone/desktop and local sync verification. No complete WCAG audit or universal layout guarantee is claimed.
+
+Project switching automatically starts a fresh scan after successful selection using existing read permission. Keep manual Sync for later file changes; display Checking during the scan and stale/error wording on failure. Failed selection does not scan.

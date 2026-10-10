@@ -56,7 +56,7 @@ import { groupGeometry } from '/checklist-layout.js';
   }
   async function scan(body,action='drive-scan') {
     if(busy)return;
-    busy=true;controls();message('Checking Drive files…');
+    busy=true;controls();message('Checking Drive files…');$('drive-sync-status').textContent='Checking…';
     try { result=await api(action,body);selectedId=result.folderId;render();if($('asset-dialog').open)details();
       try{applyCatalogue(await api('drive-status'),false);if($('asset-dialog').open)details();}catch{ $('project-list-status').textContent='File check saved. Release list could not refresh; reload to restore the selection.';}
     }
@@ -94,11 +94,12 @@ import { groupGeometry } from '/checklist-layout.js';
   $('refresh-release-list').addEventListener('click',()=>discover({},'drive-discover'));
   $('release-selector').addEventListener('change',()=>selectProject($('release-selector').value));
   async function selectProject(id){
-    if(busy)return;const previous=selectedId;
+    if(busy||id===selectedId)return;const previous=selectedId;let loaded=false;
     if($('file-dialog').open)$('file-dialog').close();if($('asset-dialog').open)$('asset-dialog').close();busy=true;selectedId=id;result=null;render();controls();message('Loading saved checks…');
-    try{applyCatalogue(await api('drive-select',{folder:id}));if($('asset-dialog').open)details();}
+    try{applyCatalogue(await api('drive-select',{folder:id}));loaded=true;}
     catch(e){selectedId=previous;try{applyCatalogue(await api('drive-status'));}catch{selectedId='';result=null;render();}message(e.message);}
     finally{busy=false;controls();}
+    if(loaded&&granted)await scan({folder:id});
   }
   $('scan-individual').addEventListener('click',()=>scan({folder:$('project-folder').value.trim()}));
   function associationControls(host,a){

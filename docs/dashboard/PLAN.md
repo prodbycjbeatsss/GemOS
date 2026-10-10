@@ -26,3 +26,7 @@ Updated 10 October 2026. This tracks work; current contracts live in group specs
 ## Boundaries
 
 No new project selection on other cards; no fake coverage; no automatic publication; no credential values in source/docs. Update current docs alongside behaviour. Discuss genuinely unsettled product choices; accepted instructions persist across turns. Confirmations inside Prepare release are the concrete user approval for that project's move, not a separate assistant deployment gate.
+
+## Next design review recommendation
+
+Recommend reviewing Group 3 next, retaining Group 1/2 external-connection and real-source checks in the verification backlog. This is a recommendation, not approval of Group 3 designs. Repo feasibility notes describe Payhip revenue (3.1) and Email list (3.2); reviewed Group 3 visuals/specs are not present. No further broad Group 1/2 visual polish is needed before the next review.

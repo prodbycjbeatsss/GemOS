@@ -27,7 +27,7 @@ const cards=[new Element(),new Element()];cards.forEach(card=>{card.child=new El
 const grid=new Element();grid.querySelectorAll=()=>cards;
 const A='release_a_0001',B='release_b_0001';
 const result=(id,title,ready)=>({folderId:id,projectName:'Artist - '+title,checkedAt:123,total:8,ready,assets:roles.map(role=>({role,state:ready===8?'Pass':'Missing',files:ready===8?[{id:'file_'+role+'_track_a_0001',name:role+' - '+title+(role==='remix'?'.wav':'.zip')},...(role==='shorts'?[{id:'short_02_track_a_0001',name:'Short 02.mp4'}]:[])]:[],count:ready===8?6:0}))});
-const saved=new Map([[A,result(A,'Track A',8)]]);let selected=A,gate=null,failSelect=false;
+const saved=new Map([[A,result(A,'Track A',8)]]);let selected=A,gate=null,failSelect=false,failScan=false;
 const projects=[{id:A,name:'Artist - Track A',stage:'production',metadata:{title:'Track A',credits:[]}},{id:B,name:'Artist - Track B',stage:'manual',metadata:{title:'Track B',credits:[]}}];
 const status=()=>({driveGranted:true,projects,folders:{production:'',queue:'',released:''},folderId:selected,result:saved.get(selected)||null});
 const apiCalls=[];
@@ -41,7 +41,7 @@ const fetch=async(url,options={})=>{
   if(failSelect)return Response.json({error:'Selection failed'},{status:404});
   selected=body.folder;return Response.json(status());
  }
- if(action==='drive-scan'){selected=body.folder;const value=result(selected,'Track B',0);saved.set(selected,value);return Response.json(value);}
+ if(action==='drive-scan'){selected=body.folder;if(failScan)return Response.json({error:'Drive unavailable'},{status:503});const value=saved.get(selected)||result(selected,'Track B',0);saved.set(selected,value);return Response.json(value);}
  throw Error('Unexpected action '+action);
 };
 const context={document:{getElementById:id=>elements[id],createElement:()=>new Element(),createTextNode:text=>{const e=new Element();e.textContent=text;return e;},querySelector:()=>grid,querySelectorAll:selector=>selector==='[data-asset-index]'?rows:[],fonts:{ready:Promise.resolve()}},window:{addEventListener(){}},innerWidth:390,fetch,AbortSignal,URL,Response,Date,releaseTitle,displayTitle,releaseDetails,groupGeometry,getComputedStyle:()=>({paddingTop:'20',paddingBottom:'20',borderTopWidth:'1',borderBottomWidth:'1'}),requestAnimationFrame:fn=>fn(),ResizeObserver:class{observe(){}},location:{assign(){}}};
@@ -70,18 +70,19 @@ let unblock;gate=new Promise(resolve=>unblock=resolve);elements['release-selecto
 const pending=elements['release-selector'].listeners.change();
 assert.equal(elements['checklist-subtitle'].textContent,'Not checked');assert.equal(elements['file-dialog'].open,false);assert.equal(elements['release-picker'].disabled,true);assert.equal(elements['release-selector'].disabled,true);assert.ok(rows.every(row=>row.child.textContent==='-'));
 unblock();await pending;gate=null;
-assert.equal(elements['checklist-project-title'].textContent,'Track B');assert.equal(elements['checklist-subtitle'].textContent,'Not checked');assert.equal(elements['asset-sync'].disabled,false);
-await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[3].textContent,'Press Sync to check this release.');await elements['file-close'].listeners.click();
-await elements['asset-details'].listeners.click();assert.equal(elements['asset-detail-content'].children[0].textContent,'Track B');
+assert.equal(elements['checklist-project-title'].textContent,'Track B');assert.equal(elements['checklist-subtitle'].textContent,'0/8 ready');assert.equal(apiCalls.at(-2),'drive-scan');assert.equal(elements['asset-sync'].disabled,false);
+await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[0].textContent,'Missing');await elements['file-close'].listeners.click();
+await elements['asset-details'].listeners.click();assert.equal(elements['asset-detail-content'].children[0].textContent,'Artist - Track B');
 const meta=elements['asset-detail-content'].children[3].children[0];assert.equal(meta.children[0].textContent,'Project metadata');
-const drive=meta.children.at(-1);assert.equal(drive.href,'https://drive.google.com/drive/folders/'+B);assert.equal(drive.target,'_blank');assert.equal(drive.rel,'noopener noreferrer');assert.equal(elements['asset-detail-content'].children[2].children[0].textContent,'Not checked');elements['asset-dialog'].open=false;
+const drive=meta.children.at(-1);assert.equal(drive.href,'https://drive.google.com/drive/folders/'+B);assert.equal(drive.target,'_blank');assert.equal(drive.rel,'noopener noreferrer');assert.equal(elements['asset-detail-content'].children[2].children[0].textContent,'0/8 PASSED');elements['asset-dialog'].open=false;
 await elements['asset-sync'].listeners.click();assert.equal(elements['checklist-subtitle'].textContent,'0/8 ready');
 await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[0].textContent,'Missing');assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');await elements['file-close'].listeners.click();
 const attention=saved.get(B).assets[0];attention.state='Needs confirmation';attention.candidates=[{name:'Ambiguous.zip'}];
 elements['release-selector'].value=A;await elements['release-selector'].listeners.change();elements['release-selector'].value=B;await elements['release-selector'].listeners.change();
 await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[0].textContent,'Needs attention');assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[3].textContent,'Choose and confirm the correct file below.');await elements['file-close'].listeners.click();
-elements['release-selector'].value=A;await elements['release-selector'].listeners.change();assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');assert.equal(elements['drive-sync-status'].textContent,'Saved check · not refreshed');
-failSelect=true;elements['release-selector'].value=B;await elements['release-selector'].listeners.change();assert.equal(elements['release-selector'].value,A);assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');assert.equal(elements['scan-message'].textContent,'Selection failed');
+elements['release-selector'].value=A;await elements['release-selector'].listeners.change();assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');assert.ok(elements['drive-sync-status'].textContent.startsWith('Checked '));
+const beforeFailedSelect=apiCalls.filter(a=>a==='drive-scan').length;failSelect=true;elements['release-selector'].value=B;await elements['release-selector'].listeners.change();assert.equal(elements['release-selector'].value,A);assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');assert.equal(elements['scan-message'].textContent,'Selection failed');assert.equal(apiCalls.filter(a=>a==='drive-scan').length,beforeFailedSelect,'failed selection never scans');
+failSelect=false;failScan=true;elements['release-selector'].value=B;await elements['release-selector'].listeners.change();assert.equal(elements['release-selector'].value,B);assert.equal(elements['checklist-subtitle'].textContent,'0/8 ready');assert.equal(elements['drive-sync-status'].textContent,'Refresh failed · stale');failScan=false;elements['release-selector'].value=A;await elements['release-selector'].listeners.change();
 await elements['release-picker'].listeners.click();const lastChoice=elements['release-picker-content'].children.flatMap(group=>group.children.slice(1))[1];failSelect=false;await lastChoice.listeners.click();await flush();await flush();assert.equal(elements['release-picker-name'].textContent,'Track B');assert.equal(elements['release-picker-dialog'].open,false);
 await elements['buffer-preview-details'].listeners.click({currentTarget:elements['buffer-preview-details']});
 assert.equal(elements['buffer-detail-content'].children.length,2);assert.equal(elements['buffer-detail-content'].children[0].children[1].textContent,'No releases to show');assert.equal(elements['buffer-detail-content'].children[1].textContent,'Scheduling not connected');
@@ -91,4 +92,4 @@ assert.equal((html.match(/class="asset-tile" aria-haspopup="dialog"/g)||[]).leng
 assert.ok(!apiCalls.includes('release'),'checklist selection does not change leaderboard selection');
 assert.ok(html.includes('.section-one-grid>#card-release-buffer{grid-column:1;grid-row:2}'));
 assert.ok(html.includes('.section-one-grid>#card-prerelease-checklist{grid-column:2;grid-row:2}'));
-console.log(JSON.stringify({passed:true,checks:['app picker selects and restores focus','tile connected filenames, multiple Shorts, missing, unchecked and attention','project switch closes old file popup','empty buffer without invented coverage','unique UI IDs','loading clears previous project readiness','serialized controls','new release is unchecked','independent cached scan restoration','failed selection restores prior project','no leaderboard requests','shared desktop card row retained'],renderedLayoutVerified:false}));
+console.log(JSON.stringify({passed:true,checks:['app picker selects and restores focus','tile connected filenames, multiple Shorts, missing, unchecked and attention','project switch closes old file popup','empty buffer without invented coverage','unique UI IDs','loading clears previous project readiness','serialized controls','project selection automatically scans once','scan failure retains selected project with stale checks','independent cached scan restoration','failed selection restores prior project','no leaderboard requests','shared desktop card row retained'],renderedLayoutVerified:false}));

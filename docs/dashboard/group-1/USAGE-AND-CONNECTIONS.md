@@ -12,7 +12,7 @@ Flexible filenames preserve prefixes, BPM, key, artist pairings and credits. No 
 
 A yearly parent such as 2027 is valid. Its sibling stages are In Production, Release Queue and Released; projects are direct children with PROJECT/AUDIO/STEMS/ARTWORK/SHORTS inside. Connect each stage by Drive ID. In Production is required for discovery; Queue is required to move a production project. Released remains optional. Parent auto-detection is not implemented. Renames preserve IDs; moves retain associations but require fresh location/access checks. Computer-to-Drive sync behaviour must be tested with a complete old project.
 
-The checklist-local selector clears previous readiness and restores only the selected project's saved state. Refresh list discovers projects, Sync checks assets. The list refreshes on page opening and manually; there is no continuous watcher. Other cards keep their own scope: 1.1 overall scheduling, 2.1 overall selected-platform activity (sample selection still limits its test), 2.2 its separate release/batch picker.
+The checklist-local selector clears previous readiness, restores only the selected project's saved state, then automatically scans that project with existing read access. Refresh list discovers projects; manual Sync rechecks later changes. The list refreshes on page opening and manually; there is no continuous watcher. Other cards keep their own scope: 1.1 overall scheduling, 2.1 overall selected-platform activity (sample selection still limits its test), 2.2 its separate release/batch picker.
 
 ## Prepare release and approval
 

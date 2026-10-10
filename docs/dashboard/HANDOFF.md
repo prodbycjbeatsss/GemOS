@@ -22,4 +22,8 @@ Next user test: select/Sync a second old project, switch back/reload, then use a
 
 ## Deployment checkpoint
 
-Preparation slice privately deployed 10 October 2026: source 9a03a4f1f81a13573d60995dcc6a0becf68c595a, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_ff3f49ba2d7481919382131f41fce4c6, deployment appgdep_6aca76103a388191b9647b95dbe0708d succeeded. Existing owner-only audience and environment revision 4 retained. Nine controlled suites and production build passed; real Google metadata consent/move and fresh rendered phone/desktop checks remain pending.
+Latest automatic-sync slice privately deployed 10 October 2026: source 5a39a88b11ba894700756b44304587208d52fcf1, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_04c304cd3e4c8191a74e9bd4b760af9c, deployment appgdep_6aca8955b71481918159d7e58b8fcd90 succeeded. Owner-only audience and environment revision 4 retained. Targeted UI/syntax checks and production build passed; real automatic switching/scan and phone appearance remain pending. Preparation move/consent verification remains pending separately.
+
+## Automatic selection sync — 10 October 2026
+
+CJ requested automatic scanning whenever the selected project changes. Implemented after successful selection; no new permission, background watcher or other-card scope change. Manual Sync remains. Selection failure does not scan; scan failure keeps that selected project and labels its saved result stale. Controlled UI tests cover these paths; build passed. Group 3 next-review recommendation remains a proposal; original Group 3 visuals have not been located in the checkout.
