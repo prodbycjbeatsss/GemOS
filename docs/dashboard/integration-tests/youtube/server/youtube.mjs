@@ -1,4 +1,5 @@
 export const SCOPES = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
+const DRIVE_MOVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata';
 const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 const DRIVE_RETURN = '__Host-gemos-drive-return';
 const COOKIE = '__Host-gemos-youtube-state';
@@ -103,15 +104,16 @@ export async function handle(request, env, action) {
     if (action === 'callback' && request.method === 'GET') return await callback(request, env, owner);
     if (request.method !== 'POST') throw new SafeError('Method not allowed.', 405);
     sameOrigin(request);
-    if (action === 'start' || action === 'start-drive') {
+    if (['start','start-drive','start-drive-move'].includes(action)) {
       const state = nonce(), now = Date.now();
       await env.DB.batch([env.DB.prepare('DELETE FROM youtube_oauth_states WHERE expires_at <= ? OR user_id = ?').bind(now, owner), env.DB.prepare('INSERT INTO youtube_oauth_states (state_hash, user_id, expires_at) VALUES (?, ?, ?)').bind(await hash(state), owner, now + 600000)]);
       const existing = await rowFor(env, owner);
-      const wantsDrive = action === 'start-drive' || (existing?.scopes || '').split(' ').includes(DRIVE_SCOPE);
-      const requestedScopes = wantsDrive ? [...SCOPES, DRIVE_SCOPE] : SCOPES;
+      const wantsDrive = action.startsWith('start-drive') || (existing?.scopes || '').split(' ').includes(DRIVE_SCOPE);
+      const wantsMove=action==='start-drive-move'||(existing?.scopes||'').split(' ').includes(DRIVE_MOVE_SCOPE);
+      const requestedScopes = [...SCOPES,...(wantsDrive?[DRIVE_SCOPE]:[]),...(wantsMove?[DRIVE_MOVE_SCOPE]:[])];
       const url = new URL('https://accounts.google.com/o/oauth2/v2/auth'); url.search = new URLSearchParams({ client_id: env.GOOGLE_CLIENT_ID, redirect_uri: env.GOOGLE_REDIRECT_URI, response_type: 'code', scope: requestedScopes.join(' '), access_type: 'offline', prompt: 'consent', state, include_granted_scopes: 'false' });
       const reply = json({ url: url.href }, 200, { 'Set-Cookie': cookie(state) });
-      if (action === 'start-drive') reply.headers.append('Set-Cookie', `${DRIVE_RETURN}=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
+      if (action.startsWith('start-drive')) reply.headers.append('Set-Cookie', `${DRIVE_RETURN}=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
       return reply;
     }
     if (action === 'disconnect') {

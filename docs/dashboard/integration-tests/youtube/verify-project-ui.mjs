@@ -5,6 +5,8 @@ import {releaseTitle,displayTitle,releaseDetails} from './ui/checklist-title.mjs
 import {groupGeometry} from './ui/checklist-layout.mjs';
 class Element {
  constructor(){this.children=[];this.listeners={};this.dataset={};this.value='';this.textContent='';this.classList={add(){},remove(){}};this.style={setProperty(){},removeProperty(){}};this.attributes={};this.disabled=false;}
+ set id(value){this._id=value;elements[value]=this;}
+ get id(){return this._id;}
  addEventListener(type,fn){this.listeners[type]=fn;}
  setAttribute(k,v){this.attributes[k]=v;}
  append(...items){this.children.push(...items);}
@@ -26,12 +28,14 @@ const grid=new Element();grid.querySelectorAll=()=>cards;
 const A='release_a_0001',B='release_b_0001';
 const result=(id,title,ready)=>({folderId:id,projectName:'Artist - '+title,checkedAt:123,total:8,ready,assets:roles.map(role=>({role,state:ready===8?'Pass':'Missing',files:ready===8?[{id:'file_'+role+'_track_a_0001',name:role+' - '+title+(role==='remix'?'.wav':'.zip')},...(role==='shorts'?[{id:'short_02_track_a_0001',name:'Short 02.mp4'}]:[])]:[],count:ready===8?6:0}))});
 const saved=new Map([[A,result(A,'Track A',8)]]);let selected=A,gate=null,failSelect=false;
-const projects=[{id:A,name:'Artist - Track A',stage:'manual',metadata:{title:'Track A',credits:[]}},{id:B,name:'Artist - Track B',stage:'manual',metadata:{title:'Track B',credits:[]}}];
+const projects=[{id:A,name:'Artist - Track A',stage:'production',metadata:{title:'Track A',credits:[]}},{id:B,name:'Artist - Track B',stage:'manual',metadata:{title:'Track B',credits:[]}}];
 const status=()=>({driveGranted:true,projects,folders:{production:'',queue:'',released:''},folderId:selected,result:saved.get(selected)||null});
 const apiCalls=[];
 const fetch=async(url,options={})=>{
  const action=url.split('/').at(-1),body=options.body?JSON.parse(options.body):null;apiCalls.push(action);
  if(action==='drive-status')return Response.json(status());
+ if(action==='drive-review'){const project=projects.find(p=>p.id===body.folder);project.review={metadata:body.metadata,reviewedAt:456};assert.equal(body.shortsReviewed,true);return Response.json({...status(),notice:'Review saved.'});}
+ if(action==='drive-ready'){assert.equal(body.reviewedAt,456);projects.find(p=>p.id===body.folder).stage='queue';return Response.json({...status(),notice:'Confirmed ready.'});}
  if(action==='drive-select'){
   if(gate)await gate;
   if(failSelect)return Response.json({error:'Selection failed'},{status:404});
@@ -40,13 +44,13 @@ const fetch=async(url,options={})=>{
  if(action==='drive-scan'){selected=body.folder;const value=result(selected,'Track B',0);saved.set(selected,value);return Response.json(value);}
  throw Error('Unexpected action '+action);
 };
-const context={document:{getElementById:id=>elements[id],createElement:()=>new Element(),querySelector:()=>grid,querySelectorAll:selector=>selector==='[data-asset-index]'?rows:[],fonts:{ready:Promise.resolve()}},window:{addEventListener(){}},innerWidth:390,fetch,AbortSignal,URL,Response,Date,releaseTitle,displayTitle,releaseDetails,groupGeometry,getComputedStyle:()=>({paddingTop:'20',paddingBottom:'20',borderTopWidth:'1',borderBottomWidth:'1'}),requestAnimationFrame:fn=>fn(),ResizeObserver:class{observe(){}},location:{assign(){}}};
+const context={document:{getElementById:id=>elements[id],createElement:()=>new Element(),createTextNode:text=>{const e=new Element();e.textContent=text;return e;},querySelector:()=>grid,querySelectorAll:selector=>selector==='[data-asset-index]'?rows:[],fonts:{ready:Promise.resolve()}},window:{addEventListener(){}},innerWidth:390,fetch,AbortSignal,URL,Response,Date,releaseTitle,displayTitle,releaseDetails,groupGeometry,getComputedStyle:()=>({paddingTop:'20',paddingBottom:'20',borderTopWidth:'1',borderBottomWidth:'1'}),requestAnimationFrame:fn=>fn(),ResizeObserver:class{observe(){}},location:{assign(){}}};
 vm.runInNewContext(readFileSync('ui/checklist.js','utf8').replace(/^import .*\n/gm,''),context);
 const flush=()=>new Promise(resolve=>setImmediate(resolve));await flush();await flush();
 assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');
 assert.equal(elements['release-picker-name'].textContent,'Track A');
 await elements['release-picker'].listeners.click();assert.equal(elements['release-picker-dialog'].open,true);
-const choices=elements['release-picker-content'].children[0].children.slice(1);assert.equal(choices.length,2);assert.equal(choices[0].attributes['aria-pressed'],'true');
+const choices=elements['release-picker-content'].children.flatMap(group=>group.children.slice(1));assert.equal(choices.length,2);assert.equal(choices[0].attributes['aria-pressed'],'true');
 assert.equal(choices[0].children[0].children[0].textContent,'Track A');
 await elements['release-picker-close'].listeners.click();assert.equal(elements['release-picker-dialog'].open,false);assert.equal(elements['release-picker'].focused,true);
 await rows[0].listeners.click();assert.equal(elements['file-dialog'].open,true);assert.equal(elements['file-detail-content'].children[1].textContent,'project - Track A.zip');
@@ -55,7 +59,12 @@ assert.equal(elements['file-detail-content'].children.at(-1).innerHTML,'<svg dat
 await rows[7].listeners.click();assert.equal(elements['file-detail-content'].children.length,4,'Shorts shows all connected filenames');
 assert.equal(elements['file-detail-content'].children[1].children[0].href,'https://drive.google.com/file/d/file_shorts_track_a_0001/view');assert.equal(elements['file-detail-content'].children[2].children[0].href,'https://drive.google.com/file/d/short_02_track_a_0001/view');
 await elements['file-close'].listeners.click();await elements['asset-details'].listeners.click();
-const projectSection=elements['asset-detail-content'].children[4];const detailLink=projectSection.children[1].children[0].children[0];assert.equal(detailLink.href,fileLink.href,'same connected file link in both dialogs');elements['asset-dialog'].open=false;
+assert.equal(elements['asset-dialog-title'].textContent,'Prepare release');assert.equal(elements['asset-dialog-title'].focused,true);const form=elements['asset-detail-content'].children[3];assert.equal(form.children[0].children[0].textContent,'Project metadata');assert.equal(elements['prepare-ready'].disabled,true,'review required before confirmation');assert.equal(form.children[1].children[0].textContent,'Outstanding files');
+form.children[2].children.at(-1).children[0].checked=true;
+await form.listeners.submit({preventDefault(){}});assert.equal(elements['prepare-message'].textContent,'Review saved.');assert.equal(elements['prepare-ready'].disabled,false);
+let preparedForm=elements['asset-detail-content'].children[3];const artistInput=preparedForm.children[0].children[1].children[0];artistInput.value='Edited Artist';artistInput.listeners.input();assert.equal(elements['prepare-ready'].disabled,true,'unsaved edits invalidate ready action');
+await preparedForm.listeners.submit({preventDefault(){}});assert.equal(projects[0].review.metadata.artist,'Edited Artist');assert.equal(elements['prepare-ready'].disabled,false);
+await elements['prepare-ready'].listeners.click();assert.equal(elements['prepare-message'].textContent,'Confirmed ready.');assert.equal(projects[0].stage,'queue');elements['asset-dialog'].open=false;
 saved.get(A).assets[0].files[0].id='javascript:bad';elements['release-selector'].value=B;await elements['release-selector'].listeners.change();elements['release-selector'].value=A;await elements['release-selector'].listeners.change();await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[1].children.length,0,'invalid file ID stays text without link');await elements['file-close'].listeners.click();
 let unblock;gate=new Promise(resolve=>unblock=resolve);elements['release-selector'].value=B;
 const pending=elements['release-selector'].listeners.change();
@@ -64,16 +73,16 @@ unblock();await pending;gate=null;
 assert.equal(elements['checklist-project-title'].textContent,'Track B');assert.equal(elements['checklist-subtitle'].textContent,'Not checked');assert.equal(elements['asset-sync'].disabled,false);
 await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[3].textContent,'Press Sync to check this release.');await elements['file-close'].listeners.click();
 await elements['asset-details'].listeners.click();assert.equal(elements['asset-detail-content'].children[0].textContent,'Track B');
-const meta=elements['asset-detail-content'].children[3];assert.equal(meta.children[0].textContent,'Project metadata');
-const drive=meta.children.at(-1).children[1];assert.equal(drive.href,'https://drive.google.com/drive/folders/'+B);assert.equal(drive.target,'_blank');assert.equal(drive.rel,'noopener noreferrer');assert.equal(elements['asset-detail-content'].children[2].children[0].textContent,'Not checked');elements['asset-dialog'].open=false;
+const meta=elements['asset-detail-content'].children[3].children[0];assert.equal(meta.children[0].textContent,'Project metadata');
+const drive=meta.children.at(-1);assert.equal(drive.href,'https://drive.google.com/drive/folders/'+B);assert.equal(drive.target,'_blank');assert.equal(drive.rel,'noopener noreferrer');assert.equal(elements['asset-detail-content'].children[2].children[0].textContent,'Not checked');elements['asset-dialog'].open=false;
 await elements['asset-sync'].listeners.click();assert.equal(elements['checklist-subtitle'].textContent,'0/8 ready');
 await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[0].textContent,'Missing');assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');await elements['file-close'].listeners.click();
 const attention=saved.get(B).assets[0];attention.state='Needs confirmation';attention.candidates=[{name:'Ambiguous.zip'}];
 elements['release-selector'].value=A;await elements['release-selector'].listeners.change();elements['release-selector'].value=B;await elements['release-selector'].listeners.change();
-await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[0].textContent,'Needs attention');assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[3].textContent,'Choose the correct file in Release details.');await elements['file-close'].listeners.click();
+await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[0].textContent,'Needs attention');assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[3].textContent,'Choose and confirm the correct file below.');await elements['file-close'].listeners.click();
 elements['release-selector'].value=A;await elements['release-selector'].listeners.change();assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');assert.equal(elements['drive-sync-status'].textContent,'Saved check · not refreshed');
 failSelect=true;elements['release-selector'].value=B;await elements['release-selector'].listeners.change();assert.equal(elements['release-selector'].value,A);assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');assert.equal(elements['scan-message'].textContent,'Selection failed');
-await elements['release-picker'].listeners.click();const lastChoice=elements['release-picker-content'].children[0].children[2];failSelect=false;await lastChoice.listeners.click();await flush();await flush();assert.equal(elements['release-picker-name'].textContent,'Track B');assert.equal(elements['release-picker-dialog'].open,false);
+await elements['release-picker'].listeners.click();const lastChoice=elements['release-picker-content'].children.flatMap(group=>group.children.slice(1))[1];failSelect=false;await lastChoice.listeners.click();await flush();await flush();assert.equal(elements['release-picker-name'].textContent,'Track B');assert.equal(elements['release-picker-dialog'].open,false);
 await elements['buffer-preview-details'].listeners.click({currentTarget:elements['buffer-preview-details']});
 assert.equal(elements['buffer-detail-content'].children.length,2);assert.equal(elements['buffer-detail-content'].children[0].children[1].textContent,'No releases to show');assert.equal(elements['buffer-detail-content'].children[1].textContent,'Scheduling not connected');
 assert.ok(!html.includes('id="buffer-backlog-tag"'));assert.ok(html.includes('justify-content:center;flex:1;min-height:220px'));assert.ok(!readFileSync('ui/checklist.js','utf8').includes('What counts as a covered week'));

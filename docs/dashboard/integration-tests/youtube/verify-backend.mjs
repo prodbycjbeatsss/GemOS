@@ -32,6 +32,7 @@ assert.equal(driveCallback.headers.get('Location'),'/checklist');
 assert.ok(sql.prepare('SELECT scopes FROM youtube_connections').get().scopes.includes(driveScope));
 const preserveDrive = new URL((await (await handle(request('start','POST',{}),env,'start')).json()).url);
 assert.ok(preserveDrive.searchParams.get('scope').includes(driveScope));
+const moveAuth=new URL((await (await handle(request('start-drive-move','POST',{}),env,'start-drive-move')).json()).url);assert.ok(moveAuth.searchParams.get('scope').split(' ').includes('https://www.googleapis.com/auth/drive.metadata'));assert.ok(!moveAuth.searchParams.get('scope').split(' ').includes('https://www.googleapis.com/auth/drive'));
 const row = sql.prepare('SELECT * FROM youtube_connections').get(); assert.ok(!JSON.stringify(row).includes('FAKE_REFRESH')); assert.ok(!JSON.stringify(row).includes('FAKE_ACCESS'));
 assert.equal(await unseal(row.refresh_ciphertext, env, 'owner'), 'FAKE_REFRESH'); await assert.rejects(unseal(row.refresh_ciphertext, env, 'other'));
 const encrypted = await seal('test', env, 'owner'); await assert.rejects(unseal(encrypted, { ...env, YOUTUBE_TOKEN_KEY: 'cd'.repeat(32) }, 'owner'));

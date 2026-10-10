@@ -1,39 +1,19 @@
-# Dashboard cards — start here
+# Dashboard — start here
 
-Updated 9 October 2026. Reviewed references belong in GemOS. telemetric-cards-test-suite is for experiments. Each reviewed group has one folder with three current files.
+Updated 10 October 2026. GemOS owns reviewed designs and the private connected integration. telemetric-cards-test-suite is for experiments. Canonical preview.html files are historical mocks; current live behaviour is specified here and implemented under integration-tests/youtube.
 
-| Need | Open |
+| Need | Authority |
 |---|---|
-| Resume in a new chat | [HANDOFF.md](HANDOFF.md) |
-| Music-release discovery, selector and folder setup | [PROJECTS.md](integration-tests/youtube/PROJECTS.md) |
-| Next work and decisions | [PLAN.md](PLAN.md) |
-| Shared fonts, material, colours and geometry rules | [Master design system](../DESIGN_SYSTEM.md) |
-| Group 1 preview | [group-1/preview.html](group-1/preview.html) |
-| Group 1 layout and interactions | [group-1/SPECIFICATION.md](group-1/SPECIFICATION.md) |
-| Group 1 purpose, data and intended connections | [group-1/USAGE-AND-CONNECTIONS.md](group-1/USAGE-AND-CONNECTIONS.md) |
-| Group 2 preview | [group-2/preview.html](group-2/preview.html) |
-| Group 2 layout and interactions | [group-2/SPECIFICATION.md](group-2/SPECIFICATION.md) |
-| Group 2 purpose, metrics and intended connections | [group-2/USAGE-AND-CONNECTIONS.md](group-2/USAGE-AND-CONNECTIONS.md) |
-| API research across all 11 original cards | [ANALYTICS-FEASIBILITY.md](ANALYTICS-FEASIBILITY.md) |
-| Latest fix verification and captures | [9 October evidence](verification/2026-10-09.md) |
-| Review findings and remaining gaps | [REPOSITORY-REVIEW.md](REPOSITORY-REVIEW.md) |
-| Historical Group 1 source | [Source specification](../../references/dashboard/source/group-1-spec-2026-10-05.md) |
+| Resume / next work | [HANDOFF](HANDOFF.md) / [PLAN](PLAN.md) |
+| Shared appearance | [Design system](../DESIGN_SYSTEM.md) / [tokens](../DESIGN_TOKENS.md) |
+| Group 1 presentation / interactions | [Specification](group-1/SPECIFICATION.md) / [components](group-1/COMPONENTS.md) |
+| Group 1 purpose / sources | [Usage](group-1/USAGE-AND-CONNECTIONS.md) |
+| Asset validation / preparation and folders | [ASSETS](integration-tests/youtube/ASSETS.md) / [PROJECTS](integration-tests/youtube/PROJECTS.md) |
+| Group 2 design / data | [Specification](group-2/SPECIFICATION.md) / [usage](group-2/USAGE-AND-CONNECTIONS.md) |
+| Group 2 current implementation and evidence | [STATUS](integration-tests/youtube/STATUS.md) / [CAPTURE](integration-tests/youtube/CAPTURE.md) |
+| Research / earlier review | [Feasibility](ANALYTICS-FEASIBILITY.md) / [review](REPOSITORY-REVIEW.md) / [9October evidence](verification/2026-10-09.md) |
+| Historical previews | [Group 1](group-1/preview.html) / [Group 2](group-2/preview.html) |
 
-## Source authority
+The design system owns shared appearance; group specification owns presentation; usage owns meaning/eligibility; integration contracts own APIs/state. Later confirmed decisions are incorporated into current documents, rather than appended as conflicting rules. decisions/log.md and archives/dashboard retain rationale/evidence as history. Group 1 is connected to Drive checks/preparation; Group 2 has partial Google imports/capture infrastructure. Neither is a complete automated release system. Groups 3–5 remain unreviewed; no group folders are created before review.
 
-DESIGN_SYSTEM.md governs reusable appearance. Each SPECIFICATION.md governs that group's presentation, geometry and interactions. Its USAGE-AND-CONNECTIONS.md governs purpose, measurements, eligibility, sources and source limitations. PLAN.md tracks sequence rather than approving requirements. Research establishes documented feasibility rather than approving product changes or proving a working connection. Confirmed later decisions supersede earlier proposals; preserve their rationale in decisions/log.md.
-
-Group 1 is a finalised visual reference, with open integration and accessibility checks. Group 2 is the latest reviewed layout; metric choices, snapshot wording and partial-review behaviour are confirmed, with implemented/browser-verified preview changes and untested integrations. Neither HTML set has live connections. No Groups 3–5 folders are created before review. Original all-card HTML and audit remain chat source inputs, not finalised card sets.
-
-Current files stay in their group folders. Superseded mixed documents are in archives/dashboard/2026-10-08/pre-group-folders; historical provenance is not current authority. Use Git history for previous HTML versions.
-
-## Update discipline
-
-Read the master and both documents for the affected group before changes. Update data decisions in usage notes, visual decisions in the specification, progress in PLAN.md and significant decisions in decisions/log.md. Compare related documents and the actual preview. Update master rules only when shared design changes are agreed. Ask about unsettled choices and obtain CJ's confirmation before code edits.
-
-- [HTML review report](REVIEW.html) — findings, evidence, completed doc fixes and decisions still needed.
-
-
-## First integration test
-
-[YouTube manual import test — setup, source and controlled verification](integration-tests/youtube/README.md). Private hosted experiment; actual Google authorisation and Studio comparison pending. Reviewed previews remain mock references.
+Read affected contracts and AGENTS before changes. Update code, current documentation, plan and significant decision log together. Preserve group-specific layouts. Report observed source/access separately from user-reported setup and controlled tests. Unsettled choices need discussion; previously accepted authorisation persists.

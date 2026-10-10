@@ -1,6 +1,6 @@
 # GemOs dashboard card design system
 
-Updated 10 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
+Updated 9 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
 
 Read this first, then the relevant group specification. Confirmed group-specific choices take precedence over general proposals. The audit is advisory. Unreviewed groups must be discussed before implementation.
 
@@ -43,16 +43,16 @@ Status must be expressed in text. Group 1 uses restrained green for confirmed re
 ## Reusable interactions
 
 - Sync: small icon plus label, no circular button background; visible result and freshness. Placeholder controls must not pretend an import succeeded. Dashboard Sync all is planned; no group-level Sync.
-- Contextual route: right footer action with arrow; Group 1 Prepare release reviews one project, Buffer details covers scheduled projects. Both Group 2 actions are white. Group 1 retains its reviewed treatment rather than being restyled by this consolidation.
+- Details: right footer action with arrow. Both Group 2 actions are white. Group 1 retains its reviewed treatment rather than being restyled by this consolidation.
 - Group 2 platform selector: All / Shorts / TikTok / Reels, one row and one selection. Brand icons retained. Visible height 36px, radius 12px, extended 44px tap height, #ffffff1a selected fill. Responsive padding/gaps and keyboard rules are defined in dashboard/group-2/SPECIFICATION.md.
-- Group 1 asset tiles are native buttons opening file popups. File links and association controls belong inside those popups; Prepare release owns whole-project review. Group 2 clip rows remain real controls.
+- Informational asset rows do not act as buttons. Interactive clip rows are real controls.
 - Overlays: labelled, scrollable within the viewport, with close control, keyboard focus, Escape dismissal and focus return. Android Back requires native verification.
 
 ## Reviewed geometry
 
 | Group | Normal card slot | Recess behaviour |
 |---|---|---|
-| 1 | Minimum 512px at ≥360px; 532px below 360px; paired growth for content | Shared largest header/recess/footer measurements; eight checks in four two-column rows. |
+| 1 | 512px at widths ≥360px; 532px at 320–359px | Up to three projects versus all seven checklist parts; panel heights may differ. |
 | 2 | Equal 880px slots, verified normal reference geometry | Matching panel heights: 575px below 640px, 583px from 640px; five 72px leaderboard row spaces within a 360px scroll viewport. |
 
 For a new group, first settle its useful dashboard content, measure its tallest legitimate state, then agree the group height. Do not force it into either existing slot.
@@ -78,9 +78,30 @@ The private test now consumes shared semantic tokens for both cards' gradient, g
 - [Original Group 1 specification](../references/dashboard/source/group-1-spec-2026-10-05.md): provenance; superseded where current specifications record later decisions. Its proposals remain proposals.
 
 
+## Group 1 integration alignment — 10 October 2026
 
-## Group 1 current components
+CJ approved matching Group 1 recessed panels as well as card heights. In the private test, a shared group measurement governs header, recess, footer and complete slot dimensions; cards grow together to preserve readable content. Normal asset layout is two columns, with full-width Shorts. This supersedes independent Group 1 recess heights/overflow-driven one-column switching in the live integration page; canonical references retain their earlier geometry as provenance. Reuse existing Group 1 materials, typography/insets/glyph and corner tokens. Both detail dialogs share the same simple blue/navy shell and Close control. See DESIGN_TOKENS.md and dashboard/group-1/SPECIFICATION.md for implementation/evidence boundaries.
 
-[Group 1 components](dashboard/group-1/COMPONENTS.md) define purpose/anatomy/states/content/accessibility/responsiveness. Reuse blue/navy modal shell, 32px radius, responsive 20/24px insets, static initial-heading focus, 85dvh scroll boundary and reachable sticky Close. File popup centres category icon/status/filename(s)/minimal text links; editable preparation fields align labels left for scanning. Preparation shows outstanding categories and Shorts review, rather than every passed filename. Buffer empty state centres a quiet calendar icon without invented counts or FAQ filler.
 
-Four status states use symbols with accessible wording: ✓ Pass, × Missing, ! Needs attention, - Not checked. Missing/error/stale/unconnected are different meanings. Buttons/links have 44px targets and focus outlines. Semantic tokens own fields, supporting text, links and sections; existing historical card CSS still contains scoped geometry overrides. Consolidation does not claim every legacy style is fully tokenised or measured WCAG compliance.
+10 October checklist redesign: use compact outlined file icons with one category/format label and Ready/Missing/Needs attention status; no duplicate format subtitles or whole-tile status washes. Two-column, 64px minimum tiles; shared pair geometry remains. Details hold filenames and confirmation. Private integration implemented; rendered acceptance pending. See ASSETS.md and DESIGN_TOKENS.md.
+
+
+Current 10 October checklist amendment: eight checks in four two-column rows; Shorts uses a normal tile. File type is a muted caption under the name. Project/Stems, Beat WAV/MP3, Remix/Thumbnail, Video/Shorts order. This supersedes the seven-item full-width Shorts tile; shared pair geometry and all material tokens remain.
+
+
+10 October checklist presentation amendment: centre icons, names, muted types and status symbols in each tile. Use green tick, red cross, amber exclamation and neutral dash with accessible labels. Status wording is shown in details. Current tokens supersede earlier compact left-aligned tile geometry; shared group sizing remains.
+
+
+10 October project selector: checklist-local Check release control lives outside the card, immediately above 1.2. Both desktop card slots share the row below it; mobile order is Buffer, selector, Checklist. Use existing Inter, 12px controls, 44px targets, restrained blue supporting text and visible focus. Collapsible connections keep stage setup off the normal dashboard. Selection preserves other cards’ scope.
+
+
+10 October current live integration: release picker and small connected-file dialog reuse Group 1 blue/navy modal tokens, 32px shell radius, 20/24px insets, Inter/Poppins and 44px Close/choice targets. All eight file tiles are now native buttons; this supersedes earlier informational-only tile guidance for the private integration. Clickability preserves tile dimensions/order and shared pair geometry. Release buffer uses a truthful unconnected empty state, without examples or a fabricated numerical coverage count. Native dialog keyboard behaviour is implemented; rendered/mobile verification remains pending.
+
+
+10 October empty-state refinement: buffer recess centres calendar icon and short empty copy within shared recess; no count dash or unnecessary heading. Supporting icon uses 58px size/18px corner with quiet glass material and 28px outline. File popup centres contents/Close and places a file-X icon first when no connected filenames exist. Buffer details is a project-breakdown route, presently a compact centred empty state; remove FAQ and unrelated selected-project scan. Preserve native dialog behaviour and group-owned measurements. Current rendered centring awaits user review.
+
+
+10 October release details: centred artist/track heading, muted beat subtitle, pass summary/timestamp, centred metadata rows with working Drive button, centred category/PASS/file sections and Close. Reuse established Group 1 modal surfaces, fonts, insets and icon shell for both connected and absent file popups. Category icons use the trusted tile SVG; no new materials or pair geometry. Ambiguous file confirmation remains functional. Current phone appearance remains to review.
+
+
+10 October Drive links: use minimal borderless blue text actions only inside release/file dialogs, 44px tap target, hover underline and visible focus. Folder link drops button fill/border; every valid connected filename has its own Open file action, including Shorts. Checklist tiles remain unchanged per CJ clarification.

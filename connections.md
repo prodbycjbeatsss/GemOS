@@ -1,25 +1,18 @@
 # Connections registry
 
-## Current Group 1 connection checkpoint — 10 October 2026
+Updated 10 October 2026. Separate application integrations from tools available to an assistant. Older setup reports are in archives/dashboard; saved credentials alone do not prove source access.
 
-Google Drive metadata-read access is implemented on the shared saved Google connection; CJ's earlier screenshot verifies a hosted sample asset scan. Release-stage discovery and per-project scan persistence are now implemented/deployed with controlled tests. Stage folder links have not yet been supplied, so real discovery and computer-sync behaviour remain unverified. Configure In Production, optionally Release Queue and Released in the app; no new OAuth scope is needed for this slice. The existing D1 backend holds the current discovery/check catalogue. No new Notion connection is established and no full scheduling/publishing authority is claimed. Folder write permission, approval/move actions and platform scheduling/publication connections remain future work. See [project setup](docs/dashboard/integration-tests/youtube/PROJECTS.md).
+| System | Current application status | Evidence / next verification |
+|---|---|---|
+| Google Drive | Saved metadata reads, stage discovery, per-project scans and reviews; guarded Queue move implemented with optional metadata-edit scope | CJ supplied stage setup and Gelato 41 4/8 scan screenshots; new consent, complete-project move and computer sync pending. See PROJECTS. |
+| YouTube Data/Analytics | Shared encrypted saved Google connection; selected Shorts reports; independent release batch and protected capture writer | Successful imports reported and Scheduler endpoint calls verified; exact Studio/whole-channel coverage and real first qualifying capture pending. See STATUS/CAPTURE. |
+| GitHub | Connected assistant tools for repository review and authorised updates | Working repository reads/commits; not a GemOS visitor feature. |
+| TikTok / Instagram | Intended short-form analytics and scheduling sources | Real API access, coverage and confirmations not verified. |
+| Scheduling / publication | No authoritative release/platform scheduling connection chosen | Needed for real Buffer coverage, publication and Released moves. Queue placement is not scheduling. |
+| Notion | Wider catalogue candidate / previously reported setup | Not selected as authority for current D1 project/review store; no new Notion import established. |
+| Payhip / PayPal | Future sales/payment integration | Event ingestion and authorisation unverified. |
+| Calendar / Gmail | Wider planning/communication candidates | No current GemOS connection test; external sending requires explicit authorisation. |
 
-The older registry below describes its dated review checkpoint.
+Activepieces remains an optional workflow-engine candidate. Five-minute Google Cloud Scheduler currently calls the protected YouTube capture endpoint; it does not move folders, discover releases or publish content.
 
-
-Reviewed 8 October 2026. Distinguish this assistant's verified working-session tools from integrations implemented inside GemOs. A date, saved key or intended endpoint is not proof of successful access. Older reported setup is preserved in archives/dashboard/2026-10-08/connections-before-review.md.
-
-| System | Purpose/route | Status | Evidence / next check |
-|---|---|---|---|
-| GitHub | Read and save project documents and card references through the connected GitHub tools | Verified in this working session; not a deployed GemOs feature | Successful repository reads and authorised commits on 8 October 2026. |
-| YouTube Data/Analytics | Short-form reports and upload snapshots | Planned for Group 2; old registry reported setup but no successful analytics import verified here | Test authorised sample query; see docs/dashboard/group-2/USAGE-AND-CONNECTIONS.md. |
-| TikTok APIs | Post counts; business watch metrics where eligible | Planned; Business account type provisional | Verify account/access and metric scope. |
-| Meta/Instagram Insights | Reels analytics | Planned; Creator/Business account type provisional | Verify account/access, media metrics and periods. |
-| Google Drive | Group 1 asset scan | Intended connection; old registry reported setup but no working scan verified here | Confirm folders, file matching, WIP rule and scan/freshness handling. |
-| Payhip / PayPal | Sales and payment records | Reported in older setup; current access/import unverified | Confirm event ingestion, ledger reconciliation and authorisation before revenue integration. |
-| Notion / local files | Wider catalogue, notes and release records | Reported in older setup; no Notion read verified in this review | Confirm authoritative release store before Group 1 implementation. |
-| Google Calendar | Wider planning | Previously listed not connected; unverified now | No connection test performed. |
-| Gmail | Wider communication | Previously listed not connected; unverified now | No connection test performed; sending requires explicit authorisation. |
-| Meeting tools | Not required in the current solo workflow | Not selected | No connection needed merely for coverage. |
-
-Activepieces is an optional workflow-engine candidate, not a connected analytics source or a chosen scheduler. No unattended 24-hour capture/import job is implemented. Live connections require successful read evidence, defined permissions, source/freshness metadata and visible failure handling before cards claim they are updated.
+[Project and permission contract](docs/dashboard/integration-tests/youtube/PROJECTS.md) · [Current analytics/capture status](docs/dashboard/integration-tests/youtube/STATUS.md). Google metadata-edit permission is requested only through Enable folder moves, not silently granted.

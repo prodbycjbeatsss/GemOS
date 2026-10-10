@@ -465,3 +465,10 @@ CJ specified artist/track heading, separate beat description, PASSED summary/nex
 ## 10 October 2026 — minimal file links inside popups only
 
 CJ requested quieter folder link and individual file links; clarified that smaller cards means their click popup, not dashboard tiles. Added borderless text links in Release details and per-tile file popup using valid saved folder/file IDs, with each Shorts file linked separately. No tile shortcuts added. New-tab links use fixed Google origin, ID validation, noopener/noreferrer and descriptive accessible names. Missing IDs/files get no fabricated link. Controlled link/state/title checks and production build pass; actual Google opening and new phone link styling remain unverified.
+
+
+## 10 October 2026 — Prepare release and current-document consolidation
+
+CJ approved replacing redundant Release details with Prepare release and applying the design review changes. File popups inspect/link/resolve individual assets; preparation edits/saves project metadata, summarises outstanding checks and reviews Tuesday–Sunday Shorts. Confirm ready performs fresh server 8/8 and unchanged-reviewed-snapshot checks, records approval and moves a production folder to connected Queue with Google drive.metadata permission. Already queued projects approve without a duplicate move. My Drive only; uncertain writes stay pending and reconcile from real parent, never automatic retry. Queue/readiness/approval are not scheduling or publication.
+
+Current docs now replace prior conflicting active rules: eight checks including Beat WAV; four two-column rows; clickable tiles without inline links; matched pair/recess measurements; truthful empty Buffer; separate popup jobs; minimal Drive links; static initial focus/reachable sticky Close. Old accumulated notes moved to archives/dashboard/2026-10-10/pre-prepare-release; this log remains append-only history. Current metadata-edit permission and review/move scope supersede earlier read-only-only implementation boundaries. Parent-only discovery, real schedule source, publication/archive and comprehensive rendered accessibility evidence remain open.

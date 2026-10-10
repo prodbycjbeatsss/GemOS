@@ -1,3 +1,5 @@
+> Historical review of earlier preview references. For current connected Group1 behaviour follow SPECIFICATION/USAGE/COMPONENTS and integration PROJECTS/ASSETS; do not apply superseded seven-check, informational-tile or unequal-recess rules.
+
 # GemOs repository review
 
 **Follow-up 9 October:** R01–R03/R10 fixes and R08 snapshot wording/eligibility are implemented and browser-verified. [Current evidence and captures](verification/2026-10-09.md). R09 remains a live-import evidence gap. Subsequent metric, capture and notification decisions are recorded in [HANDOFF.md](HANDOFF.md) and current group usage notes. The findings below preserve the original dated review, including then-open decisions.

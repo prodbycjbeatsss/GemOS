@@ -1,6 +1,6 @@
 # Dashboard design tokens
 
-Updated 10 October 2026. These values implement the accepted Group 2 design; they introduce no new palette. The private YouTube test defines them once in `ui/index.html`. Both cards consume the same tokens. Group 1 retains its own reviewed palette and geometry.
+Updated 9 October 2026. These values implement the accepted Group 2 design; they introduce no new palette. The private YouTube test defines them once in `ui/index.html`. Both cards consume the same tokens. Group 1 retains its own reviewed palette and geometry.
 
 | Role / CSS token | Value |
 |---|---|
@@ -44,26 +44,20 @@ These implement CJ’s approved integration alignment; they do not recolour Grou
 
 Checklist semantic roles: --g1-asset-fill white .045; --g1-asset-border white .10; --g1-state-ready #a7f3d0; --g1-state-missing #fb7185; --g1-state-attention #fde68a; --g1-state-unchecked #cbd5e1. Status has wording and a symbol, never colour alone.
 
-File-type caption: 10px / 1.2, weight 400, muted #bae6fd beneath the 12px category name. Stems label ZIP; thumbnail PNG; video and Shorts MP4.
+File-type caption: 10px / 1.4, weight 400, muted #bae6fd beneath the 12px category name. Stems label ZIP; thumbnail PNG; video and Shorts MP4.
 
 Current checklist alignment: centred icon/name/type/status stack; icon-to-copy 3px; name 12px/1.2, type 10px/1.2, symbol 15px in 20×16px box, 2px top gap. Symbol states ✓ / × / ! / - retain accessible wording.
 
 Project selector: 12px-radius panel/control, panel inset 12px/16px, 8px control gap, 44px select/button targets, 12px label/select text and 11px status/refresh text; existing modal border, asset fill and sky supporting-text tokens.
 
 
+10 October current live integration: release picker and small connected-file dialog reuse Group 1 blue/navy modal tokens, 32px shell radius, 20/24px insets, Inter/Poppins and 44px Close/choice targets. All eight file tiles are now native buttons; this supersedes earlier informational-only tile guidance for the private integration. Clickability preserves tile dimensions/order and shared pair geometry. Release buffer uses a truthful unconnected empty state, without examples or a fabricated numerical coverage count. Native dialog keyboard behaviour is implemented; rendered/mobile verification remains pending.
 
-## Group 1 dialog and form roles
 
-| Token / contract | Value |
-|---|---|
-| --g1-body-text / --g1-muted-text / --g1-link-text | #e0f2fe / #cbd5e1 / #7dd3fc |
-| --g1-field-fill / --g1-field-border | #0f172a / white .30 |
-| --g1-section-fill / --g1-section-radius | white .04 /16px |
-| --g1-control-radius / --g1-control-height |12px /44px minimum |
-| Dialog bounds |420px file /560px preparation; viewport minus32px;85dvh max |
-| Dialog focus/Close |static heading first; sticky Close footer with modal fill/border |
-| Empty/connected category icon |58px/18px quiet glass shell;28px outline |
-| External links |borderless supporting blue text;44px target; underline on hover; visible focus |
-| Form fields |14px input text;12px labels;44px controls; left-aligned labels |
+10 October empty-state refinement: buffer recess centres calendar icon and short empty copy within shared recess; no count dash or unnecessary heading. Supporting icon uses 58px size/18px corner with quiet glass material and 28px outline. File popup centres contents/Close and places a file-X icon first when no connected filenames exist. Buffer details is a project-breakdown route, presently a compact centred empty state; remove FAQ and unrelated selected-project scan. Preserve native dialog behaviour and group-owned measurements. Current rendered centring awaits user review.
 
-These extend the accepted palette and material. Group 2 tokens are unchanged. Current Group 1 forms and dialogs consume semantic roles; historical card geometry overrides remain. No direct links on tiles. Detailed component/state contracts live in dashboard/group-1/COMPONENTS.md.
+
+10 October release details: centred artist/track heading, muted beat subtitle, pass summary/timestamp, centred metadata rows with working Drive button, centred category/PASS/file sections and Close. Reuse established Group 1 modal surfaces, fonts, insets and icon shell for both connected and absent file popups. Category icons use the trusted tile SVG; no new materials or pair geometry. Ambiguous file confirmation remains functional. Current phone appearance remains to review.
+
+
+10 October Drive links: use minimal borderless blue text actions only inside release/file dialogs, 44px tap target, hover underline and visible focus. Folder link drops button fill/border; every valid connected filename has its own Open file action, including Shorts. Checklist tiles remain unchanged per CJ clarification.

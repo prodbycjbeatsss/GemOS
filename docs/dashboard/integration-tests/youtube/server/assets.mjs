@@ -1,7 +1,9 @@
 import { access, configured } from './youtube.mjs';
 import { projectMetadata } from './project-name.mjs';
+export const DRIVE_MOVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata';
 export const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 const folderMime = 'application/vnd.google-apps.folder';
+const connectedFile = f => ({id:f.id,name:f.name,modifiedTime:f.modifiedTime || null,size:String(f.size)});
 const roles = ['project','stems','beatwav','mp3','remix','thumbnail','video','shorts'];
 export const LABELS = ['Project ZIP','Stems archive','Beat WAV','Beat MP3','Remix WAV','Thumbnail','YouTube video','Six Shorts'];
 class AssetError extends Error { constructor(message, status = 400) { super(message); this.status = status; } }
@@ -37,13 +39,13 @@ export function evaluate(files, mappings = {}, folderProblems = {}) {
     if(role==='shorts') {
       const slots = new Map();
       for(const f of marked){const n=f.name.match(/\bshorts?[\s_-]*(0?[1-6])\b/i); if(n){const key=Number(n[1]);slots.set(key,[...(slots.get(key)||[]),f]);}}
-      const numbered = [...slots.values()].filter(v=>v.length===1).map(v=>v[0]);
+      const numbered = [...slots.entries()].sort(([a],[b])=>a-b).filter(([,v])=>v.length===1).map(([,v])=>v[0]);
       const chosen = selectedIds.length ? selected : numbered;
       const ambiguous = !selectedIds.length && (candidates.some(f=>!numbered.includes(f)) || [...slots.values()].some(v=>v.length>1));
-      return {...base,files:chosen.map(f=>({id:f.id,name:f.name})),count:chosen.length,state:ambiguous?'Needs confirmation':chosen.length===6?'Pass':'Missing',reason:ambiguous?'Confirm six distinct clip files and their Tuesday–Sunday order.':`${chosen.length}/6 clips identified`};
+      return {...base,files:chosen.map(connectedFile),count:chosen.length,state:ambiguous?'Needs confirmation':chosen.length===6?'Pass':'Missing',reason:ambiguous?'Confirm six distinct clip files and their Tuesday–Sunday order.':`${chosen.length}/6 clips identified`};
     }
     const chosen = selectedIds.length ? selected : marked;
-    if(chosen.length===1) return {...base,state:'Pass',files:chosen.map(f=>({id:f.id,name:f.name})),count:1,reason:selectedIds.length?'Remembered file association':'Clear role match'};
+    if(chosen.length===1) return {...base,state:'Pass',files:chosen.map(connectedFile),count:1,reason:selectedIds.length?'Remembered file association':'Clear role match'};
     if(candidates.length) return {...base,state:'Needs confirmation',reason:'Choose the correct file for this role.'};
     const wip = files.some(f=>f.directory===directories[role] && /\(wip\)/i.test(f.name));
     return {...base,state:'Missing',reason:wip?'No eligible file; unfinished (WIP) files are excluded.':'No eligible file found'};
@@ -62,6 +64,8 @@ async function tables(env,owner) {
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS drive_asset_state (user_id TEXT PRIMARY KEY, folder_id TEXT NOT NULL, mappings_json TEXT NOT NULL, result_json TEXT, checked_at INTEGER)').run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_projects (user_id TEXT NOT NULL, folder_id TEXT NOT NULL, name TEXT NOT NULL, stage TEXT NOT NULL DEFAULT 'manual', mappings_json TEXT NOT NULL DEFAULT '{}', result_json TEXT, checked_at INTEGER, PRIMARY KEY(user_id,folder_id))").run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_settings (user_id TEXT PRIMARY KEY, production_id TEXT NOT NULL DEFAULT '', queue_id TEXT NOT NULL DEFAULT '', released_id TEXT NOT NULL DEFAULT '', selected_id TEXT NOT NULL DEFAULT '', catalogue_json TEXT NOT NULL DEFAULT '[]', discovered_at INTEGER)").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_reviews (user_id TEXT NOT NULL,folder_id TEXT NOT NULL,metadata_json TEXT NOT NULL,signature TEXT NOT NULL,reviewed_at INTEGER NOT NULL,PRIMARY KEY(user_id,folder_id))").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_moves (user_id TEXT NOT NULL,folder_id TEXT NOT NULL,source_id TEXT NOT NULL,target_id TEXT NOT NULL,status TEXT NOT NULL,started_at INTEGER NOT NULL,completed_at INTEGER,PRIMARY KEY(user_id,folder_id))").run();
   const legacy=await env.DB.prepare('SELECT * FROM drive_asset_state WHERE user_id = ?').bind(owner).first();
   // Copy the old result once without replacing newer per-project scans/selections.
   if(legacy)await env.DB.prepare('INSERT OR IGNORE INTO drive_release_projects (user_id,folder_id,name,mappings_json,result_json,checked_at) VALUES (?,?,?,?,?,?)').bind(owner,legacy.folder_id,legacy.result_json?JSON.parse(legacy.result_json).projectName:'Saved project',legacy.mappings_json,legacy.result_json,legacy.checked_at).run();
@@ -74,6 +78,9 @@ async function projectStatus(env,owner) {
   const catalogue=JSON.parse(settings.catalogue_json),live=new Map(catalogue.map(p=>[p.id,p]));
   const projects=rows.map(row=>({id:row.folder_id,name:row.name,stage:live.get(row.folder_id)?.stage || (row.stage==='manual'?'manual':'unavailable'),metadata:projectMetadata(row.name),checkedAt:row.checked_at || null}));
   const selected=rows.find(row=>row.folder_id===settings.selected_id);
+  const reviews=(await env.DB.prepare('SELECT * FROM drive_release_reviews WHERE user_id=?').bind(owner).all()).results;
+  const moves=(await env.DB.prepare('SELECT * FROM drive_release_moves WHERE user_id=?').bind(owner).all()).results;
+  for(const project of projects){const review=reviews.find(r=>r.folder_id===project.id),move=moves.find(r=>r.folder_id===project.id);project.review=review?{metadata:JSON.parse(review.metadata_json),reviewedAt:review.reviewed_at}:null;project.preparation=move?{status:move.status,completedAt:move.completed_at}:null;}
   return {folders:{production:settings.production_id,queue:settings.queue_id,released:settings.released_id},projects,discoveredAt:settings.discovered_at,folderId:settings.selected_id,result:selected?.result_json?currentResult(JSON.parse(selected.result_json)):null};
 }
 async function discoverProjects(env,owner,folders) {
@@ -104,11 +111,12 @@ async function discoverProjects(env,owner,folders) {
   await env.DB.batch(statements);
   return projectStatus(env,owner);
 }
-async function drive(env,owner,path,params={}) {
+async function drive(env,owner,path,params={},init={}) {
   const session=await access(env,owner);
-  if(!(session.row.scopes||'').split(' ').includes(DRIVE_SCOPE)) throw new AssetError('Add read-only Drive access first.',403);
+  if(![DRIVE_SCOPE,DRIVE_MOVE_SCOPE].some(scope=>(session.row.scopes||'').split(' ').includes(scope))) throw new AssetError('Add read-only Drive access first.',403);
+  if(init.method==='PATCH'&&!(session.row.scopes||'').split(' ').includes(DRIVE_MOVE_SCOPE))throw new AssetError('Enable folder moves before confirming this release.',403);
   const url=new URL('https://www.googleapis.com/drive/v3/'+path);url.search=new URLSearchParams(params);
-  const r=await fetch(url,{headers:{Authorization:'Bearer '+session.token},signal:AbortSignal.timeout(20000)});
+  const r=await fetch(url,{...init,headers:{Authorization:'Bearer '+session.token,'Content-Type':'application/json'},signal:AbortSignal.timeout(20000)});
   if(!r.ok) throw new AssetError(r.status===404?'Folder unavailable or access denied.':r.status===403?'Drive access denied. Enable the Drive API and grant read-only metadata access.':'Drive could not complete the scan. Retry later.',r.status===401?401:r.status===403||r.status===404?403:502);
   const body=await r.json();
   const current=await env.DB.prepare('SELECT revision FROM youtube_connections WHERE user_id = ?').bind(owner).first();
@@ -135,7 +143,74 @@ export async function scan(env,owner,id,mappings={}) {
     if(folders.length===1)files.push(...(await children(env,owner,folders[0].id)).map(f=>({...f,directory})));
   }
   const assets=evaluate(files,mappings,problems);
+  if(mappings.shorts){const a=assets.find(a=>a.role==='shorts');a.files.sort((x,y)=>mappings.shorts.indexOf(x.id)-mappings.shorts.indexOf(y.id));}
   return {folderId:id,projectName:root.name,checkedAt:Date.now(),assets,ready:assets.filter(a=>a.state==='Pass').length,total:roles.length,source:'Google Drive metadata',publicationConnected:false};
+}
+export function reviewMetadata(input) {
+  if(!input||typeof input!=='object'||Array.isArray(input))throw new AssetError('Review the project metadata.');
+  const text=(key,limit,required=false)=>{if(typeof input[key]!=='string'||input[key].length>limit||/[\x00-\x1f]/.test(input[key]))throw new AssetError('Check '+key+'.');const v=input[key].trim();if(required&&!v)throw new AssetError('Add '+key+' before saving the review.');return v;};
+  const artist=text('artist',160,true),title=text('title',160,true),key=text('key',24),credits=text('credits',240);
+  const bpm=input.bpm===''||input.bpm===null?null:Number(input.bpm);
+  if(bpm!==null&&(!Number.isInteger(bpm)||bpm<30||bpm>300))throw new AssetError('BPM must be a whole number from 30 to 300, or blank.');
+  if(key&&!/^[A-G](?:#|b)?(?:m|maj|min)?$/i.test(key))throw new AssetError('Use a musical key such as B#m, or leave it blank.');
+  return {artist,title,bpm,key:key||null,credits};
+}
+export function releaseSignature(result) {
+  return JSON.stringify([result.projectName,...result.assets.map(a=>[a.role,a.state,...a.files.map(f=>[f.id,f.name,f.modifiedTime||null,f.size||null])])]);
+}
+async function saveScan(env,owner,id,result){await env.DB.prepare('UPDATE drive_release_projects SET result_json=?,checked_at=?,name=? WHERE user_id=? AND folder_id=?').bind(JSON.stringify(result),result.checkedAt,result.projectName,owner,id).run();}
+async function prepareRelease(env,owner,id,saved,input,action){
+  const settings=await env.DB.prepare('SELECT * FROM drive_release_settings WHERE user_id=?').bind(owner).first();
+  const existing=await env.DB.prepare('SELECT * FROM drive_release_moves WHERE user_id=? AND folder_id=?').bind(owner,id).first();
+  const root=await drive(env,owner,'files/'+id,{fields:'id,name,mimeType,trashed,parents,driveId,capabilities(canMoveItemWithinDrive)',supportsAllDrives:'true'});
+  if(root.trashed||root.mimeType!==folderMime)throw new AssetError('The release folder is unavailable.',409);
+  const stage=root.parents?.length===1&&root.parents[0]===settings.production_id?'production':root.parents?.length===1&&root.parents[0]===settings.queue_id?'queue':null;
+  if(!stage)throw new AssetError('Use a project directly inside connected In Production or Release Queue.',409);
+  if(action==='drive-review'){
+    if(existing?.status==='pending')throw new AssetError('A folder move is unresolved. Confirm ready again to reconcile its result.',409);
+    const metadata=reviewMetadata(input.metadata);
+    const current=await scan(env,owner,id,JSON.parse(saved.mappings_json));
+    // Reuse explicitly reviewed order, including automatically numbered clips.
+    const shorts=current.assets.find(a=>a.role==='shorts');const old=JSON.parse(saved.result_json||'null');
+    if(!old||releaseSignature(old)!==releaseSignature(current)) {await saveScan(env,owner,id,current);throw new AssetError('Files changed since the displayed check. Close and reopen Prepare release to review the updated files.',409);}
+    if(shorts.state==='Pass'&&input.shortsReviewed!==true)throw new AssetError('Review the Tuesday–Sunday Shorts order.');
+    await env.DB.prepare('INSERT INTO drive_release_reviews VALUES (?,?,?,?,?) ON CONFLICT(user_id,folder_id) DO UPDATE SET metadata_json=excluded.metadata_json,signature=excluded.signature,reviewed_at=excluded.reviewed_at').bind(owner,id,JSON.stringify(metadata),releaseSignature(current),Date.now()).run();
+    await saveScan(env,owner,id,current);
+    return {...await projectStatus(env,owner),notice:'Review saved.'};
+  }
+  const review=await env.DB.prepare('SELECT * FROM drive_release_reviews WHERE user_id=? AND folder_id=?').bind(owner,id).first();
+  if(!review)throw new AssetError('Save your metadata and Shorts review first.',409);
+  if(input.reviewedAt!==review.reviewed_at)throw new AssetError('The review changed. Reopen Prepare release.',409);
+  const current=await scan(env,owner,id,JSON.parse(saved.mappings_json));await saveScan(env,owner,id,current);
+  if(current.ready!==8||releaseSignature(current)!==review.signature)throw new AssetError('Files changed or are incomplete. Reopen Prepare release, review and save again.',409);
+  if(root.driveId)throw new AssetError('Folder approval currently supports My Drive only.',422);
+  if(existing?.status==='pending'&&stage==='production')throw new AssetError('A move may still be running. Check Drive before retrying; no second move was sent.',409);
+  if(existing&&existing.target_id!==settings.queue_id)throw new AssetError('The queue connection changed after approval. Resolve the previous move first.',409);
+  if(stage==='production'){
+    if(!settings.queue_id)throw new AssetError('Connect Release Queue first.');
+    const destination=await drive(env,owner,'files/'+settings.queue_id,{fields:'id,mimeType,trashed,driveId,capabilities(canAddChildren)',supportsAllDrives:'true'});
+    if(destination.trashed||destination.mimeType!==folderMime||destination.driveId||destination.capabilities?.canAddChildren!==true||root.capabilities?.canMoveItemWithinDrive!==true)throw new AssetError('The connected folders do not permit this My Drive move.',403);
+    const connection=await env.DB.prepare('SELECT scopes FROM youtube_connections WHERE user_id=?').bind(owner).first();
+    if(!connection?.scopes?.split(' ').includes(DRIVE_MOVE_SCOPE))throw new AssetError('Enable folder moves before confirming this release.',403);
+    const latest=await drive(env,owner,'files/'+id,{fields:'id,parents,trashed',supportsAllDrives:'true'});
+    if(latest.trashed||latest.parents?.length!==1||latest.parents[0]!==settings.production_id)throw new AssetError('The folder moved during preparation. Refresh the list and review again.',409);
+    const claim=await env.DB.prepare("INSERT INTO drive_release_moves (user_id,folder_id,source_id,target_id,status,started_at) SELECT ?,?,?,?,?,? FROM drive_release_reviews WHERE user_id=? AND folder_id=? AND reviewed_at=? AND signature=? ON CONFLICT(user_id,folder_id) DO NOTHING").bind(owner,id,settings.production_id,settings.queue_id,'pending',Date.now(),owner,id,review.reviewed_at,review.signature).run();
+    if(claim.meta.changes!==1)throw new AssetError('This release has already been approved or a move is pending. Refresh the release list.',409);
+    try{
+      // Exactly one metadata-only PATCH; never retry an uncertain external write.
+      await drive(env,owner,'files/'+id,{addParents:settings.queue_id,removeParents:settings.production_id,fields:'id,parents',supportsAllDrives:'true'},{method:'PATCH',body:'{}'});
+      const moved=await drive(env,owner,'files/'+id,{fields:'id,parents',supportsAllDrives:'true'});
+      if(moved.parents?.length!==1||moved.parents[0]!==settings.queue_id)throw new AssetError('Move not verified.',409);
+    }catch{throw new AssetError('The move result is uncertain. Check Drive, then Confirm ready again to reconcile. No automatic retry will run.',409);}
+  }else if(!existing){await env.DB.prepare('INSERT INTO drive_release_moves (user_id,folder_id,source_id,target_id,status,started_at) VALUES (?,?,?,?,?,?)').bind(owner,id,settings.queue_id,settings.queue_id,'pending',Date.now()).run();}
+  if(existing?.status==='completed')return {...await projectStatus(env,owner),notice:'Already confirmed ready in Release Queue.'};
+  const now=Date.now(),catalogue=JSON.parse(settings.catalogue_json).map(p=>p.id===id?{...p,stage:'queue'}:p);
+  await env.DB.batch([
+    env.DB.prepare("UPDATE drive_release_moves SET status='completed',completed_at=? WHERE user_id=? AND folder_id=?").bind(now,owner,id),
+    env.DB.prepare("UPDATE drive_release_projects SET stage='queue' WHERE user_id=? AND folder_id=?").bind(owner,id),
+    env.DB.prepare('UPDATE drive_release_settings SET catalogue_json=? WHERE user_id=?').bind(JSON.stringify(catalogue),owner)
+  ]);
+  return {...await projectStatus(env,owner),notice:'Confirmed ready in Release Queue. Scheduling is the next step.'};
 }
 export async function assetHandler(request,env,action) {
   const headers={'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
@@ -145,7 +220,7 @@ export async function assetHandler(request,env,action) {
     await tables(env,owner);
     if(action==='drive-status'&&request.method==='GET') {
       const connection=await env.DB.prepare('SELECT scopes FROM youtube_connections WHERE user_id = ?').bind(owner).first();
-      return Response.json({driveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_SCOPE)),...await projectStatus(env,owner)},{headers});
+      return Response.json({moveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_MOVE_SCOPE)),driveGranted:[DRIVE_SCOPE,DRIVE_MOVE_SCOPE].some(scope=>connection?.scopes?.split(' ').includes(scope)),...await projectStatus(env,owner)},{headers});
     }
     if(request.method!=='POST')throw new AssetError('Method not allowed.',405);
     if(request.headers.get('Origin')!==new URL(request.url).origin)throw new AssetError('Request origin does not match.',403);
@@ -166,6 +241,10 @@ export async function assetHandler(request,env,action) {
       if(!saved)throw new AssetError('Refresh the release list before selecting this project.',404);
       await env.DB.prepare('UPDATE drive_release_settings SET selected_id=? WHERE user_id=?').bind(id,owner).run();
       return Response.json(await projectStatus(env,owner),{headers});
+    }
+    if(['drive-review','drive-ready'].includes(action)){
+      if(!saved)throw new AssetError('Select and Sync a saved project first.',404);
+      return Response.json(await prepareRelease(env,owner,id,saved,input,action),{headers});
     }
     let mappings=saved?JSON.parse(saved.mappings_json):{};
     if(action==='drive-confirm') {
