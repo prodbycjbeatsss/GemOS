@@ -55,3 +55,6 @@ Project selector: 12px-radius panel/control, panel inset 12px/16px, 8px control 
 
 
 10 October empty-state refinement: buffer recess centres calendar icon and short empty copy within shared recess; no count dash or unnecessary heading. Supporting icon uses 58px size/18px corner with quiet glass material and 28px outline. File popup centres contents/Close and places a file-X icon first when no connected filenames exist. Buffer details is a project-breakdown route, presently a compact centred empty state; remove FAQ and unrelated selected-project scan. Preserve native dialog behaviour and group-owned measurements. Current rendered centring awaits user review.
+
+
+10 October release details: centred artist/track heading, muted beat subtitle, pass summary/timestamp, centred metadata rows with working Drive button, centred category/PASS/file sections and Close. Reuse established Group 1 modal surfaces, fonts, insets and icon shell for both connected and absent file popups. Category icons use the trusted tile SVG; no new materials or pair geometry. Ambiguous file confirmation remains functional. Current phone appearance remains to review.

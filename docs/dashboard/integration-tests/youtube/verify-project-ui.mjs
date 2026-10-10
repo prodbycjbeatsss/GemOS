@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {releaseTitle,displayTitle} from './ui/checklist-title.mjs';
+import {releaseTitle,displayTitle,releaseDetails} from './ui/checklist-title.mjs';
 import {groupGeometry} from './ui/checklist-layout.mjs';
 class Element {
  constructor(){this.children=[];this.listeners={};this.dataset={};this.value='';this.textContent='';this.classList={add(){},remove(){}};this.style={setProperty(){},removeProperty(){}};this.attributes={};this.disabled=false;}
@@ -20,7 +20,7 @@ const html=readFileSync('ui/checklist.html','utf8');
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size,'IDs stay unique');
 const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
 const roles=['project','stems','beatwav','mp3','remix','thumbnail','video','shorts'];
-const rows=roles.map(role=>{const e=new Element();e.dataset.role=role;e.child=new Element();e.name=new Element();e.name.textContent=role;e.type=new Element();e.type.textContent='TYPE';e.querySelector=selector=>selector==='.asset-name'?e.name:selector==='.asset-type'?e.type:e.child;return e;});
+const rows=roles.map(role=>{const e=new Element();e.dataset.role=role;e.child=new Element();e.name=new Element();e.name.textContent=role;e.type=new Element();e.type.textContent='TYPE';e.icon=new Element();e.icon.innerHTML='<svg data-test-icon></svg>';e.querySelector=selector=>selector==='.asset-icon'?e.icon:selector==='.asset-name'?e.name:selector==='.asset-type'?e.type:e.child;return e;});
 const cards=[new Element(),new Element()];cards.forEach(card=>{card.child=new Element();card.child.nextElementSibling=new Element();});
 const grid=new Element();grid.querySelectorAll=()=>cards;
 const A='release_a_0001',B='release_b_0001';
@@ -40,7 +40,7 @@ const fetch=async(url,options={})=>{
  if(action==='drive-scan'){selected=body.folder;const value=result(selected,'Track B',0);saved.set(selected,value);return Response.json(value);}
  throw Error('Unexpected action '+action);
 };
-const context={document:{getElementById:id=>elements[id],createElement:()=>new Element(),querySelector:()=>grid,querySelectorAll:selector=>selector==='[data-asset-index]'?rows:[],fonts:{ready:Promise.resolve()}},window:{addEventListener(){}},innerWidth:390,fetch,AbortSignal,URL,Response,Date,releaseTitle,displayTitle,groupGeometry,getComputedStyle:()=>({paddingTop:'20',paddingBottom:'20',borderTopWidth:'1',borderBottomWidth:'1'}),requestAnimationFrame:fn=>fn(),ResizeObserver:class{observe(){}},location:{assign(){}}};
+const context={document:{getElementById:id=>elements[id],createElement:()=>new Element(),querySelector:()=>grid,querySelectorAll:selector=>selector==='[data-asset-index]'?rows:[],fonts:{ready:Promise.resolve()}},window:{addEventListener(){}},innerWidth:390,fetch,AbortSignal,URL,Response,Date,releaseTitle,displayTitle,releaseDetails,groupGeometry,getComputedStyle:()=>({paddingTop:'20',paddingBottom:'20',borderTopWidth:'1',borderBottomWidth:'1'}),requestAnimationFrame:fn=>fn(),ResizeObserver:class{observe(){}},location:{assign(){}}};
 vm.runInNewContext(readFileSync('ui/checklist.js','utf8').replace(/^import .*\n/gm,''),context);
 const flush=()=>new Promise(resolve=>setImmediate(resolve));await flush();await flush();
 assert.equal(elements['checklist-subtitle'].textContent,'8/8 ready');
@@ -50,15 +50,17 @@ const choices=elements['release-picker-content'].children[0].children.slice(1);a
 assert.equal(choices[0].children[0].children[0].textContent,'Track A');
 await elements['release-picker-close'].listeners.click();assert.equal(elements['release-picker-dialog'].open,false);assert.equal(elements['release-picker'].focused,true);
 await rows[0].listeners.click();assert.equal(elements['file-dialog'].open,true);assert.equal(elements['file-detail-content'].children[1].textContent,'project - Track A.zip');
-await elements['file-close'].listeners.click();assert.equal(rows[0].focused,true);
-await rows[7].listeners.click();assert.equal(elements['file-detail-content'].children.length,3,'Shorts shows all connected filenames');
+assert.equal(elements['file-detail-content'].children.at(-1).innerHTML,'<svg data-test-icon></svg>');assert.equal(elements['file-detail-content'].children[0].textContent,'PASS');await elements['file-close'].listeners.click();assert.equal(rows[0].focused,true);
+await rows[7].listeners.click();assert.equal(elements['file-detail-content'].children.length,4,'Shorts shows all connected filenames');
 let unblock;gate=new Promise(resolve=>unblock=resolve);elements['release-selector'].value=B;
 const pending=elements['release-selector'].listeners.change();
 assert.equal(elements['checklist-subtitle'].textContent,'Not checked');assert.equal(elements['file-dialog'].open,false);assert.equal(elements['release-picker'].disabled,true);assert.equal(elements['release-selector'].disabled,true);assert.ok(rows.every(row=>row.child.textContent==='-'));
 unblock();await pending;gate=null;
 assert.equal(elements['checklist-project-title'].textContent,'Track B');assert.equal(elements['checklist-subtitle'].textContent,'Not checked');assert.equal(elements['asset-sync'].disabled,false);
 await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');assert.equal(elements['file-detail-content'].children[3].textContent,'Press Sync to check this release.');await elements['file-close'].listeners.click();
-await elements['asset-details'].listeners.click();assert.equal(elements['asset-detail-content'].children[0].textContent,'Track B');assert.equal(elements['asset-detail-content'].children[1].children[0].textContent,'Not checked');elements['asset-dialog'].open=false;
+await elements['asset-details'].listeners.click();assert.equal(elements['asset-detail-content'].children[0].textContent,'Track B');
+const meta=elements['asset-detail-content'].children[3];assert.equal(meta.children[0].textContent,'Project metadata');
+const drive=meta.children.at(-1).children[1];assert.equal(drive.href,'https://drive.google.com/drive/folders/'+B);assert.equal(drive.target,'_blank');assert.equal(drive.rel,'noopener noreferrer');assert.equal(elements['asset-detail-content'].children[2].children[0].textContent,'Not checked');elements['asset-dialog'].open=false;
 await elements['asset-sync'].listeners.click();assert.equal(elements['checklist-subtitle'].textContent,'0/8 ready');
 await rows[0].listeners.click();assert.equal(elements['file-detail-content'].children[0].textContent,'Missing');assert.equal(elements['file-detail-content'].children[1].textContent,'No file connected');await elements['file-close'].listeners.click();
 const attention=saved.get(B).assets[0];attention.state='Needs confirmation';attention.candidates=[{name:'Ambiguous.zip'}];
@@ -70,7 +72,7 @@ await elements['release-picker'].listeners.click();const lastChoice=elements['re
 await elements['buffer-preview-details'].listeners.click({currentTarget:elements['buffer-preview-details']});
 assert.equal(elements['buffer-detail-content'].children.length,2);assert.equal(elements['buffer-detail-content'].children[0].children[1].textContent,'No releases to show');assert.equal(elements['buffer-detail-content'].children[1].textContent,'Scheduling not connected');
 assert.ok(!html.includes('id="buffer-backlog-tag"'));assert.ok(html.includes('justify-content:center;flex:1;min-height:220px'));assert.ok(!readFileSync('ui/checklist.js','utf8').includes('What counts as a covered week'));
-assert.ok(!html.includes('data-buffer-sample'));assert.ok(html.includes('No releases to show'));assert.ok(html.includes('Scheduling not connected'));assert.ok(!html.includes('Example: 3 Weeks Ahead'));
+assert.ok(!readFileSync('ui/checklist.js','utf8').includes('Suggested details'));assert.ok(!readFileSync('ui/checklist.js','utf8').includes('Original project folder name'));assert.ok(!html.includes('data-buffer-sample'));assert.ok(html.includes('No releases to show'));assert.ok(html.includes('Scheduling not connected'));assert.ok(!html.includes('Example: 3 Weeks Ahead'));
 assert.equal((html.match(/class="asset-tile" aria-haspopup="dialog"/g)||[]).length,8,'all tiles are buttons');
 assert.ok(!apiCalls.includes('release'),'checklist selection does not change leaderboard selection');
 assert.ok(html.includes('.section-one-grid>#card-release-buffer{grid-column:1;grid-row:2}'));

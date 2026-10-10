@@ -380,6 +380,22 @@
 #buffer-preview-dialog{max-width:480px}#buffer-detail-content .buffer-empty{min-height:200px}
 #buffer-preview-dialog .details-dialog-footer{text-align:center}
 #buffer-detail-content>.buffer-source-status{font-size:11px;color:#bae6fd;text-align:center;margin:0 0 12px}
+
+#asset-dialog{text-align:center}
+#asset-dialog>.details-dialog-header{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#asset-dialog .details-release-name{font-size:22px;margin:0 0 8px}
+.details-beat-description{font-size:12px;line-height:1.5;color:#bae6fd;margin:0 0 16px;overflow-wrap:anywhere}
+#asset-dialog .details-overview{text-align:center;margin-bottom:16px}#asset-dialog .details-overview strong{display:inline;font-size:14px}
+#asset-dialog .details-overview .details-next-action{display:inline;font-size:12px;color:#e0f2fe}
+#asset-dialog .details-next-action::before{content:' • '}
+#asset-dialog .project-metadata h3{font-size:14px;font-weight:700;margin:0 0 12px}
+#asset-dialog .metadata-line{font-size:12px;line-height:1.6;margin:8px 0;overflow-wrap:anywhere}.metadata-label{color:#bae6fd}
+.details-drive-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:4px 10px;color:#e0f2fe;border:1px solid #ffffff26;background:#ffffff0a;border-radius:12px;font-size:12px;text-decoration:none}
+#asset-dialog .details-drive-link:focus-visible{outline:2px solid #7dd3fc;outline-offset:3px}
+#asset-dialog .details-asset-heading{flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#asset-dialog .details-badge{text-align:center}
+#asset-dialog .details-dialog-footer{text-align:center}
+#asset-dialog .details-file-list li{text-align:center}
 </style></head><body><main class="test-shell"><details class="scan-setup" id="release-connections"><summary>Music release folders</summary><a href="/">← Group 2</a><h1 class="text-xl font-bold mt-3">Group 1 · Release preparation</h1><p>Connect the stage folders once. Release folders directly inside them appear in Check release. Checks are read-only; approval, folder moves and publishing are not connected yet.</p><button id="drive-connect" type="button">Add read-only Drive access</button><p id="drive-access" role="status" aria-live="polite">Checking saved connection…</p><form id="release-folder-form"><label for="production-folder">In Production folder</label><input id="production-folder" type="url" required placeholder="Google Drive folder link"><label for="queue-folder">Release Queue folder · optional for now</label><input id="queue-folder" type="url" placeholder="Google Drive folder link"><label for="released-folder">Released folder · optional for now</label><input id="released-folder" type="url" placeholder="Google Drive folder link"><button id="save-release-folders" type="submit">Connect folders</button></form><p id="folder-message" role="status" aria-live="polite">No music-release folders connected.</p><details class="individual-folder"><summary>Check an individual folder</summary><label for="project-folder">Project folder link</label><input id="project-folder" type="url" placeholder="Google Drive release folder link"><button id="scan-individual" type="button">Check folder</button><p>Your saved test project stays available here and in the selector. This does not queue a release.</p></details></details><p class="group-source-note">Checklist: your Drive scan · Scheduling not connected</p><div class="section-one-grid"><div id="card-release-buffer"
              class="hero-spotlight-card relative"
              style="background: linear-gradient(155deg, #0284c7 0%, #0369a1 42%, #0f172a 100%);">

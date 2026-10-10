@@ -1,5 +1,14 @@
 # Music-release discovery and project selection
 
+## Current release details presentation — 10 October 2026
+
+CJ authorised replacing Suggested details / Original project folder name with a centred release header (artist - track), separate beat description, n/8 PASSED and relevant next action, Last checked timestamp, Project metadata (Artist, Track Name, combined BPM & Key, Credits) and a working Drive-folder link. Passing asset sections show category, PASS and connected filenames; nonpassing/ambiguous sections retain reasons and association controls. Remove redundant source-caption/stage and generic boundary copy from this popup. All asset file popups now include the same 58px/18px icon shell; connected files reuse their category SVG, absent files retain file-X. Centre metadata, asset/status/file sections and Close using existing blue/navy shell, fonts and insets. Missing data says Not available rather than inventing metadata; invalid/missing folder IDs omit the link. Drive URLs use a fixed Google origin and validated stored folder ID, opening in a new tab with noopener/noreferrer.
+
+Display artist prefers an eligible connected remix filename; otherwise the folder artist is retained, except a Type Beat descriptor with spaced x uses its first named artist. The full Type Beat descriptor remains the separate beat subtitle. Credits strip only leading x before @. Stored metadata, original names and associations are unchanged; these display values do not approve publishing metadata. Gelato 42 in CJ's example is treated as a typo: retain the source Gelato 41 title. Native dialog accessible name matches full artist/title, with no duplicate visible heading. Existing picker, readiness and Group 2 scopes remain.
+
+Controlled title/metadata tests cover connected remix precedence, Type Beat fallback, ambiguous-remix exclusion, collaborator preservation, unknown artist and unchanged raw metadata. UI tests verify working Drive URL/target/rel, connected icon/PASS, popup states and project switching; existing geometry checks and production build pass. Supplied screenshots prove the pre-update connected-file popup and details rendered; new styling and complete real two-project switching remain unverified.
+
+
 ## Current empty-state refinement — 10 October 2026
 
 CJ's Android screenshots show the new picker/file popup and empty buffer rendered, with the empty message near the top, a redundant count dash, left-aligned file popup and overly instructional buffer details. CJ authorised centring the buffer content within its matched recess with a calendar icon, removing the dash, centring file-popup content with a missing-file icon, and making buffer details a breakdown of actual buffered projects. Implemented the centred states using existing Group 1 materials, 58px/18px supporting icon shell, type/insets and modal controls. Buffer details currently shows only a compact centred empty state plus Scheduling not connected; removed FAQ/rules blocks and unrelated currently selected Drive check. Populated project breakdown awaits an authoritative confirmed scheduling source; no queue folder or file-ready project is inferred scheduled. Eligibility, picker persistence and paired sizing remain unchanged. Controlled UI/geometry checks and production build pass; updated phone/desktop centring remains unverified. Earlier FAQ instructions are superseded; screenshots do not prove real second-project switching.
@@ -101,3 +110,6 @@ Current private popup/empty-buffer deployment — 10 October 2026: source `8fc84
 
 
 Current empty-state deployment — 10 October 2026: source `831466bbc4b6287c9068e1d91d0bf6d7dee2e061`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_260036a91a508191b8b97ac1b4ca6e8e`, deployment `appgdep_6aca4d3736fc8191becade162ba3cd7d` succeeded. Environment revision 4 retained. Updated icon/centring phone review remains pending.
+
+
+Current metadata/file-icon deployment — 10 October 2026: source `913b066c5f2a7f8c9f1863fe73d12041863d98b3`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_5ddf4b62134081918f9fb8c5fc4681e6`, deployment `appgdep_6aca6c9e8704819196bfae92224838f4` succeeded. Google environment revision 4 retained. New centred metadata/file-icon phone appearance remains unverified.

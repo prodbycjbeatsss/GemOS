@@ -455,3 +455,8 @@ CJ authorised an app-styled release selector popup and clickable checklist tiles
 ## 10 October 2026 — centred empty states and project-focused buffer details
 
 CJ requested centred empty-buffer text with an icon, removal of the white count dash, centred missing-file popup with a file icon, and a buffer project breakdown instead of FAQ. Implemented centred icon/copy states within established Group 1 geometry/materials; the empty buffer dialog now shows no projects and Scheduling not connected. Removed explanatory FAQ and selected checklist readiness from buffer details. Actual project/date/platform breakdown remains dependent on confirmed scheduling records; no fictional rows or queue-folder scheduling inference. Controlled UI/geometry/build pass; refreshed phone centring not yet verified.
+
+
+## 10 October 2026 — clean release metadata and connected-file icon
+
+CJ specified artist/track heading, separate beat description, PASSED summary/next action/last-check timestamp, Project metadata with artist/track/combined BPM-key/clean credits and clickable Drive link, and category/PASS/filename sections. Remove Suggested details / original-folder block; preserve parsed raw metadata without granting publishing approval. Source title remains Gelato 41; Gelato 42 in example treated as typo. Artist display prefers confirmed remix filename, with first named artist fallback for x-separated Type Beat descriptor; retain full beat descriptor separately. Connected file popups receive matching category icon and centred content/Close. Controlled metadata/UI/geometry/build verification passed; fresh phone review pending.

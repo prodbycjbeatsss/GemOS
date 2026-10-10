@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {releaseTitle,displayTitle,TITLE_LIMIT} from './ui/checklist-title.mjs';
+import {releaseTitle,displayTitle,TITLE_LIMIT,releaseDetails} from './ui/checklist-title.mjs';
 const result={projectName:'Artist x Other Type Beat - Track Title [87BPM] [B#m] [x @collaborator]',assets:[{role:'remix',state:'Pass',files:[{name:'[REMIX] Artist - Track Title.wav'}]}]};
 assert.equal(releaseTitle(result),'Track Title');
 assert.equal(releaseTitle({...result,assets:[]}),'Track Title');
@@ -11,4 +11,11 @@ assert.equal(displayTitle('A'.repeat(60)).at(-1),'…');
 assert.equal(releaseTitle({...result,assets:[{role:'remix',state:'Needs confirmation',files:[{name:'Wrong - Candidate.wav'}]}]}),'Track Title');
 assert.ok(result.projectName.includes('87BPM'));
 assert.ok(result.assets[0].files[0].name.startsWith('[REMIX]'));
+const project={metadata:{artist:'Potter Payper x K Koke x UK Rap Type Beat',title:'Gelato 41',bpm:87,key:'B#m',credits:['x @itsakaibeat']}};
+const sample={projectName:'Potter Payper x K Koke x UK Rap Type Beat - Gelato 41',assets:[{role:'remix',state:'Pass',files:[{name:'[REMIX] Potter Payper - Gelato 41 [87BPM] [B#m].wav'}]}]};
+const info=releaseDetails(sample,project);assert.equal(info.artist,'Potter Payper');assert.equal(info.title,'Gelato 41');assert.equal(info.beatDescription,project.metadata.artist);assert.equal(info.bpm,87);assert.equal(info.key,'B#m');assert.deepEqual(info.credits,['@itsakaibeat']);assert.equal(project.metadata.credits[0],'x @itsakaibeat');
+assert.equal(releaseDetails({...sample,assets:[]},project).artist,'Potter Payper');
+assert.equal(releaseDetails({...sample,assets:[{role:'remix',state:'Needs confirmation',files:[{name:'Wrong Artist - Gelato 41.wav'}]}]},project).artist,'Potter Payper');
+assert.equal(releaseDetails(null,{metadata:{title:'No known artist',artist:null,credits:[]}}).artist,null);
+assert.equal(releaseDetails({...sample,assets:[{role:'remix',state:'Pass',files:[{name:'Artist A x Artist B - Gelato 41.wav'}]}]},project).artist,'Artist A x Artist B');
 console.log(JSON.stringify({passed:true,checks:['remix title precedence','metadata-free folder fallback','optional Remix suffix','track subtitle preserved','48-character display cap and ellipsis','full metadata untouched','ambiguous asset not used for title'],renderedLayoutVerified:false}));

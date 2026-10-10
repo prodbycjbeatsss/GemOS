@@ -1,4 +1,4 @@
-import { releaseTitle, displayTitle } from '/checklist-title.js';
+import { releaseTitle, displayTitle, releaseDetails } from '/checklist-title.js';
 import { groupGeometry } from '/checklist-layout.js';
 (() => {
   const $ = id => document.getElementById(id);
@@ -92,20 +92,28 @@ import { groupGeometry } from '/checklist-layout.js';
     const host=$('asset-detail-content');host.replaceChildren();
     const project=projects.find(p=>p.id===selectedId);
     if(!result&&!project){host.textContent='Choose a release first.';return;}
-    const heading=document.createElement('h3');heading.className='details-release-name';heading.textContent=result?releaseTitle(result):project.metadata.title;
+    const data=releaseDetails(result,project);
+    const heading=document.createElement('h3');heading.className='details-release-name';heading.textContent=[data.artist,data.title].filter(Boolean).join(' - ');
+    $('asset-dialog-title').textContent=heading.textContent;
+    const description=document.createElement('p');description.className='details-beat-description';description.textContent=data.beatDescription || '';description.hidden=!data.beatDescription;
     const overview=document.createElement('div');overview.className='details-overview';
-    const count=document.createElement('strong');count.textContent=result?`${result.ready}/${result.total} ready`:'Not checked';
-    const checked=document.createElement('p');checked.textContent=result?'Last checked '+new Date(result.checkedAt).toLocaleString('en-GB'):'No saved file check for this release.';overview.append(count,checked);
-    const folder=document.createElement('details');folder.className='details-folder';const folderLabel=document.createElement('summary');folderLabel.textContent='Original project folder name';const folderName=document.createElement('p');folderName.textContent=result?.projectName || project.name;folder.append(folderLabel,folderName);
-    host.append(heading,overview,folder);
-    if(project){
-      const metadata=document.createElement('section');metadata.className='details-asset';const label=document.createElement('h3');label.textContent='Suggested details · folder name';
-      metadata.append(label);for(const [key,value] of [['Artist',project.metadata.artist],['Track',project.metadata.title],['BPM',project.metadata.bpm],['Key',project.metadata.key],['Credits',project.metadata.credits.join(' · ')],['Folder stage',stageLabels[project.stage]]])if(value){const p=document.createElement('p');p.className='details-reason';p.textContent=key+': '+value;metadata.append(p);}
-      const note=document.createElement('p');note.className='details-reason';note.textContent='Suggestions only. Approval and publishing metadata are not connected.';metadata.append(note);host.append(metadata);
+    const count=document.createElement('strong');count.textContent=result?`${result.ready}/${result.total} PASSED`:'Not checked';
+    const checked=document.createElement('p');checked.textContent=result?'Last checked: '+new Date(result.checkedAt).toLocaleString('en-GB'):'Last checked: Not checked';
+    const instruction=document.createElement('p');instruction.className='details-next-action';instruction.textContent=!result?'Press Sync to check this release.':result.ready===result.total?'All required files are ready.':result.assets.some(a=>a.state==='Needs confirmation')?'Review files needing attention before continuing…':'Add missing files before continuing…';overview.append(count,instruction,checked);
+    host.append(heading,description,overview);
+    const metadata=document.createElement('section');metadata.className='details-asset project-metadata';const label=document.createElement('h3');label.textContent='Project metadata';metadata.append(label);
+    for(const [key,value] of [['Artist',data.artist],['Track Name',data.title],['BPM & Key',[data.bpm!==null?data.bpm+'BPM':null,data.key].filter(Boolean).join(' | ')],['Credits',data.credits.join(' · ')]]){
+      const row=document.createElement('p');row.className='metadata-line';const name=document.createElement('span');name.className='metadata-label';name.textContent=key+': ';const text=document.createElement('span');text.textContent=value || 'Not available';row.append(name,text);metadata.append(row);
     }
+    const folderId=result?.folderId || project?.id;
+    if(typeof folderId==='string'&&/^[A-Za-z0-9_-]{6,200}$/.test(folderId)){
+      const row=document.createElement('p');row.className='metadata-line';const name=document.createElement('span');name.className='metadata-label';name.textContent='Drive Link: ';
+      const link=document.createElement('a');link.href='https://drive.google.com/drive/folders/'+encodeURIComponent(folderId);link.target='_blank';link.rel='noopener noreferrer';link.className='details-drive-link';link.textContent='Open folder ↗';row.append(name,link);metadata.append(row);
+    }
+    host.append(metadata);
     for(const a of result?.assets || []){
-      const section=document.createElement('section'),line=document.createElement('div'),title=document.createElement('h3'),badge=document.createElement('span'),note=document.createElement('p');section.className='details-asset';section.dataset.state=a.state;line.className='details-asset-heading';title.textContent=a.label;badge.className='details-badge';badge.textContent=a.role==='shorts'?`${a.count}/6 · ${stateLabel(a.state)}`:stateLabel(a.state);note.className='details-reason';note.textContent=a.reason;line.append(title,badge);section.append(line,note);
-      if(a.files.length){const list=document.createElement('ul');list.className='details-file-list';for(const f of a.files){const li=document.createElement('li');li.textContent=f.name;list.append(li);}section.append(list);}
+      const section=document.createElement('section'),line=document.createElement('div'),title=document.createElement('h3'),badge=document.createElement('span'),note=document.createElement('p');section.className='details-asset';section.dataset.state=a.state;line.className='details-asset-heading';title.textContent=a.role==='project'?'Project ZIP':a.label;badge.className='details-badge';badge.textContent=a.role==='shorts'?`${a.count}/6 · ${a.state==='Pass'?'PASS':stateLabel(a.state)}`:a.state==='Pass'?'PASS':stateLabel(a.state);note.className='details-reason';note.textContent=a.reason;line.append(title,badge);section.append(line);if(a.state!=='Pass')section.append(note);
+      if(a.files.length){const list=document.createElement('ul');list.className='details-file-list';for(const f of a.files){const li=document.createElement('li');li.textContent=f.name;list.append(li);}section.append(list);}else {const empty=document.createElement('p');empty.className='details-reason';empty.textContent='No file connected';section.append(empty);}
       if(a.state==='Needs confirmation'&&a.candidates.length){
         const selects=[];
         const total=a.role==='shorts'?6:1;
@@ -121,7 +129,6 @@ import { groupGeometry } from '/checklist-layout.js';
       }
       host.append(section);
     }
-    const boundary=document.createElement('p');boundary.className='details-boundary';boundary.textContent='Checks file metadata only. Audio quality and archive contents have not been inspected.';host.append(boundary);
   }
   $('asset-sync').addEventListener('click',()=>scan({folder:selectedId}));
   $('drive-connect').addEventListener('click',async()=>{
@@ -148,8 +155,8 @@ import { groupGeometry } from '/checklist-layout.js';
   document.querySelectorAll('[data-asset-index]').forEach(tile=>tile.addEventListener('click',()=>{
     fileTrigger=tile;const asset=result?.assets.find(a=>a.role===tile.dataset.role),host=$('file-detail-content');host.replaceChildren();
     $('file-dialog-title').textContent=tile.querySelector('.asset-name').textContent+' · '+tile.querySelector('.asset-type').textContent;
-    const badge=document.createElement('span');badge.className='details-badge';badge.textContent=stateLabel(asset?.state);host.dataset.state=asset?.state || 'Unchecked';host.append(badge);
-    if(asset?.files?.length){for(const file of asset.files){const name=document.createElement('p');name.className='file-connected-name';name.textContent=file.name;host.append(name);}}
+    const badge=document.createElement('span');badge.className='details-badge';badge.textContent=asset?.state==='Pass'?'PASS':stateLabel(asset?.state);host.dataset.state=asset?.state || 'Unchecked';host.append(badge);
+    if(asset?.files?.length){for(const file of asset.files){const name=document.createElement('p');name.className='file-connected-name';name.textContent=file.name;host.append(name);}const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML=tile.querySelector('.asset-icon').innerHTML;host.append(icon);}
     else {const empty=document.createElement('p');empty.textContent='No file connected';host.append(empty);
       const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 14l6 4m0-4-6 4"/></svg>';host.append(icon);
     }
