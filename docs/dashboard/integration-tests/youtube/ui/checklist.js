@@ -6,6 +6,8 @@ import { groupGeometry } from '/checklist-layout.js';
   const message = text => { $('scan-message').textContent = text; };
   function controls() {
     $('release-selector').disabled=busy || !projects.length;
+    $('release-picker').disabled=busy || !projects.length;
+    $('release-picker-name').textContent=projects.find(p=>p.id===selectedId)?.metadata.title || 'Choose a release…';
     $('refresh-release-list').disabled=busy || !granted || !folders.production;
     $('save-release-folders').disabled=busy || !granted;
     $('scan-individual').disabled=busy || !granted;
@@ -77,12 +79,14 @@ import { groupGeometry } from '/checklist-layout.js';
   }
   $('release-folder-form').addEventListener('submit',event=>{event.preventDefault();discover({production:$('production-folder').value.trim(),queue:$('queue-folder').value.trim(),released:$('released-folder').value.trim()},'drive-folders');});
   $('refresh-release-list').addEventListener('click',()=>discover({},'drive-discover'));
-  $('release-selector').addEventListener('change',async()=>{
-    if(busy)return;const id=$('release-selector').value,previous=selectedId;busy=true;selectedId=id;result=null;render();controls();message('Loading saved checks…');
+  $('release-selector').addEventListener('change',()=>selectProject($('release-selector').value));
+  async function selectProject(id){
+    if(busy)return;const previous=selectedId;
+    if($('file-dialog').open)$('file-dialog').close();busy=true;selectedId=id;result=null;render();controls();message('Loading saved checks…');
     try{applyCatalogue(await api('drive-select',{folder:id}));if($('asset-dialog').open)details();}
     catch(e){selectedId=previous;try{applyCatalogue(await api('drive-status'));}catch{selectedId='';result=null;render();}message(e.message);}
     finally{busy=false;controls();}
-  });
+  }
   $('scan-individual').addEventListener('click',()=>scan({folder:$('project-folder').value.trim()}));
   function details() {
     const host=$('asset-detail-content');host.replaceChildren();
@@ -123,6 +127,37 @@ import { groupGeometry } from '/checklist-layout.js';
   $('drive-connect').addEventListener('click',async()=>{
     busy=true;controls();try{const data=await api('start-drive',{});const u=new URL(data.url);if(u.origin!=='https://accounts.google.com'||u.pathname!=='/o/oauth2/v2/auth')throw new Error('Invalid Google connection link.');location.assign(u.href);}catch(e){message(e.message);busy=false;controls();}
   });
+  function pickerDetails(){
+    const host=$('release-picker-content');host.replaceChildren();
+    for(const stage of ['production','queue','released','manual','unavailable']){
+      const matches=projects.filter(p=>p.stage===stage).sort((a,b)=>a.name.localeCompare(b.name));if(!matches.length)continue;
+      const section=document.createElement('section');section.className='picker-stage';const heading=document.createElement('h3');heading.textContent=stageLabels[stage];section.append(heading);
+      for(const project of matches){
+        const choice=document.createElement('button');choice.type='button';choice.className='picker-choice';choice.setAttribute('aria-pressed',String(project.id===selectedId));choice.title=project.name;
+        const copy=document.createElement('span');copy.className='picker-choice-copy';const name=document.createElement('span');name.className='picker-choice-title';name.textContent=project.metadata.title;copy.append(name);
+        const subtitle=document.createElement('span');subtitle.className='picker-choice-artist';subtitle.textContent=[project.metadata.artist,matches.filter(p=>p.metadata.title===project.metadata.title&&p.metadata.artist===project.metadata.artist).length>1?project.id.slice(-4):null].filter(Boolean).join(' · ');if(subtitle.textContent)copy.append(subtitle);
+        const tick=document.createElement('span');tick.setAttribute('aria-hidden','true');tick.textContent=project.id===selectedId?'✓':'';choice.append(copy,tick);
+        choice.addEventListener('click',()=>{$('release-picker-dialog').close();if(project.id!==selectedId)selectProject(project.id);});section.append(choice);
+      }host.append(section);
+    }
+  }
+  $('release-picker').addEventListener('click',()=>{pickerDetails();$('release-picker-dialog').showModal();});
+  $('release-picker-close').addEventListener('click',()=>$('release-picker-dialog').close());
+  $('release-picker-dialog').addEventListener('close',()=>$('release-picker').focus());
+  let fileTrigger=null;
+  document.querySelectorAll('[data-asset-index]').forEach(tile=>tile.addEventListener('click',()=>{
+    fileTrigger=tile;const asset=result?.assets.find(a=>a.role===tile.dataset.role),host=$('file-detail-content');host.replaceChildren();
+    $('file-dialog-title').textContent=tile.querySelector('.asset-name').textContent+' · '+tile.querySelector('.asset-type').textContent;
+    const badge=document.createElement('span');badge.className='details-badge';badge.textContent=stateLabel(asset?.state);host.dataset.state=asset?.state || 'Unchecked';host.append(badge);
+    if(asset?.files?.length){for(const file of asset.files){const name=document.createElement('p');name.className='file-connected-name';name.textContent=file.name;host.append(name);}}
+    else {const empty=document.createElement('p');empty.textContent='No file connected';host.append(empty);}
+    if(!result || asset?.state==='Unchecked' || asset?.state==='Needs confirmation'){
+      const note=document.createElement('p');note.className='details-reason';note.textContent=asset?.state==='Needs confirmation'?'Choose the correct file in Release details.':selectedId?'Press Sync to check this release.':'Choose a release first.';host.append(note);
+    }
+    $('file-dialog').showModal();
+  }));
+  $('file-close').addEventListener('click',()=>$('file-dialog').close());
+  $('file-dialog').addEventListener('close',()=>fileTrigger?.focus());
   $('asset-details').addEventListener('click',()=>{details();$('asset-dialog').showModal();});
   $('asset-close').addEventListener('click',()=>$('asset-dialog').close());
   $('asset-dialog').addEventListener('close',()=>$('asset-details').focus());
@@ -148,19 +183,16 @@ import { groupGeometry } from '/checklist-layout.js';
   let bufferTrigger=null;
   function bufferDetails(selectedName){
     const host=$('buffer-detail-content');host.replaceChildren();
-    const overview=document.createElement('div');overview.className='details-overview';const heading=document.createElement('strong');heading.textContent='Scheduling not connected';const note=document.createElement('p');note.textContent='The three weeks and project statuses on the card are illustrative. Your real buffer is not calculated yet.';overview.append(heading,note);host.append(overview);
+    const overview=document.createElement('div');overview.className='details-overview';const heading=document.createElement('strong');heading.textContent='Scheduling not connected';const note=document.createElement('p');note.textContent='No scheduled releases are shown. GemOS cannot calculate coverage until scheduling confirmations are connected.';overview.append(heading,note);host.append(overview);
     const section=(title,text)=>{const block=document.createElement('section');block.className='details-asset';const line=document.createElement('div');line.className='details-asset-heading';const h=document.createElement('h3');h.textContent=title;line.append(h);const p=document.createElement('p');p.className='details-reason';p.textContent=text;block.append(line,p);host.append(block);return block;};
-    const rows=[...document.querySelectorAll('[data-buffer-sample]')].filter(row=>!selectedName||row.dataset.bufferSample===selectedName);
-    for(const row of rows){const block=section(row.dataset.bufferSample+' · example',row.querySelector('.buffer-project-date').textContent+' · '+row.querySelector('.buffer-project-badge').textContent+' (illustrative)');const p=document.createElement('p');p.className='details-reason';p.textContent='Required: Monday main YouTube release, then six Tuesday–Sunday clips on YouTube Shorts, TikTok and Instagram Reels.';block.append(p);}
     section('What counts as a covered week','19 confirmed scheduled uploads: one main YouTube video plus six Shorts on each of the three short-form platforms. Every required destination must qualify.');
     section('How the buffer is counted','Consecutive covered weeks in Europe/London, stopping at the first gap or unfinished week. Later bookings beyond a gap do not extend uninterrupted coverage.');
     section('What does not count','Planned dates, submitted requests without acceptance, reminder-only tasks and file readiness alone do not establish scheduling confirmation.');
     if(result)section('Current asset check · '+releaseTitle(result),`${result.ready}/${result.total} categories ready. This is a separate Drive file check, not confirmation that this release is scheduled.`);
     section('Next connection needed','Choose and connect the authoritative release records and platform or scheduler confirmation source. Then GemOS can show your real coverage date and next releases.');
   }
-  function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent=name?name+' · example':'Release Buffer details';bufferDetails(name);$('buffer-preview-dialog').showModal();}
+  function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent='Release Buffer details';bufferDetails(name);$('buffer-preview-dialog').showModal();}
   $('buffer-preview-details').addEventListener('click',event=>openBufferPreview(event.currentTarget));
-  document.querySelectorAll('[data-buffer-sample]').forEach(button=>button.addEventListener('click',()=>openBufferPreview(button,button.dataset.bufferSample)));
   $('buffer-preview-close').addEventListener('click',()=>$('buffer-preview-dialog').close());
   $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());
   const layoutObserver=new ResizeObserver(reflow);cards.forEach(card=>card.querySelectorAll('.group-card-header,.recessed-dock>div,.group-card-footer').forEach(el=>layoutObserver.observe(el)));window.addEventListener('resize',reflow);document.fonts?.ready.then(reflow);reflow();

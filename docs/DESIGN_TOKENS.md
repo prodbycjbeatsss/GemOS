@@ -49,3 +49,6 @@ File-type caption: 10px / 1.4, weight 400, muted #bae6fd beneath the 12px catego
 Current checklist alignment: centred icon/name/type/status stack; icon-to-copy 3px; name 12px/1.2, type 10px/1.2, symbol 15px in 20×16px box, 2px top gap. Symbol states ✓ / × / ! / - retain accessible wording.
 
 Project selector: 12px-radius panel/control, panel inset 12px/16px, 8px control gap, 44px select/button targets, 12px label/select text and 11px status/refresh text; existing modal border, asset fill and sky supporting-text tokens.
+
+
+10 October current live integration: release picker and small connected-file dialog reuse Group 1 blue/navy modal tokens, 32px shell radius, 20/24px insets, Inter/Poppins and 44px Close/choice targets. All eight file tiles are now native buttons; this supersedes earlier informational-only tile guidance for the private integration. Clickability preserves tile dimensions/order and shared pair geometry. Release buffer uses a truthful unconnected empty state, without examples or a fabricated numerical coverage count. Native dialog keyboard behaviour is implemented; rendered/mobile verification remains pending.

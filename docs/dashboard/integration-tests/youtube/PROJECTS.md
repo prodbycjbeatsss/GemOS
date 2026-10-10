@@ -1,5 +1,16 @@
 # Music-release discovery and project selection
 
+## Current picker, file popups and empty buffer — 10 October 2026
+
+CJ confirmed stage-folder setup and supplied Android screenshots showing saved connections, a saved discovery timestamp and a fresh Gelato 41 scan. This is evidence of that setup/read/display, not complete catalogue, switching, archive contents or scheduling verification. The parent may be a yearly folder such as 2027; connect its three stage folders separately. Gelato 41 is the current test project; Teeth & Claws remains incomplete.
+
+CJ authorised replacing Android's native release select popup with an app-styled chooser and making each checklist tile open its connected filenames. The chooser uses the shared blue/navy dialog shell, stage headings, short track title plus artist, a selected tick and full original name as title. It retains the existing per-project selection/save contract; no new API, Drive permission or other-card selection changes. Native dialog supports modal focus and Escape; Close returns focus. All eight tiles are native buttons with the existing four-row anatomy and geometry. Their small popup shows saved connected filename(s), or “No file connected”; Shorts lists every connected file. Unchecked prompts Sync; Needs attention directs association review to Release details. Candidates are not labelled connected files. Switching clears previous checks and closes any old file popup.
+
+The live 1.1 card no longer shows example projects/dates or invented coverage. It shows “No schedule yet”, “Scheduling not connected” and “No releases to show”. This is an unconnected empty state, not a verified zero-week calculation. Queue folders and 8/8 readiness do not establish confirmed scheduling. Buffer details retains the 19-upload/consecutive-week rules and source limitation. The canonical reference examples remain historical visual material.
+
+Controlled UI checks cover chooser selection and focus return, connected/multiple/absent/unchecked/attention file popup content, popup closure on project switch, independent saved results, failed-selection restoration, empty buffer and shared desktop row. Existing project, asset, title and geometry checks pass; production build passes. These are controlled DOM/source checks, not rendered browser or native Android proof. User next: add a second direct child release under a connected stage, Refresh list, select/Sync each, switch back and refresh the page to verify independent results and remembered selection. A new incomplete project should show Not checked until Sync, then its own missing files, without borrowing Gelato 41 checks.
+
+
 Current private integration slice · 10 October 2026. CJ approved the reviewed plan and implementation. Read AGENTS.md, dashboard/HANDOFF.md and Group 1 usage/specification before extending it.
 
 ## Implemented boundary
@@ -79,3 +90,6 @@ Fixtures and UI execution are controlled tests, not a real Drive discovery or re
 ## Deployment checkpoint
 
 Private deployment succeeded on 10 October 2026. Sites source SHA be0c5f9cc81b6dd2201895632519e7a3895eb504; saved version appgprj_6ac84c21e1fc819198906084958537b0~appgver_61a7d9d98d488191bbf45bab8112a9ca. Owner-private audience and existing environment revision 4 retained. Review route: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/checklist. No real stage folder links are configured by this coding task.
+
+
+Current private popup/empty-buffer deployment — 10 October 2026: source `8fc844e184e2d657741b1b3694d120f5d9ca67d5`, version `appgprj_6ac84c21e1fc819198906084958537b0~appgver_01d3a713b0b081919ac38b5358156a91`, deployment `appgdep_6aca4aeb84248191836bd982fae1c303` succeeded. Google configuration/environment revision 4 retained. Refreshed chooser/file-popup Android appearance and independent real second-project checks remain unverified.

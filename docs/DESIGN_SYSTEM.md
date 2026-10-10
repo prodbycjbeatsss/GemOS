@@ -93,3 +93,6 @@ Current 10 October checklist amendment: eight checks in four two-column rows; Sh
 
 
 10 October project selector: checklist-local Check release control lives outside the card, immediately above 1.2. Both desktop card slots share the row below it; mobile order is Buffer, selector, Checklist. Use existing Inter, 12px controls, 44px targets, restrained blue supporting text and visible focus. Collapsible connections keep stage setup off the normal dashboard. Selection preserves other cards’ scope.
+
+
+10 October current live integration: release picker and small connected-file dialog reuse Group 1 blue/navy modal tokens, 32px shell radius, 20/24px insets, Inter/Poppins and 44px Close/choice targets. All eight file tiles are now native buttons; this supersedes earlier informational-only tile guidance for the private integration. Clickability preserves tile dimensions/order and shared pair geometry. Release buffer uses a truthful unconnected empty state, without examples or a fabricated numerical coverage count. Native dialog keyboard behaviour is implemented; rendered/mobile verification remains pending.
