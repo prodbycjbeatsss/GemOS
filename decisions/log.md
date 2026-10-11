@@ -477,3 +477,8 @@ Current docs now replace prior conflicting active rules: eight checks including 
 ## 10 October 2026 — automatic scan on project change
 
 CJ approved automatic Sync after changing the checklist project. Successful selection triggers one fresh drive-scan with existing read permission; busy serialization prevents competing selections. Failed selection never scans; failed scan retains selected-project saved results with stale wording. Manual Sync remains for subsequent file changes; no auto approval/move or other-card selection change.
+
+
+## 11 October 2026 — Payhip 3.1, preview policy and compact navigation
+
+CJ confirmed beats-only launch, existing Standard £20/Premium £40/Exclusive £150 licences and tagged streaming previews rather than a free downloadable MP3. Store created by user report; products still to add. Authorised refined Payhip card as /commerce plus shared group picker and smaller connection/link setup areas. Existing green material and revenue/period/recess/footer anatomy retained. No fabricated sales; current unavailable/setup state. Monthly target saved only on this browser. Live Payhip source and order/refund reconciliation remain next; 3.2/3.3 unreviewed. Compact YouTube setup collapses after saved connection restores, with nested sample/release inputs; Drive setup logic retained. Existing APIs/scopes/selection/capture behaviour unchanged. Controlled UI/regression/nesting and production build passed; rendered device review pending.

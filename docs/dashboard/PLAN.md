@@ -27,6 +27,6 @@ Updated 10 October 2026. This tracks work; current contracts live in group specs
 
 No new project selection on other cards; no fake coverage; no automatic publication; no credential values in source/docs. Update current docs alongside behaviour. Discuss genuinely unsettled product choices; accepted instructions persist across turns. Confirmations inside Prepare release are the concrete user approval for that project's move, not a separate assistant deployment gate.
 
-## Next design review recommendation
+## Group 3 — current slice
 
-Recommend reviewing Group 3 next, retaining Group 1/2 external-connection and real-source checks in the verification backlog. This is a recommendation, not approval of Group 3 designs. Repo feasibility notes describe Payhip revenue (3.1) and Email list (3.2); reviewed Group 3 visuals/specs are not present. No further broad Group 1/2 visual polish is needed before the next review.
+11 October: CJ approved refining Payhip 3.1, shared navigation and compact setup panels. Implemented /commerce with existing Standard/Premium/Exclusive tiers, unavailable sales/setup state, period controls, browser-local target and sales popup. Store exists by user report; products, store URL and real sales connection remain next. Original includes 3.2 Email List and 3.3 YouTube AdSense; review those next without repeating Group 1/2 polish. New controlled interactions/regressions and build pass; rendered device check remains pending.

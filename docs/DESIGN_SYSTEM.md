@@ -1,6 +1,6 @@
 # GemOs dashboard card design system
 
-Updated 10 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
+Updated 11 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
 
 Read this first, then the relevant group specification. Confirmed group-specific choices take precedence over general proposals. The audit is advisory. Unreviewed groups must be discussed before implementation.
 
@@ -84,3 +84,9 @@ The private test now consumes shared semantic tokens for both cards' gradient, g
 [Group 1 components](dashboard/group-1/COMPONENTS.md) define purpose/anatomy/states/content/accessibility/responsiveness. Reuse blue/navy modal shell, 32px radius, responsive 20/24px insets, static initial-heading focus, 85dvh scroll boundary and reachable sticky Close. File popup centres category icon/status/filename(s)/minimal text links; editable preparation fields align labels left for scanning. Preparation shows outstanding categories and Shorts review, rather than every passed filename. Buffer empty state centres a quiet calendar icon without invented counts or FAQ filler.
 
 Four status states use symbols with accessible wording: ✓ Pass, × Missing, ! Needs attention, - Not checked. Missing/error/stale/unconnected are different meanings. Buttons/links have 44px targets and focus outlines. Semantic tokens own fields, supporting text, links and sections; existing historical card CSS still contains scoped geometry overrides. Consolidation does not claim every legacy style is fully tokenised or measured WCAG compliance.
+
+## Group 3.1 and shared shell — 11 October
+
+Approved green Payhip identity: 155deg #065f46 / #044e39 at42% / #022c22; green beam #34d399 at .75/.18/transparent with existing shared geometry/materials. Current 3.1 is one desktop half-width slot, min590px with accessible growth, 32px card/22px recess/20px mobile and24px desktop insets. Match shared 58px glyph and12px label gap. Three tier rows replace MP3/WAV labels. See Group3 spec/components for states and connection limits. This does not approve 3.2/3.3 palettes or a three-card grid.
+
+Shared header: three native links, Release/Performance/Sales, aria-current,44px targets,12px link text,16px shell radius and12px active-link radius;960px maximum, desktop inline and phone stacked. Compact native details/summary for setup;14px controls/12px help text/44px targets. Saved YouTube restore collapses its setup. Existing Drive-open-if-unconfigured behaviour stays. No change to existing card internal dimensions or colours.

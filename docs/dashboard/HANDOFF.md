@@ -1,6 +1,6 @@
 # GemOS dashboard — current handoff
 
-Updated 10 October 2026. Start with AGENTS.md and [dashboard index](README.md). Current docs are consolidated; archived checkpoint notes and preview mocks are historical. Read [PROJECTS](integration-tests/youtube/PROJECTS.md), [ASSETS](integration-tests/youtube/ASSETS.md), Group 1 [specification](group-1/SPECIFICATION.md)/[usage](group-1/USAGE-AND-CONNECTIONS.md)/[components](group-1/COMPONENTS.md) and [design system](../DESIGN_SYSTEM.md) before extending the checklist.
+Updated 11 October 2026. Start with AGENTS.md and [dashboard index](README.md). Current docs are consolidated; archived checkpoint notes and preview mocks are historical. Read [PROJECTS](integration-tests/youtube/PROJECTS.md), [ASSETS](integration-tests/youtube/ASSETS.md), Group 1 [specification](group-1/SPECIFICATION.md)/[usage](group-1/USAGE-AND-CONNECTIONS.md)/[components](group-1/COMPONENTS.md) and [design system](../DESIGN_SYSTEM.md) before extending the checklist.
 
 ## Current Group 1
 
@@ -26,4 +26,16 @@ Latest automatic-sync slice privately deployed 10 October 2026: source 5a39a88b1
 
 ## Automatic selection sync — 10 October 2026
 
-CJ requested automatic scanning whenever the selected project changes. Implemented after successful selection; no new permission, background watcher or other-card scope change. Manual Sync remains. Selection failure does not scan; scan failure keeps that selected project and labels its saved result stale. Controlled UI tests cover these paths; build passed. Group 3 next-review recommendation remains a proposal; original Group 3 visuals have not been located in the checkout.
+CJ requested automatic scanning whenever the selected project changes. Implemented after successful selection; no new permission, background watcher or other-card scope change. Manual Sync remains. Selection failure does not scan; scan failure keeps that selected project and labels its saved result stale. Controlled UI tests cover these paths; build passed. Group 3.1 is now approved and implemented as a setup/layout slice; see Group 3 below.
+
+
+## Group 3.1 and compact dashboard navigation — 11 October 2026
+
+CJ supplied original-card-mock-up.html with Payhip, Email List and YouTube AdSense references. Approved refining 3.1, adding /commerce and compact shared 1 Release / 2 Performance / 3 Sales navigation. Existing licence documentation governs Standard £20, Premium £40, Exclusive £150. Beats only initially; tagged streaming preview replaces the proposed free downloadable MP3. Never promise ripping is commercially unusable.
+
+CJ reports store created, products not added. Payhip data is not connected: current card uses unavailable revenues/quantities and an Add your first beat setup prompt. Functional period/target/sales-dialog controls; target is browser-local. Read group-3/SPECIFICATION.md, USAGE-AND-CONNECTIONS.md and COMPONENTS.md. Add one beat/product set and provide store URL before the sales-source slice. 3.2/3.3 are still pending review.
+
+YouTube setup collapses after successful saved connection restore; sample/release inputs live in compact expandable panels. Drive retains its existing unconfigured-open behaviour. Existing saved connections, API scopes and independent selections are preserved. Controlled new controls/regressions/nesting and production build pass; fresh Android/desktop visual verification remains pending. Publication checkpoint is recorded below.
+
+
+Latest sales/navigation slice privately deployed 11 October 2026: source d0a91d337d16c16733de6c65a63e017343966294, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_071a65d030c881918d42b983ece5b89b, deployment appgdep_6acb8f043abc81918597502c3bb138fc succeeded. Existing owner-only audience and environment revision 4 retained. Payhip sales are unconnected; live source and rendered device verification remain pending.

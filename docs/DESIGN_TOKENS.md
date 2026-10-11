@@ -67,3 +67,9 @@ Project selector: 12px-radius panel/control, panel inset 12px/16px, 8px control 
 | Form fields |14px input text;12px labels;44px controls; left-aligned labels |
 
 These extend the accepted palette and material. Group 2 tokens are unchanged. Current Group 1 forms and dialogs consume semantic roles; historical card geometry overrides remain. No direct links on tiles. Detailed component/state contracts live in dashboard/group-1/COMPONENTS.md.
+
+## Group 3.1 / dashboard shell tokens — 11 October
+
+--g3-gradient:155deg #065f46/#044e39 at42%/#022c22; --g3-muted:#d1fae5; --g3-card-radius:32px; --g3-recess-radius:22px; --g3-card-inset:20px/24px; --g3-recess-fill:black .28. Card/recess shadows retain shared reference materials.
+
+--shell-bg:#0f172a; --shell-text:#f8fafc; --shell-muted:#cbd5e1; --shell-border:white .15; --shell-fill:white .03; --shell-selected:white .08; --shell-focus:#7dd3fc; --shell-radius:16px; --shell-control:44px. Source shared ui/dashboard.css is consumed on all three routes.

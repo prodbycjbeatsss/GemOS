@@ -29,3 +29,7 @@
 - Custom licensing agreements drafted based on standard BeatStars contract structures.
 - Canonical contract Markdown/PDF templates stored in `references/contracts/` for automated delivery attach
 ment.
+
+## Current setup and preview policy — 11 October 2026
+
+CJ reports Payhip store created; products still to add. Begin with beats only; sample/drum kits deferred until release automation frees time. Retain Standard/Premium/Exclusive tiers above, with no separate paid MP3 tier. Offer a tagged embedded streaming preview; no free downloadable MP3 product in this launch. Streaming does not prevent recording or ripping. Products/orders and automatic file/licence delivery remain unverified. The storefront exists by user report, not a verified GemOS connection.

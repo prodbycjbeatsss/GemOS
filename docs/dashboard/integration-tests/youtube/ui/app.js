@@ -84,6 +84,7 @@
       showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
       await restoreRelease();
+      const setupPanel = document.getElementById('youtube-setup'); if (setupPanel) setupPanel.open = false;
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
