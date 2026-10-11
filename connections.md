@@ -10,7 +10,7 @@ Updated 11 October 2026. Separate application integrations from tools available 
 | TikTok / Instagram | Intended short-form analytics and scheduling sources | Real API access, coverage and confirmations not verified. |
 | Scheduling / publication | No authoritative release/platform scheduling connection chosen | Needed for real Buffer coverage, publication and Released moves. Queue placement is not scheduling. |
 | Notion | Wider catalogue candidate / previously reported setup | Not selected as authority for current D1 project/review store; no new Notion import established. |
-| Payhip | Private account-owned key/target setup and prospective paid/refunded ingestion implemented; separate receiver public with CJ’s approval; dashboard private | Store link supplied by CJ; products, Payhip webhook setup and real event verification pending. Saved credential alone is not verification. See PAYHIP. |
+| Payhip | Private account-owned key/target setup and prospective paid/refunded ingestion implemented; separate receiver public with CJ’s approval; dashboard private | First £0 coupon provider notification verified; prospective reporting/mapping/test exclusions implemented. Repeat checkout needed for variation identity; paid processing/refund/fulfilment remain unverified. See PAYHIP. |
 | PayPal | No direct GemOS integration | Payhip may process payment methods; this is not a separate verified payment connection. |
 | Calendar / Gmail | Wider planning/communication candidates | No current GemOS connection test; external sending requires explicit authorisation. |
 

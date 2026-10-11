@@ -22,3 +22,10 @@ export const payhipSettings = sqliteTable("payhip_settings", {
 export const payhipEvents = sqliteTable("payhip_events", {
  userId: text("user_id").notNull(), eventHash: text("event_hash").notNull(), transactionId: text("transaction_id").notNull(), type: text("type").notNull(), currency: text("currency").notNull(), price: integer("price").notNull(), refunded: integer("refunded").notNull(), occurredAt: integer("occurred_at").notNull(), receivedAt: integer("received_at").notNull(), items: text("items_json").notNull()
 }, table => [primaryKey({ columns: [table.userId, table.eventHash] })]);
+
+export const payhipMappings = sqliteTable("payhip_mappings", {
+ userId: text("user_id").notNull(), optionKey: text("option_key").notNull(), tier: text("tier").notNull(), updatedAt: integer("updated_at").notNull()
+}, table => [primaryKey({ columns: [table.userId, table.optionKey] })]);
+export const payhipExclusions = sqliteTable("payhip_exclusions", {
+ userId: text("user_id").notNull(), transactionId: text("transaction_id").notNull(), updatedAt: integer("updated_at").notNull()
+}, table => [primaryKey({ columns: [table.userId, table.transactionId] })]);

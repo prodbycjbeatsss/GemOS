@@ -1,3 +1,4 @@
+import {salesReport, observedOptions} from './payhip-report.mjs';
 const headers = {'Content-Type':'application/json', 'Cache-Control':'no-store', 'X-Content-Type-Options':'nosniff'};
 const json = (data, status=200) => new Response(JSON.stringify(data), {status,headers});
 class SafeError extends Error { constructor(message,status=400){super(message);this.status=status;} }
@@ -29,7 +30,11 @@ function normalise(p){
  const amount=p.type==='refunded'?p.amount_refunded:0, date=p.type==='paid'?p.date:p.date_refunded;
  if(!Number.isSafeInteger(p.price)||p.price<0||p.price>100000000||!Number.isSafeInteger(amount)||amount<0||amount>p.price||!Number.isSafeInteger(date)||date<0||date>Date.now()/1000+300)throw new SafeError('Invalid amounts or date.',422);
  if(!Array.isArray(p.items)||p.items.length<1||p.items.length>100)throw new SafeError('Invalid items.',422);
- const items=p.items.map(i=>{const id=String(i.product_id??'');const quantity=Number(i.quantity);if(!/^[a-zA-Z0-9_-]{1,128}$/.test(id)||!Number.isSafeInteger(quantity)||quantity<1||quantity>10000)throw new SafeError('Invalid item.',422);return {productId:id,quantity};}).sort((a,b)=>a.productId.localeCompare(b.productId));
+ const items=p.items.map(i=>{const id=String(i.product_id??'');const quantity=Number(i.quantity);if(!/^[a-zA-Z0-9_-]{1,128}$/.test(id)||!Number.isSafeInteger(quantity)||quantity<1||quantity>10000)throw new SafeError('Invalid item.',422);const text=(v,n=256)=>typeof v==='string'&&v.length<=n?v.trim():null;
+ const variantId=typeof i.variant_id==='number'&&Number.isSafeInteger(i.variant_id)?String(i.variant_id):text(i.variant_id,128);
+ const variantName=text(i.variant_name);
+ if(variantId&&!/^[a-zA-Z0-9_-]{1,128}$/.test(variantId))throw new SafeError('Invalid variation.',422);
+ return {productId:id,quantity,hasVariant:typeof i.has_variant==='boolean'?i.has_variant:null,variantId:variantId||null,variantName:variantName||null,productName:text(i.product_name)};}).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
  return {id:p.id,type:p.type,currency:p.currency,price:p.price,refunded:amount,date,items};
 }
 export async function payhipHandler(request,env,action){
@@ -50,6 +55,31 @@ export async function payhipHandler(request,env,action){
    return json({accepted:true});
   }
   const owner=request.headers.get('oai-authenticated-user-id');if(!owner)throw new SafeError('Sign in to this private page first.',401);
+  if(['report','mapping','exclude'].includes(action)){
+   if(action==='report'&&request.method!=='GET'||action!=='report'&&request.method!=='POST')throw new SafeError('Method not allowed.',405);
+   if(request.method==='POST'&&request.headers.get('Origin')!==new URL(request.url).origin)throw new SafeError('Request origin does not match this page.',403);
+   const events=(await env.DB.prepare('SELECT * FROM payhip_events WHERE user_id=? ORDER BY received_at LIMIT 10001').bind(owner).all()).results;
+   if(events.length>10000)throw new SafeError('Order history needs a paged import before reporting can continue.',503);
+   const mappings=(await env.DB.prepare('SELECT option_key,tier FROM payhip_mappings WHERE user_id=?').bind(owner).all()).results;
+   const exclusions=(await env.DB.prepare('SELECT transaction_id FROM payhip_exclusions WHERE user_id=?').bind(owner).all()).results;
+   if(action==='mapping'){
+    const v=await body(request);if(Object.keys(v).some(k=>!['optionKey','tier'].includes(k))||typeof v.optionKey!=='string'||!['standard','premium','exclusive',null].includes(v.tier))throw new SafeError('Choose a licence tier.');
+    if(!observedOptions(events).some(o=>o.key===v.optionKey))throw new SafeError('This licence option has not been received.',422);
+    if(v.tier===null)await env.DB.prepare('DELETE FROM payhip_mappings WHERE user_id=? AND option_key=?').bind(owner,v.optionKey).run();
+    else await env.DB.prepare('INSERT INTO payhip_mappings (user_id,option_key,tier,updated_at) VALUES (?,?,?,?) ON CONFLICT(user_id,option_key) DO UPDATE SET tier=excluded.tier,updated_at=excluded.updated_at').bind(owner,v.optionKey,v.tier,Date.now()).run();
+    return json({saved:true});
+   }
+   if(action==='exclude'){
+    const v=await body(request);if(Object.keys(v).some(k=>!['transactionId','excluded'].includes(k))||typeof v.transactionId!=='string'||typeof v.excluded!=='boolean'||!events.some(e=>e.transaction_id===v.transactionId))throw new SafeError('Choose a received order.');
+    if(v.excluded)await env.DB.prepare('INSERT INTO payhip_exclusions (user_id,transaction_id,updated_at) VALUES (?,?,?) ON CONFLICT(user_id,transaction_id) DO UPDATE SET updated_at=excluded.updated_at').bind(owner,v.transactionId,Date.now()).run();
+    else await env.DB.prepare('DELETE FROM payhip_exclusions WHERE user_id=? AND transaction_id=?').bind(owner,v.transactionId).run();
+    return json({saved:true});
+   }
+   const query=new URL(request.url).searchParams,year=Number(query.get('year')),month=query.get('month')===null?null:Number(query.get('month'));
+   const current=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric'}).format(new Date()));
+   if(!Number.isInteger(year)||year<2000||year>current||month!==null&&(!Number.isInteger(month)||month<1||month>12))throw new SafeError('Choose a valid period.');
+   return json(salesReport(events,mappings,exclusions,year,month,publicSettings(await record(env,owner),env)));
+  }
   if(action!=='settings')throw new SafeError('Not found.',404);
   if(request.method==='GET')return json(publicSettings(await record(env,owner),env));
   if(request.method!=='POST')throw new SafeError('Method not allowed.',405);

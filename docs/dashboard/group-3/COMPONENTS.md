@@ -2,7 +2,7 @@
 
 11 October 2026. Current implementation: integration-tests/youtube/ui/commerce.html and commerce.js; shared shell: ui/dashboard.css.
 
-Payhip card: green spotlight shell, centred glyph/identity, quiet target control, period pager, recessed tier list, single footer. Unconnected state uses dashes/explicit unavailable wording and a centred setup prompt. Loaded/comparison/error/refund states depend on the future source integration; do not present them as completed.
+Payhip card: green spotlight shell, centred glyph/identity, quiet target control, period pager, recessed tier list, single footer. Unconnected state uses dashes/explicit unavailable wording and a centred setup prompt. Loaded/empty/attention/error states now use received notifications; refunds are separate in View sales. Previous-period comparison is deferred.
 
 Period pager: real buttons with dynamic Month/Year labels, 44px targets, future-next disabled. Target: private server-saved account setting, form validation, save/failure feedback. View sales: native dialog, static heading focus and focus return; filename/file-link patterns are unrelated to this order popup.
 
@@ -15,4 +15,6 @@ Shared shell styles are embedded in HTML at build time from one ui/dashboard.css
 
 11 October recovery: direct CSS imports into route handlers caused the framework to wrap GET as a React component and produce live500 responses. Removed those imports and the unused CSS route. Prebuild syncs CSS into HTML. verify-compiled-pages.mjs executes the compiled checklist/commerce handlers, verifies200/401 and scans all three handlers for accidental React wrapping. Source-only tests were insufficient.
 
-Payhip connection panel sits above the card and shares compact shell details/summary, 14px fields/buttons, 12px help, 44px controls and explicit feedback. Password input clears after success; saved connection never reveals its credential. Webhook URL/status distinguish prepared from enabled. Connection and target errors retain the last successful state.
+Payhip connection panel sits above the card and shares compact shell details/summary, 14px fields/buttons, 12px help, 44px controls and explicit feedback. Password input clears after success; saved connection never reveals its credential. Webhook URL/status distinguish prepared from enabled. Connection and target errors retain the last successful state. Selected-period report loading/failure clears displayed totals so old periods cannot masquerade as current.
+
+Received-option dropdowns sit inside compact setup with44px controls and explicit save/error feedback. View sales uses real text-rendered order rows, coverage notes and reversible test exclusion; no customer information. Mapped tiers, unallocated amounts, free checkouts and refunds are different meanings. Stale request generations cannot replace newer period results. Controlled SQLite/accounting/UI tests are not proof of real provider variation capture or rendered layout.
