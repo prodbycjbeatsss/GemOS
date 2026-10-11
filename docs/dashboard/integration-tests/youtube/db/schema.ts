@@ -15,3 +15,10 @@ export const snapshots = sqliteTable("youtube_view_snapshots", {
 export const captureRuns = sqliteTable("youtube_capture_runs", {
  id: text("id").primaryKey(), startedAt: integer("started_at").notNull(), finishedAt: integer("finished_at").notNull(), captured: integer("captured").notNull(), outcome: text("outcome").notNull()
 });
+
+export const payhipSettings = sqliteTable("payhip_settings", {
+ userId: text("user_id").primaryKey(), connectionId: text("connection_id").notNull().unique(), signature: text("signature_ciphertext"), target: integer("monthly_target"), updatedAt: integer("updated_at").notNull(), verifiedAt: integer("verified_at")
+});
+export const payhipEvents = sqliteTable("payhip_events", {
+ userId: text("user_id").notNull(), eventHash: text("event_hash").notNull(), transactionId: text("transaction_id").notNull(), type: text("type").notNull(), currency: text("currency").notNull(), price: integer("price").notNull(), refunded: integer("refunded").notNull(), occurredAt: integer("occurred_at").notNull(), receivedAt: integer("received_at").notNull(), items: text("items_json").notNull()
+}, table => [primaryKey({ columns: [table.userId, table.eventHash] })]);

@@ -1,8 +1,30 @@
 (() => {
   const $ = id => document.getElementById(id);
   const now = new Date(); let date = new Date(now.getFullYear(), now.getMonth(), 1), mode = 'month', target = null;
-  const key = 'gemos-payhip-monthly-target-v1';
-  try { const value = Number(localStorage.getItem(key)); if (Number.isInteger(value) && value >= 1 && value <= 1000000) target = value; } catch {}
+
+  async function api(method='GET', value) {
+    const response=await fetch('/api/payhip/settings',{method,credentials:'same-origin',headers:method==='POST'?{'Content-Type':'application/json'}:{},body:value===undefined?undefined:JSON.stringify(value)});
+    let result;try{result=await response.json();}catch{throw Error('Could not load Payhip settings. Refresh and try again.');}
+    if(!response.ok)throw Error(result.error||'Could not save Payhip settings.');return result;
+  }
+  function applySettings(value){
+    target=value.monthlyTarget;
+    $('payhip-status').textContent=value.keySaved?(value.verifiedAt?'Notification verified · '+new Date(value.verifiedAt).toLocaleString('en-GB',{timeZone:'Europe/London'}):'Key saved · awaiting a verified Payhip notification'):'No Payhip key saved yet';
+    $('payhip-key').placeholder=value.keySaved?'Saved · enter a replacement only if needed':'Paste your Payhip API key';
+    $('payhip-webhook').hidden=!value.webhookUrl;$('payhip-webhook-url').value=value.webhookUrl||'';
+    $('payhip-copy').disabled=!value.receiverEnabled;
+    $('payhip-webhook-help').textContent=value.receiverEnabled?'Paste this URL into Payhip Settings → Developer, then select paid and refunded.':'The separate receiver is prepared but not publicly enabled yet. Do not add this URL to Payhip until enabled.';
+    $('commerce-context').textContent='Group 3 · Beat sales · '+(value.verifiedAt?'Notifications verified · licence mapping pending':value.keySaved?'Connection saved · verification pending':'Payhip data not connected');
+    $('payhip-setup').open=!value.keySaved;render();
+  }
+  $('payhip-form').addEventListener('submit',async e=>{
+    e.preventDefault();const input=$('payhip-key'),key=input.value.trim();
+    if(!key){$('payhip-feedback').textContent='Enter a key to save or replace the connection.';return;}
+    $('payhip-save').disabled=true;$('payhip-feedback').textContent='Saving connection…';
+    try{applySettings(await api('POST',{apiKey:key}));input.value='';$('payhip-setup').open=true;$('payhip-feedback').textContent='Saved privately. Verification happens when a valid Payhip notification arrives.';}
+    catch(error){$('payhip-feedback').textContent=error.message;}finally{$('payhip-save').disabled=false;}
+  });
+  $('payhip-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('payhip-webhook-url').value);$('payhip-feedback').textContent='Webhook URL copied.';}catch{$('payhip-feedback').textContent='Select the webhook URL and copy it manually.';}});
   const money = value => new Intl.NumberFormat('en-GB', {style:'currency', currency:'GBP', maximumFractionDigits:0}).format(value);
   function render() {
     const current = date.getFullYear() === now.getFullYear() && (mode === 'year' || date.getMonth() === now.getMonth());
@@ -20,6 +42,12 @@
   $('sales-close').addEventListener('click',()=>$('sales-dialog').close());
   $('target-open').addEventListener('click',e=>{$('target-amount').value=target || ''; $('target-feedback').textContent='';dialog('target-dialog','target-title',e.currentTarget);});
   $('target-close').addEventListener('click',()=>$('target-dialog').close());
-  $('target-form').addEventListener('submit',e=>{e.preventDefault();const value=Number($('target-amount').value);if(!Number.isInteger(value)||value<1||value>1000000)return;try{localStorage.setItem(key,String(value));target=value;render();$('target-dialog').close();}catch{$('target-feedback').textContent='Could not save the target on this browser. Try again.';}});
+  $('target-form').addEventListener('submit',async e=>{
+    e.preventDefault();const value=Number($('target-amount').value);if(!Number.isInteger(value)||value<1||value>1000000)return;
+    const submit=$('target-save');submit.disabled=true;$('target-feedback').textContent='Saving target…';
+    try{applySettings(await api('POST',{monthlyTarget:value}));$('target-dialog').close();}
+    catch(error){$('target-feedback').textContent=error.message;}finally{submit.disabled=false;}
+  });
   render();
+  api().then(applySettings).catch(error=>{$('payhip-status').textContent=error.message;$('payhip-setup').open=true;});
 })();

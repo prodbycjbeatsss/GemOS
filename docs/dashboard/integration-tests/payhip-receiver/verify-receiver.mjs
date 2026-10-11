@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import receiver from './worker/index.js';
+const env={DASHBOARD_SERVICE_TOKEN:'service-secret',PAYHIP_RELAY_SECRET:'relay-secret',DASHBOARD_ORIGIN:'https://dashboard.example'};
+const url='https://receiver.example/webhook/'+'a'.repeat(64);let called=0;
+globalThis.fetch=async (target,options)=>{called++;assert.equal(String(target),'https://dashboard.example/api/payhip/ingest');assert.equal(options.headers['OAI-Sites-Authorization'],'Bearer service-secret');assert.equal(options.headers['X-GemOS-Relay'],'relay-secret');assert.equal(options.headers['X-GemOS-Connection'],'a'.repeat(64));assert.equal(options.redirect,'error');return new Response('private',{status:200});};
+assert.equal((await receiver.fetch(new Request('https://receiver.example/'),env)).status,404);
+assert.equal((await receiver.fetch(new Request(url),env)).status,405);
+assert.equal((await receiver.fetch(new Request(url,{method:'POST',body:'{}'}),env)).status,415);
+assert.equal((await receiver.fetch(new Request(url,{method:'POST',headers:{'Content-Type':'application/json'},body:'x'.repeat(32769)}),env)).status,413);assert.equal(called,0);
+let r=await receiver.fetch(new Request(url,{method:'POST',headers:{'Content-Type':'application/json','oai-authenticated-user-id':'attacker','X-GemOS-Connection':'attacker'},body:'{}'}),env);assert.equal(r.status,200);assert.equal(await r.text(),'Accepted');
+globalThis.fetch=async()=>new Response('secret error',{status:401});r=await receiver.fetch(new Request(url,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}),env);assert.equal(r.status,401);assert.equal(await r.text(),'Not accepted');
+globalThis.fetch=async()=>{throw Error('internal error')};assert.equal((await receiver.fetch(new Request(url,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}),env)).status,503);
+console.log(JSON.stringify({passed:true,checks:['POST-only bounded JSON','fixed private destination/auth headers','caller identity not forwarded','no private response/secret leakage','non-200 retries on failed forwarding']}));

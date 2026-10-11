@@ -492,3 +492,7 @@ CJ requested fixing the screenshot's unstyled group links and reported white Sal
 ## 11 October — recover CSS-induced page-handler500
 
 CJ reported pages stopped loading after shared-style repair. Live logs confirmed500. Direct rawCSS imports caused framework GET exports to be wrapped as React components. Move shared CSS embedding to npm prebuild, restore HTML-only runtime imports and remove unused CSS route. Preserve compact segmented navigation/dark canvas. Compiled checklist/commerce handlers200/401 plus all-page no-React-wrapper checks now cover the regression missed by source mocks. Recovery deployment succeeded; fresh signed-in device acceptance pending.
+
+### 11 October 2026 — Private Payhip connection and separate receiver
+
+CJ authorised API-key form and top-of-page placement. Implement account-owned server-saved connection/target; original API key is not retained, only encrypted static SHA256 verification credential. Separate notification receiver forwards to owner-private dashboard with service auth and relay secret. Receiver remains owner-private until explicit public-audience approval, as required by Sites access tool. Saved key and verified event are separate states; unmapped sales stay unavailable. No guessed licence allocation, historical backfill or fee/tax treatment. Overrides earlier browser-only target/no-credentials/store-link-not-supplied decisions. Details: docs/dashboard/integration-tests/youtube/PAYHIP.md.

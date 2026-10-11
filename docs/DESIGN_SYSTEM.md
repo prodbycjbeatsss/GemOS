@@ -95,3 +95,5 @@ Shared-shell delivery: scripts/sync-dashboard-styles.mjs embeds the same source 
 
 
 11 October recovery: direct CSS imports into route handlers caused the framework to wrap GET as a React component and produce live500 responses. Removed those imports and the unused CSS route. Prebuild syncs CSS into HTML. verify-compiled-pages.mjs executes the compiled checklist/commerce handlers, verifies200/401 and scans all three handlers for accidental React wrapping. Source-only tests were insufficient.
+
+Payhip setup uses the same compact shell panel above its card: native details, 12px labels/help,14px fields/actions,44px targets,12px field corners and explicit loading/save/error/verification state. Secret inputs are password-style and cleared after save; restored saved credentials are never displayed.

@@ -10,7 +10,7 @@ Header: 58px glyph, Payhip sales, revenue result, previous-period comparison whe
 
 The initial recess centres a store icon, Add your first beat and minimal Open Payhip link. The documented £20/£40/£150 values are labelled licence prices, not recorded sales. This setup state reflects CJ's report that the store is created and has no products. Product discovery is not implemented, so it cannot automatically notice newly added products yet.
 
-View sales opens a labelled green native dialog showing selected period, unavailable connection and current licence reference. Individual orders/refunds are future sourced content, not example records. Monthly target dialog accepts a positive whole GBP value up to £1,000,000; saved locally in this browser with honest storage failure. No default target or progress is invented. Target is monthly even when Year is selected.
+View sales opens a labelled green native dialog showing selected period, unavailable connection and current licence reference. Individual orders/refunds are future sourced content, not example records. Monthly target dialog accepts a positive whole GBP value up to £1,000,000; saved privately to the authenticated account on the server with honest save failure. No default target or progress is invented. Target is monthly even when Year is selected.
 
 ## Geometry and access
 
@@ -30,3 +30,7 @@ CJ supplied a screenshot with unstyled navigation and reported a white Sales pag
 
 
 11 October recovery: direct CSS imports into route handlers caused the framework to wrap GET as a React component and produce live500 responses. Removed those imports and the unused CSS route. Prebuild syncs CSS into HTML. verify-compiled-pages.mjs executes the compiled checklist/commerce handlers, verifies200/401 and scans all three handlers for accidental React wrapping. Source-only tests were insufficient.
+
+## Private Payhip setup — 11 October
+
+Above the card, the compact native details panel contains a labelled password API-key field, Save connection, saved/pending/verified status and minimal store link. Starts open without a saved key; restored saved settings collapse it. Successful manual save keeps feedback visible and clears the input. Prepared webhook URL is read-only; Copy is disabled until public receiver activation. No key/signature value is rendered. Monthly target now saves to the account, replacing the browser-only setting. Connection verification does not enable unmapped totals. See usage/PAYHIP for source boundaries.

@@ -1,6 +1,6 @@
 # Connections registry
 
-Updated 10 October 2026. Separate application integrations from tools available to an assistant. Older setup reports are in archives/dashboard; saved credentials alone do not prove source access.
+Updated 11 October 2026. Separate application integrations from tools available to an assistant. Older setup reports are in archives/dashboard; saved credentials alone do not prove source access.
 
 | System | Current application status | Evidence / next verification |
 |---|---|---|
@@ -10,7 +10,8 @@ Updated 10 October 2026. Separate application integrations from tools available 
 | TikTok / Instagram | Intended short-form analytics and scheduling sources | Real API access, coverage and confirmations not verified. |
 | Scheduling / publication | No authoritative release/platform scheduling connection chosen | Needed for real Buffer coverage, publication and Released moves. Queue placement is not scheduling. |
 | Notion | Wider catalogue candidate / previously reported setup | Not selected as authority for current D1 project/review store; no new Notion import established. |
-| Payhip / PayPal | Future sales/payment integration | Event ingestion and authorisation unverified. |
+| Payhip | Private account-owned key/target setup and prospective paid/refunded ingestion implemented; separate receiver deployed privately pending public approval | Store link supplied by CJ; products, receiver public activation and real event verification pending. Saved credential alone is not verification. See PAYHIP. |
+| PayPal | No direct GemOS integration | Payhip may process payment methods; this is not a separate verified payment connection. |
 | Calendar / Gmail | Wider planning/communication candidates | No current GemOS connection test; external sending requires explicit authorisation. |
 
 Activepieces remains an optional workflow-engine candidate. Five-minute Google Cloud Scheduler currently calls the protected YouTube capture endpoint; it does not move folders, discover releases or publish content.

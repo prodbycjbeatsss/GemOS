@@ -15,6 +15,13 @@
       "when": 1791568075540,
       "tag": "0001_breezy_the_professor",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791736877626,
+      "tag": "0002_cheerful_psynapse",
+      "breakpoints": true
     }
   ]
 }

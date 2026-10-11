@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import { DatabaseSync } from 'node:sqlite';
+import {readFileSync} from 'node:fs';
+import {payhipHandler} from './server/payhip.mjs';
+const db=new DatabaseSync(':memory:');db.exec(readFileSync('drizzle/0002_cheerful_psynapse.sql','utf8').replaceAll('--> statement-breakpoint',''));
+class Statement{constructor(sql){this.sql=sql;this.values=[];}bind(...values){this.values=values;return this;}async first(){return db.prepare(this.sql).get(...this.values)??null;}async run(){return db.prepare(this.sql).run(...this.values);}}
+const env={DB:{prepare:sql=>new Statement(sql),batch:async statements=>{db.exec('BEGIN');try{const results=[];for(const s of statements)results.push(await s.run());db.exec('COMMIT');return results;}catch(e){db.exec('ROLLBACK');throw e;}}},PAYHIP_TOKEN_KEY:'a'.repeat(64),PAYHIP_RELAY_SECRET:'test-relay',PAYHIP_RECEIVER_URL:'https://receiver.example',PAYHIP_RECEIVER_ENABLED:'false'};
+const apiKey='test-payhip-secret';const base='https://dashboard.example';
+async function request(method='GET',value,owner='owner-a',origin=base,action='settings',extra={}){return payhipHandler(new Request(base+'/api/payhip/'+action,{method,headers:{...(owner?{'oai-authenticated-user-id':owner}:{}),Origin:origin,'Content-Type':'application/json',...extra},body:value===undefined?undefined:typeof value==='string'?value:JSON.stringify(value)}),env,action);}
+assert.equal((await request('GET',undefined,null)).status,401);
+assert.equal((await request('POST',{apiKey},'owner-a','https://evil.example')).status,403);
+assert.equal((await request('POST',{apiKey:'short'})).status,400);
+assert.equal((await request('POST','{')).status,400);
+assert.equal((await request('POST','x'.repeat(32769))).status,413);
+let response=await request('POST',{apiKey});assert.equal(response.status,200);let settings=await response.json();assert.equal(settings.keySaved,true);assert.equal(settings.verifiedAt,null);assert.equal(settings.receiverEnabled,false);assert.ok(settings.webhookUrl.startsWith('https://receiver.example/webhook/'));
+assert.equal(JSON.stringify(settings).includes(apiKey),false);assert.equal(JSON.stringify(db.prepare('SELECT * FROM payhip_settings').get()).includes(apiKey),false);
+assert.equal((await (await request('GET',undefined,'owner-b')).json()).keySaved,false);
+assert.equal((await request('POST',{monthlyTarget:0})).status,400);
+assert.equal((await request('POST',{monthlyTarget:120})).status,200);settings=await (await request()).json();assert.equal(settings.monthlyTarget,120);assert.equal(settings.keySaved,true);
+const signature=Buffer.from(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(apiKey))).toString('hex');const date=Math.floor(Date.now()/1000)-60;
+const payload={id:'tx1',type:'paid',currency:'GBP',price:2000,date,signature,items:[{product_id:'123',quantity:'1'}],email:'should-not-store@example.com',ip_address:'should-not-store'};
+const relayHeaders={'X-GemOS-Relay':env.PAYHIP_RELAY_SECRET,'X-GemOS-Connection':settings.webhookUrl.split('/').at(-1)};
+const ingest=(p,extras=relayHeaders)=>request('POST',p,null,base,'ingest',extras);
+assert.equal((await ingest(payload,{})).status,401);assert.equal((await ingest({...payload,signature:'b'.repeat(64)})).status,401);assert.equal((await ingest({...payload,price:-1})).status,422);
+assert.equal((await ingest(payload)).status,200);assert.equal((await ingest(payload)).status,200);assert.equal(db.prepare('SELECT count(*) AS n FROM payhip_events').get().n,1);
+assert.ok((await (await request()).json()).verifiedAt);assert.equal((await (await request('GET',undefined,'owner-b')).json()).verifiedAt,null);
+const refund={...payload,type:'refunded',amount_refunded:500,date_refunded:date+20,date_created:date};assert.equal((await ingest(refund)).status,200);assert.equal((await ingest(refund)).status,200);assert.equal(db.prepare('SELECT count(*) AS n FROM payhip_events').get().n,2);
+assert.equal((await ingest({...refund,amount_refunded:3000})).status,422);
+assert.equal(JSON.stringify(db.prepare('SELECT * FROM payhip_events').all()).includes('should-not-store'),false);
+await request('POST',{apiKey:'replacement-secret'});assert.equal((await (await request()).json()).verifiedAt,null);assert.equal((await ingest(payload)).status,401);assert.equal((await (await request()).json()).monthlyTarget,120);
+console.log(JSON.stringify({passed:true,checks:['real SQL persistence and owner isolation','no key/signature disclosure','same-origin and bounded JSON validation','saved is distinct from verified','signature and relay checks','duplicate paid/refund retries','minimal stored order fields','key replacement resets verification and retains target'],livePayhipEventVerified:false}));
