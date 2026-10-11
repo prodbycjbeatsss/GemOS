@@ -10,7 +10,7 @@ No key → key saved / verification pending → verified notification received. 
 
 ## Receiver boundary
 
-Separate Worker-only Site: appgprj_6acbbc2f41248191b75e25df0d4762c5, expected origin https://gemos-payhip-receiver.prodbycjbeatsss.chatgpt.site. Initially owner-private pending explicit approval to make this receiver publicly reachable. Dashboard remains owner-private. Do not give Payhip the URL until the receiver is public and PAYHIP_RECEIVER_ENABLED is true. UI shows pending state and disables Copy URL meanwhile.
+Separate Worker-only Site: appgprj_6acbbc2f41248191b75e25df0d4762c5, expected origin https://gemos-payhip-receiver.prodbycjbeatsss.chatgpt.site. CJ approved public receiver access on11 October; receiver is now public and PAYHIP_RECEIVER_ENABLED=true. Dashboard remains owner-private. Copy URL is enabled for saved connections; Payhip Developer webhook setup and real notification verification remain user steps.
 
 POST /webhook/{connection_id} accepts bounded JSON, forwards only to the configured dashboard origin, adds its Sites service token and independent relay secret, follows no redirects, and never forwards caller identity headers. It exposes no dashboard, sales read endpoint or order data. Do not log payloads, signatures, credentials or full webhook URLs. Public traffic can trigger validation requests; traffic throttling/provider controls should be reviewed before public activation.
 
@@ -26,8 +26,10 @@ Configure with native Sites environment tools; preserve Google values and owner-
 
 ## Next slice and evidence
 
-After receiver approval/activation, CJ saves their key in Sales → Payhip connection & settings, copies the enabled URL to Payhip Developer settings and enables paid/refunded. Verify a real notification before marking connection verified. Then map real product/variation IDs to Standard/Premium/Exclusive, agree refund/fee/tax reporting and multi-item allocation. Do not infer licence tier from title/price. Official payload lacks per-item revenue in its example; avoid fabricated multi-item allocations.
+Receiver is activated. CJ saves their key in Sales → Payhip connection & settings, copies the enabled URL to Payhip Developer settings and enables paid/refunded. Verify a real notification before marking connection verified. Then map real product/variation IDs to Standard/Premium/Exclusive, agree refund/fee/tax reporting and multi-item allocation. Do not infer licence tier from title/price. Official payload lacks per-item revenue in its example; avoid fabricated multi-item allocations.
 
 Controlled verification: verify-payhip.mjs uses actual SQLite migration and D1 adapter for persistence, owner isolation, bounded bodies, CSRF, key replacement, signature/relay rejection and paid/refund retry dedup; verify-commerce.cjs covers saved settings, clear-key, reload, target failure and setup order; receiver verify-receiver.mjs covers fixed forwarding/auth, body bounds, protected response data and retry failures. Production build and verify-compiled-pages.mjs guard against prior CSS route wrapping. These are controlled tests, not a real Payhip event or rendered device proof.
 
 Primary source: https://help.payhip.com/article/115-webhooks (checked11 October2026).
+
+11 October activation: CJ approved public receiver access. Dashboard existing version redeployed with runtime revision6; sole-owner access retained. Live forwarding initially returned503 because the Worker runtime rejects redirect:error. Replaced it with redirect:manual, rejecting redirects without following or exposing the service credential; added controlled redirect rejection. Initial generic Python user-agent requests hit edge403/1010; Mozilla-agent HTTP checks reach the app. Real Payhip sender/event still needs verification.

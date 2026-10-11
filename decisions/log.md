@@ -496,3 +496,7 @@ CJ reported pages stopped loading after shared-style repair. Live logs confirmed
 ### 11 October 2026 — Private Payhip connection and separate receiver
 
 CJ authorised API-key form and top-of-page placement. Implement account-owned server-saved connection/target; original API key is not retained, only encrypted static SHA256 verification credential. Separate notification receiver forwards to owner-private dashboard with service auth and relay secret. Receiver remains owner-private until explicit public-audience approval, as required by Sites access tool. Saved key and verified event are separate states; unmapped sales stay unavailable. No guessed licence allocation, historical backfill or fee/tax treatment. Overrides earlier browser-only target/no-credentials/store-link-not-supplied decisions. Details: docs/dashboard/integration-tests/youtube/PAYHIP.md.
+
+### 11 October 2026 — Activate Payhip receiver
+
+CJ explicitly approved making only the dedicated notification receiver public. Updated receiver audience to public and deployed dashboard runtime revision6 with PAYHIP_RECEIVER_ENABLED=true. Dashboard audience remains sole-owner custom with zero external visitors. Next user steps: save key, copy webhook URL into Payhip Developer settings, enable paid/refunded and verify an actual notification. No mapped revenue/source verification implied by activation.
