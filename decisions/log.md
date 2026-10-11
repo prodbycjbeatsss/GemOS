@@ -516,3 +516,14 @@ CJ authorised capture→explicit mapping→sales reporting after the free test. 
 ### 11 October 2026 — Exclusive Payhip option verified
 
 CJ completed a second100%-coupon checkout using Exclusive Rights. Payhip delivered WAV and stems by user report; GemOS received the real Exclusive Rights option, saved its explicit Exclusive mapping and restored that selection after page refresh. The checkout remains a free checkout and does not increase paid revenue or quantity. Standard/Premium post-update capture and mapping, genuine paid/refund behaviour and licence contracts remain pending. Contracts will be handled as a separate legally focused task.
+
+
+## 2026-10-11 — Mailchimp for monthly newsletter
+
+**Decision:** CJ chose Mailchimp, starting on Free, for approximately one newsletter per month. Account creation reported complete23:14UK. Remove obsolete free-MP3/drum-kit acquisition breakdown from3.2; remaining card content is still a proposal.
+
+**Why:** Monthly sending and gradual audience growth make the free allowance suitable initially; native Payhip integration supports the storefront workflow.
+
+**Alternatives considered:** Kit, MailerLite, EmailOctopus and Brevo.
+
+**Owner:** Colin Jones. Audience/sender, Payhip connection and GemOS reporting access remain unverified. No sending authorised.
