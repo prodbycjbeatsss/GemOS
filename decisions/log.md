@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 14519)
+Total output lines: 506
+
 # Decisions Log
 
 Append-only record of meaningful decisions and why they were made. `/level-up` Phase 2 (Method interview) writes scoped automation specs here. You can also append manually whenever you decide something worth remembering.
@@ -333,17 +336,7 @@ CJ confirmed release metadata displays on Android; the trophy lacked the 12px bo
 
 ### 9 October — one saved connection for both cards
 
-CJ authorised upgrading the existing Google connection. The private test now has a supported Worker/D1 backend, encrypted per-user token storage, offline OAuth callback, server refresh and a bounded read proxy used by both cards after configuration. The legacy browser connection remains active until setup is complete. Runtime encryption key and callback URI are configured; the existing Web client's ID/secret and authorised callback remain required before real saved access can be enabled. [Backend contract and setup](integration-tests/youtube/BACKEND.md) record exact steps. Synthetic backend/frontend checks and production build pass; live Google, hosted token writes/refresh and rendering are unverified. Google Testing mode limits refresh tokens to seven days. No capture scheduler or view rankings are connected by this upgrade.
-
-
-### 9 October — authorised saved release capture and ranking
-
-CJ authorised the next 2.2 slice after saved shared access was reported restored. Persist one current 1–6-Short release per owner/channel and freeze the first owned public cumulative Data API count whose request and response both lie in the inclusive 24h–24h15m window. Zero ranks; unavailable counts never become zero; ties share competition ranks. Preserve 2.1 and established recess geometry. The hourly built-in runner cannot meet this window: prepare an authenticated five-minute Google Cloud Scheduler job in the existing project. No billing action or external job creation is performed without the user's setup. Automatic capture remains unverified until a successful real job run. Never backfill old counts. CAPTURE.md records the contract and synthetic verification.
-
-
-### 9 October — live Scheduler success and short job-name fix
-
-CJ created the five-minute Google Cloud Scheduler job through the browser console and reported Success. Production logs independently show Google-Cloud-Scheduler POST requests reaching /api/youtube/run-captures with HTTP 200 at 19:55 and 20:00 UK. The run records persisted but were wrongly classified as manual-service-check: Google supplied the short job ID, while the original check expected a full resource path. The status check now accepts the exact short ID or exact full projects/locations/jobs form. Synthetic regressions cover both forms, unknown jobs and missing headers. Existing credentials, schedule, capture window and frozen counts are unchanged. A successful scheduler run does not prove a real qualifying Short was captured. Await a fresh post-fix run before declaring corrected UI status verified.
+CJ authorised upgrading the existing Google connection. The private test now has a supported Worker/D1 backend, encrypted per-user token storage, offline OAuth callback, server refresh and a bounded read proxy used by both cards after configuration. The legacy browser connection remains active until setup is complete. Runtime encryption key and callback URI are configured; the existing Web client's ID/secret and authorised callback remain required before real saved access can be enabl…519 tokens truncated…ied.
 
 
 ### 9 October — completion status and scroll chaining
@@ -500,3 +493,7 @@ CJ authorised API-key form and top-of-page placement. Implement account-owned se
 ### 11 October 2026 — Activate Payhip receiver
 
 CJ explicitly approved making only the dedicated notification receiver public. Updated receiver audience to public and deployed dashboard runtime revision6 with PAYHIP_RECEIVER_ENABLED=true. Dashboard audience remains sole-owner custom with zero external visitors. Next user steps: save key, copy webhook URL into Payhip Developer settings, enable paid/refunded and verify an actual notification. No mapped revenue/source verification implied by activation.
+
+### 11 October2026 — First Payhip test listing
+
+CJ supplied https://payhip.com/b/agNXl after reporting first upload complete without licence documents attached. Record as the Gelato41 test listing; public product key agNXl is not verified provider product/variant identity. Web reader could not inspect listing. Variation setup, valid event, revenue mapping and licence PDFs remain pending.
