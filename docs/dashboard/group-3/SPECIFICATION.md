@@ -20,6 +20,10 @@ Native dialog max480px, viewport minus32px, max85dvh; static heading focus, Esca
 
 ## Shared navigation and setup
 
-All pages use top navigation: 1 Release (/checklist), 2 Performance (/), 3 Sales (/commerce). Native links support browser Back, keyboard and direct URLs; aria-current marks the current page. The header stacks on compact phones, with three equal-width 44px links. Existing route URLs and separate card selections are retained.
+All pages use top navigation: 1 Release (/checklist), 2 Performance (/), 3 Sales (/commerce). Native links support browser Back, keyboard and direct URLs; aria-current marks a visibly filled and bordered segment. The header stacks on compact phones, with three equal-width 48px links. Existing route URLs and separate card selections are retained.
 
 Compact expandable setup replaces the large Group 2 header area. YouTube setup starts open when disconnected and closes after a saved connection successfully restores. Sample and release inputs have separate expandable panels; Drive's existing stage setup retains its open-if-unconfigured logic. Connection fields/status/help remain reachable; no permission or backend behaviour changes.
+
+## Shared shell delivery fix — 11 October
+
+CJ supplied a screenshot with unstyled navigation and reported a white Sales page. Each authenticated page now injects the same source ui/dashboard.css directly into its HTML response instead of depending on a second stylesheet fetch. Dark navy canvas, text and colour-scheme are explicit on all pages. Selector uses48px bordered segments with distinct active fill/border, separated number badges and compact-width stacking. Setup/included panels share fill/border/radius. Test generated route responses, not only source presence; native rendered appearance remains pending.

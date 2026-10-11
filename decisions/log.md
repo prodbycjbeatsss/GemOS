@@ -482,3 +482,8 @@ CJ approved automatic Sync after changing the checklist project. Successful sele
 ## 11 October 2026 — Payhip 3.1, preview policy and compact navigation
 
 CJ confirmed beats-only launch, existing Standard £20/Premium £40/Exclusive £150 licences and tagged streaming previews rather than a free downloadable MP3. Store created by user report; products still to add. Authorised refined Payhip card as /commerce plus shared group picker and smaller connection/link setup areas. Existing green material and revenue/period/recess/footer anatomy retained. No fabricated sales; current unavailable/setup state. Monthly target saved only on this browser. Live Payhip source and order/refund reconciliation remain next; 3.2/3.3 unreviewed. Compact YouTube setup collapses after saved connection restores, with nested sample/release inputs; Drive setup logic retained. Existing APIs/scopes/selection/capture behaviour unchanged. Controlled UI/regression/nesting and production build passed; rendered device review pending.
+
+
+## 11 October 2026 — repair shared test-suite styling
+
+CJ requested fixing the screenshot's unstyled group links and reported white Sales canvas. Remove reliance on a secondary stylesheet request by injecting the one shared CSS source in all private page responses. Enforce dark navy canvas and matching setup panels; strengthen group links as bordered48px segments with explicit selected fill and accessible current-page semantics. Route-response CSS/auth checks, commerce/checklist/YouTube regressions and build pass; post-fix rendered acceptance pending. Card colours/data/permissions stay scoped.

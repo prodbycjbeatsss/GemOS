@@ -72,4 +72,6 @@ These extend the accepted palette and material. Group 2 tokens are unchanged. Cu
 
 --g3-gradient:155deg #065f46/#044e39 at42%/#022c22; --g3-muted:#d1fae5; --g3-card-radius:32px; --g3-recess-radius:22px; --g3-card-inset:20px/24px; --g3-recess-fill:black .28. Card/recess shadows retain shared reference materials.
 
---shell-bg:#0f172a; --shell-text:#f8fafc; --shell-muted:#cbd5e1; --shell-border:white .15; --shell-fill:white .03; --shell-selected:white .08; --shell-focus:#7dd3fc; --shell-radius:16px; --shell-control:44px. Source shared ui/dashboard.css is consumed on all three routes.
+--shell-bg:#0f172a; --shell-text:#f8fafc; --shell-muted:#cbd5e1; --shell-border:white .15; --shell-fill:white .03; --shell-selected:white .08; --shell-focus:#7dd3fc; --shell-radius:16px; --shell-control:44px. Source shared ui/dashboard.css is embedded in all three authenticated HTML responses.
+
+Shell navigation target:48px; compact labels12px/desktop13px; active border white .32/fill white .12; navigation background #02061780. All pages use --shell-bg for canvas with an explicit body rule, independent of legacy card theme CSS.

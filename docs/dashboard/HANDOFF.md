@@ -39,3 +39,10 @@ YouTube setup collapses after successful saved connection restore; sample/releas
 
 
 Latest sales/navigation slice privately deployed 11 October 2026: source d0a91d337d16c16733de6c65a63e017343966294, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_071a65d030c881918d42b983ece5b89b, deployment appgdep_6acb8f043abc81918597502c3bb138fc succeeded. Existing owner-only audience and environment revision 4 retained. Payhip sales are unconnected; live source and rendered device verification remain pending.
+
+## Shared test-suite shell repair — 11 October
+
+CJ's screenshot showed navigation styles absent; Sales background was reported white. Shared stylesheet is now embedded directly in each authenticated HTML response. All routes use dark navy, consistent compact panels and a clearly bordered/filled48px group selector. Authenticated generated-response checks, commerce/checklist/YouTube regressions and production build passed. Fresh Android/desktop rendering still needs checking; no supported browser QA. Deployed checkpoint is recorded below.
+
+
+Latest shell repair deployed 11 October: source 80c2d93bef7ffdf7e194e49bc3fcb71b8bf0dc0f, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_9c92fcb62bc88191bd2f5927e017c95d, deployment appgdep_6acba29254948191b72b42612a0c1a6b succeeded; owner-only access and environment revision4 retained. Generated HTML checks verify shared CSS delivery; real phone rendering remains pending.
