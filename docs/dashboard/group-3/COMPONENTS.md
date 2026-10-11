@@ -10,4 +10,7 @@ Group picker: shared semantic shell tokens, native route anchors, one aria-curre
 
 Validation: controlled commerce interactions, checklist/project UI and YouTube state regression checks, HTML section nesting and production build passed. Rendered phone/desktop review remains pending because supported browser capture is unavailable.
 
-Shared shell styles are injected by each private HTML route from one ui/dashboard.css source. This avoids the missing external styles shown in CJ's screenshot. verify-dashboard-shell.cjs checks full styles in all three successful authenticated responses, no external CSS dependency, unchanged unauthenticated401 and selected-nav semantics. Selector surfaces now have48px targets and explicit borders/active fill; all pages use dark navy.
+Shared shell styles are embedded in HTML at build time from one ui/dashboard.css source. This avoids the missing external styles shown in CJ's screenshot. verify-dashboard-shell.cjs checks full styles in all three successful authenticated responses, no external CSS dependency, unchanged unauthenticated401 and selected-nav semantics. Selector surfaces now have48px targets and explicit borders/active fill; all pages use dark navy.
+
+
+11 October recovery: direct CSS imports into route handlers caused the framework to wrap GET as a React component and produce live500 responses. Removed those imports and the unused CSS route. Prebuild syncs CSS into HTML. verify-compiled-pages.mjs executes the compiled checklist/commerce handlers, verifies200/401 and scans all three handlers for accidental React wrapping. Source-only tests were insufficient.

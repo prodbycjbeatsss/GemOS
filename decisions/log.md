@@ -487,3 +487,8 @@ CJ confirmed beats-only launch, existing Standard £20/Premium £40/Exclusive £
 ## 11 October 2026 — repair shared test-suite styling
 
 CJ requested fixing the screenshot's unstyled group links and reported white Sales canvas. Remove reliance on a secondary stylesheet request by injecting the one shared CSS source in all private page responses. Enforce dark navy canvas and matching setup panels; strengthen group links as bordered48px segments with explicit selected fill and accessible current-page semantics. Route-response CSS/auth checks, commerce/checklist/YouTube regressions and build pass; post-fix rendered acceptance pending. Card colours/data/permissions stay scoped.
+
+
+## 11 October — recover CSS-induced page-handler500
+
+CJ reported pages stopped loading after shared-style repair. Live logs confirmed500. Direct rawCSS imports caused framework GET exports to be wrapped as React components. Move shared CSS embedding to npm prebuild, restore HTML-only runtime imports and remove unused CSS route. Preserve compact segmented navigation/dark canvas. Compiled checklist/commerce handlers200/401 plus all-page no-React-wrapper checks now cover the regression missed by source mocks. Recovery deployment succeeded; fresh signed-in device acceptance pending.

@@ -46,3 +46,9 @@ CJ's screenshot showed navigation styles absent; Sales background was reported w
 
 
 Latest shell repair deployed 11 October: source 80c2d93bef7ffdf7e194e49bc3fcb71b8bf0dc0f, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_9c92fcb62bc88191bd2f5927e017c95d, deployment appgdep_6acba29254948191b72b42612a0c1a6b succeeded; owner-only access and environment revision4 retained. Generated HTML checks verify shared CSS delivery; real phone rendering remains pending.
+
+## Page-handler outage recovery — 11 October
+
+The prior shell repair deployment produced500 on / and /checklist, confirmed by live worker logs and CJ report. Cause: CSS raw imports into route.ts triggered framework React wrapping of GET. Removed runtime CSS imports and unused /dashboard.css route; npm prebuild runs scripts/sync-dashboard-styles.mjs to embed the shared CSS into each HTML document. Existing style/navigation choices retained. Source-only handler checks did not cover this build transformation; verify-compiled-pages.mjs now exercises compiled checklist/commerce200/401 responses and rejects React wrapping on all three page handlers. Build passed and recovery deployed; fresh signed-in phone appearance remains pending. This supersedes the runtime-injection approach above.
+
+Recovery deployment: source846ac66a1f70122df845b5e1e2c684ca32f7a477; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_86c4d7ce06b081918b886127cdd505d0; deployment appgdep_6acba4968e6481919d016bd942a81873 succeeded with environment revision4 and owner-only access retained.
