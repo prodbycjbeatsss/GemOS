@@ -9,3 +9,11 @@ Use the existing documented Standard £20 (untagged 24-bit WAV), Premium £40 (W
 Current source: verified prospective Payhip paid/refunded notifications, explicit licence mapping and reversible test exclusions. GBP amounts as reported, before fees/refunds with no tax adjustment; Europe/London periods. Headline reconciles to mapped licence tiers plus visible unallocated orders. Free checkouts never inflate paid counts. Refunds are separate; unclear partial/multiple refunds require attention. Historical imports, exclusive removal and fulfilment remain outside this slice. See [PAYHIP](../integration-tests/youtube/PAYHIP.md) for accounting and evidence boundaries.
 
 Top setup saves encrypted verification credential, target and observed-option mappings to the authenticated owner. The first old test event retains no variation; a new coupon checkout is needed for actual identity capture. New recognised fields are retained without guessing names/IDs from prices. Store product9630730 is verified by the received test; its three variation identities remain unverified. All settings/mappings/exclusions survive refresh/devices. 3.2/3.3 remain pending review.
+
+## 3.2 Email List — review in progress, 11 October
+
+CJ confirmed no email marketing provider is set up. Provider and signup source remain undecided; no implementation authorised yet. Original reference reviewed from supplied original-card-mock-up.html (Library file libfile_f96e4b5f1e7081918b02acce4e512709, lines998–1100); the handoff's upload/ path is not present in this repository.
+
+Remove the outdated Free Tagged MP3 / Drum Kit acquisition split as requested. Proposed content remains active subscribers (current snapshot, independent of period), period new confirmed sign-ups/unsubscribes and latest broadcast subject/status/date, with clicks only if supported. Welcome open rate and invented newsletter cycle should not carry forward by default. Existing shared green materials/typography/footer rules remain; geometry awaits content confirmation.
+
+Provider shortlist under discussion: MailerLite, Kit and EmailOctopus have documented native Payhip integrations; Brevo requires an additional integration route. Verify chosen-plan API reporting access with a real account before promising GemOS fields. Provider recommendation is not selection; no account creation, sending or connection work yet.
