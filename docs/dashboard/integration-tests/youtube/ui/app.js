@@ -447,7 +447,6 @@
   $('batch-details').addEventListener('click', () => openBatchDetails());
   $('batch-dialog-close').addEventListener('click', () => $('batch-dialog').close());
   $('batch-dialog').addEventListener('close', () => batchOpener?.focus());
-  $('batch-dialog').addEventListener('click', event => { if (event.target === $('batch-dialog')) { const b = $('batch-dialog').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('batch-dialog').close(); } });
   for (const id of ['batch-name-input','batch-videos','batch-confirm']) $(id).addEventListener('change', () => { rememberBatch(); batchReport = null; renderBatch(); batchStatus('Ready to import', 'Release selection changed. Import to load these Shorts.', 'Not synced'); });
   for (const id of ['batch-name-input','batch-videos']) $(id).addEventListener('input', rememberBatch);
   $('scheduler-download').addEventListener('click', async () => {

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {runInNewContext} from 'node:vm';
+const handlers={},dialog={open:true,closed:0,getBoundingClientRect:()=>({left:100,top:100,right:300,bottom:300}),addEventListener(k,f){handlers[k]=f;},close(){this.open=false;this.closed++;handlers.close();}};
+runInNewContext(readFileSync('ui/dialogs.js','utf8'),{document:{querySelectorAll:()=>[dialog]}});
+const e=(x,y,target=dialog)=>({clientX:x,clientY:y,target});
+handlers.pointerdown(e(150,150));handlers.click(e(150,150));assert.equal(dialog.closed,0,'Dialog padding stays open');
+handlers.pointerdown(e(50,50));handlers.click(e(50,50));assert.equal(dialog.closed,1,'Backdrop closes');dialog.open=true;
+handlers.pointerdown(e(150,150));handlers.click(e(50,50));assert.equal(dialog.closed,1,'Dragging out does not close');
+handlers.pointerdown(e(50,50));handlers.pointercancel();handlers.click(e(50,50));assert.equal(dialog.closed,1,'Cancelled gesture stays open');
+handlers.pointerdown(e(50,50,{}));handlers.click(e(50,50,{}));assert.equal(dialog.closed,1,'Child controls stay open');
+for(const name of ['index','checklist','commerce'])assert.match(readFileSync('ui/'+name+'.html','utf8'),/\/dialogs.js\?v=1/);
+console.log('All groups use shared backdrop dismissal; padding, children, cancelled touches and drags remain safe.');

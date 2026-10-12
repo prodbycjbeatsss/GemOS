@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
-import {earningsHandler,periodRange,reportRows,summary} from './server/earnings.mjs';
+import {earningsHandler,periodRange,reportRows,summary,splitVideos} from './server/earnings.mjs';
 import {seal,SCOPES,MONETARY_SCOPE,handle} from './server/youtube.mjs';
 assert.deepEqual(periodRange('2024','2','2026-10-12'),{start:'2024-02-01',end:'2024-02-29'});
 assert.deepEqual(periodRange('2026',null,'2026-10-12'),{start:'2026-01-01',end:'2026-10-12'});
@@ -38,7 +38,7 @@ assert.equal(replies.length,0);
 console.log('Earnings periods, truthful missing/zero, categories/reconciliation, private ownership, safe failures, video titles, revenue scope preservation and callback passed.');
 // Controlled UI: real script, provider responses, period races and literal titles.
 const {runInNewContext}=await import('node:vm');
-class Element{constructor(){this.textContent='';this.value='';this.children=[];this.dataset={};this.style={};this.listeners={};this.hidden=false;this.disabled=false;this.classList={add(){},remove(){}};}append(...n){this.children.push(...n);if(this.tag==='select'&&!this.value&&n[0])this.value=n[0].value;}replaceChildren(...n){this.children=n;}setAttribute(k,v){this[k]=v;}addEventListener(k,f){this.listeners[k]=f;}showModal(){this.open=true;}close(){this.open=false;this.listeners.close?.();}focus(){this.focused=true;}}
+class Element{constructor(){this.textContent='';this.value='';this.children=[];this.dataset={};this.style={};this.listeners={};this.hidden=false;this.disabled=false;this.classList={add(){},remove(){}};}querySelectorAll(){return this.children.filter(n=>n.tag==='button');}append(...n){this.children.push(...n);if(this.tag==='select'&&!this.value&&n[0])this.value=n[0].value;}replaceChildren(...n){this.children=n;}setAttribute(k,v){this[k]=v;}addEventListener(k,f){this.listeners[k]=f;}showModal(){this.open=true;}close(){this.open=false;this.listeners.close?.();}focus(){this.focused=true;}}
 const html=readFileSync('ui/commerce.html','utf8'),elements=new Map([...html.matchAll(/id="(earnings-[^"]+)"/g)].map(m=>[m[1],new Element()]));elements.get('earnings-channel').tag='select';
 const responses=[];
 let resolveOld;
@@ -54,3 +54,14 @@ console.log('Earnings UI loads real fixtures, clears stale amounts, rejects old-
 
 assert.equal(summary([{day:'2026-09-01',creatorContentType:'UNSPECIFIED',estimatedRevenue:2}]).categories.long,null,'Unknown classification must not masquerade as zero long-form revenue');
 assert.match(html,/--dashboard-card-compact:454px;--dashboard-card-large:920px/);assert.match(html,/row-gap:12px;column-gap:20px/);assert.match(html,/earnings-dock\{min-height:0;display:block\}/);
+
+const contentTypes=new Map([['longvideo01',new Set(['VIDEO_ON_DEMAND'])],['shortvid001',new Set(['SHORTS'])]]);
+assert.deepEqual(splitVideos([{video:'longvideo01',estimatedRevenue:18},{video:'shortvid001',estimatedRevenue:3.32}],contentTypes,21.32),{long:18,shorts:3.32,other:0});
+assert.throws(()=>splitVideos([{video:'longvideo01',estimatedRevenue:18}],contentTypes,21.32));
+assert.throws(()=>splitVideos([{video:'unknown0001',estimatedRevenue:21.32}],new Map(),21.32));
+console.log('Independent classification reconciles revenue and refuses incomplete or unclassified totals.');
+replies.push({body:{columnHeaders:[{name:'day'},{name:'creatorContentType'},{name:'estimatedRevenue'}],rows:[['2026-09-01','UNSPECIFIED',21.32]]}},{body:{columnHeaders:[{name:'video'},{name:'estimatedRevenue'}],rows:[['longvideo01',18],['shortvid001',3.32]]}},{body:{columnHeaders:[{name:'video'},{name:'creatorContentType'}],rows:[['longvideo01','VIDEO_ON_DEMAND'],['shortvid001','SHORTS']]}});
+const recovered=await earningsHandler(req('/api/earnings/report?year=2026&month=9&channel=UC_TEST'),env);assert.equal(recovered.status,200);assert.deepEqual((await recovered.json()).categories,{long:18,shorts:3.32,other:0});assert.equal(calls.at(-1).searchParams.get('metrics'),'views');assert.equal(calls.at(-1).searchParams.get('filters'),'video==longvideo01,shortvid001');
+const eleven=Array.from({length:11},(_,i)=>['v'+String(i).padStart(10,'0'),11-i]);replies.push({body:{columnHeaders:[{name:'video'},{name:'estimatedRevenue'}],rows:eleven}},{body:{items:eleven.slice(0,10).map(([id])=>({id,snippet:{title:id}}))}});
+const paginated=await earningsHandler(req('/api/earnings/videos?year=2026&channel=UC_TEST&offset=0'),env);const ten=await paginated.json();assert.equal(ten.videos.length,10);assert.equal(ten.nextOffset,10);assert.equal(ten.page,1);assert.equal(calls.at(-2).searchParams.get('maxResults'),'11');assert.equal(replies.length,0);
+console.log('Actual handler fallback joins reports and paginates ten rows with one-row lookahead.');
