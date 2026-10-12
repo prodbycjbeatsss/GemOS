@@ -5,7 +5,7 @@ Updated 10 October 2026. These values implement the accepted Group 2 design; the
 | Role / CSS token | Value |
 |---|---|
 | Surface / `--g2-surface` | 155° gradient: #4338ca 0%, #312e81 45%, #0f172a 100% |
-| Card / `--g2-card-radius`, `--g2-card-inset`, `--g2-card-height` | 32px; 20px mobile / 24px ≥640px; 880px normal minimum |
+| Card / `--g2-card-radius`, `--g2-card-inset`, `--g2-card-height` | 32px; 20px mobile / 24px ≥640px; 920px normal minimum |
 | Card border / `--g2-card-border` | White 0.16 |
 | Card shadow / `--g2-card-shadow` | Reviewed four-layer shadow in DESIGN_SYSTEM.md |
 | Recess / `--g2-recess-fill`, `--g2-recess-border` | Black 0.28; white 0.12 |
@@ -85,3 +85,10 @@ Shell navigation target:48px; compact labels12px/desktop13px; active border whit
 CJ authorised Group1 only. Both Release Buffer and Checklist now target920px Large; groupGeometry defaults to920 and uses shared largest header/recess/footer measurements, preserving two16px gaps and exact border-inclusive insets. Enlarged/long content can grow both together above920. CSS fallback slot920 and versioned checklist script; all eight centred checks and existing icon/title/material/footer/control/source rules retained. No fake Buffer content, new permissions or behaviour. Group2 source is unchanged in this slice; footer fix remains next.
 
 Geometry contract now checks920 minimum and exact920 typical state. Project UI,asset eligibility and production build pass. Compiled-page test initially selected JS route by reused marker, falsely treating document.createElement as a React wrapper; restrict discovery to HTML document routes, then genuine200/401/no-wrapper checks pass. No CSS route imports added. Fresh phone/desktop and enlarged-text rendering remain pending; existing device evidence does not prove new920 fit. Earlier512/532 minima are superseded for current Group1 integration.
+
+
+## Group2 Large/footer update — 12 October2026
+
+CJ authorised after accepting Group1 Large/even checklist rows. Group2 current normal card height920px replaces earlier880px geometry. Both cards retain174px shared headers,575/583px recess,360px leaderboard viewport and72px rows. Restore footer margin-top:auto to anchor controls at bottom;20px inner top padding and min64px footer reservation provide breathing room without moving the recess. Shared rule applies to both cards; metrics/range/platform/scopes/capture/sync behaviour unchanged. Earlier880px rendered checks are historical, not proof of current920 rendering.
+
+YouTube state/cache/selection and dashboard-shell regressions plus production build/compiled200/401 checks pass. Refreshed phone/desktop, long status/enlarged text still need acceptance; no supported browser QA available. Group1 user accepted latest rows; Group3 accepted prior spacing. No new permission, scheduler or publication logic.

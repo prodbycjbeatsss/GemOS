@@ -23,3 +23,10 @@ Both cards use `.sync-info` with 12px top inset, a heading and supporting paragr
 Loading must preserve correctly labelled previous values until replacement. Unavailable data must not become zero; missing snapshots must not become fabricated rankings. Empty, partial, error, cached and successful states retain the shared shell. Text enlargement/overflow can trigger recess reflow after updates, resize and font loading.
 
 Before accepting a visual change, compare both cards at 320, 390, 640, 840 and 1280px; check normal and enlarged text, long titles/statuses, padding, header positions, footer alignment, page/list swipes and focus. `verify.cjs` contains paired rendered-style/geometry assertions, but these were not run in the current environment. Source/state checks and a production build do not prove rendered appearance or contrast compliance.
+
+
+## Group2 Large/footer update — 12 October2026
+
+CJ authorised after accepting Group1 Large/even checklist rows. Group2 current normal card height920px replaces earlier880px geometry. Both cards retain174px shared headers,575/583px recess,360px leaderboard viewport and72px rows. Restore footer margin-top:auto to anchor controls at bottom;20px inner top padding and min64px footer reservation provide breathing room without moving the recess. Shared rule applies to both cards; metrics/range/platform/scopes/capture/sync behaviour unchanged. Earlier880px rendered checks are historical, not proof of current920 rendering.
+
+YouTube state/cache/selection and dashboard-shell regressions plus production build/compiled200/401 checks pass. Refreshed phone/desktop, long status/enlarged text still need acceptance; no supported browser QA available. Group1 user accepted latest rows; Group3 accepted prior spacing. No new permission, scheduler or publication logic.

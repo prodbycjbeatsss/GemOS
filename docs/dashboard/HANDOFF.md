@@ -138,3 +138,10 @@ Geometry contract now checks920 minimum and exact920 typical state. Project UI,a
 ## 12 October — evenly spaced checklist rows
 
 CJ accepted Group1 Large appearance, requested less empty checklist space. Checklist grid now fills recess height with four equal min88px rows; two columns/order/icons/text/status/buttons and6px gaps retained. Natural measurement uses height:auto/content rows to prevent stretched-height feedback; final grid stretches after group measurements. Buffer empty state unchanged. Geometry/UI/build/compiled route checks pass; new row rendering pending. Group2 untouched.
+
+
+## Group2 Large/footer update — 12 October2026
+
+CJ authorised after accepting Group1 Large/even checklist rows. Group2 current normal card height920px replaces earlier880px geometry. Both cards retain174px shared headers,575/583px recess,360px leaderboard viewport and72px rows. Restore footer margin-top:auto to anchor controls at bottom;20px inner top padding and min64px footer reservation provide breathing room without moving the recess. Shared rule applies to both cards; metrics/range/platform/scopes/capture/sync behaviour unchanged. Earlier880px rendered checks are historical, not proof of current920 rendering.
+
+YouTube state/cache/selection and dashboard-shell regressions plus production build/compiled200/401 checks pass. Refreshed phone/desktop, long status/enlarged text still need acceptance; no supported browser QA available. Group1 user accepted latest rows; Group3 accepted prior spacing. No new permission, scheduler or publication logic.

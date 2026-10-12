@@ -9,7 +9,7 @@ Updated 9 October 2026. Latest reviewed reference: [preview.html](preview.html).
 ## Group geometry and palette
 
 - Centred group capped at 960px, 20px gap; one column below 840px, two equal columns from 840px.
-- Equal fixed 880px card slots at normal viewing widths; these are current implementation values, not universal tokens for other groups.
+- Equal fixed 920px card slots at normal viewing widths; these are current implementation values, not universal tokens for other groups.
 - Insets 20px below 640px, 24px from 640px; 32px outer corners, 22px recess corners, 12px tile/chip corners. Shared 58px glyph and 12px gap to label.
 - Headers reserve at least 174px to align recessed panel tops. Panels: 575px below 640px, 583px from 640px, with shared 12/16px inner padding. Preserve each card's content layout.
 - Both cards use exactly the same purple: 155°, #4338ca 0%, #312e81 45%, #0f172a 100%. Retain the shared card/glyph/recess materials and indigo beam. The lighter numerical blue/purple match was rejected.
@@ -105,3 +105,10 @@ CJ accepts 2.2 implementation complete, with real first-release capture/display 
 ### 9 October — shared integration design contract
 
 CJ authorised repairing inconsistencies between the two test cards. Shared Group 2 tokens now govern gradient/materials, matching 12/16px recess insets, 174px header minimum, 58px icons with 12px gap, and common 24/30px headings (22px below 360px). Both use the same header anatomy and sync-status treatment; Inter/Poppins loading is explicit. Metrics and leaderboard content remain distinct. See DESIGN_TOKENS.md, group-2/COMPONENTS.md and the current integration STATUS. Source/state checks and build are separate from pending rendered Android/desktop verification. Canonical previews are unchanged; real first-release capture remains unverified.
+
+
+## Group2 Large/footer update — 12 October2026
+
+CJ authorised after accepting Group1 Large/even checklist rows. Group2 current normal card height920px replaces earlier880px geometry. Both cards retain174px shared headers,575/583px recess,360px leaderboard viewport and72px rows. Restore footer margin-top:auto to anchor controls at bottom;20px inner top padding and min64px footer reservation provide breathing room without moving the recess. Shared rule applies to both cards; metrics/range/platform/scopes/capture/sync behaviour unchanged. Earlier880px rendered checks are historical, not proof of current920 rendering.
+
+YouTube state/cache/selection and dashboard-shell regressions plus production build/compiled200/401 checks pass. Refreshed phone/desktop, long status/enlarged text still need acceptance; no supported browser QA available. Group1 user accepted latest rows; Group3 accepted prior spacing. No new permission, scheduler or publication logic.
