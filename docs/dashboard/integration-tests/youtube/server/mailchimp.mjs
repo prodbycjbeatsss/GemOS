@@ -40,6 +40,13 @@ export async function mailchimpHandler(request,env,action){try{
  const now=Date.now();await env.DB.prepare('INSERT INTO mailchimp_settings (user_id,key_ciphertext,audience_id,audience_name,verified_at) VALUES (?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET key_ciphertext=excluded.key_ciphertext,audience_id=excluded.audience_id,audience_name=excluded.audience_name,verified_at=excluded.verified_at').bind(owner,await crypt(key,env,owner),chosen.id,chosen.name,now).run();return json(settings({key_ciphertext:true,audience_id:chosen.id,audience_name:chosen.name,verified_at:now}));
  }
  if(request.method!=='GET')throw new SafeError('Method not allowed.',405);
+ if(action==='members'){
+ if(!row)throw new SafeError('Connect Mailchimp first.',409);
+ const offset=Number(new URL(request.url).searchParams.get('offset')||0);if(!Number.isInteger(offset)||offset<0||offset>100000)throw new SafeError('Invalid page.');
+ const key=await crypt(row.key_ciphertext,env,owner,true),id=encodeURIComponent(row.audience_id);
+ const data=await provider(key,'lists/'+id+'/members?status=subscribed&count=50&offset='+offset+'&sort_field=timestamp_signup&sort_dir=DESC&fields=members.email_address,members.timestamp_signup,members.timestamp_opt,members.status,members.source,total_items');
+ return json({members:(data.members||[]).map(m=>({email:m.email_address,signup:m.timestamp_signup||null,confirmed:m.timestamp_opt||null,status:m.status,source:m.source||null})),total:count(data.total_items),offset});
+ }
  if(action!=='report')throw new SafeError('Not found.',404);if(!row)throw new SafeError('Connect Mailchimp above to load your email list.',409);
  const month=new URL(request.url).searchParams.get('month');if(!/^20\d{2}-(0[1-9]|1[0-2])$/.test(month||'')||month>new Date().toISOString().slice(0,7))throw new SafeError('Choose a valid month.');
  const key=await crypt(row.key_ciphertext,env,owner,true),id=encodeURIComponent(row.audience_id);

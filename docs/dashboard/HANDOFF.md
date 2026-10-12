@@ -83,3 +83,10 @@ CJ screenshot proves Mailchimp setup used unstyled browser fields and oversized 
 ## 12 October11:30UK — Mailchimp transport failure
 
 User Save connection returned Mailchimp could not be reached. Live logs confirm POST /api/mailchimp/settings502 in30–42ms; settings reads200, no provider validation response. Suspected Worker redirect:error incompatibility; replace with redirect:manual and explicitly reject3xx without forwarding credentials. Controlled SQLite/provider fixture checks and build/compiled routes pass. No claim live key validated: user retry needed. Sourcea1138faa37e6104d595c6d44fb1560be5f9d2bd0. Preserve key, Payhip integration and runtime revision6.
+
+
+## 12 October — verified email source and focused details
+
+User screenshots confirm real Mailchimp2 active subscribers,1 monthly signup/0 unsubscribes and successful access after redirect repair. CJ requested removing small explanatory card/FAQ copy, improving newsletter spacing, subscriber emails/dates in details and Sync footers. Card now omits coverage paragraph and duplicate current-total/monthly-activity copy; newsletter has consistent12px gaps and centred envelope empty state. View details fetches authenticated selected-audience active members on open,50 per page with Load more, emails/signup dates/status/source (missing date explicit; no inferred history). Current active audience list is independent of monthly aggregate selection; no stored subscriber payloads. Newsletter empty and unavailable states use icon/centred copy; no FAQ filler. Both3.1/3.2 footer refresh actions use existing16px outline Sync glyph/44px text control; email busy disabled/spinner with reduced-motion support.
+
+Shared empty-state contract: centred34px outline category icon, concise title/supporting line,12px spacing; never fabricate counts/actions. Use within private details and empty recessed sections. Useful loaded data replaces this anatomy. Green material/shared typography maintained. Build/compiled route/private200/401,Mailchimp storage/reporting and Payhip commerce/shell checks pass; fresh rendered polish/member-list response pending. No sending enabled.
