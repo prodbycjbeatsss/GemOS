@@ -536,3 +536,12 @@ CJ completed a second100%-coupon checkout using Exclusive Rights. Payhip deliver
 **Why:** Monthly newsletter needs audience growth and campaign readiness without obsolete free-MP3/kit acquisition categories. Saved credentials do not prove fresh provider access. Daily activity coverage must not be confused with end-month subscribed balance.
 
 **Owner:** Colin Jones. Live GemOS Mailchimp access and rendered device checks pending.
+
+
+## 2026-10-12 — Compact/Large dashboard grid
+
+**Decision:** Compact430px,Large880px,20px gap; two Compact cards stack to one Large. Equal size within each group, sizes may differ across groups. Supersedes655px Medium and205px Small proposals. Finish/validate Group3 Compact first, review Group1 second without arbitrary880px stretching, preserve Group2 Large and then verify combined alignment.
+
+**Why:** Useful content needs more than205px; two exact sizes provide predictable composition without an unnecessary tier. Current Group1/3 geometry has not yet been migrated. Accessible growth remains an exception to normal-size alignment.
+
+**Owner:** Colin Jones.
