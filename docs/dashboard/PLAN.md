@@ -98,3 +98,14 @@ Private source b504ef5d7a7c9aba49f06e1e50b0fd45c6859ec8; deployment appgdep_6acc
 ## Locked dashboard spacing — 12 October 2026, 13:43 UK
 
 CJ accepted the measured dashboard mock-up and locked Compact454px, Large920px,12px vertical spacing within a group and20px between desktop columns. Two Compact cards plus their vertical gap exactly match a Large card:454+12+454=920. This supersedes Compact450px/20px vertical-gap and all earlier430px/880px proposals. Keep existing internal padding, materials, typography and accessible growth exceptions. At960px dashboard width, equal desktop columns are470px each with20px horizontal gap. Geometry decision is confirmed; current hosted source still uses450px/20px and has not yet adopted this change. YouTube earnings live connection, Studio comparison and rendered acceptance remain next; no additional content decision is required from CJ now.
+
+
+## 12 October 21:27 UK — earnings repair and Compact spacing delivery
+
+CJ confirms revenue connection succeeds and main figures load; Long/Shorts breakdown and top earner did not display. Production logs show /api/earnings/videos502 across selected months. Exact provider rejection body was unavailable; changing the video+creatorContentType ranking to the standard video-only estimatedRevenue report is a compatibility repair, not proof of the precise original rejection. Ranking now returns upload totals without guessing a content type; labels say Video until provider classification is available. Separate daily creatorContentType report still owns channel Long/Shorts breakdown. If all rows have unknown types, those category values stay unavailable rather than fabricated zero.
+
+The earnings recess uses a block content container with auto-height breakdown and explicit hidden-state rules instead of nested100%-height flex content, to avoid clipping. Versioned script refreshed. No revenue amounts or classifications invented. Live ranking and rendered breakdown remain pending user recheck.
+
+Locked geometry applied to Group3:Compact454px,12px row gap,20px column gap; Large920px unchanged. 454+12+454=920. Internal header/recess/footer geometry and20/24px insets unchanged. Group1/2 card slots remain920px; their existing mobile vertical20px grid gap has not yet been changed by this repair, so the full-dashboard spacing rule is only partially rolled out.
+
+Controlled earnings/backend/commerce fixtures and compiled private200/401/shell checks pass; production build succeeds. No supported browser capture, no successful owner-authenticated direct live revenue read in this session, and live provider success is not claimed by fixtures. Private source76992f4c8d9f33b3d5a664276c4709482c7b1af7/deployment appgdep_6acd4280bc4c81918d9d684a92919835 succeeded20:26UTC, envrevision6 preserved. Next: refresh Sales and Sync, inspect Long/Shorts rows and top earner; screenshot if still missing, then compare completed-month total to Studio.

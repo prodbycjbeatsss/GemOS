@@ -18,6 +18,7 @@ export function summary(rows){
  const categories={long:0,shorts:0,other:0},byDay=new Map();
  for(const r of rows){if(!/^\d{4}-\d{2}-\d{2}$/.test(r.day)||typeof r.creatorContentType!=='string')throw new RevenueError('YouTube returned invalid earnings categories.',502);const key=r.creatorContentType==='VIDEO_ON_DEMAND'?'long':r.creatorContentType==='SHORTS'?'shorts':'other';categories[key]+=r.estimatedRevenue;byDay.set(r.day,(byDay.get(r.day)||0)+r.estimatedRevenue);}
  const days=[...byDay].sort(([a],[b])=>a.localeCompare(b)).map(([date,amount])=>({date,amount}));
+ if(rows.length&&!rows.some(r=>['VIDEO_ON_DEMAND','SHORTS'].includes(r.creatorContentType))){categories.long=null;categories.shorts=null;}
  return {total:rows.length?days.reduce((s,d)=>s+d.amount,0):null,categories:rows.length?categories:null,days,reportedThrough:days.at(-1)?.date||null};
 }
 async function query(env,owner,channel,range,params){const u=new URL('https://youtubeanalytics.googleapis.com/v2/reports');u.search=new URLSearchParams({ids:'channel=='+channel,startDate:range.start,endDate:range.end,metrics:'estimatedRevenue',currency:'GBP',...params});return api(env,owner,u);}
@@ -32,11 +33,11 @@ export async function earningsHandler(request,env){
  const channels=JSON.parse(session.row.channels_json),channel=u.searchParams.get('channel');if(!channels.some(c=>c.id===channel))throw new RevenueError('Choose one of your connected YouTube channels.',403);
  const offset=+(u.searchParams.get('offset')||0);if(!Number.isInteger(offset)||offset<0||offset>10000)throw new RevenueError('Invalid ranking page.');
  if(u.pathname.endsWith('/videos')){
- const raw=await query(env,owner,channel,range,{dimensions:'video,creatorContentType',sort:'-estimatedRevenue',maxResults:'50',startIndex:String(offset+1)});
- const rows=reportRows(raw,['video','creatorContentType','estimatedRevenue']);if(rows.some(r=>! /^[\w-]{11}$/.test(r.video)))throw new RevenueError('YouTube returned an invalid video.',502);
+ const raw=await query(env,owner,channel,range,{dimensions:'video',sort:'-estimatedRevenue',maxResults:'50',startIndex:String(offset+1)});
+ const rows=reportRows(raw,['video','estimatedRevenue']);if(rows.some(r=>! /^[\w-]{11}$/.test(r.video)))throw new RevenueError('YouTube returned an invalid video.',502);
  let titles=new Map(),titlesAvailable=true;
  if(rows.length)try{const v=new URL('https://www.googleapis.com/youtube/v3/videos');v.search=new URLSearchParams({part:'snippet',id:[...new Set(rows.map(r=>r.video))].join(',')});const d=await api(env,owner,v);titles=new Map((d.items||[]).map(i=>[i.id,i.snippet?.title]));}catch{titlesAvailable=false;}
- return Response.json({videos:rows.map(r=>({id:r.video,type:r.creatorContentType,amount:r.estimatedRevenue,title:titles.get(r.video)||'Video title unavailable'})),offset,nextOffset:rows.length===50?offset+50:null,titlesAvailable}, {headers});
+ return Response.json({videos:rows.map(r=>({id:r.video,type:'UNSPECIFIED',amount:r.estimatedRevenue,title:titles.get(r.video)||'Video title unavailable'})),offset,nextOffset:rows.length===50?offset+50:null,titlesAvailable}, {headers});
  }
  if(!u.pathname.endsWith('/report'))throw new RevenueError('Not found.',404);
  const data=await query(env,owner,channel,range,{dimensions:'day,creatorContentType',sort:'day',maxResults:'2000'});
