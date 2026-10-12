@@ -133,3 +133,8 @@ Group2 source final rule targets920;174 header and575/583 recess/360 list viewpo
 CJ authorised Group1 only. Both Release Buffer and Checklist now target920px Large; groupGeometry defaults to920 and uses shared largest header/recess/footer measurements, preserving two16px gaps and exact border-inclusive insets. Enlarged/long content can grow both together above920. CSS fallback slot920 and versioned checklist script; all eight centred checks and existing icon/title/material/footer/control/source rules retained. No fake Buffer content, new permissions or behaviour. Group2 source is unchanged in this slice; footer fix remains next.
 
 Geometry contract now checks920 minimum and exact920 typical state. Project UI,asset eligibility and production build pass. Compiled-page test initially selected JS route by reused marker, falsely treating document.createElement as a React wrapper; restrict discovery to HTML document routes, then genuine200/401/no-wrapper checks pass. No CSS route imports added. Fresh phone/desktop and enlarged-text rendering remain pending; existing device evidence does not prove new920 fit. Earlier512/532 minima are superseded for current Group1 integration.
+
+
+## 12 October — evenly spaced checklist rows
+
+CJ accepted Group1 Large appearance, requested less empty checklist space. Checklist grid now fills recess height with four equal min88px rows; two columns/order/icons/text/status/buttons and6px gaps retained. Natural measurement uses height:auto/content rows to prevent stretched-height feedback; final grid stretches after group measurements. Buffer empty state unchanged. Geometry/UI/build/compiled route checks pass; new row rendering pending. Group2 untouched.
