@@ -31,8 +31,15 @@ No new project selection on other cards; no fake coverage; no automatic publicat
 
 11 October:3.1 green card, shared navigation/setup, private Payhip settings and server target are implemented. Receiver public activation was authorised/completed; first actual £0 coupon event verified. New slice implements whitelisted variation capture, observed-option mappings, prospective GBP month/year reporting, separate refunds and reversible test exclusions. Controlled SQLite/security/accounting/UI/race/build/compiled-route checks pass; native device review remains pending.
 
-Exclusive Rights was captured through a second £0 coupon checkout, mapped to Exclusive and confirmed persistent after refresh. Next: test and map Standard/Premium using post-update free coupon checkouts. First old event cannot be allocated retrospectively. Verify a genuine paid transaction/refund when appropriate; no money test is required now. Licence PDFs and per-variation delivery remain to prepare before paid launch. No historical import, currency conversion, mixed-cart allocation or exclusive removal. Review3.2 Email List and3.3 YouTube AdSense next without repeating Group1/2 cosmetic work.
+Exclusive Rights was captured through a second £0 coupon checkout, mapped to Exclusive and confirmed persistent after refresh. Standard/Premium capture and mapping persistence are now verified by CJ12 October. First old event cannot be allocated retrospectively. Verify a genuine paid transaction/refund when appropriate; no money test is required now. Licence PDFs and per-variation delivery remain to prepare before paid launch. No historical import, currency conversion, mixed-cart allocation or exclusive removal. Review3.2 Email List and3.3 YouTube AdSense next without repeating Group1/2 cosmetic work.
 
 ## Group 3.2 — provider confirmed, 11 October
 
 Mailchimp Free selected for one monthly newsletter; account created by CJ report. Next: audience/sender setup, Payhip connection and consented signup test, then confirm card content and validate actual API data before coding. Remove outdated free-MP3/drum-kit breakdown. No email sending authorised; 3.1 remaining checks and separate contracts task unchanged.
+
+
+## Verification update — 12 October 2026, 02:39 UK
+
+CJ completed post-update £0 Standard and Premium coupon checkouts. Screenshot shows the received Standard Lease option; CJ selected Standard and confirmed it survived refresh. Premium Lease appeared after page refresh; CJ mapped Premium and confirmed persistence. Together with Exclusive, all three real option captures and saved mappings are verified by user evidence. These free checkouts remain separate from paid counts/revenue; genuine payment/refund tests and contracts remain pending.
+
+CJ reports Mailchimp key created, Payhip mailing-list connection saved and Gelato41 linked to the audience. Earlier Mailchimp screenshot shows one subscribed contact. Standard checkout likely lacked newsletter consent and is not a signup failure test. Premium checkout was completed after explicit opt-in instructions; actual consent and subscriber arrival still need confirmation. Next: check Mailchimp for the Premium test email around02:47UK. No emails sent; GemOS Mailchimp API connection/card implementation remains pending.
