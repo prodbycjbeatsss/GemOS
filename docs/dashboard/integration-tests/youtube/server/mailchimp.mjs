@@ -8,7 +8,8 @@ async function crypt(value,env,owner,decode=false){
 }
 async function provider(key,path){
  const dc=key.split('-').at(-1);if(!/^us\d{1,3}$/.test(dc))throw new SafeError('Enter a valid Mailchimp API key.');
- let r;try{r=await fetch('https://'+dc+'.api.mailchimp.com/3.0/'+path,{headers:{Authorization:'Basic '+btoa('gemos:'+key)},redirect:'error',signal:AbortSignal.timeout(20000)});}catch{throw new SafeError('Mailchimp could not be reached. Try Refresh again.',502);}
+ let r;try{r=await fetch('https://'+dc+'.api.mailchimp.com/3.0/'+path,{headers:{Authorization:'Basic '+btoa('gemos:'+key)},redirect:'manual',signal:AbortSignal.timeout(20000)});}catch{throw new SafeError('Mailchimp could not be reached. Try Refresh again.',502);}
+ if(r.status>=300&&r.status<400)throw new SafeError('Mailchimp returned an unexpected redirect. Connection was not saved.',502);
  if(!r.ok)throw new SafeError(r.status===401?'Mailchimp access rejected. Replace the saved key.':r.status===403?'Your Mailchimp plan or permissions do not allow this report.':'Mailchimp report unavailable. Try again later.',r.status===401?401:502);
  try{return await r.json();}catch{throw new SafeError('Mailchimp returned an unreadable report.',502);}
 }
