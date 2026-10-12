@@ -150,3 +150,10 @@ YouTube state/cache/selection and dashboard-shell regressions plus production bu
 ## 12 October13:10UK — Group2 accepted / Group3 spacing refinement
 
 CJ accepts Group2 new Large/footer appearance. Reports Group3 cramped; explicitly chooses to retain450/920 rather than480/980. Current Group3 spacing uses146px centred header with12px glyph-label and4px subsequent text gaps,44px period/footer and12px between major tracks. Recess12px inset both cards; licence rows36px, no first-tier separator. Email activity tile spacing12px; newsletter section8px margin/inset and8px between populated fields. Empty newsletter hides duplicate Latest newsletter heading while centred icon/title remain; preserves useful loaded subject/status/date. No size/data/permission changes; Group1/2 untouched. Build/compiled200/401,commerce andMailchimp fixtures pass; new rendered spacing pending.
+
+
+## Visual acceptance and future Sync all — 12 October13:17UK
+
+CJ accepts current Groups1/2/3 appearance as visually consistent with the shared design system, with nothing visibly out of place in his review. Record as user visual acceptance, not measured universal accessibility or every-state verification. Current normal sizes Compact450px/Large920px/gap20px remain.
+
+After the combined dashboard is assembled, add a primary Sync all action at the top and make individual card Sync controls less prominent while retaining targeted retry/manual refresh. This is future approved direction, not implemented in this slice. Sync all refreshes connected data; it must not publish, schedule, approve or move releases. Show per-source outcomes/freshness and partial failures honestly; preserve existing independent selections. No change to current Sync controls now.
