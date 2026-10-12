@@ -78,3 +78,8 @@ Private deployment succeeded12 October01:49UTC; source9fca4a81d6c76174fbae4da957
 ## 12 October — Mailchimp setup styling repair
 
 CJ screenshot proves Mailchimp setup used unstyled browser fields and oversized text: setup selectors required .test-shell, absent on commerce page. Reuse existing commerce-help class for Mailchimp rather than mismatched setup scope; restores shared compact panel,12px supporting text/labels,14px full-width password input/button,44px controls and12px corners. Add missing Payhip summary badge markup (prior script had no element). Clarify separate GemOS key; Mailchimp only shows full keys at creation, leave Payhip key active. Build/commerce/shell/compiled200/401 checks pass; refreshed phone appearance pending. Source7287eaef046ce4054e2d453d16660fa2838f52f9.
+
+
+## 12 October11:30UK — Mailchimp transport failure
+
+User Save connection returned Mailchimp could not be reached. Live logs confirm POST /api/mailchimp/settings502 in30–42ms; settings reads200, no provider validation response. Suspected Worker redirect:error incompatibility; replace with redirect:manual and explicitly reject3xx without forwarding credentials. Controlled SQLite/provider fixture checks and build/compiled routes pass. No claim live key validated: user retry needed. Sourcea1138faa37e6104d595c6d44fb1560be5f9d2bd0. Preserve key, Payhip integration and runtime revision6.
