@@ -130,3 +130,10 @@ Overflow observers switch both desktop cards to shared growth tracks for long co
 CJ screenshot confirms cramped icon/title, off-centre newsletter icon, beam outside card and first-tier separator. Authorised slightly larger Compact/Large sizes and more footer separation. Current normal targets **Compact450px / Large920px / gap20px**, superseding430/880;450+20+450=920. Group3 centred identity reserves142px including12px glyph-label spacing; period/footer44px,8px track gaps, equal remaining recess. Card clips beam to32px corners again; overflow exceptions change content tracks rather than expose glow. Newsletter empty-state wrapper spans recess width and centres contents. First Standard row border removed explicitly (hidden sales-empty div meant first-of-type selector previously missed it). Recess-to-footer spacing increased. Group2 uses920px slot with extra footer separation; content/leaderboard viewport unchanged. Group1 remains awaiting review.
 
 Build/compiled200/401,commerce state and YouTube regression checks pass; refreshed screenshot/long-text/scaled rendering remains unverified. No backend/accounting/permissions changes. Preserve matched pair sizing and sensible accessible reflow.
+
+
+## Visual acceptance and future Sync all — 12 October13:17UK
+
+CJ accepts current Groups1/2/3 appearance as visually consistent with the shared design system, with nothing visibly out of place in his review. Record as user visual acceptance, not measured universal accessibility or every-state verification. Current normal sizes Compact450px/Large920px/gap20px remain.
+
+After the combined dashboard is assembled, add a primary Sync all action at the top and make individual card Sync controls less prominent while retaining targeted retry/manual refresh. This is future approved direction, not implemented in this slice. Sync all refreshes connected data; it must not publish, schedule, approve or move releases. Show per-source outcomes/freshness and partial failures honestly; preserve existing independent selections. No change to current Sync controls now.
