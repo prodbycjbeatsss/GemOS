@@ -224,7 +224,7 @@ import { groupGeometry } from '/checklist-layout.js';
         const style=getComputedStyle(card),rect=el=>el.getBoundingClientRect().height;
         return {header:rect(card.querySelector('.group-card-header')),recess:rect(card.querySelector('.recessed-dock')),footer:rect(card.querySelector('.group-card-footer')),insets:parseFloat(style.paddingTop)+parseFloat(style.paddingBottom)+parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth)};
       });
-      const dimensions=groupGeometry(measurements,innerWidth<360?532:512);
+      const dimensions=groupGeometry(measurements);
       for(const [key,value] of Object.entries(dimensions))grid.style.setProperty('--g1-'+(key==='slot'?'slot':key)+'-height',value+'px');
       grid.classList.remove('g1-measuring');layoutQueued=false;
     });

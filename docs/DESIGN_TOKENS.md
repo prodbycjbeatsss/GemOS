@@ -78,3 +78,10 @@ Shell navigation target:48px; compact labels12px/desktop13px; active border whit
 
 
 11 October recovery: direct CSS imports into route handlers caused the framework to wrap GET as a React component and produce live500 responses. Removed those imports and the unused CSS route. Prebuild syncs CSS into HTML. verify-compiled-pages.mjs executes the compiled checklist/commerce handlers, verifies200/401 and scans all three handlers for accidental React wrapping. Source-only tests were insufficient.
+
+
+## Group1 Large sizing — 12 October12:34UK
+
+CJ authorised Group1 only. Both Release Buffer and Checklist now target920px Large; groupGeometry defaults to920 and uses shared largest header/recess/footer measurements, preserving two16px gaps and exact border-inclusive insets. Enlarged/long content can grow both together above920. CSS fallback slot920 and versioned checklist script; all eight centred checks and existing icon/title/material/footer/control/source rules retained. No fake Buffer content, new permissions or behaviour. Group2 source is unchanged in this slice; footer fix remains next.
+
+Geometry contract now checks920 minimum and exact920 typical state. Project UI,asset eligibility and production build pass. Compiled-page test initially selected JS route by reused marker, falsely treating document.createElement as a React wrapper; restrict discovery to HTML document routes, then genuine200/401/no-wrapper checks pass. No CSS route imports added. Fresh phone/desktop and enlarged-text rendering remain pending; existing device evidence does not prove new920 fit. Earlier512/532 minima are superseded for current Group1 integration.

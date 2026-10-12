@@ -41,3 +41,10 @@ All use the existing blue/navy modal material, 32px shell, responsive insets, vi
 CJ reported the prior picker, file links and metadata UI working and supplied successful Gelato 41 4/8 scan screenshots. Controlled DOM/source tests cover state and focus logic; geometry tests cover paired measurements. The new preparation/move flow requires real Google consent, a complete test project, phone/desktop and local sync verification. No complete WCAG audit or universal layout guarantee is claimed.
 
 Project switching automatically starts a fresh scan after successful selection using existing read permission. Keep manual Sync for later file changes; display Checking during the scan and stale/error wording on failure. Failed selection does not scan.
+
+
+## Group1 Large sizing — 12 October12:34UK
+
+CJ authorised Group1 only. Both Release Buffer and Checklist now target920px Large; groupGeometry defaults to920 and uses shared largest header/recess/footer measurements, preserving two16px gaps and exact border-inclusive insets. Enlarged/long content can grow both together above920. CSS fallback slot920 and versioned checklist script; all eight centred checks and existing icon/title/material/footer/control/source rules retained. No fake Buffer content, new permissions or behaviour. Group2 source is unchanged in this slice; footer fix remains next.
+
+Geometry contract now checks920 minimum and exact920 typical state. Project UI,asset eligibility and production build pass. Compiled-page test initially selected JS route by reused marker, falsely treating document.createElement as a React wrapper; restrict discovery to HTML document routes, then genuine200/401/no-wrapper checks pass. No CSS route imports added. Fresh phone/desktop and enlarged-text rendering remain pending; existing device evidence does not prove new920 fit. Earlier512/532 minima are superseded for current Group1 integration.
