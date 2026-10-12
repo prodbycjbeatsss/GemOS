@@ -53,3 +53,8 @@ CJ reports Mailchimp key created, Payhip mailing-list connection saved and Gelat
 CJ confirmed: current Active subscribers headline; selected-month New sign-ups and Unsubscribes; latest newsletter subject, Draft/Scheduled/Sent status and date; single Refresh / View details footer. Detailed engagement belongs in View details. Remove free-MP3/drum-kit acquisition rows. Retain existing green Group3 material/shared typography/components; final geometry follows legitimate states. Current active total is independent of selected-month activity. Provider Mailchimp Free, monthly newsletter cadence.
 
 Next: inspect actual selected-audience API responses securely before wiring figures; verify subscribed-only count, monthly activity coverage and campaign dates/status (never label a draft creation date as a scheduled send). Empty No newsletter yet differs from unavailable. Missing fields stay unavailable, not zero. Documentation establishes candidate endpoints, not account access. Payhip opt-in test still awaits subscriber confirmation. No email sending or campaign scheduling is authorised by dashboard implementation.
+
+
+## Mailchimp signup verified — 12 October 2026, 02:41 UK
+
+CJ confirmed the new Premium-checkout test email appears as subscribed in Mailchimp. This verifies the user-observed Payhip → linked Mailchimp audience signup flow for this test. Supersedes earlier pending arrival wording. It does not establish GemOS API access, campaign sending, unsubscribe synchronisation or every consent scenario. Approved3.2 content is recorded above; next implementation slice is private Mailchimp connection and read-only audience/campaign reporting within the existing design system. Keep API keys out of chat/source/docs; no sending authorised.
