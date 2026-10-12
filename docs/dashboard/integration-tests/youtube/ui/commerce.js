@@ -82,11 +82,14 @@
     $('sales-state-copy').textContent=r.unallocated?money(r.unallocated/100)+' awaiting licence mapping':r.attention||r.refundAttention?'Open View sales to review unresolved orders.':r.freeOrders?r.freeOrders+' free checkouts · excluded from paid sales':'Only notifications received by GemOS are included.';
     for(const t of ['standard','premium','exclusive']){const v=r.tiers[t];$(t+'-revenue').textContent=money(v.revenue/100);$(t+'-revenue').setAttribute('aria-label',t+' received revenue '+money(v.revenue/100));$(t+'-quantity').textContent=v.quantity+' sold';$(t+'-quantity').setAttribute('aria-label',t+' quantity '+v.quantity);}
     $('sales-dialog-period').textContent=$('sales-period').textContent;
-    $('sales-summary').textContent=money(r.gross/100)+' received · '+r.paidOrders+' paid orders. '+money(r.unallocated/100)+' unallocated. '+money(r.refunds/100)+' confirmed refunds, shown separately. '+r.freeOrders+' free checkouts · '+r.excludedOrders+' excluded tests · '+r.attention+' orders and '+r.refundAttention+' refunds need attention.';
+    const summary=$('sales-summary');summary.replaceChildren();const amount=node('div',money(r.gross/100));amount.className='received-amount';const caption=node('p','Received before fees & refunds');caption.className='received-caption';summary.append(amount,caption);const stats=node('div');stats.className='sales-stat-grid';
+    for(const [label,value] of [['Paid orders',r.paidOrders],['Refunds',money(r.refunds/100)],['Free checkouts',r.freeOrders],['Excluded tests',r.excludedOrders]]){const tile=node('div');tile.className='sales-stat';tile.append(node('span',label),node('strong',String(value)));stats.append(tile);}summary.append(stats);
+    if(r.unallocated||r.attention||r.refundAttention)summary.append(node('p',money(r.unallocated/100)+' unallocated · '+(r.attention+r.refundAttention)+' need attention'));
     $('sales-coverage').textContent='GBP amounts as reported by Payhip, before fees; no tax adjustment is made. Europe/London periods. No historical import.'+(r.firstReceived?' First notification: '+formatDate(r.firstReceived)+'.':'');
     const list=$('sales-orders');list.replaceChildren();
-    if(!r.orders.length)list.append(node('p','No notifications for this period.'));
-    for(const order of r.orders){const entry=node('div');entry.className='order-entry';entry.append(node('strong',order.state+(order.tier?' · '+order.tier:'')),node('p',formatDate(order.date)+' · '+order.currency+' '+(order.amount===null?'Amount unavailable':(order.amount/100).toFixed(2))));
+    if(!r.orders.length){const empty=node('div');empty.className='email-empty';empty.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3zM9 7h6m-6 4h6"/></svg>';empty.append(node('strong','No orders yet'),node('p','Received orders will appear here for this period.'));list.append(empty);}
+    for(const order of r.orders){const entry=node('div');entry.className='order-entry';entry.append(node('strong',order.state+(order.tier?' · '+order.tier:'')),node('p',formatDate(order.date)));
+      const price=node('p',order.amount===null?'Amount unavailable':order.currency==='GBP'?money(order.amount/100):order.currency+' '+(order.amount/100).toFixed(2));price.className='order-price';entry.append(price);
       for(const i of order.items)entry.append(node('p',i.productName+' · '+(i.variantName||i.variantId||'Licence option unavailable')+' × '+i.quantity));
       if(order.refund!==null)entry.append(node('p','Reported refund: '+order.currency+' '+(order.refund/100).toFixed(2)));
       const button=node('button',order.excluded?'Include order':'Exclude test order');button.type='button';
@@ -100,6 +103,11 @@
     catch(e){if(id===generation)unavailable(e.message);}finally{if(id===generation)$('sales-refresh').disabled=false;}
   }
   $('sales-refresh').addEventListener('click',loadReport);
+  if(typeof ResizeObserver!=='undefined'){
+    const grid=document.querySelector('.commerce-grid');let queued=false;
+    const check=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;if(grid.dataset.expanded==='true')return;const overflow=[...grid.querySelectorAll('.sales-dock,.sales-identity,.sales-period,.sales-footer')].some(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2);if(overflow){for(const [selector,key,min] of [['.sales-identity','--pair-header',84],['.sales-period','--pair-period',44],['.sales-footer','--pair-footer',44]])grid.style.setProperty(key,Math.max(min,...[...grid.querySelectorAll(selector)].map(el=>el.scrollHeight))+'px');grid.dataset.expanded='true';}});};
+    const observer=new ResizeObserver(check);grid.querySelectorAll('.sales-dock,.sales-identity,.sales-period,.sales-footer').forEach(el=>observer.observe(el));new MutationObserver(check).observe(grid,{childList:true,subtree:true,characterData:true});window.addEventListener('resize',()=>{grid.dataset.expanded='false';check();});document.fonts?.ready.then(check);check();
+  }
   render();
   api().then(applySettings).catch(error=>{$('payhip-status').textContent=error.message;$('payhip-setup').open=true;});
 })();
