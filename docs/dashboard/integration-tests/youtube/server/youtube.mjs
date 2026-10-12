@@ -1,6 +1,8 @@
 export const SCOPES = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
 const DRIVE_MOVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata';
 const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+export const MONETARY_SCOPE = 'https://www.googleapis.com/auth/yt-analytics-monetary.readonly';
+const EARNINGS_RETURN = '__Host-gemos-earnings-return';
 const DRIVE_RETURN = '__Host-gemos-drive-return';
 const COOKIE = '__Host-gemos-youtube-state';
 const HEADERS = { 'Cache-Control': 'no-store', 'Content-Type': 'application/json', 'X-Content-Type-Options': 'nosniff' };
@@ -48,7 +50,7 @@ export async function access(env, owner, force = false) {
   if (result.meta.changes !== 1) throw new SafeError('Connection changed. Try again.', 401);
   return { token: data.access_token, row };
 }
-async function api(env, owner, url) {
+export async function api(env, owner, url) {
   let session = await access(env, owner);
   try { return await google(url, { headers: { Authorization: 'Bearer ' + session.token } }); }
   catch (error) { if (error.status !== 401) throw error; session = await access(env, owner, true); return google(url, { headers: { Authorization: 'Bearer ' + session.token } }); }
@@ -87,7 +89,7 @@ async function callback(request, env, owner) {
   if (!Array.isArray(owned.items) || !owned.items.length || owned.items.some(c => typeof c.id !== 'string' || typeof c.snippet?.title !== 'string')) throw new SafeError('No owned YouTube channel returned.', 400);
   const channels = owned.items.map(c => ({ id: c.id, title: c.snippet.title }));
   await env.DB.prepare('INSERT INTO youtube_connections (user_id, client_id, refresh_ciphertext, access_ciphertext, expires_at, scopes, channels_json, updated_at, revision) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET client_id=excluded.client_id, refresh_ciphertext=excluded.refresh_ciphertext, access_ciphertext=excluded.access_ciphertext, expires_at=excluded.expires_at, scopes=excluded.scopes, channels_json=excluded.channels_json, updated_at=excluded.updated_at, revision=excluded.revision').bind(owner, env.GOOGLE_CLIENT_ID, await seal(data.refresh_token, env, owner), await seal(data.access_token, env, owner), expiry, data.scope, JSON.stringify(channels), Date.now(), nonce()).run();
-  return new Response(null, { status: 303, headers: { Location: (request.headers.get('Cookie') || '').split(';').some(v => v.trim() === DRIVE_RETURN + '=' + state) ? '/checklist' : '/?youtube=connected', 'Set-Cookie': cookie('', 0), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
+  return new Response(null, { status: 303, headers: { Location: (request.headers.get('Cookie')||'').split(';').some(v=>v.trim()===EARNINGS_RETURN+'='+state)?'/commerce?earnings=connected':(request.headers.get('Cookie') || '').split(';').some(v => v.trim() === DRIVE_RETURN + '=' + state) ? '/checklist' : '/?youtube=connected', 'Set-Cookie': cookie('', 0), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
 }
 export async function handle(request, env, action) {
   try {
@@ -97,22 +99,24 @@ export async function handle(request, env, action) {
       const row = await rowFor(env, owner);
       if (!row) return json({ configured: true, connected: false, clientId: env.GOOGLE_CLIENT_ID });
       await access(env, owner);
-      return json({ configured: true, connected: true, clientId: env.GOOGLE_CLIENT_ID, channels: JSON.parse(row.channels_json) });
+      return json({ configured: true, connected: true, clientId: env.GOOGLE_CLIENT_ID, channels: JSON.parse(row.channels_json), earningsGranted:(row.scopes||'').split(' ').includes(MONETARY_SCOPE) });
     }
     if (!configured(env)) throw new SafeError('Background connection setup is not finished. The existing browser connection still works.', 503);
     if (new URL(request.url).origin !== new URL(env.GOOGLE_REDIRECT_URI).origin) throw new SafeError('Unexpected site origin.', 403);
     if (action === 'callback' && request.method === 'GET') return await callback(request, env, owner);
     if (request.method !== 'POST') throw new SafeError('Method not allowed.', 405);
     sameOrigin(request);
-    if (['start','start-drive','start-drive-move'].includes(action)) {
+    if (['start','start-drive','start-drive-move','start-earnings'].includes(action)) {
       const state = nonce(), now = Date.now();
       await env.DB.batch([env.DB.prepare('DELETE FROM youtube_oauth_states WHERE expires_at <= ? OR user_id = ?').bind(now, owner), env.DB.prepare('INSERT INTO youtube_oauth_states (state_hash, user_id, expires_at) VALUES (?, ?, ?)').bind(await hash(state), owner, now + 600000)]);
       const existing = await rowFor(env, owner);
       const wantsDrive = action.startsWith('start-drive') || (existing?.scopes || '').split(' ').includes(DRIVE_SCOPE);
       const wantsMove=action==='start-drive-move'||(existing?.scopes||'').split(' ').includes(DRIVE_MOVE_SCOPE);
-      const requestedScopes = [...SCOPES,...(wantsDrive?[DRIVE_SCOPE]:[]),...(wantsMove?[DRIVE_MOVE_SCOPE]:[])];
+      const wantsEarnings=action==='start-earnings'||(existing?.scopes||'').split(' ').includes(MONETARY_SCOPE);
+      const requestedScopes = [...SCOPES,...(wantsEarnings?[MONETARY_SCOPE]:[]),...(wantsDrive?[DRIVE_SCOPE]:[]),...(wantsMove?[DRIVE_MOVE_SCOPE]:[])];
       const url = new URL('https://accounts.google.com/o/oauth2/v2/auth'); url.search = new URLSearchParams({ client_id: env.GOOGLE_CLIENT_ID, redirect_uri: env.GOOGLE_REDIRECT_URI, response_type: 'code', scope: requestedScopes.join(' '), access_type: 'offline', prompt: 'consent', state, include_granted_scopes: 'false' });
       const reply = json({ url: url.href }, 200, { 'Set-Cookie': cookie(state) });
+      if(action==='start-earnings') reply.headers.append('Set-Cookie', `${EARNINGS_RETURN}=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
       if (action.startsWith('start-drive')) reply.headers.append('Set-Cookie', `${DRIVE_RETURN}=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
       return reply;
     }
