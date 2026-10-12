@@ -137,3 +137,8 @@ Build/compiled200/401,commerce state and YouTube regression checks pass; refresh
 CJ accepts current Groups1/2/3 appearance as visually consistent with the shared design system, with nothing visibly out of place in his review. Record as user visual acceptance, not measured universal accessibility or every-state verification. Current normal sizes Compact450px/Large920px/gap20px remain.
 
 After the combined dashboard is assembled, add a primary Sync all action at the top and make individual card Sync controls less prominent while retaining targeted retry/manual refresh. This is future approved direction, not implemented in this slice. Sync all refreshes connected data; it must not publish, schedule, approve or move releases. Show per-source outcomes/freshness and partial failures honestly; preserve existing independent selections. No change to current Sync controls now.
+
+
+## Locked dashboard spacing — 12 October 2026, 13:43 UK
+
+CJ accepted the measured dashboard mock-up and locked Compact454px, Large920px,12px vertical spacing within a group and20px between desktop columns. Two Compact cards plus their vertical gap exactly match a Large card:454+12+454=920. This supersedes Compact450px/20px vertical-gap and all earlier430px/880px proposals. Keep existing internal padding, materials, typography and accessible growth exceptions. At960px dashboard width, equal desktop columns are470px each with20px horizontal gap. Geometry decision is confirmed; current hosted source still uses450px/20px and has not yet adopted this change. YouTube earnings live connection, Studio comparison and rendered acceptance remain next; no additional content decision is required from CJ now.
