@@ -73,3 +73,10 @@ Use two dashboard card sizes at normal text settings: **Compact430px** and **Lar
 This is the confirmed target grid, not a claim that existing cards already fit it. Implement Group3 first as the Compact proof: redesign both Payhip and Email List together and validate populated/empty/loading/error/long-content states. Details retain richer information; do not clip useful content or shrink touch targets to meet the height. Group1 remains at its current measured pair sizing until reviewed;512/532px are minima, not actual rendered heights. Assess it next and agree a content/layout redesign if neither size fits; do not stretch it to880px just to fill space. Group2 retains880px and its functional leaderboard viewport; verify combined dashboard alignment after Group3/Group1 review.
 
 Mobile uses the normal compact/large targets with natural vertical stacking; enlarged text and exceptional long content require accessible reflow/full-view exceptions, never clipping. Alignment of a combined dashboard at desktop applies to normal-size states and excludes external connection/selection panels. A combined dashboard has not been implemented. Current routes and existing card geometry remain unchanged until each redesign is built and verified.
+
+
+## Visual acceptance and future Sync all — 12 October13:17UK
+
+CJ accepts current Groups1/2/3 appearance as visually consistent with the shared design system, with nothing visibly out of place in his review. Record as user visual acceptance, not measured universal accessibility or every-state verification. Current normal sizes Compact450px/Large920px/gap20px remain.
+
+After the combined dashboard is assembled, add a primary Sync all action at the top and make individual card Sync controls less prominent while retaining targeted retry/manual refresh. This is future approved direction, not implemented in this slice. Sync all refreshes connected data; it must not publish, schedule, approve or move releases. Show per-source outcomes/freshness and partial failures honestly; preserve existing independent selections. No change to current Sync controls now.
