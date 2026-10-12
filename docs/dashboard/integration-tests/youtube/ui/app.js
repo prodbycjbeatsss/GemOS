@@ -62,7 +62,7 @@
     const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json' } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
     let data; try { data = await response.json(); } catch { throw new Error('The connection service returned an unreadable response.'); }
     if (!response.ok) { const error = new Error(data.error || 'The connection service is unavailable.'); error.status = response.status; throw error; }
-    return data;
+    if(action!=='status' && action!=='disconnect' && $('youtube-badge')){$('youtube-badge').textContent='Connected · checked now';$('youtube-badge').dataset.state='connected';}return data;
   }
   async function restoreBackend() {
     const session = generation;
@@ -101,7 +101,7 @@
     const p = Date.parse(video.publishedAt), start = Date.parse(video.requestedAt), end = Date.parse(video.capturedAt);
     return Number.isSafeInteger(video.snapshotViews) && video.snapshotViews >= 0 && Number.isFinite(p) && start >= p + 86400000 && start <= p + 87300000 && end >= start && end <= p + 87300000;
   }
-  const status = message => { $('connection').textContent = message; };
+  const status = message => { $('connection').textContent = message; const b=$('youtube-badge');if(b){const saved=message.includes('Saved connection restored');b.textContent=saved?'Saved · access not rechecked':message.startsWith('Connected')?'Connected':message.includes('Restoring')?'Checking…':'Check connection';b.dataset.state=saved?'saved':message.startsWith('Connected')?'connected':'none';} };
   const feedback = message => { $('feedback').textContent = message; };
   const date = value => {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error('Choose a valid report date.');

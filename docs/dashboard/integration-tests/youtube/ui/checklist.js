@@ -86,8 +86,8 @@ import { groupGeometry } from '/checklist-layout.js';
   }
   async function discover(body,action){
     if(busy)return;busy=true;controls();$('project-list-status').textContent='Reading release folders…';$('folder-message').textContent='Checking folder connections…';
-    try{const data=await api(action,body);applyCatalogue(data,false);$('project-list-status').textContent='Release list refreshed · '+projects.filter(p=>!['manual','unavailable'].includes(p.stage)).length+' projects found.';$('release-connections').open=false;}
-    catch(e){$('project-list-status').textContent=e.message+' Last saved list retained.';$('folder-message').textContent=e.message;}
+    try{const data=await api(action,body);applyCatalogue(data,false);$('project-list-status').textContent='Release list refreshed · '+projects.filter(p=>!['manual','unavailable'].includes(p.stage)).length+' projects found.';$('release-connections').open=false;if($('drive-badge')){$('drive-badge').textContent='Connected · checked now';$('drive-badge').dataset.state='connected';}}
+    catch(e){$('project-list-status').textContent=e.message+' Last saved list retained.';$('folder-message').textContent=e.message;if($('drive-badge')){$('drive-badge').textContent='Access check failed';$('drive-badge').dataset.state='error';}}
     finally{busy=false;controls();}
   }
   $('release-folder-form').addEventListener('submit',event=>{event.preventDefault();discover({production:$('production-folder').value.trim(),queue:$('queue-folder').value.trim(),released:$('released-folder').value.trim()},'drive-folders');});
@@ -243,7 +243,7 @@ import { groupGeometry } from '/checklist-layout.js';
   $('buffer-preview-close').addEventListener('click',()=>$('buffer-preview-dialog').close());
   $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());
   const layoutObserver=new ResizeObserver(reflow);cards.forEach(card=>card.querySelectorAll('.group-card-header,.recessed-dock>div,.group-card-footer').forEach(el=>layoutObserver.observe(el)));window.addEventListener('resize',reflow);document.fonts?.ready.then(reflow);reflow();
-  (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
+  (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;if($('drive-badge')){$('drive-badge').textContent=granted?'Saved · checking access':'Not connected';$('drive-badge').dataset.state=granted?'saved':'none';}$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
     applyCatalogue(data);$('release-connections').open=!data.folders?.production;
     if(data.folders?.production&&granted)await discover({},'drive-discover');
   }catch(e){$('drive-access').textContent=e.message;}finally{controls();}})();

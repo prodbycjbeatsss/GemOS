@@ -10,7 +10,8 @@
   }
   function applySettings(value){
     target=value.monthlyTarget;
-    $('payhip-status').textContent=value.keySaved?(value.verifiedAt?'Notification verified · '+new Date(value.verifiedAt).toLocaleString('en-GB',{timeZone:'Europe/London'}):'Key saved · awaiting a verified Payhip notification'):'No Payhip key saved yet';
+    if($('payhip-badge')){$('payhip-badge').textContent=value.verifiedAt?'Feed verified':value.keySaved?'Saved · awaiting notification':'Not connected';$('payhip-badge').dataset.state=value.verifiedAt?'saved':'none';}
+    $('payhip-status').textContent=value.keySaved?(value.verifiedAt?'Feed verified · last notification '+new Date(value.verifiedAt).toLocaleString('en-GB',{timeZone:'Europe/London'}):'Key saved · awaiting a verified Payhip notification'):'No Payhip key saved yet';
     $('payhip-key').placeholder=value.keySaved?'Saved · enter a replacement only if needed':'Paste your Payhip API key';
     $('payhip-webhook').hidden=!value.webhookUrl;$('payhip-webhook-url').value=value.webhookUrl||'';
     $('payhip-copy').disabled=!value.receiverEnabled;

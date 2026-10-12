@@ -527,3 +527,12 @@ CJ completed a second100%-coupon checkout using Exclusive Rights. Payhip deliver
 **Alternatives considered:** Kit, MailerLite, EmailOctopus and Brevo.
 
 **Owner:** Colin Jones. Audience/sender, Payhip connection and GemOS reporting access remain unverified. No sending authorised.
+
+
+## 2026-10-12 — Email List3.2 and visible connection status
+
+**Decision:** CJ approved current active subscribers, selected-month signups/unsubscribes, latest newsletter/status/date, Refresh/View details and engagement in details; authorised implementation and clearer connection indicators. Keep checkout opt-in; Payhip→Mailchimp subscriber arrival and all three Payhip mappings verified by user. Private read-only Mailchimp integration and encrypted setup shipped; no sending authorised.
+
+**Why:** Monthly newsletter needs audience growth and campaign readiness without obsolete free-MP3/kit acquisition categories. Saved credentials do not prove fresh provider access. Daily activity coverage must not be confused with end-month subscribed balance.
+
+**Owner:** Colin Jones. Live GemOS Mailchimp access and rendered device checks pending.

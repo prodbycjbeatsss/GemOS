@@ -29,3 +29,7 @@ export const payhipMappings = sqliteTable("payhip_mappings", {
 export const payhipExclusions = sqliteTable("payhip_exclusions", {
  userId: text("user_id").notNull(), transactionId: text("transaction_id").notNull(), updatedAt: integer("updated_at").notNull()
 }, table => [primaryKey({ columns: [table.userId, table.transactionId] })]);
+
+export const mailchimpSettings = sqliteTable('mailchimp_settings', {
+ userId:text('user_id').primaryKey(), key:text('key_ciphertext').notNull(), audienceId:text('audience_id').notNull(), audienceName:text('audience_name').notNull(), verifiedAt:integer('verified_at').notNull()
+});
