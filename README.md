@@ -182,3 +182,5 @@ The companion masterclass video walks you through the kit step by step. Link wil
 - [HTML review report](docs/dashboard/REVIEW.html) — findings, evidence, completed doc fixes and decisions still needed.
 
 For the next dashboard session, start with [the handoff](docs/dashboard/HANDOFF.md).
+
+Latest payout-card behaviour: [timing, earnings period and history](docs/dashboard/group-3/PAYOUT-TIMING.md). This supersedes earlier handoff wording excluding estimated timing.
