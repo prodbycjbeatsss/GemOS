@@ -181,3 +181,8 @@ Official data contract: https://developers.google.com/adsense/management/referen
 Controlled SQLite/token/auth/account checks, opaque currency/zero/missing/date/YouTube-only/deduplication fixtures, OAuth grant preservation/callback/status and real-script three-row/history10-page/stale-request/focus tests pass. Existing backend,earnings,commerce,backdrop regressions, compiled private200/401/shell and production build pass. No supported browser capture; live AdSense access, phone/desktop and all-state visual fit remain pending.
 
 Private source e4b20f3a70ceb9be206c26648ddbe842b5be08d1; deployment appgdep_6ace37a7c3b88191bfee46c6dfe00bcd succeeded13 October13:52UTC (14:52UK), envrevision6 retained. Next: refresh Sales → AdSense payouts connection → Connect payouts, approve read-only access and confirm actual balance/payment records. Existing genuine Payhip paid/refund/contracts and Group1/2 vertical-gap rollout remain separate.
+
+
+## Group 4 — manual costs, 13 October 2026
+
+CJ retains original cobalt material:#1e3a8a/#17255442%/#090d1a, #60a5fa beam .75/.18/transparent; shared glass/radii/fonts/glyph/insets. One454px card with scrolling full list and separate top-up view. Costs joins shared navigation; narrow phones wrap four group links into two rows. Current components and accepted-vs-pending verification:dashboard/group-4/COMPONENTS.md. No Groups1–3 card redesign.

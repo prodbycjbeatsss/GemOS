@@ -1,13 +1,12 @@
 # GemOS dashboard — current handoff
 
-## Next work — Group 4 manual costs, 13 October 2026
+## Current next step — Group 4 delivered, 13 October 2026
 
-CJ chose manual logging rather than bank/API billing connections. Confirmed single Subscription Costs card with Subscriptions/API top-ups switch, category tabs, monthly equivalent GBP costs, selectable month, scrollable full list, uniform bundled logos, historical effective-dated changes and Manage subscriptions popup. Top-ups track purchases separately. See [Group 4 specification](group-4/SPECIFICATION.md) for all agreed rules and the remaining clarifications. This supersedes the earlier two-card connection-first next step. No Group 4 code/deployment yet; do not reopen settled choices. Future recommendations/offer alerts remain deferred.
+CJ approved implementation with the existing cobalt Group4 colour. The manual Subscription Costs card is deployed at /costs:month/category selection, monthly equivalent GBP totals, scrollable full subscription list, bundled logos/initials, Manage subscriptions popup, effective-dated changes/cancellation and recoverable archive/restore. API top-up purchases use a separate view and total. No bank/API billing connection or recommendations/offer alerts added. See [Group4 specification](group-4/SPECIFICATION.md) for calculation/date conventions and [usage](group-4/USAGE-AND-CONNECTIONS.md).
 
+Source d22a6aa9d099d9d2d8c8c989137f5439fb7ec32c; deployment appgdep_6ace9d990b748191a72199712168b7f7; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_dbec48043f0c8191967d110e17aea1b2; succeeded, owner-private/runtime revision6 preserved. Controlled subscription math, actual forms/persistence, owner isolation, input validation, stale-write conflict, recurrence/history, top-up separation, existing Group1–3 regressions, shell, compiled200/401 handlers and production build pass. Browser/device verification remains pending.
 
-## User acceptance — 13 October 2026, 20:43 UK
-
-CJ reports everything looks good after the live API payout deployment and asks to proceed to the next group. Group 3 appearance is accepted by user report; this is not independent numerical reconciliation or populated-history/accessibility verification. Next design review is Group 4: 4.1 AI spend and 4.2 Studio subscriptions, from the original index and ANALYTICS-FEASIBILITY.md. Confirm useful content and actual sources before implementing; distinguish consumer subscriptions, API usage costs and purchased credits. No Group 4 code is authorised yet.
+Next user check:add a monthly subscription and an annual one, refresh to confirm persistence, compare category/month totals, inspect payment dates and popup scroll; add an API top-up and confirm the subscription total does not change. Check phone/desktop appearance. Do not claim user visual acceptance or real records until tested. Groups1–3 received only the Costs navigation link/shared narrow-phone navigation wrapping; card content/data unchanged.
 
 
 ## Current payout contract — 13 October 2026, live API only

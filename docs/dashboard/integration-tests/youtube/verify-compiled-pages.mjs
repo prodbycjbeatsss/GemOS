@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 const dir=resolve('dist/server/_next/static');
 const files=readdirSync(dir).filter(f=>f.startsWith('route-')&&f.endsWith('.js'));
-for(const [name,marker] of [['checklist','file-detail-content'],['commerce','sales-label']]){
+for(const [name,marker] of [['checklist','file-detail-content'],['commerce','sales-label'],['costs','Subscription Costs']]){
  const file=files.find(f=>{const source=readFileSync(resolve(dir,f),'utf8');return source.includes(marker)&&source.toLowerCase().includes('<!doctype html');});assert.ok(file,`${name} compiled route`);
  const text=readFileSync(resolve(dir,file),'utf8');assert.ok(!text.includes('createElement'),`${name} GET must not be wrapped as a React component`);
  const {GET}=await import(pathToFileURL(resolve(dir,file)).href);

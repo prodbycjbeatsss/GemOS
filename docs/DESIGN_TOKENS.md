@@ -103,3 +103,16 @@ The earnings recess uses a block content container with auto-height breakdown an
 Locked geometry applied to Group3:Compact454px,12px row gap,20px column gap; Large920px unchanged. 454+12+454=920. Internal header/recess/footer geometry and20/24px insets unchanged. Group1/2 card slots remain920px; their existing mobile vertical20px grid gap has not yet been changed by this repair, so the full-dashboard spacing rule is only partially rolled out.
 
 Controlled earnings/backend/commerce fixtures and compiled private200/401/shell checks pass; production build succeeds. No supported browser capture, no successful owner-authenticated direct live revenue read in this session, and live provider success is not claimed by fixtures. Private source76992f4c8d9f33b3d5a664276c4709482c7b1af7/deployment appgdep_6acd4280bc4c81918d9d684a92919835 succeeded20:26UTC, envrevision6 preserved. Next: refresh Sales and Sync, inspect Long/Shorts rows and top earner; screenshot if still missing, then compare completed-month total to Studio.
+
+
+## Group 4 — implemented 13 October 2026
+
+| Semantic role | Value |
+|---|---|
+| g4 gradient |155deg,#1e3a8a0%,#17255442%,#090d1a100% |
+| g4 beam |#60a5fa,.75/.18/transparent; stops0/42/75% |
+| g4 supporting text |#dbeafe |
+| Compact |454px; existing enlarged-text exception |
+| Logo container / mark |30px /20px; radius9px; monochrome |
+
+Shared32px card/22px recess,58px glyph,20/24px insets,12px vertical/20px horizontal gaps and44px controls preserved. Runtime variables live in ui/costs.html; navigation rules in ui/dashboard.css.

@@ -1,5 +1,14 @@
 # GemOS — current implementation plan
 
+## Current next step — Group 4 delivered, 13 October 2026
+
+CJ approved implementation with the existing cobalt Group4 colour. The manual Subscription Costs card is deployed at /costs:month/category selection, monthly equivalent GBP totals, scrollable full subscription list, bundled logos/initials, Manage subscriptions popup, effective-dated changes/cancellation and recoverable archive/restore. API top-up purchases use a separate view and total. No bank/API billing connection or recommendations/offer alerts added. See [Group4 specification](group-4/SPECIFICATION.md) for calculation/date conventions and [usage](group-4/USAGE-AND-CONNECTIONS.md).
+
+Source d22a6aa9d099d9d2d8c8c989137f5439fb7ec32c; deployment appgdep_6ace9d990b748191a72199712168b7f7; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_dbec48043f0c8191967d110e17aea1b2; succeeded, owner-private/runtime revision6 preserved. Controlled subscription math, actual forms/persistence, owner isolation, input validation, stale-write conflict, recurrence/history, top-up separation, existing Group1–3 regressions, shell, compiled200/401 handlers and production build pass. Browser/device verification remains pending.
+
+Next user check:add a monthly subscription and an annual one, refresh to confirm persistence, compare category/month totals, inspect payment dates and popup scroll; add an API top-up and confirm the subscription total does not change. Check phone/desktop appearance. Do not claim user visual acceptance or real records until tested. Groups1–3 received only the Costs navigation link/shared narrow-phone navigation wrapping; card content/data unchanged.
+
+
 ## Current payout contract — 13 October 2026, live API only
 
 CJ confirmed live API calls only. This supersedes screenshot-import/snapshot-first proposals and the earlier unpaid-only headline. Card 3.4 retains Compact 454px, 12px vertical/20px column gaps and existing green Group 3 material. Headline: Estimated available earnings, calculated from current finalised AdSense YouTube balance plus the selected channel's current Pacific-month YouTube estimate in GBP. Period line: current month + carried balance. Recess: Finalised balance, Current-month estimate, Estimated payout · conditional. View payments: balance breakdown, estimate reporting-through date, conditional issue guidance and available payment history, ten per page with numbered controls. Shared outside-click dismissal/focus return remain.

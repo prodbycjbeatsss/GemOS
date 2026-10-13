@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const dashboardStyles=fs.readFileSync('ui/dashboard.css','utf8');
-for(const [route,file] of [['app/route.ts','ui/index.html'],['app/checklist/route.ts','ui/checklist.html'],['app/commerce/route.ts','ui/commerce.html']]){
- const html=fs.readFileSync(file,'utf8'); const source=fs.readFileSync(route,'utf8').replace(/^import .*;\n/gm,'').replace(/export const dynamic = 'force-dynamic';/g,'').replace(/export function GET\(request: Request\)/,'function GET(request)');
+for(const [route,file] of [['app/route.ts','ui/index.html'],['app/checklist/route.ts','ui/checklist.html'],['app/commerce/route.ts','ui/commerce.html'],['app/costs/route.ts','ui/costs.html']]){
+ const html=fs.readFileSync(file,'utf8'); const source=fs.readFileSync(route,'utf8').replace(/^import .*;\n/gm,'').replace(/export const dynamic ?= ?'force-dynamic';/g,'').replace(/export function GET\(request: ?Request\)/,'function GET(request)');
  const context={html,content:html,dashboardStyles,Response,env:{},configured:()=>true};vm.createContext(context);vm.runInContext(source,context);
  assert.equal(context.GET({headers:new Headers()}).status,401);
  const response=context.GET({headers:new Headers({'oai-authenticated-user-id':'test-owner'})});assert.equal(response.status,200);

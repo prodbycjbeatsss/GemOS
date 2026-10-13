@@ -607,3 +607,8 @@ CJ confirmed live API calls only. Implemented approved provisional balance plus 
 ### 13 October 2026 — Group 4 manual subscriptions and API top-ups
 
 CJ selected one manual Subscription Costs card: category tabs, selectable month, monthly equivalent GBP costs plus next payment dates, scrolling full list, bundled logos and management popup. Effective-dated price/cancellation history and full-month/latest-effective-price rules are confirmed. Weekly/monthly/quarterly/yearly billing retains day anchors with month-end/leap-day clamping. API top-up purchases use a separate view/total; recommendations and wishlist alerts are deferred. See docs/dashboard/group-4/SPECIFICATION.md; implementation remains pending.
+
+
+### 13 October 2026 — Group 4 implemented in original cobalt
+
+CJ authorised implementation and retained the original Group4 colour. Delivered manual monthly-equivalent subscriptions plus separate API top-up purchases, private saved history and management popup. Historical dates use the selected month's first day; current month uses today. Weekly conversion52/12; row-pence rounding; same-month latest active price counted once. Archive/restore preserves mistaken records; dated cancellation preserves prior reporting. Source d22a6aa9d099d9d2d8c8c989137f5439fb7ec32c deployed privately with runtime revision6. Controlled validation passed; fresh user/device acceptance pending. See Group4 specification for full contract.

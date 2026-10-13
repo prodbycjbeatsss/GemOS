@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 const css = readFileSync(new URL('../ui/dashboard.css', import.meta.url), 'utf8');
 if (css.includes('</style')) throw new Error('Invalid shared CSS');
-for (const name of ['index','checklist','commerce']) {
+for (const name of ['index','checklist','commerce','costs']) {
  const file = new URL(`../ui/${name}.html`, import.meta.url);
  let html = readFileSync(file, 'utf8');
  const old = /<style id="dashboard-shell-styles">[\s\S]*?<\/style>/;
