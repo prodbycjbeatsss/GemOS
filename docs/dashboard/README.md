@@ -19,7 +19,7 @@ Updated 11 October 2026. GemOS owns reviewed designs and the private connected i
 | Group 2 design / data | [Specification](group-2/SPECIFICATION.md) / [usage](group-2/USAGE-AND-CONNECTIONS.md) |
 | Group 2 current implementation and evidence | [STATUS](integration-tests/youtube/STATUS.md) / [CAPTURE](integration-tests/youtube/CAPTURE.md) |
 | Group 3.1 design / connection status | [Specification](group-3/SPECIFICATION.md) / [usage](group-3/USAGE-AND-CONNECTIONS.md) / [components](group-3/COMPONENTS.md) |
-| Group 4 costs | [Specification](group-4/SPECIFICATION.md) / [usage](group-4/USAGE-AND-CONNECTIONS.md) / [components](group-4/COMPONENTS.md) |
+| Group 4 automation planning | [Specification](group-4/SPECIFICATION.md) / [usage](group-4/USAGE-AND-CONNECTIONS.md) / [components](group-4/COMPONENTS.md) |
 | Research / earlier review | [Feasibility](ANALYTICS-FEASIBILITY.md) / [review](REPOSITORY-REVIEW.md) / [9October evidence](verification/2026-10-09.md) |
 | Historical previews | [Group 1](group-1/preview.html) / [Group 2](group-2/preview.html) |
 

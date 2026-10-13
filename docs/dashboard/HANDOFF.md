@@ -25,6 +25,14 @@ Live routes:Release /checklist,Audience & Performance /,Finance /commerce. Old /
 
 Group-placement/unique IDs/script/setup/dialog ownership, destination colour/size declarations, three-link navigation and old Costs redirect checks pass. Actual subscription form/persistence/history/date/logo/custom-picker checks, Mailchimp SQLite/encryption/API checks and existing Group1–3 security/state/reporting regressions pass. Production build and compiled authenticated200/unauthenticated401 handlers plus authenticated303 redirect pass. No supported browser QA; tests do not prove rendered alignment/contrast/Android Back/enlarged text or new live provider results.
 
-Next user review:refresh Audience and Finance; confirm Email List uses purple Large920px, subscriptions use green Compact454px, Finance shows four cards, saved records/connection persist, popups work and narrow-phone controls remain reachable. Record user acceptance precisely before moving to the future publishing/cadence design discussion.
+CJ accepted the regrouped visual appearance in chat. This is user visual acceptance; it does not establish all-state accessibility, saved-record/connection or new live-provider verification. Next work is the approved Automation Performance scope and proposed first checker adapter, documented in group-4/USAGE-AND-CONNECTIONS.md.
 
 Future Sync all at the combined dashboard top is approved direction only; source-specific retries remain. Never let Sync publish,schedule,approve or move releases. Preserve independent card selections and truthful missing/zero/partial data.
+
+## Automation Performance — confirmed scope, 13 October 2026
+
+CJ confirmed coverage of all GemOS automations. The headline counts unresolved failed or unconfirmed runs: “1 automation needs attention”, “No automations need attention” only after recorded runs with no unresolved issues, and “No automation runs yet” before any records. Needs-attention runs precede recent runs; the footer opens full history and filtering by automation.
+
+A successful retry resolves only the issue linked to that retry's original run, after confirmed completion. Manual dismissal requires a recorded reason and retains the original failure in history. Retry is available only where duplicate external actions can be prevented and the specific operation is eligible; uncertain writes require reconciliation/details rather than blindly repeating them. Monitoring approval does not authorise new publication, purchase, notification or unattended folder moves.
+
+Runtime/card implementation has not started. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance until placement/design is settled.

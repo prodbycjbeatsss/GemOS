@@ -617,3 +617,13 @@ CJ authorised implementation and retained the original Group4 colour. Delivered 
 ### 13 October2026 — regroup audience and finances
 
 CJ approved plan then implementation:Email List moves to2.3 Audience & Performance, adopting purple920px Large; Subscription Costs moves to3.4 Finance, adopting green454px Compact. Finance now contains Payhip/earnings/payouts/costs; no filler second-cost card or new audience group. Old Costs group retired; former Group5 cadence/automation becomes futureGroup4. Setup/dialog/script ownership moved with cards, /costs redirects to Finance and saved records/backends/credentials unchanged. Deployed source 0290a28c7d2b91daac3b6a00fe3a13c5d49bd388; controlled checks/build pass, fresh rendered acceptance pending. Pre-move contracts archived; current cost authority is group-3/SUBSCRIPTIONS.md.
+
+## 2026-10-13 — Automation Performance scope and issue handling
+
+**Decision:** Monitor all GemOS automations as reliable adapters become available. Attention-count headline; unresolved failed/unconfirmed runs first, then recent runs. Successful linked retry resolves its issue; manual dismissal requires recorded reason; retain original history. Offer retry only when duplicates can be prevented. No automation card/runtime built yet.
+
+**Why:** CJ wants operational failures visible rather than another release planning grid. Inspection identifies YouTube checker as strongest first adapter, but it currently writes logs only at completion and needs durable start/error/owner/issue recording. Full source inventory and proposed implementation sequence are in docs/dashboard/group-4/USAGE-AND-CONNECTIONS.md.
+
+**Alternatives considered:** Success-rate headline, chronological-only list, mandatory manual resolution and no retry buttons; CJ selected attention-first and safe retries. Publishing Cadence implementation remains unapproved.
+
+**Owner:** CJ.

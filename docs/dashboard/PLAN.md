@@ -23,3 +23,13 @@ Sequence completed:inspect and record migration plan; move unchanged setup/card/
 Checks passed:verify-group-migration.mjs,verify-subscriptions.mjs,verify-email.mjs,verify-commerce.cjs,verify-state.cjs,verify-payouts.mjs,verify-earnings.mjs,verify-backend.mjs,verify-project-ui.mjs,verify-dashboard-shell.cjs,verify-dialogs.mjs,production build and compiled200/401/Costs303 checks. Source 0290a28c7d2b91daac3b6a00fe3a13c5d49bd388, private deployment appgdep_6acea80d51908191aa17dd5cb170da80, runtime revision6 preserved. No supported browser QA; fresh phone/desktop/enlarged-text acceptance is next.
 
 Older plan/handoff are archived under ../../../archives/dashboard/2026-10-13/pre-regrouping/docs/dashboard/. Current authority:group specs/usage, integration contracts and HANDOFF.
+
+## Automation Performance — confirmed scope, 13 October 2026
+
+CJ confirmed coverage of all GemOS automations. The headline counts unresolved failed or unconfirmed runs: “1 automation needs attention”, “No automations need attention” only after recorded runs with no unresolved issues, and “No automation runs yet” before any records. Needs-attention runs precede recent runs; the footer opens full history and filtering by automation.
+
+A successful retry resolves only the issue linked to that retry's original run, after confirmed completion. Manual dismissal requires a recorded reason and retains the original failure in history. Retry is available only where duplicate external actions can be prevented and the specific operation is eligible; uncertain writes require reconciliation/details rather than blindly repeating them. Monitoring approval does not authorise new publication, purchase, notification or unattended folder moves.
+
+Runtime/card implementation has not started. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance until placement/design is settled.
+
+First proposed slice: durable start/finish/error instrumentation for existing YouTube snapshot checker, then Automation Performance card/history. See group-4/USAGE-AND-CONNECTIONS.md for inventory, ordered work and acceptance checks. No implementation/deployment in this assessment. CJ accepted regrouped appearance in chat; this is user visual acceptance, not browser/accessibility or new live-provider verification.
