@@ -1,5 +1,10 @@
 # GemOS dashboard — current handoff
 
+## User acceptance — 13 October 2026, 20:43 UK
+
+CJ reports everything looks good after the live API payout deployment and asks to proceed to the next group. Group 3 appearance is accepted by user report; this is not independent numerical reconciliation or populated-history/accessibility verification. Next design review is Group 4: 4.1 AI spend and 4.2 Studio subscriptions, from the original index and ANALYTICS-FEASIBILITY.md. Confirm useful content and actual sources before implementing; distinguish consumer subscriptions, API usage costs and purchased credits. No Group 4 code is authorised yet.
+
+
 ## Current payout contract — 13 October 2026, live API only
 
 CJ confirmed live API calls only. This supersedes screenshot-import/snapshot-first proposals and the earlier unpaid-only headline. Card 3.4 retains Compact 454px, 12px vertical/20px column gaps and existing green Group 3 material. Headline: Estimated available earnings, calculated from current finalised AdSense YouTube balance plus the selected channel's current Pacific-month YouTube estimate in GBP. Period line: current month + carried balance. Recess: Finalised balance, Current-month estimate, Estimated payout · conditional. View payments: balance breakdown, estimate reporting-through date, conditional issue guidance and available payment history, ten per page with numbered controls. Shared outside-click dismissal/focus return remain.
