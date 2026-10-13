@@ -22,5 +22,5 @@ export async function payoutsHandler(request,env){
  if(!url.pathname.endsWith('/report'))throw new PayoutError('Not found.',404);const selected=url.searchParams.get('account');if(!validAccount(selected)||!list.some(a=>a.id===selected))throw new PayoutError('Choose one of your connected AdSense accounts.',403);
  const data=await api(env,owner,new URL('https://adsense.googleapis.com/v2/'+selected+'/payments'));const report=paymentReport(data.payments||[],selected);
  return Response.json({...report,accountTitle:list.find(a=>a.id===selected).title,refreshedAt:new Date().toISOString(),coverage:'YouTube payments reported by AdSense. Current unpaid balance is separate from estimated channel revenue. Payment dates are credited dates in Google’s Pacific billing timezone; they do not confirm arrival in your bank. Only records available from AdSense are shown. Amounts and currencies are preserved as reported.'},{headers});
- }catch(e){return Response.json({error:e.status?e.message:'AdSense payouts could not be loaded. Try again.'},{status:e.status||500,headers});}
+ }catch(e){return Response.json({error:e.status?e.message:'AdSense payouts could not be loaded. Try again.',...(e.code?{code:e.code}:{}),...(e.helpUrl?{helpUrl:e.helpUrl}:{})},{status:e.status||500,headers});}
 }

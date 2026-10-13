@@ -148,3 +148,14 @@ Official data contract: https://developers.google.com/adsense/management/referen
 Controlled SQLite/token/auth/account checks, opaque currency/zero/missing/date/YouTube-only/deduplication fixtures, OAuth grant preservation/callback/status and real-script three-row/history10-page/stale-request/focus tests pass. Existing backend,earnings,commerce,backdrop regressions, compiled private200/401/shell and production build pass. No supported browser capture; live AdSense access, phone/desktop and all-state visual fit remain pending.
 
 Private source e4b20f3a70ceb9be206c26648ddbe842b5be08d1; deployment appgdep_6ace37a7c3b88191bfee46c6dfe00bcd succeeded13 October13:52UTC (14:52UK), envrevision6 retained. Next: refresh Sales → AdSense payouts connection → Connect payouts, approve read-only access and confirm actual balance/payment records. Existing genuine Payhip paid/refund/contracts and Group1/2 vertical-gap rollout remain separate.
+
+
+## 13 October 15:02 UK — AdSense denial diagnostics and recovery
+
+CJ screenshot shows payouts Connection unavailable with generic Google403 message; production /api/payouts/accounts403 confirmed. This is failure of account discovery, not a payment balance of zero. Exact upstream reason was masked by shared Google handling; no claim that the API is definitely disabled or that payouts now work.
+
+AdSense-only403 handling now maps SERVICE_DISABLED/accessNotConfigured/serviceDisabled to explicit Enable AdSense Management API guidance and a fixed Google Cloud library URL. If ErrorInfo metadata provides a validated numeric projects/{id}, link preselects that project; no raw provider message/credential is returned. Insufficient-scope reasons prompt Reconnect payouts; other denials explicitly identify AdSense account access, not YouTube channel ownership. Other Google APIs retain existing safe error handling.
+
+Payout setup opens on failure, displays the safe cause and an Open Google Cloud link only for disabled API. Client validates the exact trusted origin/path. Sync retries account discovery when no account loaded, enabling recovery after external API setup without another reconnect or page reload; success clears stale help. Card/data amounts unchanged.
+
+Controlled tests cover disabled-api/consumer link, scope denial, safe error redaction and real-script setup link/Sync recovery, along with existing payouts/backend fixtures. Production build, compiled200/401/shell checks pass. Source0301304a10722918896dcd19e4c1de920bf80336/deployment appgdep_6ace39ac88d0819190647cd7361c113b succeeded13 October14:01UTC (15:01UK), runtime revision6 retained. Next: refresh Sales, inspect exact AdSense setup error; if API disabled, follow generated link and enable, then Sync. Live account access and payment records remain unverified.

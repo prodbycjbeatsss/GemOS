@@ -24,11 +24,18 @@ export async function unseal(value, env, owner) {
   const stored = JSON.parse(value);
   return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(stored.iv), additionalData: new TextEncoder().encode(owner + ':' + env.GOOGLE_CLIENT_ID) }, await encryptionKey(env), new Uint8Array(stored.data)));
 }
+export function adsenseDenial(body){
+ const reasons=[...(Array.isArray(body?.error?.errors)?body.error.errors.map(e=>e.reason):[]),...(Array.isArray(body?.error?.details)?body.error.details.map(e=>e.reason):[])];
+ if(reasons.some(r=>['SERVICE_DISABLED','accessNotConfigured','serviceDisabled'].includes(r))){const error=new SafeError('AdSense Management API is disabled in the Google Cloud project. Enable it, then Sync payouts again.',403);error.code='ADSENSE_API_DISABLED';const u=new URL('https://console.cloud.google.com/apis/library/adsense.googleapis.com');const consumer=body?.error?.details?.find?.(e=>e.reason==='SERVICE_DISABLED')?.metadata?.consumer;const match=typeof consumer==='string'?consumer.match(/^projects\/(\d+)$/):null;if(match)u.searchParams.set('project',match[1]);error.helpUrl=u.href;return error;}
+ if(reasons.some(r=>['ACCESS_TOKEN_SCOPE_INSUFFICIENT','insufficientPermissions'].includes(r))){const error=new SafeError('Google did not grant AdSense read access. Use Reconnect payouts and approve that permission.',403);error.code='ADSENSE_SCOPE_REQUIRED';return error;}
+ const error=new SafeError('Google denied AdSense access for this account. Check that it owns or can access your AdSense payments.',403);error.code='ADSENSE_ACCOUNT_ACCESS_DENIED';return error;
+}
 async function google(url, init = {}) {
   const response = await fetch(url, { ...init, signal: AbortSignal.timeout(30000) });
   let body; try { body = await response.json(); } catch { throw new SafeError('Google returned an unreadable response.', 502); }
   if (!response.ok) {
     if (body.error === 'invalid_grant' || response.status === 401) throw new SafeError('YouTube access expired or was revoked. Connect again.', 401);
+    if(response.status===403&&new URL(url).origin==='https://adsense.googleapis.com')throw adsenseDenial(body);
     if (response.status === 403) throw new SafeError('Google denied access. Check APIs, permissions and channel ownership.', 403);
     throw new SafeError('Google could not complete the request. Try again later.', 502);
   }
