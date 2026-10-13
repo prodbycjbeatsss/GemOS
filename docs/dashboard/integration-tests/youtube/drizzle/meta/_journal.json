@@ -36,6 +36,20 @@
       "when": 1791769642819,
       "tag": "0004_big_cyclops",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1791903401506,
+      "tag": "0005_regular_wrecking_crew",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1791931613662,
+      "tag": "0006_automation_runs",
+      "breakpoints": true
     }
   ]
 }

@@ -1,13 +1,26 @@
-# Group 4 — future publishing and automation
+# Group 4 — Automation Performance
 
-CJ approved regrouping13 October2026. This is the former Group5 concept, renumbered to keep groups continuous. No Group4 live page/cards exist yet. The former cobalt Subscription Costs card is now3.4 in Finance; its current rules are [../group-3/SUBSCRIPTIONS.md](../group-3/SUBSCRIPTIONS.md). Former Group4 files are preserved in ../../../archives/dashboard/2026-10-13/pre-regrouping/docs/dashboard/group-4/.
+Implemented 13 October 2026 after CJ approved all-GemOS scope and attention-first behaviour. Automation Performance retains provisional card number4.2; Publishing Cadence is not built and no empty placeholder is shown.
 
-Proposed next review:4.1 Publishing Cadence (verified publications versus planned cadence, weekly matrix/streak) and4.2 Automation Performance (recorded job outcomes/errors/timings). Review original references, useful scope/data and destination colour/size before coding. These concepts do not authorise new publication, scheduling, job execution or notifications. No invented live metrics or unverified API access.
+## Presentation and behaviour
 
-## Automation Performance — confirmed scope, 13 October 2026
+- One Compact454px card at /automations, half-width on desktop≥840px and stacked on mobile. Reuses established cobalt material (#1e3a8a/#172554/#090d1a),58px glass glyph,32px card/22px recess,20/24px insets,174px centred header, bottom44px footer. Header grows for enlarged text; list scrolls within the recess.
+- Headline counts distinct monitored automations with unresolved failed/unconfirmed runs, not repeated attempts. Caption supplies unresolved run count. States: “1 automation needs attention”, “No automations need attention”, “No automation runs yet”, loading and unavailable.
+- Needs-attention runs first, then recent runs. Each row has name, status, start date/time and confirmed duration; a row opens details.
+- Footer Refresh reads recorded results only; View run history opens a native dialog with automation/attention filters and10 runs/page, Previous/Next. No fabricated total-page count.
+- Successful retry resolves open issues linked to its original attempt chain. A reasoned dismissal changes issue state only; original failure and all attempts remain in history.
+- Retry only for the read-only YouTube checker. Per-owner lease blocks concurrent attempts; selection fingerprint must match the failed run. Changed selection requires reviewing/dismissing the old issue. No move/upload/purchase retry adapters exist.
+- Details show trigger, start/finish/duration, result/error, run ID and linked retry/resolution/dismissal reason. Errors contain bounded fixed safe summaries; reasons render as literal text.
+- All datetimes display in Europe/London. Running/unconfirmed durations remain unconfirmed rather than invented.
 
-CJ confirmed coverage of all GemOS automations. The headline counts unresolved failed or unconfirmed runs: “1 automation needs attention”, “No automations need attention” only after recorded runs with no unresolved issues, and “No automation runs yet” before any records. Needs-attention runs precede recent runs; the footer opens full history and filtering by automation.
+## Coverage and evidence
 
-A successful retry resolves only the issue linked to that retry's original run, after confirmed completion. Manual dismissal requires a recorded reason and retains the original failure in history. Retry is available only where duplicate external actions can be prevented and the specific operation is eligible; uncertain writes require reconciliation/details rather than blindly repeating them. Monitoring approval does not authorise new publication, purchase, notification or unattended folder moves.
+All GemOS automations is the intended scope; only YouTube snapshot checker is instrumented now. A visible coverage note and last recorded scheduled start prevent implying complete monitoring or continued scheduler availability. New executions only; legacy logs are retained without backfilling incomplete history.
 
-Runtime/card implementation has not started. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance until placement/design is settled.
+Zero newly captured snapshots can be a successful no-op. Missed historical snapshot windows are separately reported and cannot be restored by retry. Schedule stopped/disabled outside GemOS is not automatically detected; this is run-result monitoring, not verified scheduler uptime.
+
+Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved.
+
+Controlled API/SQLite/real-script checks and compiled private200/401/production build pass. Signed-in live run read, first new scheduled record and rendered mobile/desktop/enlarged-text acceptance remain unverified. Private read using the Sites service credential returned401; no authenticated user identity was fabricated.
+
+See [usage and implementation](USAGE-AND-CONNECTIONS.md) for contracts, checks and remaining adapters. Subscription Costs remains [3.4 Finance](../group-3/SUBSCRIPTIONS.md).

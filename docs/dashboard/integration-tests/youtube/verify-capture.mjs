@@ -3,7 +3,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
 import { seal, SCOPES } from './server/youtube.mjs';
 import { captureHandler, captureRelease, qualifies, parseViews, WINDOW_START, WINDOW_END } from './server/capture.mjs';
-const sql=new DatabaseSync(':memory:');for(const file of ['0000_yummy_tusk.sql','0001_breezy_the_professor.sql'])sql.exec(readFileSync('drizzle/'+file,'utf8'));
+const sql=new DatabaseSync(':memory:');for(const file of ['0000_yummy_tusk.sql','0001_breezy_the_professor.sql','0006_automation_runs.sql'])sql.exec(readFileSync('drizzle/'+file,'utf8'));
 const DB={prepare(query){let values=[];const statement={bind(...args){values=args;return statement;},async first(){return sql.prepare(query).get(...values)||null;},async all(){return {results:sql.prepare(query).all(...values)};},async run(){return {meta:{changes:Number(sql.prepare(query).run(...values).changes)}};}};return statement;},async batch(statements){sql.exec('BEGIN');try{const results=[];for(const s of statements)results.push(await s.run());sql.exec('COMMIT');return results;}catch(e){sql.exec('ROLLBACK');throw e;}}};
 const origin='https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site',env={DB,GOOGLE_CLIENT_ID:'fake.apps.googleusercontent.com',GOOGLE_CLIENT_SECRET:'FAKE',YOUTUBE_TOKEN_KEY:'ab'.repeat(32),GOOGLE_REDIRECT_URI:origin+'/api/youtube/callback',YOUTUBE_UPDATER_KEY:'FAKE_UPDATER'};
 let now=Date.parse('2026-01-02T00:00:00Z');const realNow=Date.now;Date.now=()=>now;

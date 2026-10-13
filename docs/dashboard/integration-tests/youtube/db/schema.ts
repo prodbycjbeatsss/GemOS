@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, primaryKey, index } from "drizzle-orm/sqlite-core";
 export const connections = sqliteTable("youtube_connections", {
  userId: text("user_id").primaryKey(), clientId: text("client_id").notNull(), refresh: text("refresh_ciphertext").notNull(), access: text("access_ciphertext").notNull(), expiresAt: integer("expires_at").notNull(), scopes: text("scopes").notNull(), channels: text("channels_json").notNull(), updatedAt: integer("updated_at").notNull(), revision: text("revision").notNull()
 });
@@ -33,3 +33,15 @@ export const payhipExclusions = sqliteTable("payhip_exclusions", {
 export const mailchimpSettings = sqliteTable('mailchimp_settings', {
  userId:text('user_id').primaryKey(), key:text('key_ciphertext').notNull(), audienceId:text('audience_id').notNull(), audienceName:text('audience_name').notNull(), verifiedAt:integer('verified_at').notNull()
 });
+
+export const studioPaymentSnapshots = sqliteTable('studio_payment_snapshots', {
+ userId:text('user_id').notNull(), accountId:text('account_id').notNull(), channelId:text('channel_id').notNull(), snapshotJson:text('snapshot_json').notNull(), updatedAt:integer('updated_at').notNull()
+}, table=>[primaryKey({columns:[table.userId,table.accountId,table.channelId]})]);
+
+// Durable automation attempts and per-owner checker execution lease.
+export const automationRuns = sqliteTable('automation_runs', {
+ id:text('id').primaryKey(), userId:text('user_id').notNull(), automation:text('automation').notNull(), trigger:text('trigger').notNull(), status:text('status').notNull(), startedAt:integer('started_at').notNull(), finishedAt:integer('finished_at'), errorCode:text('error_code'), resultJson:text('result_json'), contextKey:text('context_key'), retryOf:text('retry_of'), rootId:text('root_id').notNull(), issueState:text('issue_state').notNull().default('none'), resolvedBy:text('resolved_by'), dismissedReason:text('dismissed_reason'), dismissedAt:integer('dismissed_at')
+},table=>[index('automation_runs_owner_time').on(table.userId,table.startedAt),index('automation_runs_owner_issue').on(table.userId,table.issueState,table.status)]);
+export const automationLocks = sqliteTable('automation_locks', {
+ userId:text('user_id').notNull(), automation:text('automation').notNull(), runId:text('run_id').notNull(), expiresAt:integer('expires_at').notNull()
+},table=>[primaryKey({columns:[table.userId,table.automation]})]);

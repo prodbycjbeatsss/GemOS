@@ -1,5 +1,10 @@
 # Dashboard design tokens
 
+## Current Group4 Automation Performance — 13 October 2026
+
+/automations reuses the established cobalt gradient155deg #1e3a8a/#17255442%/#090d1a, #60a5fa beam .75/.18/transparent and #dbeafe supporting text. Compact454px,32px card/22px recess,58px/18px glyph,28px symbol,20/24px insets,174px centred header,44px bottom footer and12px row/20px column gaps. Half-width at840px; mobile stacked. Intentional recess scrolling stays fixed; enlarged header text grows the card. Native dialog max75dvh with plain Close footer. Existing Finance/Audience/Release palettes and dimensions unchanged. This supersedes statements that new Group4 has not been styled/built; former Costs details below remain historical.
+
+
 ## Current regrouping — 13 October2026
 
 Email List is now2.3:Group2 purple #4338ca/#312e81/#0f172a and Large920px, shared174px header/575–583px recess/bottom footer. Subscription Costs is now3.4:Group3 green #065f46/#044e39/#022c22 and Compact454px. Finance uses four half-width cards,12px row/20px column gaps. Cards/dialogs consume destination material, dimensions and shared glyph/fonts/radii. Former cobalt Group4 Costs rules below are historical; new Group4 publishing/automation has not been styled or built. Old /costs redirects to Finance. Narrow Finance cost controls scroll within one44px track; intentional list scrolling does not trigger paired growth.

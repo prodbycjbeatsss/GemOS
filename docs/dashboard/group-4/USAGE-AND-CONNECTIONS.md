@@ -1,36 +1,40 @@
-# Group 4 — future publishing and automation
+# Group 4 — sources and implementation
 
-See [SPECIFICATION](SPECIFICATION.md). No current live implementation. The former manual Costs contracts have moved to [Group3](../group-3/SUBSCRIPTIONS.md); their pre-regrouping copies are archived. Next work is a design/data review of Publishing Cadence and Automation Performance, not a second cost card.
+## Confirmed scope
 
-## Automation Performance — confirmed scope, 13 October 2026
+CJ chose all GemOS automations, attention-count headline, attention-first list, successful linked retry resolving issues, manual dismissal with recorded reason, retained original history and retries only where duplicate actions can be prevented. See SPECIFICATION.md for exact display states.
 
-CJ confirmed coverage of all GemOS automations. The headline counts unresolved failed or unconfirmed runs: “1 automation needs attention”, “No automations need attention” only after recorded runs with no unresolved issues, and “No automation runs yet” before any records. Needs-attention runs precede recent runs; the footer opens full history and filtering by automation.
+## Current integration
 
-A successful retry resolves only the issue linked to that retry's original run, after confirmed completion. Manual dismissal requires a recorded reason and retains the original failure in history. Retry is available only where duplicate external actions can be prevented and the specific operation is eligible; uncertain writes require reconciliation/details rather than blindly repeating them. Monitoring approval does not authorise new publication, purchase, notification or unattended folder moves.
+- app/automations/route.ts serves owner-authenticated /automations. app/api/automations/route.ts calls server/automations.mjs; ui/automations.html/js own the card and history/details dialog. Shared dialogs.js handles safe outside-click dismissal; Close restores focus.
+- GET /api/automations returns owner-only totals, up to10 attention-first runs, hasMore, updatedAt, coverage and lastScheduledStart. offset is a bounded multiple of10; automation is blank or youtube-snapshot-checker; attention0/1. GET ?id reads only an owner-owned run. No records is distinct from request failure.
+- POST supports only retry and dismiss, bounded JSON, allowed fields and same-origin authenticated requests. Dismiss requires1–500 non-whitespace characters. Unknown/ineligible/changed/resolved/concurrent actions are rejected.
+- server/automation-runs.mjs provides durable start, timeout recovery, execution lease, fenced atomic completion/resolution and dismissal. server/capture.mjs instruments each owner's background checker without changing the existing snapshot window/immutable count/source authentication.
+- db/schema.ts and generated drizzle/0006_automation_runs.sql/meta snapshot/journal append two new tables and indexes. This registered migration is distinct from the pre-existing standalone0006_manual_subscription_costs.sql. Existing migration entries/snapshots unchanged. New tables are migration-owned; request handlers do not create/alter them.
+- automation_runs stores UUID, owner, automation, trigger, status, start/finish, safe error code, counts-only result, selection fingerprint, retry/root links and issue/dismissal audit. automation_locks is owner/automation scoped with a five-minute lease. Start is persisted before provider work; a stale unfinished run becomes unconfirmed on a later read/check. A late worker cannot overwrite recovered state or a newer lease.
+- Completion and linked issue resolution use D1 batch. Original failures remain; only open failed/unconfirmed issues in the matching retry chain resolve. Automatic later scheduled successes do not silently dismiss historical issues.
+- No new scopes/secrets, scheduler job changes, uploads, messages, purchases or unattended Drive moves. Legacy youtube_capture_runs/health remain for existing capture evidence and keep their existing30-day retention. New run history has no automatic deletion policy yet.
 
-Runtime/card implementation has not started. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance until placement/design is settled.
+## Source inventory and expansion
 
-## Repository-grounded first integration
+| Workflow | Current monitoring |
+|---|---|
+| YouTube snapshot checker | Implemented per-owner start/end/result/error records; safe selection-bound retry. First new live scheduled run remains to verify. |
+| Drive checks/preparation | Existing latest checks and pending/completed move records; complete attempt adapter not built. Uncertain moves must reconcile without a second PATCH. |
+| Payhip ingestion | Existing deduplicated received paid/refunded events; rejected/failed processing attempt adapter not built. Public receiver needs separate instrumentation. |
+| Analytics/finance/Mailchimp refresh | Report/error handlers exist; common run-history adapter not built. Distinguish interactive refresh from background automation. |
+| Uploads and memory imports | Future workflows; no fictional runs. |
 
-Inspection against GitHub main fd3f13253d1e77023c6e96bd063c1e25676cece2 and matching deployed source0290a28c7d2b91daac3b6a00fe3a13c5d49bd388:
+Next adapters: read-only Drive checks, then guarded move reconciliation, provider refreshes and future uploads/memory imports. Before claiming overall automation health, inventory all expected workflows and implement explicit source coverage/expected-frequency monitoring. Publishing Cadence overlaps Group1 planning and remains unimplemented.
 
-| Workflow | Existing evidence | Monitoring gap |
-|---|---|---|
-| YouTube snapshot checker | server/capture.mjs records UUID, started_at, finished_at, captured count and outcome in youtube_capture_runs; CAPTURE.md records prior verified scheduled endpoint calls | Row written only after completion; early failures/crashes can be absent. Outcomes conflate trigger and success; failures have no retained per-run detail, owner or linked retry. Logs expire after30days. No new live run tested here. |
-| Drive preparation / Queue move | server/assets.mjs stores owner/project-scoped pending/completed move, start/completion times; checks actual folder parents before confirming | State is one row per project rather than complete attempt history. Pending uncertain writes must reconcile; do not enable blind retry. Checks retain latest result, not run history. |
-| Payhip ingestion | server/payhip.mjs deduplicates stored paid/refunded events with receipt timestamps | Sales events are not automation attempt records; rejected/failed ingestion lacks complete run history. Public receiver would need separate instrumentation. |
-| Analytics / finance / Mailchimp refresh | Existing private handlers return reports/errors | No common durable run history; add instrumentation later and distinguish interactive refresh from background work. |
-| Uploads / memory imports | Future workflows | Not connected operational automations; do not seed fictional runs. |
+## Verification and recovery
 
-Recommendation: instrument the existing YouTube checker first. A successful checker with zero eligible snapshots is a successful no-op, not failure. Missing/late capture-window coverage is a separate result; no retries can recreate a missed historical window.
+Run node verify-automations.mjs, node verify-automations-ui.cjs, node verify-capture.mjs, node verify-backend.mjs, node verify-prepare.mjs, node verify-projects.mjs, node verify-project-ui.mjs, node verify-group-migration.mjs, node verify-dashboard-shell.cjs, node verify-state.cjs and node verify-dialogs.mjs. After the supported production build, node verify-compiled-pages.mjs verifies actual private200/401 HTML handlers and preserved Costs redirect.
 
-Implementation sequence (proposed, not built):
-1. Add owner-scoped durable run records with separate trigger, start, terminal status, safe error code/summary, result counts, parent retry and issue/dismissal audit. Save start before work; recover stale unfinished runs as unconfirmed without assuming an external action failed.
-2. Instrument checker per owner, preserving frozen snapshot eligibility, service authentication, current scheduler and connection permissions. A scheduled header alone is not proof the schedule remains enabled.
-3. Add private read/details/dismiss interfaces, bounded pagination and a supported safe checker retry. Authenticate owner and same-origin writes; reject retries of ineligible operations and concurrent duplicates. Decide retry granularity before implementation: one owner's checker versus scheduler batch.
-4. Build card/history using shared design tokens after confirming destination colour/height. Separate monitoring data freshness from “no unresolved issues”; never imply complete all-workflow coverage until adapters exist.
-5. Expand to read-only Drive checks, then guarded move reconciliation, provider refreshes and future uploads/memory imports.
+Checks cover persisted start, interruption/timeout/fencing, owner isolation, independent partial owner failure, safe redacted errors, zero-capture no-op, missed-window reporting, duplicate/concurrent/changed-selection retry rejection, linked resolution, dismissal history, attention ordering/counts, pagination, auth/origin/validation, literal reason rendering, stale UI responses and focus return. Fixtures do not prove a live scheduled capture or rendered geometry.
 
-Checks required: persisted start survives forced interruption; partial owner failure remains isolated; explicit no-op success; missed-window reporting; owner isolation and service auth; redacted errors without secrets/personal payloads; attention count/order; dismissal reason; linked verified retry resolution; duplicate/concurrent retry prevention; original history retained; bounded pagination; regression of snapshot window/frozen count. Confirm a real scheduled start/end record separately from controlled tests. A complete adapter inventory and expected-frequency monitoring are needed before claiming all GemOS automation health.
+Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved.
 
-Recovery: additive migration and feature flag/adapter removal; preserve existing provider state and snapshots; revert UI/source without deleting run history. No new provider permissions needed for the first checker adapter.
+First owner check: open /automations signed in; after the scheduled checker executes, Refresh and inspect its scheduled start/finish/result. A failed run should retain the fixed safe error; a successful no-op is valid. Do not trigger an upload/move to test monitoring. Rendered phone/desktop/large-text and first real new scheduled record remain pending; Sites service-credential reads returned401 and cannot substitute for an owner session.
+
+Recovery: redeploy the preceding Site version while retaining the additive tables and history. Never remove an applied migration or overwrite provider state/snapshots to roll back this UI.

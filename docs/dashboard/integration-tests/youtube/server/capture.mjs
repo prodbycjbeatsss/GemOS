@@ -1,4 +1,5 @@
 import { access, configured } from './youtube.mjs';
+import { startRun, finishRun, RunError } from './automation-runs.mjs';
 export const WINDOW_START = 86400000, WINDOW_END = 87300000;
 const HEADERS = { 'Cache-Control': 'no-store', 'Content-Type': 'application/json', 'X-Content-Type-Options': 'nosniff' };
 const response = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: HEADERS });
@@ -64,6 +65,23 @@ async function secretMatches(given, expected) {
   const encode = new TextEncoder(), [a,b] = await Promise.all([crypto.subtle.digest('SHA-256', encode.encode(given)), crypto.subtle.digest('SHA-256', encode.encode(expected))]);
   const x = new Uint8Array(a), y = new Uint8Array(b); let difference = 0; for (let i=0;i<x.length;i++) difference |= x[i]^y[i]; return difference === 0;
 }
+export async function runOwnerChecker(env, owner, channel, trigger, retryOf=null) {
+ const selected=await selection(env,owner,channel);
+ const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(channel+':'+(selected?.video_ids_json||'')));
+ const contextKey=Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,'0')).join('');
+ const run=await startRun(env,owner,trigger,retryOf,contextKey);
+ try {
+   const before=await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id=? AND channel_id=?').bind(owner,channel).first();
+   const report=await captureRelease(env,owner,channel);
+   const after=await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id=? AND channel_id=?').bind(owner,channel).first();
+   const now=Date.now(), missed=report?.videos.filter(v=>v.visibility==='public'&&v.publishedAt&&v.snapshotViews===null&&now>Date.parse(v.publishedAt)+WINDOW_END).length||0;
+   const result={checked:report?1:0,captured:Math.max(0,after.n-before.n),missedWindows:missed,noOp:after.n===before.n};
+   const saved=await finishRun(env,run,'succeeded',result);if(!saved)throw new RunError('This execution exceeded its monitoring lease. Refresh to review its unconfirmed outcome.',409);return {...result,runId:run.id};
+ }catch(error){
+   const code=error.status===401?'connection-unavailable':error.status===502?'provider-unavailable':'check-incomplete';
+   await finishRun(env,run,'failed',null,code);throw error;
+ }
+}
 export async function captureHandler(request, env, action) {
   try {
     if (!configured(env)) throw new CaptureError('YouTube connection setup is incomplete.', 503);
@@ -76,18 +94,17 @@ export async function captureHandler(request, env, action) {
         return response({ ready: owners.results.length === 1, ownerId: owners.results.length === 1 ? owners.results[0].user_id : null, lastRun });
       }
       if (request.method !== 'POST') throw new CaptureError('Method not allowed.', 405);
-      const started = Date.now(), rows = await env.DB.prepare('SELECT r.user_id, r.channel_id FROM youtube_release_selections r INNER JOIN youtube_connections c ON r.user_id = c.user_id LIMIT 50').all(); let captured = 0, failures = 0;
-      for (const row of rows.results) {
-        const before = await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id = ? AND channel_id = ?').bind(row.user_id, row.channel_id).first();
-        try { await captureRelease(env, row.user_id, row.channel_id); } catch { failures++; }
-        const after = await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id = ? AND channel_id = ?').bind(row.user_id, row.channel_id).first(); captured += after.n - before.n;
-      }
       // Cloud Scheduler can send the short job ID or the full resource name.
       const jobName = request.headers.get('X-CloudScheduler-JobName');
       const scheduled = jobName === 'gemos-youtube-capture' || /^projects\/[^/]+\/locations\/[^/]+\/jobs\/gemos-youtube-capture$/.test(jobName || '');
+      const started = Date.now(), rows = await env.DB.prepare('SELECT r.user_id, r.channel_id FROM youtube_release_selections r INNER JOIN youtube_connections c ON r.user_id = c.user_id LIMIT 50').all(); let captured = 0, failures = 0, skipped = 0;
+      for (const row of rows.results) {
+        try {const result=await runOwnerChecker(env,row.user_id,row.channel_id,scheduled?'scheduled':'service-check');captured+=result.captured;}
+        catch(error){if(error instanceof RunError&&error.status===409)skipped++;else failures++;}
+      }
       await env.DB.prepare('INSERT INTO youtube_capture_runs (id, started_at, finished_at, captured, outcome) VALUES (?, ?, ?, ?, ?)').bind(crypto.randomUUID(), started, Date.now(), captured, failures ? 'error' : scheduled ? 'scheduled' : 'manual-service-check').run();
       await env.DB.prepare('DELETE FROM youtube_capture_runs WHERE finished_at < ?').bind(Date.now() - 30*86400000).run();
-      return response({ checked: rows.results.length, captured, failures }, failures ? 503 : 200);
+      return response({ checked: rows.results.length, captured, failures, skipped }, failures ? 503 : 200);
     }
     const owner = ownerOf(request);
     if (action === 'scheduler-config' && request.method === 'GET') {

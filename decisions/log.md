@@ -627,3 +627,13 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Alternatives considered:** Success-rate headline, chronological-only list, mandatory manual resolution and no retry buttons; CJ selected attention-first and safe retries. Publishing Cadence implementation remains unapproved.
 
 **Owner:** CJ.
+
+## 2026-10-13 — Automation Performance first implementation
+
+**Decision:** CJ authorised implementation (“Let's go”). Ship attention-first Automation Performance at /automations for all-GemOS scope, initially instrumenting only the existing YouTube checker. Reuse established cobalt Compact material. Add registered schema-only run/lease migration, durable starts, five-minute unconfirmed recovery, owner isolation, selection-bound guarded retry and atomic linked issue resolution; reasoned dismissals and all original history retained.
+
+**Why:** Post-completion-only legacy logs cannot show interrupted work. Monitoring must record genuine outcomes and clearly expose incomplete coverage. Successful zero-capture checks are no-ops; missed windows stay separate. No backfill or inferred historical success; no provider write adapters.
+
+**Evidence:** Controlled SQLite/API/real-script/capture/Group1/2/compiled-route checks and production build pass. Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved. No rendered QA or owner-authenticated read of first new scheduled record; service-credential page/API reads returned401. Next owner verification and adapter expansion are documented in group-4/USAGE-AND-CONNECTIONS.md.
+
+**Owner:** CJ.

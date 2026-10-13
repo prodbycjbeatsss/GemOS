@@ -4,7 +4,7 @@
 
 ## Current grouping — 13 October 2026
 
-CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.
+CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Group4 now has Automation Performance at /automations; Publishing Cadence remains unimplemented.
 
 Email keeps its independent Mailchimp settings/reporting/member popup on /. Subscription costs keep manual saved histories/top-ups/logos/management on /commerce. API/storage/scopes unchanged. /costs is an authenticated303 redirect to /commerce. Historical IDs/colours below are superseded by this grouping; original mocks remain provenance.
 
@@ -17,19 +17,18 @@ Sequence completed:inspect and record migration plan; move unchanged setup/card/
 |Group1 Release|Existing Drive checks/preparation/guarded Queue moves; Buffer scheduling source remains unconnected. Real two-project/move/device checks remain as documented in PROJECTS/ASSETS.|
 |Group2 Audience & Performance|Existing2.1/2.2 scopes/capture intact;2.3 Mailchimp moved to purple920px. Review new Large email appearance and saved connection. Real first qualifying24h release capture/TikTok/Reels remain pending.|
 |Group3 Finance|Four454px green cards; manual Costs moved in. Review loaded subscription rows/logo picker/popup on Finance, selected-month/category and separate top-up totals. Paid/refund Payhip tests/contracts and populated payment-history verification remain separate.|
-|Group4 future|Review4.1 Publishing Cadence and4.2 Automation Performance before coding.|
+|Group4 Automations|Automation Performance implemented with first YouTube checker adapter. Verify first new scheduled record and rendered appearance; expand adapters next.|
 |Combined dashboard|Future Sync all and quieter source-specific Sync controls remain planned, not implemented.|
 
 Checks passed:verify-group-migration.mjs,verify-subscriptions.mjs,verify-email.mjs,verify-commerce.cjs,verify-state.cjs,verify-payouts.mjs,verify-earnings.mjs,verify-backend.mjs,verify-project-ui.mjs,verify-dashboard-shell.cjs,verify-dialogs.mjs,production build and compiled200/401/Costs303 checks. Source 0290a28c7d2b91daac3b6a00fe3a13c5d49bd388, private deployment appgdep_6acea80d51908191aa17dd5cb170da80, runtime revision6 preserved. No supported browser QA; fresh phone/desktop/enlarged-text acceptance is next.
 
 Older plan/handoff are archived under ../../../archives/dashboard/2026-10-13/pre-regrouping/docs/dashboard/. Current authority:group specs/usage, integration contracts and HANDOFF.
 
-## Automation Performance — confirmed scope, 13 October 2026
 
-CJ confirmed coverage of all GemOS automations. The headline counts unresolved failed or unconfirmed runs: “1 automation needs attention”, “No automations need attention” only after recorded runs with no unresolved issues, and “No automation runs yet” before any records. Needs-attention runs precede recent runs; the footer opens full history and filtering by automation.
+## Automation Performance delivered — 13 October 2026
 
-A successful retry resolves only the issue linked to that retry's original run, after confirmed completion. Manual dismissal requires a recorded reason and retains the original failure in history. Retry is available only where duplicate external actions can be prevented and the specific operation is eligible; uncertain writes require reconciliation/details rather than blindly repeating them. Monitoring approval does not authorise new publication, purchase, notification or unattended folder moves.
+Durable per-owner start/completion/error records, five-minute unconfirmed recovery, fenced execution lease, same-selection safe retry, linked issue resolution/dismissal audit and attention-first Compact card/history now implemented. Registered additive migration and unchanged environment revision6. Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved.
 
-Runtime/card implementation has not started. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance until placement/design is settled.
+All-GemOS scope is incremental: only YouTube checker is instrumented. No legacy backfill, new provider scopes or external publication. First new scheduled record and rendered phone/desktop/enlarged-text acceptance remain pending. Controlled storage/API/UI/capture/Group1/2 regressions, compiled routes and production build pass. Full contract/checks/recovery:group-4/USAGE-AND-CONNECTIONS.md.
 
-First proposed slice: durable start/finish/error instrumentation for existing YouTube snapshot checker, then Automation Performance card/history. See group-4/USAGE-AND-CONNECTIONS.md for inventory, ordered work and acceptance checks. No implementation/deployment in this assessment. CJ accepted regrouped appearance in chat; this is user visual acceptance, not browser/accessibility or new live-provider verification.
+Next: owner opens Automations and verifies a new scheduled run; expand with read-only Drive checks. Publication history/cadence and expected-frequency monitoring remain future work. Regrouped appearance was user-accepted; this is distinct from all-state browser QA.
