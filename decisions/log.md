@@ -597,3 +597,8 @@ Official data contract: https://developers.google.com/adsense/management/referen
 Controlled SQLite/token/auth/account checks, opaque currency/zero/missing/date/YouTube-only/deduplication fixtures, OAuth grant preservation/callback/status and real-script three-row/history10-page/stale-request/focus tests pass. Existing backend,earnings,commerce,backdrop regressions, compiled private200/401/shell and production build pass. No supported browser capture; live AdSense access, phone/desktop and all-state visual fit remain pending.
 
 Private source e4b20f3a70ceb9be206c26648ddbe842b5be08d1; deployment appgdep_6ace37a7c3b88191bfee46c6dfe00bcd succeeded13 October13:52UTC (14:52UK), envrevision6 retained. Next: refresh Sales → AdSense payouts connection → Connect payouts, approve read-only access and confirm actual balance/payment records. Existing genuine Payhip paid/refund/contracts and Group1/2 vertical-gap rollout remain separate.
+
+
+### 13 October 2026 — YouTube payouts live API only
+
+CJ confirmed live API calls only. Implemented approved provisional balance plus current-month estimate, period, conditional payout window and ten-per-page live history. Screenshot imports no longer affect this card; existing inactive snapshot storage is preserved. Deployed source bdbf03c1b94a81e597847dfce043a8cb0a894a54; existing grants and runtime revision 6 retained. Live comparison/rendered verification remains pending; see current dashboard HANDOFF.

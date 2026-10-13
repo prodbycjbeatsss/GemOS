@@ -1,5 +1,20 @@
 # Group 3 — sales
 
+## Current payout contract — 13 October 2026, live API only
+
+CJ confirmed live API calls only. This supersedes screenshot-import/snapshot-first proposals and the earlier unpaid-only headline. Card 3.4 retains Compact 454px, 12px vertical/20px column gaps and existing green Group 3 material. Headline: Estimated available earnings, calculated from current finalised AdSense YouTube balance plus the selected channel's current Pacific-month YouTube estimate in GBP. Period line: current month + carried balance. Recess: Finalised balance, Current-month estimate, Estimated payout · conditional. View payments: balance breakdown, estimate reporting-through date, conditional issue guidance and available payment history, ten per page with numbered controls. Shared outside-click dismissal/focus return remain.
+
+Sync requests live APIs only. Snapshot seeding, reads, imports and history merging are removed from the payout flow; /api/payouts/studio returns 404. Historical snapshot source/storage is inert and is not used for totals or payment history; the OCR prebuild step is removed. No screenshot is needed. Existing Google grants are reused, no new secrets or runtime migrations.
+
+Amounts are combined only when AdSense has an explicitly parseable GBP balance and Analytics returns a finite GBP estimate. Missing stays unavailable; actual zero stays zero. Analytics failure preserves finalised balance and payment history while leaving combined total unavailable. The selected historical period in 3.3 cannot affect 3.4. Owner/account/channel guards remain. Google does not expose channel-to-AdSense membership here: selected pairing follows the user's connected sources and must be checked against Studio; account balances can include multiple channels. Do not claim automatic membership verification or exact Studio replication.
+
+Timing: if finalised balance is already at the standard GBP £60 minimum, show conditional current-cycle 21–26 guidance (next cycle after the 26th); if only balance plus current-month estimate reaches £60, show next month's conditional 21–26 window. Below threshold has no predicted date. Wording covers finalisation, holds and higher custom thresholds; these are not exposed by the payment endpoint. Dates are issue guidance, not confirmed bank arrival. Current-month reporting period is available, carried-balance and historical payment earnings periods are not supplied and must not be invented.
+
+Controlled validation passed: payouts including £40.38 + £22.89 = £63.27 and conditional November window, currency/missing/zero/date/ownership/OAuth guards, real-handler current-month query and analytics-failure isolation; earnings, commerce, dialogs, backend security, Group 1 UI, Group 2 state, shell, production build and compiled private 200/401 handler checks. No supported rendered browser QA; fresh Sync/Studio comparison, phone/desktop/enlarged text and populated real payment-history checks remain pending.
+
+Deployed owner-private: source bdbf03c1b94a81e597847dfce043a8cb0a894a54, deployment appgdep_6ace885de97081918ed1d1942bab4a43, version appgprj_6ac84c21e1fc819198906084958537b0~appgver_682765be4c2c8191967c962017df866b; status succeeded, runtime revision 6 preserved. Next user check: refresh Sales and Sync payouts; compare balance/current-month estimate/combined total with Studio and inspect View payments. Keep unrelated Payhip paid/refund/contracts and Group 1/2 spacing work separate.
+
+
 Confirmed 11 October 2026. CJ approved refining the supplied original-card-mock-up.html Payhip card and adding it as a new section. This slice implements 3.1 only; 3.2 Email List is now approved and implemented (see current slice below);3.3 YouTube AdSense still needs review.
 
 ## 3.1 Payhip sales
