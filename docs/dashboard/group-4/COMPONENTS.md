@@ -10,3 +10,8 @@
 | Save state | Disabled controls during save, validated errors retained in form, owner-scoped persistence and409 stale-tab reload. |
 
 Source:ui/costs.html,ui/costs.js,ui/subscription-model.mjs,server/subscriptions.mjs. Calculations and records follow [SPECIFICATION](SPECIFICATION.md).
+
+
+### 13 October screenshot correction
+
+Selected view surfaces are28px high inside44px targets, centred with12px corners and #ffffff1a fill on both card and manager. The hit target remains large while the fill clears the footer divider. Close-footer background is transparent, without a separate gradient/band or negative inset; matches accepted Sales-dialog footer treatment. Logo lookup recognises provider plan suffixes and Google AI Pro/Ultra. Existing uniform mark/container geometry remains. Refreshed rendered acceptance pending.

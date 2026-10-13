@@ -1,5 +1,12 @@
 # GemOS dashboard — current handoff
 
+## Group 4 screenshot fixes — 13 October 2026
+
+CJ supplied three phone screenshots showing a separate Close-footer gradient, bulky selected view tabs touching the divider and Google Gemini Pro using initials. Fixed ui/costs.html:transparent/static modal footer matching the existing Sales treatment; Subscriptions/API top-ups now use a centred28px selected surface inside44px controls with shared12px corners and #ffffff1a fill, so the surface clears the divider. Fixed ui/costs.js:bundled service logos recognise common plan suffixes (Google Gemini Pro, Gemini Advanced, ChatGPT Plus) and Google AI Pro/Ultra aliases, while unrelated custom names keep initials. No records, cost calculations, dimensions, gradients or Groups1–3 styles changed.
+
+Focused actual-form/persistence/history/date/owner/revision tests and logo alias checks pass; shell, production build and compiled private200/401 handler checks pass. No rendered browser QA available; refreshed phone screenshot confirmation remains pending. Deployed source 4f5bd854e1ec6f6a755d1245b1c880bb43a43bad, deployment appgdep_6acea0cf0b948191ba44f3e1cfa1d788, owner-private/runtime revision6 preserved. Next:refresh /costs and inspect card footer, Manage subscriptions popup and Gemini logo.
+
+
 ## Current next step — Group 4 delivered, 13 October 2026
 
 CJ approved implementation with the existing cobalt Group4 colour. The manual Subscription Costs card is deployed at /costs:month/category selection, monthly equivalent GBP totals, scrollable full subscription list, bundled logos/initials, Manage subscriptions popup, effective-dated changes/cancellation and recoverable archive/restore. API top-up purchases use a separate view and total. No bank/API billing connection or recommendations/offer alerts added. See [Group4 specification](group-4/SPECIFICATION.md) for calculation/date conventions and [usage](group-4/USAGE-AND-CONNECTIONS.md).
