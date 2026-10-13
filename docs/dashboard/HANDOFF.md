@@ -236,3 +236,8 @@ AdSense-only403 handling now maps SERVICE_DISABLED/accessNotConfigured/serviceDi
 Payout setup opens on failure, displays the safe cause and an Open Google Cloud link only for disabled API. Client validates the exact trusted origin/path. Sync retries account discovery when no account loaded, enabling recovery after external API setup without another reconnect or page reload; success clears stale help. Card/data amounts unchanged.
 
 Controlled tests cover disabled-api/consumer link, scope denial, safe error redaction and real-script setup link/Sync recovery, along with existing payouts/backend fixtures. Production build, compiled200/401/shell checks pass. Source0301304a10722918896dcd19e4c1de920bf80336/deployment appgdep_6ace39ac88d0819190647cd7361c113b succeeded13 October14:01UTC (15:01UK), runtime revision6 retained. Next: refresh Sales, inspect exact AdSense setup error; if API disabled, follow generated link and enable, then Sync. Live account access and payment records remain unverified.
+
+
+## 13 October 15:06 UK — live AdSense payouts access verified
+
+CJ reports Connected and supplies a screenshot showing Connected · checked now and£40.38 current unpaid YouTube balance. This verifies live account/payment endpoint access and the unpaid balance rendering after the denial/setup recovery. Screenshot also shows the No payments yet state: no paid YouTube records returned by the current source, not proof that no payment has ever occurred. Actual populated paid-history/date/pagination verification remains pending. Existing four-card Group3 layout is visible in a cropped desktop-mode phone screenshot; do not treat it as measured all-width/accessibility acceptance. No code or deployment changes required for this verification.
