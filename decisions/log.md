@@ -602,3 +602,8 @@ Private source e4b20f3a70ceb9be206c26648ddbe842b5be08d1; deployment appgdep_6ace
 ### 13 October 2026 — YouTube payouts live API only
 
 CJ confirmed live API calls only. Implemented approved provisional balance plus current-month estimate, period, conditional payout window and ten-per-page live history. Screenshot imports no longer affect this card; existing inactive snapshot storage is preserved. Deployed source bdbf03c1b94a81e597847dfce043a8cb0a894a54; existing grants and runtime revision 6 retained. Live comparison/rendered verification remains pending; see current dashboard HANDOFF.
+
+
+### 13 October 2026 — Group 4 manual subscriptions and API top-ups
+
+CJ selected one manual Subscription Costs card: category tabs, selectable month, monthly equivalent GBP costs plus next payment dates, scrolling full list, bundled logos and management popup. Effective-dated price/cancellation history and full-month/latest-effective-price rules are confirmed. Weekly/monthly/quarterly/yearly billing retains day anchors with month-end/leap-day clamping. API top-up purchases use a separate view/total; recommendations and wishlist alerts are deferred. See docs/dashboard/group-4/SPECIFICATION.md; implementation remains pending.
