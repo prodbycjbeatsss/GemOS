@@ -1,5 +1,12 @@
 # GemOS dashboard — current handoff
 
+## Group 4 — complete service logo picker, 13 October 2026
+
+CJ requested all remaining service logos and a dropdown when adding subscriptions. Bundled official-site vector assets for Splice,Tracklib,Higgsfield,DistroKid and vidIQ; provenance and deterministic transparent-mark handling in integration-tests/youtube/public/subscription-logos/SOURCES.md. Existing white20px marks/uniform containers retained, initials fallback for custom names. Native Subscription service selector covers ChatGPT,OpenAI,Gemini,Claude,ElevenLabs,Higgsfield,Splice,Tracklib,SoundCloud,DistroKid,Spotify,Bandcamp,vidIQ and Custom subscription. Live logo preview; service selection fills canonical name and an editable category default. Custom option reveals required free-name input. Existing names, including Google Gemini Pro, are matched without rewriting saved records. Price/date/history/top-up logic unchanged.
+
+Controlled form/persistence/owner/history tests, all new logo asset/mapping checks, selector/preview/category/custom/legacy tests, shell, production build and compiled200/401 checks pass. Native phone dropdown/rendered logo acceptance remains pending; no supported browser QA. Deployed source 430cc1b03f9b2da087ec570725533c9947cac719, deployment appgdep_6acea30ff94081918bbed08bbc50f89c, owner-private/runtime revision6 preserved. Next:refresh Costs → Manage subscriptions → Add subscription, check the service dropdown and logo preview. No additional user setup.
+
+
 ## Group 4 screenshot fixes — 13 October 2026
 
 CJ supplied three phone screenshots showing a separate Close-footer gradient, bulky selected view tabs touching the divider and Google Gemini Pro using initials. Fixed ui/costs.html:transparent/static modal footer matching the existing Sales treatment; Subscriptions/API top-ups now use a centred28px selected surface inside44px controls with shared12px corners and #ffffff1a fill, so the surface clears the divider. Fixed ui/costs.js:bundled service logos recognise common plan suffixes (Google Gemini Pro, Gemini Advanced, ChatGPT Plus) and Google AI Pro/Ultra aliases, while unrelated custom names keep initials. No records, cost calculations, dimensions, gradients or Groups1–3 styles changed.

@@ -5,8 +5,26 @@ const money=pence=>new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP
 const date=(s,year=true)=>s?new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',...(year?{year:'numeric'}:{}),timeZone:'UTC'}):'No further payment';
 const labelMonth=m=>new Date(m+'-01T12:00:00Z').toLocaleDateString('en-GB',{month:'long',year:'numeric',timeZone:'UTC'});
 let saved=null,revision=0,month=today().slice(0,7),category='All',view='subscriptions',manageView='subscriptions',editing=null,saving=false,loading=0,archiveArmed=null;
-const logos={'chatgpt':'openai','openai':'openai','gemini':'googlegemini','google gemini':'googlegemini','claude':'anthropic','anthropic':'anthropic','elevenlabs':'elevenlabs','soundcloud':'soundcloud','spotify':'spotify','bandcamp':'bandcamp'};
-function logo(name){const box=el('span');box.className='brand-icon';box.setAttribute('aria-hidden','true');const normal=name.trim().toLowerCase().replace(/\s+/g,' ');const base=normal.replace(/ (?:pro|plus|max|ultra|advanced|premium|free|starter|standard|business|team)$/,'');const known=logos[normal]||logos[base]||({'google ai pro':'googlegemini','google ai ultra':'googlegemini'}[normal]);const initials=()=>{box.replaceChildren(el('span',name.trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()));};if(known){const img=el('img');img.src='/subscription-logos/'+known+'.svg';img.alt='';img.addEventListener('error',initials,{once:true});box.append(img);}else initials();return box;}
+const logos={'chatgpt':'openai','openai':'openai','gemini':'googlegemini','google gemini':'googlegemini','claude':'anthropic','anthropic':'anthropic','elevenlabs':'elevenlabs','soundcloud':'soundcloud','spotify':'spotify','bandcamp':'bandcamp','splice':'splice','tracklib':'tracklib','higgsfield':'higgsfield','higgsfield ai':'higgsfield','distrokid':'distrokid','vidiq':'vidiq'};
+const services=['ChatGPT','OpenAI','Gemini','Claude','ElevenLabs','Higgsfield','Splice','Tracklib','SoundCloud','DistroKid','Spotify','Bandcamp','vidIQ'];
+function logoName(name){const normal=name.trim().toLowerCase().replace(/\s+/g,' ');const base=normal.replace(/ (?:pro|plus|max|ultra|advanced|premium|free|starter|standard|business|team)$/,'');return logos[normal]||logos[base]||({'google ai pro':'googlegemini','google ai ultra':'googlegemini'}[normal]);}
+function logo(name){const box=el('span');box.className='brand-icon';box.setAttribute('aria-hidden','true');const known=logoName(name);const initials=()=>{box.replaceChildren(el('span',name.trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()));};if(known){const img=el('img');img.src='/subscription-logos/'+known+'.svg';img.alt='';img.addEventListener('error',initials,{once:true});box.append(img);}else initials();return box;}
+function servicePicker(name=''){
+ const exact=services.find(s=>s.toLowerCase()===name.toLowerCase());
+ const matched=exact||services.find(s=>logoName(name)&&logoName(s)===logoName(name));
+ $('sub-service').value=matched||(name?'custom':'');
+ $('sub-name-label').hidden=$('sub-service').value!=='custom';$('sub-name').required=$('sub-service').value==='custom';
+ $('sub-logo-preview').replaceChildren(logo(name||'Subscription'));
+}
+$('sub-service').addEventListener('change',()=>{
+ const service=$('sub-service').value;
+ $('sub-name-label').hidden=service!=='custom';$('sub-name').required=service==='custom';
+ $('sub-name').value=service==='custom'?'':service;
+ if(service&&service!=='custom')$('sub-category').value=['ChatGPT','OpenAI','Gemini','Claude','ElevenLabs','Higgsfield'].includes(service)?'AI':service==='vidIQ'?'Other':'Music';
+ $('sub-logo-preview').replaceChildren(logo(service&&service!=='custom'?service:'Subscription'));
+ if(service==='custom')$('sub-name').focus();
+});
+$('sub-name').addEventListener('input',()=>{$('sub-logo-preview').replaceChildren(logo($('sub-name').value||'Subscription'));});
 function empty(node,title,copy){node.replaceChildren();const n=el('div');n.className='cost-empty';n.append(el('strong',title));if(copy)n.append(el('span',copy));node.append(n);}
 async function api(body){const response=await fetch('/api/costs',{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(20000)});let data;try{data=await response.json();}catch{throw Error('Saved records could not be read.');}if(!response.ok){const e=Error(data.error||'Saved records unavailable.');e.status=response.status;throw e;}return data;}
 function render(){
@@ -26,8 +44,8 @@ function manage(){ $('manage-subscriptions').setAttribute('aria-pressed',String(
 function back(){editing=null;archiveArmed=null;$('subscription-form').hidden=true;$('topup-form').hidden=true;$('cost-management').hidden=false;manage();$('cost-add').focus();}
 function edit(id=null,historyVersion=null){editing=id;archiveArmed=null;$('cost-management').hidden=true;$('subscription-form').hidden=manageView!=='subscriptions';$('topup-form').hidden=manageView!=='topups';
  if(manageView==='subscriptions'){const record=saved?.subscriptions.find(r=>r.id===id);const latest=record?.versions.at(-1);const v=historyVersion||(latest?{...latest,effective:latest.effective>today()?latest.effective:today()}:null)||{name:'',category:'AI',pricePence:0,frequency:'monthly',effective:today(),anchor:today(),status:'active',plan:'',otherPlans:'',website:'',notes:''};$('subscription-form-title').textContent=id?'Edit subscription':'Add subscription';
- for(const key of ['name','category','frequency','effective','anchor','status','plan','otherPlans','website','notes'])$('sub-'+key).value=v[key];$('sub-price').value=id?(v.pricePence/100).toFixed(2):'';$('sub-message').textContent='';$('sub-archive').hidden=!id;$('sub-archive').textContent='Archive entry';$('sub-history-details').hidden=!id;$('sub-history').replaceChildren();
- for(const previous of record?.versions||[]){const n=el('div');n.className='history-row';n.append(el('p',date(previous.effective)+' · '+previous.name+' · '+money(previous.pricePence)+' '+previous.frequency+' · '+previous.status));const b=el('button','Edit this saved change');b.type='button';b.className='dialog-button';b.addEventListener('click',()=>edit(id,previous));n.append(b);$('sub-history').append(n);}$('sub-name').focus();
+ for(const key of ['name','category','frequency','effective','anchor','status','plan','otherPlans','website','notes'])$('sub-'+key).value=v[key];$('sub-price').value=id?(v.pricePence/100).toFixed(2):'';servicePicker(v.name);$('sub-message').textContent='';$('sub-archive').hidden=!id;$('sub-archive').textContent='Archive entry';$('sub-history-details').hidden=!id;$('sub-history').replaceChildren();
+ for(const previous of record?.versions||[]){const n=el('div');n.className='history-row';n.append(el('p',date(previous.effective)+' · '+previous.name+' · '+money(previous.pricePence)+' '+previous.frequency+' · '+previous.status));const b=el('button','Edit this saved change');b.type='button';b.className='dialog-button';b.addEventListener('click',()=>edit(id,previous));n.append(b);$('sub-history').append(n);}($('sub-name-label').hidden?$('sub-service'):$('sub-name')).focus();
  }else{const r=saved?.topups.find(t=>t.id===id)||{provider:'',date:today(),amountPence:0,credits:'',project:'',notes:''};$('topup-form-title').textContent=id?'Edit API top-up':'Add API top-up';for(const key of ['provider','date','credits','project','notes'])$('topup-'+key).value=r[key];$('topup-amount').value=id?(r.amountPence/100).toFixed(2):'';$('topup-message').textContent='';$('topup-archive').hidden=!id;$('topup-archive').textContent='Archive entry';$('topup-provider').focus();}
 }
 async function commit(next,messageId){if(saving)return false;saving=true;for(const b of document.querySelectorAll('#cost-dialog button'))b.disabled=true;$(messageId).textContent='Saving…';

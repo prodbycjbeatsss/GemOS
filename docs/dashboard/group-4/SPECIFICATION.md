@@ -29,9 +29,11 @@ Archive hides a mistaken record from all reports but preserves it for Restore; u
 
 Purchases only: provider, date and GBP amount; optional credits, project (such as GemOS) and notes. Management lists all entries; the card totals/lists the selected month. Edit/archive/restore supported. Never add top-up purchases to monthly subscription totals or count later credit consumption again. No remaining-balance/manual-usage tracking, automatic model selection, recommendations, wishlist or offer notification in v1.
 
-## Logos
+## Logos and service selection
 
-Bundled monochrome Simple Icons assets:OpenAI (ChatGPT),Google Gemini,Anthropic (Claude),ElevenLabs,SoundCloud,Spotify,Bandcamp. Same30px container/20px icon with initials fallback for names without a bundled asset or failed loading. No runtime logo fetch. Splice/Tracklib and other unbundled names currently use initials; do not substitute invented brand marks. Source/provenance:Simple Icons repository (CC0 icon package; brand trademarks remain their owners'). OpenAI/SoundCloud/Spotify/Bandcamp from14.0.0; other assets from develop as fetched13 October2026.
+Subscription service is a native dropdown covering ChatGPT/OpenAI,Gemini,Claude,ElevenLabs,Higgsfield,Splice,Tracklib,SoundCloud,DistroKid,Spotify,Bandcamp and vidIQ, plus Custom subscription. Known selection fills name and a category default that remains editable; custom reveals a required name field. A uniform logo preview accompanies the selector. Existing provider/plan labels are matched without rewriting stored names until the user chooses a replacement service.
+
+All listed services now have bundled assets:earlier Simple Icons marks plus official-site Splice,Tracklib,Higgsfield,DistroKid and vidIQ vectors. White marks in30px containers/20px display bounds (36px preview container). Preserve each mark's aspect ratio; DistroKid uses the official wordmark. Custom names retain initials and failed local asset loads have an initials fallback. No runtime third-party logo requests or generated approximations. Sources and modifications:integration-tests/youtube/public/subscription-logos/SOURCES.md. Brand trademarks belong to their owners; Simple Icons package isCC0. Native options are text; the adjacent preview displays the selected logo.
 
 ## State and access
 

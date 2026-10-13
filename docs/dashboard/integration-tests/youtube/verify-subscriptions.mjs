@@ -27,3 +27,14 @@ for(const name of ['Gemini','Google Gemini Pro','Gemini Advanced','Google AI Pro
 assert.equal(context.logo('ChatGPT Plus').children[0].src,'/subscription-logos/openai.svg');
 assert.equal(context.logo('Custom Gemini Music').children[0].textContent,'CG');
 console.log('Bundled logo matching covers provider/plan labels without matching unrelated custom names.');
+
+for(const [name,file] of [['Splice','splice'],['Tracklib','tracklib'],['Higgsfield','higgsfield'],['DistroKid','distrokid'],['vidIQ','vidiq']]){
+ assert.equal(context.logo(name).children[0].src,'/subscription-logos/'+file+'.svg');
+ const svg=readFileSync('public/subscription-logos/'+file+'.svg','utf8');assert.match(svg,/<(?:svg|ns0:svg)/);assert.ok(!/<script|<image|href=/.test(svg));
+}
+elements.get('cost-manage').listeners.click();elements.get('manage-subscriptions').listeners.click();elements.get('cost-add').listeners.click();
+elements.get('sub-service').value='Tracklib';elements.get('sub-service').listeners.change();assert.equal(elements.get('sub-name').value,'Tracklib');assert.equal(elements.get('sub-category').value,'Music');assert.equal(elements.get('sub-name-label').hidden,true);assert.equal(elements.get('sub-logo-preview').children[0].children[0].src,'/subscription-logos/tracklib.svg');
+elements.get('sub-service').value='custom';elements.get('sub-service').listeners.change();assert.equal(elements.get('sub-name-label').hidden,false);assert.equal(elements.get('sub-name').required,true);assert.equal(elements.get('sub-name').value,'');
+context.servicePicker('Google Gemini Pro');assert.equal(elements.get('sub-service').value,'Gemini');
+assert.ok(html.includes('<select id="sub-service" required>'));assert.ok(html.includes('Custom subscription'));
+console.log('Service selector: bundled missing logos, preview, category defaults, legacy-name matching and custom entry passed.');
