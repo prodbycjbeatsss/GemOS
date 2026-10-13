@@ -1,5 +1,9 @@
 # Dashboard design tokens
 
+## Current regrouping — 13 October2026
+
+Email List is now2.3:Group2 purple #4338ca/#312e81/#0f172a and Large920px, shared174px header/575–583px recess/bottom footer. Subscription Costs is now3.4:Group3 green #065f46/#044e39/#022c22 and Compact454px. Finance uses four half-width cards,12px row/20px column gaps. Cards/dialogs consume destination material, dimensions and shared glyph/fonts/radii. Former cobalt Group4 Costs rules below are historical; new Group4 publishing/automation has not been styled or built. Old /costs redirects to Finance. Narrow Finance cost controls scroll within one44px track; intentional list scrolling does not trigger paired growth.
+
 Updated 10 October 2026. These values implement the accepted Group 2 design; they introduce no new palette. The private YouTube test defines them once in `ui/index.html`. Both cards consume the same tokens. Group 1 retains its own reviewed palette and geometry.
 
 | Role / CSS token | Value |

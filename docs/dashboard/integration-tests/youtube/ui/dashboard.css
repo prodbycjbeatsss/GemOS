@@ -16,3 +16,6 @@ html{min-height:100%;background:var(--shell-bg);color-scheme:dark}body{min-heigh
 
 /* Four group links remain usable on phones. */
 @media(max-width:439px){.group-navigation{flex-wrap:wrap}.group-navigation a{flex:1 1 calc(50% - 5px);min-width:0}}
+
+/* The longer Audience & Performance label may wrap within its hit target. */
+.group-navigation a{white-space:normal;text-align:center}

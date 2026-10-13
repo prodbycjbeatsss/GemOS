@@ -16,7 +16,7 @@
     $('payhip-webhook').hidden=!value.webhookUrl;$('payhip-webhook-url').value=value.webhookUrl||'';
     $('payhip-copy').disabled=!value.receiverEnabled;
     $('payhip-webhook-help').textContent=value.receiverEnabled?'Paste this URL into Payhip Settings → Developer, then select paid and refunded.':'The separate receiver is prepared but not publicly enabled yet. Do not add this URL to Payhip until enabled.';
-    $('commerce-context').textContent='Group 3 · Beat sales · '+(value.verifiedAt?'Notifications verified · received orders only':value.keySaved?'Connection saved · verification pending':'Payhip data not connected');
+    $('commerce-context').textContent='Group 3 · Finance';
     $('payhip-setup').open=!value.keySaved;render();loadReport();
   }
   $('payhip-form').addEventListener('submit',async e=>{
@@ -99,7 +99,7 @@
   }
   async function loadReport(){
     const id=++generation;unavailable('Loading received sales…');$('sales-refresh').disabled=true;
-    try{const value=await api('GET',undefined,'report?year='+date.getFullYear()+(mode==='month'?'&month='+(date.getMonth()+1):''));if(id!==generation)return;drawReport(value);$('commerce-context').textContent='Group 3 · Beat sales · Received notifications only';}
+    try{const value=await api('GET',undefined,'report?year='+date.getFullYear()+(mode==='month'?'&month='+(date.getMonth()+1):''));if(id!==generation)return;drawReport(value);$('commerce-context').textContent='Group 3 · Finance';}
     catch(e){if(id===generation)unavailable(e.message);}finally{if(id===generation)$('sales-refresh').disabled=false;}
   }
   $('sales-refresh').addEventListener('click',loadReport);

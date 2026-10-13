@@ -1,5 +1,9 @@
 # GemOs dashboard card design system
 
+## Current regrouping — 13 October2026
+
+Email List is now2.3:Group2 purple #4338ca/#312e81/#0f172a and Large920px, shared174px header/575–583px recess/bottom footer. Subscription Costs is now3.4:Group3 green #065f46/#044e39/#022c22 and Compact454px. Finance uses four half-width cards,12px row/20px column gaps. Cards/dialogs consume destination material, dimensions and shared glyph/fonts/radii. Former cobalt Group4 Costs rules below are historical; new Group4 publishing/automation has not been styled or built. Old /costs redirects to Finance. Narrow Finance cost controls scroll within one44px track; intentional list scrolling does not trigger paired growth.
+
 Updated 11 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
 
 Read this first, then the relevant group specification. Confirmed group-specific choices take precedence over general proposals. The audit is advisory. Unreviewed groups must be discussed before implementation.

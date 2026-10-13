@@ -14,7 +14,7 @@ class Element {
  const elements=Object.fromEntries(ids.map(id=>[id,new Element(id)])), cardSync=new Element(), footer=new Element(), dock=new Element();
  const ranges=[7,28,90,365].map(n=>{const e=new Element();e.dataset={range:String(n)};e.attrs['aria-checked']=String(n===28);return e;});
  const stages=[];Object.defineProperty(elements['sync-message'],'textContent',{set:v=>stages.push(v),get:()=>stages.at(-1)});
- const document={getElementById:id=>elements[id],createElement:()=>new Element(),querySelector:s=>s==='[data-sync-card]'?cardSync:s==='.sync-status'?footer:s==='.dock'?dock:s==='[data-range][aria-checked=true]'?ranges.find(e=>e.attrs['aria-checked']==='true'):null,querySelectorAll:s=>s==='.dock'?[dock]:ranges};
+ const document={getElementById:id=>elements[id],createElement:()=>new Element(),querySelector:s=>s==='[data-sync-card]'?cardSync:s==='.sync-status'?footer:s==='.dock'?dock:s==='[data-range][aria-checked=true]'?ranges.find(e=>e.attrs['aria-checked']==='true'):null,querySelectorAll:s=>(s==='.dock'||s==='#card-monthly-shortform .dock,#batch-card .dock')?[dock]:ranges};
  const storage=new Map();const sessionStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
  const pending=[],requests=[];const fetch=async(url,init={})=>{const recorded=new URL(url,'https://test.invalid');recorded.requestBody=init.body;recorded.requestHeaders=init.headers;requests.push(recorded);return new Promise(resolve=>pending.push({url:new URL(url,'https://test.invalid'),resolve}));};
  const google={accounts:{oauth2:{initTokenClient:config=>({requestAccessToken:()=>config.callback({access_token:'FAKE',expires_in:3600})}),hasGrantedAllScopes:()=>true,revoke:()=>{}}}};

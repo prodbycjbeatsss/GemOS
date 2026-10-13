@@ -139,7 +139,7 @@
   function fitRecess() {
     // Normal geometry matches 2.2; only enlarged/overflowing content invokes reflow.
     requestAnimationFrame(() => {
-      for (const dock of document.querySelectorAll('.dock')) {
+      for (const dock of document.querySelectorAll('#card-monthly-shortform .dock,#batch-card .dock')) {
         dock.classList.remove('needs-reflow');
         if (dock.scrollHeight > dock.clientHeight + 1) dock.classList.add('needs-reflow');
       }

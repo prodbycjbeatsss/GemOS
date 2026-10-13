@@ -612,3 +612,8 @@ CJ selected one manual Subscription Costs card: category tabs, selectable month,
 ### 13 October 2026 — Group 4 implemented in original cobalt
 
 CJ authorised implementation and retained the original Group4 colour. Delivered manual monthly-equivalent subscriptions plus separate API top-up purchases, private saved history and management popup. Historical dates use the selected month's first day; current month uses today. Weekly conversion52/12; row-pence rounding; same-month latest active price counted once. Archive/restore preserves mistaken records; dated cancellation preserves prior reporting. Source d22a6aa9d099d9d2d8c8c989137f5439fb7ec32c deployed privately with runtime revision6. Controlled validation passed; fresh user/device acceptance pending. See Group4 specification for full contract.
+
+
+### 13 October2026 — regroup audience and finances
+
+CJ approved plan then implementation:Email List moves to2.3 Audience & Performance, adopting purple920px Large; Subscription Costs moves to3.4 Finance, adopting green454px Compact. Finance now contains Payhip/earnings/payouts/costs; no filler second-cost card or new audience group. Old Costs group retired; former Group5 cadence/automation becomes futureGroup4. Setup/dialog/script ownership moved with cards, /costs redirects to Finance and saved records/backends/credentials unchanged. Deployed source 0290a28c7d2b91daac3b6a00fe3a13c5d49bd388; controlled checks/build pass, fresh rendered acceptance pending. Pre-move contracts archived; current cost authority is group-3/SUBSCRIPTIONS.md.
