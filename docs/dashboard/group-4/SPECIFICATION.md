@@ -1,5 +1,9 @@
 # Group4 — Automation Performance
 
+## Shared card sync timestamps — 14 October 2026
+
+All source card footers now show the same owner-scoped last successful completion record as the Automation grid, with UK date/time including seconds. Time labels refresh on source requests, page focus/visibility and every 30 seconds while visible; reads create no runs. Failed attempts retain last success. Manual Subscription Costs shows Last saved; unconnected Buffer shows Not connected. Automation grid dates now include seconds; its own freshness remains Records refreshed. Does not claim metrics represent this exact time or backfill 24h snapshots. Fixed sizes, metric tiles and provider contracts retained. Source 03ba6c3efa9ef2d0b6e61535476b111558256bf9. Timestamp, card-sync, monitor, bulk UI, project, commerce, state/layout checks, production build and compiled page checks pass. Signed-in rendered footer verification still pending.
+
 ## Current Large card and data sync — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.

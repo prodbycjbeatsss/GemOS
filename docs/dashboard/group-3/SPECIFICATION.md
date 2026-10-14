@@ -1,5 +1,9 @@
 # Group 3 — Finance
 
+## Shared card sync timestamps — 14 October 2026
+
+All source card footers now show the same owner-scoped last successful completion record as the Automation grid, with UK date/time including seconds. Time labels refresh on source requests, page focus/visibility and every 30 seconds while visible; reads create no runs. Failed attempts retain last success. Manual Subscription Costs shows Last saved; unconnected Buffer shows Not connected. Automation grid dates now include seconds; its own freshness remains Records refreshed. Does not claim metrics represent this exact time or backfill 24h snapshots. Fixed sizes, metric tiles and provider contracts retained. Source 03ba6c3efa9ef2d0b6e61535476b111558256bf9. Timestamp, card-sync, monitor, bulk UI, project, commerce, state/layout checks, production build and compiled page checks pass. Signed-in rendered footer verification still pending.
+
 ## Current grouping — 13 October 2026
 
 CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.
