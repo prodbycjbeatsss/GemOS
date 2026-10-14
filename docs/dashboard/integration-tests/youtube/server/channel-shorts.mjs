@@ -1,6 +1,6 @@
 import { api, access } from './youtube.mjs';
 import { saveTarget } from './sync-targets.mjs';
-const metrics=['views','averageViewPercentage','likes','subscribersGained','shares'];
+const isShorts=type=>typeof type==='string'&&type.trim().toUpperCase()==='SHORTS';
 const counts=['views','likes','subscribersGained','shares'];
 const shift=(value,days)=>{const d=new Date(value+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10);};
 export const reportingYesterday=()=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(p=>[p.type,p.value]));return shift(p.year+'-'+p.month+'-'+p.day,-1);};
@@ -23,18 +23,18 @@ export async function channelShorts(env,owner,input){
    const part=rows(data,['day','creatorContentType']);daily.push(...part);if(part.length<200){complete=true;break;}
   }
   if(!complete)throw fail('The Shorts report exceeded the safe pagination limit. No partial total was saved.');
-  const seen=new Set();for(const row of daily){if(!/^\d{4}-\d{2}-\d{2}$/.test(row.day)||row.day<start||row.day>end||typeof row.creatorContentType!=='string')throw fail('YouTube returned unexpected Shorts reporting dates.');const key=row.day+':'+row.creatorContentType;if(seen.has(key))throw fail('YouTube repeated a reporting row. No duplicate totals were saved.');seen.add(key);}
-  const shorts=daily.filter(r=>r.creatorContentType==='SHORTS'),totals={};
+  const seen=new Set();for(const row of daily){if(!/^\d{4}-\d{2}-\d{2}$/.test(row.day)||row.day<start||row.day>end||typeof row.creatorContentType!=='string')throw fail('YouTube returned unexpected Shorts reporting dates.');const key=row.day+':'+row.creatorContentType.trim().toUpperCase();if(seen.has(key))throw fail('YouTube repeated a reporting row. No duplicate totals were saved.');seen.add(key);}
+  const shorts=daily.filter(r=>isShorts(r.creatorContentType)),totals={};
   for(const key of counts){let total=shorts.length?0:null;for(const row of shorts){const n=value(row[key],key);if(n===null||!Number.isSafeInteger(total+n)){total=null;break;}total+=n;}totals[key]=total;if(total===null)warnings.push({period:label,metric:key,reason:'No usable Shorts source value returned'});}
   // Request the provider aggregate. Never average daily percentages or infer Shorts from duration.
-  const retention=rows(await query({startDate:start,endDate:end,dimensions:'creatorContentType',metrics:'averageViewPercentage'}),['creatorContentType']);const matches=retention.filter(r=>r.creatorContentType==='SHORTS');if(matches.length>1)throw fail('YouTube returned more than one Shorts retention aggregate.');
+  const retention=rows(await query({startDate:start,endDate:end,dimensions:'creatorContentType',metrics:'averageViewPercentage'}),['creatorContentType']);const matches=retention.filter(r=>isShorts(r.creatorContentType));if(matches.length>1)throw fail('YouTube returned more than one Shorts retention aggregate.');
   totals.averageViewPercentage=matches.length?value(matches[0].averageViewPercentage,'averageViewPercentage'):null;
   if(totals.averageViewPercentage===null)warnings.push({period:label,metric:'averageViewPercentage',reason:'Shorts aggregate average viewed unavailable'});
-  return {totals,latest:shorts.map(r=>r.day).sort().at(-1)||null};
+  return {totals,latest:shorts.map(r=>r.day).sort().at(-1)||null,classification:{sourceRows:daily.length,shortsRows:shorts.length,returnedTypes:[...new Set(daily.map(r=>r.creatorContentType))].slice(0,10).map(v=>v.slice(0,60)),retentionTypes:[...new Set(retention.map(r=>r.creatorContentType))].slice(0,10).map(v=>String(v).slice(0,60))}};
  }
  const start=shift(endDate,1-rangeDays),previousEnd=shift(start,-1),previousStart=shift(start,-rangeDays);
  const current=await period(start,endDate,'current'),previous=await period(previousStart,previousEnd,'previous');
- const report={source:'YouTube Analytics API v2',scope:'Channel-wide YouTube Shorts',scopeType:'channel-shorts',channelId:channel,channelTitle:channels.find(c=>c.id===channel).title,videos:[],requestedEnd:endDate,rangeDays,currentPeriod:{start,end:endDate},previousPeriod:{start:previousStart,end:previousEnd},reportingTimezone:'America/Los_Angeles',latestReturnedDay:current.latest,fetchedAt:new Date().toISOString(),current:current.totals,previous:previous.totals,warnings,coverage:'All channel activity classified as SHORTS by YouTube. Reporting may be delayed; missing rows are not treated as zero. Average viewed is Google’s period aggregate. TikTok and Reels are not connected.'};
+ const report={source:'YouTube Analytics API v2',scope:'Channel-wide YouTube Shorts',scopeType:'channel-shorts',channelId:channel,channelTitle:channels.find(c=>c.id===channel).title,videos:[],requestedEnd:endDate,rangeDays,currentPeriod:{start,end:endDate},previousPeriod:{start:previousStart,end:previousEnd},reportingTimezone:'America/Los_Angeles',latestReturnedDay:current.latest,fetchedAt:new Date().toISOString(),current:current.totals,previous:previous.totals,warnings,classification:{current:current.classification,previous:previous.classification},coverage:'All channel activity classified as SHORTS by YouTube. Reporting may be delayed; missing rows are not treated as zero. Average viewed is Google’s period aggregate. TikTok and Reels are not connected.'};
  const currentConnection=await env.DB.prepare('SELECT revision FROM youtube_connections WHERE user_id=? AND client_id=?').bind(owner,env.GOOGLE_CLIENT_ID).first();if(currentConnection?.revision!==connection.row.revision)throw fail('Your Google connection changed. Sync again.',401);
  await env.DB.prepare('INSERT INTO analytics_sync_cache (user_id,report_json,updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET report_json=excluded.report_json,updated_at=excluded.updated_at WHERE analytics_sync_cache.updated_at<=excluded.updated_at').bind(owner,JSON.stringify(report),startedAt).run();
  await saveTarget(env,owner,'shorts-analytics-sync',{scopeType:'channel-shorts',channel,rangeDays},startedAt);

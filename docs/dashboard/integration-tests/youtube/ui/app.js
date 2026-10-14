@@ -441,7 +441,7 @@
       if (backendMode) {
         batchReport = await backend('release', { ids, channelId: channel, name: name.slice(0,120), confirmed: true });
         if (session !== generation) return;
-        renderBatch(); batchStatus('Release synced', batchReport.capture, 'Synced · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB')); return;
+        renderBatch(); const expiredWithoutSnapshots=batchReport.videos.length>0&&batchReport.videos.every(v=>!hasSnapshot(v)&&Number.isFinite(Date.parse(v.publishedAt))&&Date.now()>Date.parse(v.publishedAt)+87300000);batchStatus('Release synced',expiredWithoutSnapshots?'No 24-hour snapshots were recorded for this release. Sync cannot reconstruct its past capture windows.':batchReport.capture, 'Synced · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB')); return;
       }
       const data = await api('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet,status', id: ids.join(',') }, session);
       if (!Array.isArray(data.items) || data.items.length !== ids.length || data.items.some(v => !ids.includes(v.id) || v.snippet?.channelId !== channel) || new Set(data.items.map(v=>v.id)).size !== ids.length) throw new Error('Every release Short must be available and owned by the selected channel.');

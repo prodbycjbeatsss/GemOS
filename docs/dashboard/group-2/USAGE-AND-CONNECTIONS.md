@@ -1,5 +1,13 @@
 # Group 2 — usage and connections
 
+## Latest repair — 14 October 2026, 20:39 UK
+
+CJ supplied a completed365-day2.1 response with unavailable figures and a2.2 July release with zero frozen snapshots.2.1's exact-uppercase content type matcher is replaced by case-normalised Shorts-only matching, supporting the `shorts` form documented by a primary API implementation as well as `SHORTS`. Long/live/unknown types remain excluded. Controlled fixtures verify both cases and source-row counts; the next owner Sync is required to verify the precise live response. The private cache now includes bounded returned content-type names and total/Shorts-row counts to diagnose any remaining mismatch without fabricated zeros. Stale Selected Shorts only heading changed to Channel-wide Shorts.
+
+2.2 retains the explicitly selected July batch; no24-hour snapshots exist for those old uploads. Sync cannot reconstruct elapsed windows or replace frozen24h counts with today's lifetime totals. Feedback now states that limitation. Choose a newer release in its separate source setup when available.
+
+Source `958e8a851b679137e7649f7e53772255c2e79b27`; private deployment `appgdep_6acfda4ce24c8191b989a2e0ff6bde16` succeeded; runtime revision6 retained. Provider-case/state/card-sync/capture/bulk-control checks and build pass. Live repaired2.1 figures and rendered all-state QA remain pending. GitHub checkpoint stays in draft PR2; main has not been updated.
+
 ## Current 2.1 — channel-wide Shorts, 14 October 2026
 
 CJ authorised replacing the manually selected test sample with all Shorts activity on the connected channel. Both the normal card Sync and Automation Sync all use `/api/youtube/shorts-report`, without pasted links or confirmation. YouTube's exact `creatorContentType=SHORTS` dimension value identifies eligible rows; long-form/live/unknown rows are excluded. Counts are summed over complete paginated daily reports, while Average viewed comes from Google's period aggregate. No duration/title guesses or unweighted percentage averages.

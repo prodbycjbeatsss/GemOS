@@ -1,5 +1,13 @@
 # GemOS dashboard — current handoff
 
+## Latest repair — 14 October 2026, 20:39 UK
+
+CJ supplied a completed365-day2.1 response with unavailable figures and a2.2 July release with zero frozen snapshots.2.1's exact-uppercase content type matcher is replaced by case-normalised Shorts-only matching, supporting the `shorts` form documented by a primary API implementation as well as `SHORTS`. Long/live/unknown types remain excluded. Controlled fixtures verify both cases and source-row counts; the next owner Sync is required to verify the precise live response. The private cache now includes bounded returned content-type names and total/Shorts-row counts to diagnose any remaining mismatch without fabricated zeros. Stale Selected Shorts only heading changed to Channel-wide Shorts.
+
+2.2 retains the explicitly selected July batch; no24-hour snapshots exist for those old uploads. Sync cannot reconstruct elapsed windows or replace frozen24h counts with today's lifetime totals. Feedback now states that limitation. Choose a newer release in its separate source setup when available.
+
+Source `958e8a851b679137e7649f7e53772255c2e79b27`; private deployment `appgdep_6acfda4ce24c8191b989a2e0ff6bde16` succeeded; runtime revision6 retained. Provider-case/state/card-sync/capture/bulk-control checks and build pass. Live repaired2.1 figures and rendered all-state QA remain pending. GitHub checkpoint stays in draft PR2; main has not been updated.
+
 ## Current checkpoint — 14 October 2026, channel-wide 2.1
 
 2.1 is now channel-wide YouTube Shorts, replacing the selected-sample test. Read [CHANNEL-SHORTS](integration-tests/youtube/CHANNEL-SHORTS.md), current Group2 spec/usage, then implementation `server/channel-shorts.mjs`, API route, `server/card-sync.mjs`, `ui/app.js`. Sole connected channel works without sample IDs. Normal Sync and Automation Sync all share the service; saved owner reports restore after refresh. 2.2 release selection/capture is unchanged. TikTok/Reels remain unavailable.
