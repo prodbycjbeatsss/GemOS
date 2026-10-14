@@ -1,5 +1,11 @@
 # Group 2 — usage and connections
 
+## 2.2 Current views and leaderboard — 14 October 2026
+
+CJ requests numeric total views instead of the static Shorts Views (24hrs) headline, each video's views and place numbers. Delivered: total current cumulative views for confirmed/format-eligible Shorts uploaded in the selected UK week; per-row current counts and descending current-view ranks, with shared places for ties and true zero supported. Pending classification is excluded from total/ranks, while returned upload views can still be visible. Missing confirmed values make the total unavailable rather than a false subtotal. Weekly grouping does not prove remix affiliation; these are lifetime-to-sync views for that batch, not views earned only during the week.24h snapshots remain frozen and visible in details; automatic capture remains enabled. Old cache version refreshes once. Existing sizes/palettes/timestamp layout retained.
+
+Source14101e638b8bdef89f031fa380af697a0837a9a1/private appgdep_6acfee28dfe08191982c65dbc9f0900b succeeded, runtime revision6. Controlled real UI verifies total20 with ranks1/1/3 and zero views without24h snapshots. Provider tests verify current999 vs frozen100, pending exclusion and unavailable totals. Capture/card-sync/automation/sync/layout/group checks, build and compiled200/401 pass. Owner live current figures/visual layout remain to verify. Earlier snapshot-only visible leaderboard specifications are superseded.
+
 ## 2.2 Weekly channel Shorts — 14 October 2026
 
 CJ approved automatic Monday–Sunday upload batches in Europe/London because Shorts titles do not match remixes. Production2.2 defaults to current week with previous/next controls (52past weeks, no future); no remix affiliation is inferred. Owner uploads discovery replaces manual links/release name. Existing external5-minute checker now discovers current-week uploads plus2prior days for week-boundary captures, independent of the historical week being viewed. Sync all uses saved weekly channel/week; sole channel works without manual release setup. Cached page restoration reads without creating a new sync.

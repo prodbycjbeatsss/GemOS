@@ -1,5 +1,10 @@
 # 2.2 Weekly Shorts — 14 October 2026
 
+## Current views presentation
+
+CJ requested a numeric total headline instead of Shorts Views (24hrs), current views on every upload row, and numbered leaderboard places. Production rows now rank by current cumulative views; headline sums confirmed/format-eligible Shorts uploaded in the selected UK week. Ties share ranks; genuine zero is valid. Missing confirmed counts make the total unavailable, rather than a misleading subtotal. Pending classification remains unranked and excluded from the total while its returned upload view count can still be shown. These are lifetime-to-sync views for the weekly batch, not views earned only during the week.24h snapshots stay immutable and are shown only in details; the scheduled checker remains connected. Old report caches without current-view fields refresh once. This supersedes the snapshot-only visible ranking statements below.
+
+
 CJ approved replacing the manually selected remix/release batch with uploads grouped Monday–Sunday by Europe/London publication date. Current week is the default; previous/next arrows allow up to52 past weeks and prevent future selection. No title matching or remix affiliation is claimed.2.1 remains independent.
 
 ## Discovery and capture
