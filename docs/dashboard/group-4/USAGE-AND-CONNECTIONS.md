@@ -22,7 +22,7 @@ New registry sources do not backfill older attempts. Public Payhip receiver/inge
 
 ## API and execution
 
-GET /api/automations returns owner-only totals, up to10 attention-first history runs, hasMore/offset, cards, registered automation filter options, updatedAt, coverage and lastScheduledStart. id detail remains owner-scoped. Registry keys validate the automation filter; offset is bounded/multiple of10. POST still supports checker retry and reasoned dismissal only, with same-origin authenticated/bounded JSON validation.
+GET /api/automations returns owner-only totals, up to10 attention-first history runs, hasMore/offset, cards, registered automation filter options, updatedAt, coverage and lastScheduledStart. id detail remains owner-scoped. Registry keys validate the automation filter; offset is bounded/multiple of10. POST supports checker retry, reasoned dismissal and fixed read-only sync-card, with same-origin authenticated/bounded JSON validation.
 
 server/sync-monitor.mjs wraps actual existing server report/check handlers. Generic outcomes come from HTTP response and safe partial-data flags, not client-reported completion. No credentials, request bodies, provider payloads, titles, email addresses or monetary figures enter telemetry. Errors remain fixed safe summaries; a source-card link exposes existing authorised error UI.
 
@@ -36,9 +36,9 @@ Successful checker retries resolve only open issues in the matching chain. Later
 
 ## Storage, design and verification
 
-Uses existing registered automation_runs/automation_locks schema from drizzle/0006_automation_runs.sql. No new migration, credential, scope, scheduler job, permission or manual-record mutation in this extension.
+Uses existing registered automation_runs/automation_locks schema from drizzle/0006_automation_runs.sql. New registered schema-only migrations0007_sync_targets and0008_analytics_sync_cache add private selections/results; prior migrations are unchanged. No new credential/scope/scheduler permission or manual-record mutation.
 
-Recess has a responsive two-column grid (one below360px), intentionally scrollable inside the established cobalt Compact454px card. Last success remains visible after failure; tiles independently show latest attempt and older unresolved issues. Footer preserves read-only Refresh and filtered run history. Native details/dismissal/checker retry flow remains.
+Recess has a responsive two-column grid (one below360px), intentionally scrollable inside the established cobalt Large920px card. Last success remains visible after failure; tiles independently show latest attempt and older unresolved issues. Footer preserves read-only Refresh and filtered run history. Native details/dismissal/checker retry flow remains.
 
 Checks: node verify-sync-monitor.mjs (repeated grid reads insert no rows; per-card owner isolation/latest status/retained last success; manual saved/not-connected state; one analytics trace; order/no-data/partial handling; concurrent period reports; consumed-body uncertain move safety), node verify-automations.mjs, node verify-automations-ui.cjs, node verify-capture.mjs, node verify-state.cjs, node verify-backend.mjs, node verify-prepare.mjs, node verify-projects.mjs, node verify-project-ui.mjs, node verify-email.mjs, node verify-earnings.mjs, node verify-payouts.mjs, node verify-commerce.cjs, node verify-subscriptions.mjs, node verify-dialogs.mjs, production build and node verify-compiled-pages.mjs. Supplemental controlled real UI check confirms one trace ID/four ordered stage headers and no extra requests.
 
@@ -49,3 +49,37 @@ CJ reports two visible entries after initial monitoring deployment; exact live t
 Next owner check: refresh the Site, open Automations and inspect the grid; run normal source-card Sync actions and confirm corresponding latest status/last success/history. Check scroll/phone/desktop/enlarged text. These newly instrumented live provider results and rendered layout remain unverified. Monitoring does not prove scheduler uptime or publication.
 
 Recovery: redeploy preceding Site source while retaining existing run history/tables. Existing snapshot/provider data and prior applied migrations remain untouched.
+
+## Current Large card and data sync — 14 October2026
+
+CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
+
+Nine compact centred two-column tiles:8px padding/gaps,28px glass icon/18px monochrome mark,11px name/10px status/date, status symbol plus wording,44px Sync/details controls. Latest attempt/duration remains in details. Older unresolved issues remain visible after newer success. Manual Costs shows Last saved; unconnected Buffer shows Not connected, both Sync-disabled.2.2 uses Last successful check; other sources show Last synced.
+
+Sync all refreshes available data cards sequentially, guards duplicates and continues after failures; completed/partial/skipped/failed are separate. Bottom Refresh status only reads records. Source choices reuse last successful saved selections/periods; absent period defaults to the source's current month. Missing/multiple required channel/account/sample choices require source setup. Analytics can initialise from the same tab's previously confirmed sample, never2.2's independent release sample. It does not move/approve/publish/send/purchase/spend or rewrite manual records.
+
+Source 4c5a7387e7352fe82f5b14604317fff3cdf41bf2; private deployment appgdep_6aced96e768881918b0c3d6e9a829474; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_5f6fa7750d3c8191ba376254f10694db; succeeded; runtime revision6 unchanged.
+
+Controlled card-sync/control/automation/cache/security/provider/Group1–3 checks, production build and compiled200/401 pass. Actual Drive bulk fixture used only GET provider calls. Rendered phone/desktop/enlarged-text and owner live Sync all remain pending.
+
+### Explicit sync API and work
+
+POST /api/automations {action:'sync-card',card:<known card>,selection?:confirmedAnalyticsSample} uses owner authentication, same-origin, bounded JSON/exact allowed fields. server/card-sync.mjs fixes every route/method/action; caller cannot provide an arbitrary URL or move instruction. Owner/card execution lease prevents concurrent duplicate requests.
+
+|Card|Individual/main Sync work|
+|---|---|
+|1.2|Drive catalogue discovery then currently selected project scan. No Queue approval/move. Missing selected project reports partial guidance.|
+|2.1|Validated owned confirmed sample; ownership/probe/current/previous form one run. Saved range/end date retained; never infer from2.2.|
+|2.2|Current saved release metadata/eligible snapshot refresh. Frozen first counts remain immutable; no backfill.|
+|2.3|Mailchimp report using saved/current month.|
+|3.1|Received-sales report using saved/current London period; no historic Payhip import/fulfilment.|
+|3.2|Earnings summary and first ranking page using saved period/channel or unique owned channel/current Pacific month.|
+|3.3|Saved payout account/channel report; discover a unique account only if no choice saved. Multiple accounts require source choice.|
+
+Generated0007_sync_targets.sql stores allowlisted owner source selections through server/sync-targets.mjs. No credentials/provider payloads. Request-start timestamp comparison prevents older in-flight responses replacing newer saved targets. Changes without a successful source sync do not replace the last successful target.
+
+Generated0008_analytics_sync_cache.sql stores a bounded real2.1 report separately from telemetry. server/analytics-cache.mjs retains source dates/values and signed Likes; missing metrics are unavailable. Google status includes it only for the authenticated owner/currently owned channel. ui/app.js restores the matching cache as Saved analytics restored, preserving original fetchedAt/period/sample rather than claiming a new live request. Disconnect hides cache until compatible access is restored; no historic snapshot reconstruction.
+
+New checks:node verify-card-sync.mjs, node verify-sync-controls-ui.cjs and updated verify-state.cjs. Actual server sample replay/target/cache ownership, missing-selection skip, duplicate lease, GET-only Drive, fixed routing/auth/origin, individual/bulk controls, failure continuation, partial/skipped/failed summary and cache restoration pass alongside existing regressions/build/compiled pages.
+
+Latest deployment above supersedes earlier source/version checkpoints here. Next: refresh Automations, review Large/centred tiles/scroll, then use one Sync and Sync all and compare history/source cards. Owner-authenticated live execution and rendered QA were not performed. Recovery: redeploy preceding Site version, preserving additive tables/cache/history and immutable applied migrations.

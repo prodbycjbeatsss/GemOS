@@ -112,3 +112,9 @@ The separate private test now has server-saved selections, immutable qualifying 
 ### 9 October — accepted test completion checkpoint
 
 CJ accepts 2.2 implementation complete, with real first-release capture/display unverified. The Google job and persisted scheduled classification are verified. In the private integration test, vertical leaderboard swipes chain to the page when rows fit or either end is reached; internal overflow scrolling and fixed dimensions remain. Android gesture verification is pending. No canonical reference HTML changes or historical reporting mode were added. STATUS.md holds the first-release checklist.
+
+## 14 October2026 — explicit Automation Sync and saved2.1 data
+
+Group4 individual/Sync all refreshes the same confirmed owned selected-Shorts sample through private read-only Google handlers, preserving successful range/end date. A validated same-tab confirmed sample can initialise setup;2.2 is independent and never substitutes. One ownership/probe/current/previous run.
+
+analytics_sync_cache stores the real aggregate privately outside telemetry. Matching owner/current-channel cached data restores in2.1 as Saved analytics restored, with original videos/period/fetchedAt; not a new live fetch. Missing metrics remain unavailable and signed Likes retained. Direct card Sync remains fresh; Group2 palette/geometry and2.2 eligibility unchanged. Controlled cache isolation and real-script restore pass; live/view acceptance pending.

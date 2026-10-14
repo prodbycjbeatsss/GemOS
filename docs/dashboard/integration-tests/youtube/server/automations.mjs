@@ -1,3 +1,4 @@
+import { syncCard } from './card-sync.mjs';
 import { AUTOMATIONS } from './automation-registry.mjs';
 import { recoverRuns, getRun, publicRun, reportRuns, dismissRun, CHECKER, RunError } from './automation-runs.mjs';
 import { runOwnerChecker } from './capture.mjs';
@@ -17,6 +18,10 @@ export async function automationHandler(request,env){
   if(request.method!=='POST')return json({error:'Method not allowed.'},405);
   if(request.headers.get('Origin')!==new URL(request.url).origin)return json({error:'Request origin does not match.'},403);
   const text=await request.text();if(text.length>2048)throw new RunError('Request too large.');let input;try{input=JSON.parse(text);}catch{throw new RunError('Invalid request.');}
+  if(input?.action==='sync-card'){
+   if(Object.keys(input).some(k=>!['action','card','selection'].includes(k))||typeof input.card!=='string')throw new RunError('Choose a valid sync card.');
+   return json(await syncCard(request,env,input.card,input.selection||null));
+  }
   if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['action','id','reason'].includes(k))||typeof input.id!=='string'||!/^[a-f0-9-]{36}$/.test(input.id))throw new RunError('Choose a saved run.');
   if(input.action==='dismiss'){await dismissRun(env,owner,input.id,input.reason);return json({saved:true});}
   if(input.action!=='retry')throw new RunError('Unsupported action.');

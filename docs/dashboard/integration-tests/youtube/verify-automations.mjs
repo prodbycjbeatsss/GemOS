@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
-import {readFileSync} from 'node:fs';
+import {readFileSync,readdirSync} from 'node:fs';
 import {startRun,finishRun,reportRuns,getRun,dismissRun,recoverRuns,RUN_TIMEOUT} from './server/automation-runs.mjs';
 import {automationHandler} from './server/automations.mjs';
 import {runOwnerChecker,WINDOW_START,captureHandler} from './server/capture.mjs';
 import {seal,SCOPES} from './server/youtube.mjs';
-const sql=new DatabaseSync(':memory:');for(const f of ['0000_yummy_tusk.sql','0001_breezy_the_professor.sql','0006_automation_runs.sql'])sql.exec(readFileSync('drizzle/'+f,'utf8'));
+const sql=new DatabaseSync(':memory:');for(const f of readdirSync('drizzle').filter(f=>f.endsWith('.sql')).sort())sql.exec(readFileSync('drizzle/'+f,'utf8'));
 const DB={prepare(query){let values=[];const s={bind(...v){values=v;return s;},async first(){return sql.prepare(query).get(...values)||null;},async all(){return {results:sql.prepare(query).all(...values)};},async run(){return {meta:{changes:Number(sql.prepare(query).run(...values).changes)}};}};return s;},async batch(stmts){sql.exec('BEGIN');try{const r=[];for(const s of stmts)r.push(await s.run());sql.exec('COMMIT');return r;}catch(e){sql.exec('ROLLBACK');throw e;}}};
 const origin='https://test.invalid',env={DB,GOOGLE_CLIENT_ID:'fake.apps.googleusercontent.com',GOOGLE_CLIENT_SECRET:'FAKE',YOUTUBE_TOKEN_KEY:'ab'.repeat(32),GOOGLE_REDIRECT_URI:'https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/api/youtube/callback',YOUTUBE_UPDATER_KEY:'FAKE'};
 const realNow=Date.now,realFetch=globalThis.fetch;let now=Date.parse('2026-10-13T12:00:00Z');Date.now=()=>now;

@@ -1,3 +1,4 @@
+import { capabilities } from './sync-targets.mjs';
 import { AUTOMATIONS, CARDS } from './automation-registry.mjs';
 // Durable owner-scoped execution records. Never store provider payloads or secrets.
 export const CHECKER = 'youtube-snapshot-checker';
@@ -53,6 +54,7 @@ export async function reportRuns(env,owner,{offset=0,automation='',attention=fal
  const order="CASE WHEN issue_state='open' AND status IN ('failed','unconfirmed') THEN 0 ELSE 1 END,started_at DESC,id DESC";
  const rows=await env.DB.prepare('SELECT * FROM automation_runs WHERE '+where+' ORDER BY '+order+' LIMIT 11 OFFSET ?').bind(...args,offset).all();
  const last=await env.DB.prepare('SELECT MAX(started_at) AS time FROM automation_runs WHERE user_id=? AND trigger=?').bind(owner,'scheduled').first();
+ const available=await capabilities(env,owner);
  const grid=[];
  for(const card of CARDS){
   const keys=Object.keys(AUTOMATIONS).filter(k=>AUTOMATIONS[k].card===card.id);
@@ -62,7 +64,7 @@ export async function reportRuns(env,owner,{offset=0,automation='',attention=fal
    const good=await env.DB.prepare("SELECT MAX(finished_at) AS time FROM automation_runs WHERE user_id=? AND status='succeeded' AND automation IN ("+marks+')').bind(owner,...keys).first();lastSuccess=good?.time||null;
    const issue=await env.DB.prepare("SELECT *,COUNT(*) OVER() AS issue_count FROM automation_runs WHERE user_id=? AND issue_state='open' AND status IN ('failed','unconfirmed') AND automation IN ("+marks+') ORDER BY started_at DESC,id DESC LIMIT 1').bind(owner,...keys).first();attentionRun=issue?publicRun(issue):null;issueCount=issue?.issue_count||0;
   }
-  grid.push({...card,latest:latest?publicRun(latest):null,lastSuccess,attentionRun,issueCount});
+  grid.push({...card,canSync:available[card.id]===true,latest:latest?publicRun(latest):null,lastSuccess,attentionRun,issueCount});
  }
  const costsTable=await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='subscription_costs'").first();
  if(costsTable){const saved=await env.DB.prepare('SELECT updated_at FROM subscription_costs WHERE user_id=?').bind(owner).first();grid.find(c=>c.id==='3.4').lastSaved=saved?.updated_at||null;}

@@ -647,3 +647,13 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Evidence:** Controlled API reads insert no runs; exact original two user-reported entries were not inspected or deleted. Sync/grid/analytics/owner/partial/concurrency/move safety and existing regressions, build/compiled routes pass. Source c07418cbc68fb5d37a6bbca9de9308c2694581e0; private deployment appgdep_6aced3aad67881918fc69f3fc1a22539; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_3e5404c6afec8191a983f23b603b5ae8; succeeded. Runtime environment revision6 retained. Newly instrumented live providers and rendered grid remain pending owner verification.
 
 **Owner:** CJ.
+
+## 2026-10-14 — Large automation card, per-tile Sync and Sync all
+
+**Decision:** CJ explicitly requests Large sizing, smaller centred sections/icons/status icons/individual Sync and a top main Sync all. Deliver920px cobalt grid, sequential available-card read-only refresh with duplicate guards/failure isolation, honest partial/skipped/failed states and preserved source choices. Manual/unconnected Sync disabled; no move/publication/send/purchase action.
+
+**Why:** Monitoring needs usable refresh controls, owner-safe selections and actual restored source data. Registered0007_sync_targets/0008_analytics_sync_cache persist last successful choices and real2.1 results, separately from secret-free telemetry; no guessing independent release samples.
+
+**Evidence:** New card-sync/control/cache and existing security/provider/Group1–3 tests, production build/compiled pages pass; controlled Drive bulk emits GET-only provider requests. Source 4c5a7387e7352fe82f5b14604317fff3cdf41bf2; private deployment appgdep_6aced96e768881918b0c3d6e9a829474; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_5f6fa7750d3c8191ba376254f10694db; succeeded; runtime revision6 unchanged. No rendered browser or owner live Sync all verification.
+
+**Owner:** CJ.

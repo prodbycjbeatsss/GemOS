@@ -58,9 +58,9 @@
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
-  let analyticsTrace=null,analyticsStep=null;
+  let analyticsTrace=null,analyticsStep=null,analyticsSelection=null;
   async function backend(action, params) {
-    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
+    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep,'X-GemOS-Sync-Selection':JSON.stringify(analyticsSelection)}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
     let data; try { data = await response.json(); } catch { throw new Error('The connection service returned an unreadable response.'); }
     if (!response.ok) { const error = new Error(data.error || 'The connection service is unavailable.'); error.status = response.status; throw error; }
     if(action!=='status' && action!=='disconnect' && $('youtube-badge')){$('youtube-badge').textContent='Connected · checked now';$('youtube-badge').dataset.state='connected';}return data;
@@ -84,6 +84,10 @@
       token = 'server-connection'; expiresAt = Infinity; status('Connected · read-only. Saved connection restored for both cards.');
       showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
+      if(data.analyticsReport&&data.analyticsReport.channelId===$('channel').value){
+        report=data.analyticsReport;const restoredDays=report.rangeDays;$('videos').value=report.videos.map(v=>v.id).join('\n');$('confirm-shorts').checked=true;$('end-date').value=report.requestedEnd;
+        document.querySelectorAll('[data-range]').forEach(button=>button.setAttribute('aria-checked',String(Number(button.dataset.range)===restoredDays)));rememberSelection();render();showSync('Saved analytics restored','Showing the saved Automation Sync result. Press Sync for a new request.','Saved · '+new Date(report.fetchedAt).toLocaleTimeString('en-GB'));
+      }
       await restoreRelease();
       const setupPanel = document.getElementById('youtube-setup'); if (setupPanel) setupPanel.open = false;
     } catch (error) { if (session === generation) clearConnection(error.message); }
@@ -280,7 +284,7 @@
     const activity = rangeChange ? 'Updating' : 'Syncing';
     busy = true; syncing = true; controls(); feedback(activity + ' analytics…');
     showSync(activity, rangeChange ? 'Updating the selected date range…' : 'Checking the selected videos belong to your channel…', activity + '…');
-    analyticsTrace=globalThis.crypto?.randomUUID?.()||null;analyticsStep='ownership';
+    analyticsTrace=globalThis.crypto?.randomUUID?.()||null;analyticsStep='ownership';analyticsSelection={ids,channel,endDate:requested,rangeDays};
     try {
       let videos;
       if (rangeChange && verifiedVideos?.scopeKey === scopeKey) videos = verifiedVideos.videos;
@@ -320,7 +324,7 @@
         feedback(message); showSync('Sync failed', report ? 'Could not refresh. Your previous import is still displayed.' : 'Could not import. See the message above the card.', 'Sync failed');
       }
     }
-    finally { analyticsTrace=null;analyticsStep=null;if (session === generation) { busy = false; syncing = false; controls(); } }
+    finally { analyticsTrace=null;analyticsStep=null;analyticsSelection=null;if (session === generation) { busy = false; syncing = false; controls(); } }
   }
   function render() {
     $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';

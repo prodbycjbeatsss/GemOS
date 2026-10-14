@@ -1,3 +1,4 @@
+import { getAnalyticsCache } from './analytics-cache.mjs';
 export const SCOPES = ['https://www.googleapis.com/auth/yt-analytics.readonly', 'https://www.googleapis.com/auth/youtube.readonly'];
 const DRIVE_MOVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata';
 const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
@@ -107,7 +108,8 @@ export async function handle(request, env, action) {
       const row = await rowFor(env, owner);
       if (!row) return json({ configured: true, connected: false, clientId: env.GOOGLE_CLIENT_ID });
       await access(env, owner);
-      return json({ configured: true, connected: true, clientId: env.GOOGLE_CLIENT_ID, channels: JSON.parse(row.channels_json), earningsGranted:(row.scopes||'').split(' ').includes(MONETARY_SCOPE), payoutsGranted:(row.scopes||'').split(' ').includes(ADSENSE_SCOPE) });
+      const analyticsReport=await getAnalyticsCache(env,owner,JSON.parse(row.channels_json));
+      return json({ analyticsReport, configured: true, connected: true, clientId: env.GOOGLE_CLIENT_ID, channels: JSON.parse(row.channels_json), earningsGranted:(row.scopes||'').split(' ').includes(MONETARY_SCOPE), payoutsGranted:(row.scopes||'').split(' ').includes(ADSENSE_SCOPE) });
     }
     if (!configured(env)) throw new SafeError('Background connection setup is not finished. The existing browser connection still works.', 503);
     if (new URL(request.url).origin !== new URL(env.GOOGLE_REDIRECT_URI).origin) throw new SafeError('Unexpected site origin.', 403);

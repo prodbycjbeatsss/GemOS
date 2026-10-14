@@ -45,3 +45,10 @@ export const automationRuns = sqliteTable('automation_runs', {
 export const automationLocks = sqliteTable('automation_locks', {
  userId:text('user_id').notNull(), automation:text('automation').notNull(), runId:text('run_id').notNull(), expiresAt:integer('expires_at').notNull()
 },table=>[primaryKey({columns:[table.userId,table.automation]})]);
+
+// Last successful, allowlisted read-only sync selections; never credentials/provider payloads.
+export const automationSyncTargets = sqliteTable('automation_sync_targets', {
+ userId:text('user_id').notNull(),automation:text('automation').notNull(),targetJson:text('target_json').notNull(),updatedAt:integer('updated_at').notNull()
+},table=>[primaryKey({columns:[table.userId,table.automation]})]);
+
+export const analyticsSyncCache=sqliteTable('analytics_sync_cache',{userId:text('user_id').primaryKey(),reportJson:text('report_json').notNull(),updatedAt:integer('updated_at').notNull()});
