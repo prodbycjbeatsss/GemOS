@@ -1,3 +1,4 @@
+import { AUTOMATIONS } from './automation-registry.mjs';
 import { recoverRuns, getRun, publicRun, reportRuns, dismissRun, CHECKER, RunError } from './automation-runs.mjs';
 import { runOwnerChecker } from './capture.mjs';
 const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
@@ -10,7 +11,7 @@ export async function automationHandler(request,env){
    const q=new URL(request.url).searchParams,id=q.get('id');
    if(id){const r=await getRun(env,owner,id);if(!r)return json({error:'Run not found.'},404);return json({run:publicRun(r)});}
    const offset=Number(q.get('offset')||0),automation=q.get('automation')||'',attention=q.get('attention');
-   if(!Number.isSafeInteger(offset)||offset<0||offset>100000||offset%10||automation&&automation!==CHECKER||attention&&!['0','1'].includes(attention))throw new RunError('Invalid history filter.');
+   if(!Number.isSafeInteger(offset)||offset<0||offset>100000||offset%10||automation&&!AUTOMATIONS[automation]||attention&&!['0','1'].includes(attention))throw new RunError('Invalid history filter.');
    return json(await reportRuns(env,owner,{offset,automation,attention:attention==='1'}));
   }
   if(request.method!=='POST')return json({error:'Method not allowed.'},405);

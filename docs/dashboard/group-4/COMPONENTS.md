@@ -1,9 +1,9 @@
-# Group 4 — Automation Performance components
+# Group4 — Automation Performance components
 
-Current implementation:ui/automations.html/js, server/automations.mjs and automation-runs.mjs, app/automations and api/automations. See SPECIFICATION.md for authoritative behaviour and USAGE-AND-CONNECTIONS.md for storage/security/source evidence.
+ui/automations.html/js now renders nine operational dashboard cards in a status grid rather than a recent-run recess list. Shared cobalt Compact454px/32px card/22px recess/58px glyph/20–24px insets/44px footer are preserved. Two tile columns; one below360px; intentional native scrolling. No second card.
 
-Established cobalt Compact454px material; shared card/recess/glyph/spacing and44px targets. One half-width desktop card; no placeholder Publishing Cadence. Scrollable recess, readable text status plus attention colour, stable bottom footer. Enlarged header text can grow the card.
+Tiles show card number/name, latest status, Last synced/check/saved, latest attempt, older unresolved issues and details/source-card link. Attention tiles precede others. Failure never clears prior successful timestamp; partial/manual/not-connected/no-record states are explicit. Literal text rendering and accessible controls preserved.
 
-Native dialog max75dvh, bounded10-row history, automation/attention selects, detail view, supported retry and reasoned dismissal. Close/backdrop/Escape and focus return; selected/detail/history epochs prevent stale fetches replacing newer views. No sticky Close gradient strip. Names/reasons use textContent.
+Full history remains a max75dvh native dialog,10 items/page, expanded registry automation filter and attention filter. Details show generic sync outcomes or checker counts/trace steps without invented “undefined snapshots”. Reasoned dismissals retain original outcomes. Safe retry remains checker-only; uncertain Drive moves link to source reconciliation.
 
-Controlled DOM/handler checks pass; rendered device/focus/contrast/enlarged-text measurements remain pending.
+Controlled API/storage/actual-script checks/build pass. Rendered grid/device/enlarged-text acceptance remains pending. Current sources/API/leases/recovery are in USAGE-AND-CONNECTIONS.md; current presentation in SPECIFICATION.md.

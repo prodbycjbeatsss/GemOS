@@ -637,3 +637,13 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Evidence:** Controlled SQLite/API/real-script/capture/Group1/2/compiled-route checks and production build pass. Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved. No rendered QA or owner-authenticated read of first new scheduled record; service-credential page/API reads returned401. Next owner verification and adapter expansion are documented in group-4/USAGE-AND-CONNECTIONS.md.
 
 **Owner:** CJ.
+
+## 2026-10-14 — Per-card sync status grid and expanded run monitoring
+
+**Decision:** CJ explicitly selects recording the other dashboard cards' syncs in the existing Automation Performance card, then requests a grid with each card/status/last sync. Ship nine-card grid and11 registry operations, keeping full run history. Preserve latest attempt separately from last successful sync/check and manual save; retain older unresolved issues after newer success. No additional card.
+
+**Why:** A list of checker attempts alone does not show dashboard-wide connection freshness. Grouped analytics trace avoids four query rows per logical sync; server responses determine outcomes rather than browser success claims. Partial provider data, unconnected Buffer, manual Costs and uncertain moves remain distinct.
+
+**Evidence:** Controlled API reads insert no runs; exact original two user-reported entries were not inspected or deleted. Sync/grid/analytics/owner/partial/concurrency/move safety and existing regressions, build/compiled routes pass. Source c07418cbc68fb5d37a6bbca9de9308c2694581e0; private deployment appgdep_6aced3aad67881918fc69f3fc1a22539; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_3e5404c6afec8191a983f23b603b5ae8; succeeded. Runtime environment revision6 retained. Newly instrumented live providers and rendered grid remain pending owner verification.
+
+**Owner:** CJ.

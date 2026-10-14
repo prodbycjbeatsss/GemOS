@@ -58,8 +58,9 @@
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
+  let analyticsTrace=null,analyticsStep=null;
   async function backend(action, params) {
-    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json' } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
+    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
     let data; try { data = await response.json(); } catch { throw new Error('The connection service returned an unreadable response.'); }
     if (!response.ok) { const error = new Error(data.error || 'The connection service is unavailable.'); error.status = response.status; throw error; }
     if(action!=='status' && action!=='disconnect' && $('youtube-badge')){$('youtube-badge').textContent='Connected · checked now';$('youtube-badge').dataset.state='connected';}return data;
@@ -279,6 +280,7 @@
     const activity = rangeChange ? 'Updating' : 'Syncing';
     busy = true; syncing = true; controls(); feedback(activity + ' analytics…');
     showSync(activity, rangeChange ? 'Updating the selected date range…' : 'Checking the selected videos belong to your channel…', activity + '…');
+    analyticsTrace=globalThis.crypto?.randomUUID?.()||null;analyticsStep='ownership';
     try {
       let videos;
       if (rangeChange && verifiedVideos?.scopeKey === scopeKey) videos = verifiedVideos.videos;
@@ -292,6 +294,7 @@
       // Ask for the newest day first: a long range must not truncate its latest rows.
       const probeStart = shift(requested, -Math.max(83, rangeDays - 1));
       showSync(activity, 'Finding the latest available reporting day…', activity + '…');
+      analyticsStep='probe';
       const daily = mappedRows(await query({ startDate: probeStart, endDate: requested, dimensions: 'day', sort: '-day', maxResults: '1' }), ['day']);
       const days = daily.map(row => date(row.day));
       if (!days.length) throw new Error('No daily data returned. Missing data has not been treated as zero. Try older Shorts or a different date.');
@@ -299,8 +302,10 @@
       const end = days.sort().at(-1), start = shift(end, 1 - rangeDays), previousEnd = shift(start, -1), previousStart = shift(start, -rangeDays);
       const warnings = [];
       showSync(activity, 'Importing your selected ' + rangeDays + '-day totals…', activity + '…');
+      analyticsStep='current';
       const current = aggregate(await query({ startDate: start, endDate: end }), 'current', warnings);
       showSync(activity, 'Importing the preceding period for report details…', activity + '…');
+      analyticsStep='previous';
       const previous = aggregate(await query({ startDate: previousStart, endDate: previousEnd }), 'previous', warnings);
       if (session !== generation) return;
       report = { source: 'YouTube Analytics API v2', scope: 'User-confirmed selected Shorts sample; not channel-wide', channelId: channel, channelTitle: $('channel').selectedOptions[0].textContent,
@@ -315,7 +320,7 @@
         feedback(message); showSync('Sync failed', report ? 'Could not refresh. Your previous import is still displayed.' : 'Could not import. See the message above the card.', 'Sync failed');
       }
     }
-    finally { if (session === generation) { busy = false; syncing = false; controls(); } }
+    finally { analyticsTrace=null;analyticsStep=null;if (session === generation) { busy = false; syncing = false; controls(); } }
   }
   function render() {
     $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
