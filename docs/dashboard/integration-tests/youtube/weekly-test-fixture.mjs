@@ -1,0 +1,6 @@
+// Provider fixture adapter for legacy capture regression cases, now discovered via channel uploads.
+export function weeklyFixture(fetcher){return async(input,options)=>{const u=new URL(input);if(u.pathname==='/youtube/v3/channels')return Response.json({items:[{id:u.searchParams.get('id'),contentDetails:{relatedPlaylists:{uploads:'UU'+u.searchParams.get('id')}}}]});
+ if(u.hostname==='youtubeanalytics.googleapis.com')return Response.json({columnHeaders:[{name:'video'},{name:'creatorContentType'},{name:'views'}],rows:[]});
+ if(u.pathname==='/youtube/v3/playlistItems'){const channel=u.searchParams.get('playlistId').slice(2),v=new URL('https://www.googleapis.com/youtube/v3/videos');v.searchParams.set('id',channel==='UC_OTHER'?'lmnopqrstuv':'abcdefghijk');const r=await fetcher(v,options);if(!r.ok)return r;const d=await r.json();return Response.json({items:(d.items||[]).map(v=>({contentDetails:{videoId:v.id,videoPublishedAt:v.snippet?.publishedAt}}))});}
+ const r=await fetcher(input,options);if(u.pathname!=='/youtube/v3/videos'||!r.ok)return r;const d=await r.json();for(const v of d.items||[]){v.contentDetails={duration:'PT30S'};v.fileDetails={videoStreams:[{widthPixels:1080,heightPixels:1920}]};}return Response.json(d);
+};}

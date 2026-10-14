@@ -1,5 +1,24 @@
 # Dashboard design tokens
 
+## Uniform sync timestamp component — 14 October 2026
+
+CJ requests a single line underneath Sync on all cards. Shared dashboard.css tokens now define10px Inter/14px line/standard muted colour, nowrap and inline time. Source footer Sync stacks its timestamp beneath the44px action; Finance60px and paired Release72px footer tracks keep the original outer card sizes. Automation tiles use the same line after their Sync row. Visible format is Last synced: HH:mm:ss (UK); full date/year and UK time remain in time datetime/title and accessible label. Missing time uses an accessible Not recorded explanation with a compact dash. Manual Costs retains Last saved; unconnected Buffer has no fabricated Sync. Earlier beside-button/multiline date layouts are superseded. Metrics, palettes and durable sync records unchanged. Timestamp/bulk/project/commerce/layout/group/shell checks and build pass; signed-in rendered phone/desktop verification remains pending. Site source d7ad704b9a5f33a343d25bc1c024acb95c7b1dc4.
+
+## Current locked contract — source check, 14 October 2026
+
+All10 cards were checked against source tokens/contracts. This supersedes older Current/Compact/grouping notes below; details/evidence: [source check](dashboard/verification/2026-10-14-design-system.md).
+
+|Group|Current cards|Geometry/material|
+|---|---|---|
+|1 Release|Buffer,Pre Release Checklist|Large920px paired; existing blue/state material;12px vertical/20px horizontal gaps;20/24px outer insets |
+|2 Audience & Performance|Short-form Performance,24h ranking,Email List|Large920px; purple155deg #4338ca/#312e8145%/#0f172a; original metric tiles retained;12/20px gaps |
+|3 Finance|Payhip,earnings,payouts,Subscription Costs|Compact454px;green155deg #065f46/#044e3942%/#022c22;146px header/44px period+footer,12px tracks;20/24px inset;2×2 desktop |
+|4 Automations|Automation Performance|Large920px;cobalt155deg #1e3a8a/#17255442%/#090d1a;174px header/44px top Sync and footer; accepted centred compact inner grid |
+
+Shared32px card/22px recess/58px glyph/28px top symbol; clipped spotlight and reviewed glass/shadows;Inter/Poppins;one footer;44px controls;plain icon-text Sync with5px gap. Preserve group-specific supporting colours and layouts. Group4 spotlight stops0/42/75 are a documented exception and were retained. Group4 tile icons are20px plain marks;12px title/11px state+date;8px padding/12px gap;three columns desktop/two phone. Older28px glass tile/two-column-only rules are superseded.2.1 uses channel-wide Shorts with period-specific Top3; sample setup references are historical.2.2 stays independently release-selected. No arbitrary metric redesign.
+
+Source corrections: cost identity first track66px matches other Finance headers; cost phone inset restored20px; cost popup viewport inset32px/borderwhite.16;Release vertical gap12px;Finance/Email Sync gap5px. Form/dialog width caps and scrolling exceptions remain role-specific. Current source `3dd8deb76343305a1142a27eb74f8aaaf13ae6cc`; private deployment `appgdep_6acfe022fac881918a80f7ea0d2f945e` succeeded. Controlled contract/state/build/compiled tests pass; rendered phone/desktop/contrast/hit boxes are not measured because this browser is at the private Site's sign-in wall.
+
 ## Current Large card and data sync — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.

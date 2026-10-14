@@ -1,5 +1,61 @@
 # GemOS dashboard — current handoff
 
+## 2.2 Weekly channel Shorts — 14 October 2026
+
+CJ approved automatic Monday–Sunday upload batches in Europe/London because Shorts titles do not match remixes. Production2.2 defaults to current week with previous/next controls (52past weeks, no future); no remix affiliation is inferred. Owner uploads discovery replaces manual links/release name. Existing external5-minute checker now discovers current-week uploads plus2prior days for week-boundary captures, independent of the historical week being viewed. Sync all uses saved weekly channel/week; sole channel works without manual release setup. Cached page restoration reads without creating a new sync.
+
+Owner duration+file dimensions/rotation identify format-eligible Shorts; Analytics classification is used when available, excludes non-Shorts and confirms unknown candidates. Unknown classification remains explicitly unranked. Public only; horizontal/long/live items excluded, bounded pagination and owned metadata enforced. Existing immutable24h–24h15m snapshots remain; no old lifetime-count backfill. Legacy selected releases retained as historical records, not production input. Full technical contract/limits: [Weekly Shorts](integration-tests/youtube/WEEKLY-SHORTS.md) (handoff root uses integration-tests/youtube/WEEKLY-SHORTS.md). No schema/scope/audience/runtime changes. Source58aed6824184714e27f163faf4f5a09f2a75a54b; private appgdep_6acfec9321e88191ba465e675a2246b8 succeeded, runtime revision6.
+
+Weekly SQLite/provider/UK+BST/DST/history/classification/snapshot/auth/cache-read tests; existing capture/card-sync/automation/monitor/source UI/group/layout/shell/timestamp checks; production build and compiled200/401 passed. Live upload discovery, actual fileDetails availability/classification and next24h scheduled capture still need owner verification. Browser screenshots unavailable in the signed-out session. User reports prior Sync all/timestamps pass and2.1 within10–15 views of Studio; cause of discrepancy unconfirmed. Next owner check: weekly Sync and Last week for a Sunday upload, then a fresh24h capture.
+
+## Uniform sync timestamp component — 14 October 2026
+
+CJ requests a single line underneath Sync on all cards. Shared dashboard.css tokens now define10px Inter/14px line/standard muted colour, nowrap and inline time. Source footer Sync stacks its timestamp beneath the44px action; Finance60px and paired Release72px footer tracks keep the original outer card sizes. Automation tiles use the same line after their Sync row. Visible format is Last synced: HH:mm:ss (UK); full date/year and UK time remain in time datetime/title and accessible label. Missing time uses an accessible Not recorded explanation with a compact dash. Manual Costs retains Last saved; unconnected Buffer has no fabricated Sync. Earlier beside-button/multiline date layouts are superseded. Metrics, palettes and durable sync records unchanged. Timestamp/bulk/project/commerce/layout/group/shell checks and build pass; signed-in rendered phone/desktop verification remains pending. Site source d7ad704b9a5f33a343d25bc1c024acb95c7b1dc4.
+
+## Shared card sync timestamps — 14 October 2026
+
+All source card footers now show the same owner-scoped last successful completion record as the Automation grid, with UK date/time including seconds. Time labels refresh on source requests, page focus/visibility and every 30 seconds while visible; reads create no runs. Failed attempts retain last success. Manual Subscription Costs shows Last saved; unconnected Buffer shows Not connected. Automation grid dates now include seconds; its own freshness remains Records refreshed. Does not claim metrics represent this exact time or backfill 24h snapshots. Fixed sizes, metric tiles and provider contracts retained. Source 03ba6c3efa9ef2d0b6e61535476b111558256bf9. Timestamp, card-sync, monitor, bulk UI, project, commerce, state/layout checks, production build and compiled page checks pass. Signed-in rendered footer verification still pending.
+
+## All-card source design check — 14 October2026
+
+Completed source/token check of all10 cards. [Findings and limits](verification/2026-10-14-design-system.md). Repaired Subscription Costs header alignment/narrow-phone padding/popup border+inset,Release12px row gap andFinance/Email5px Sync icon gap. Existing palettes, metric tiles, data and controls preserved. Updated master system/tokens andGroup4 current tile/channel contract. Source3dd8deb76343305a1142a27eb74f8aaaf13ae6cc/private appgdep_6acfe022fac881918a80f7ea0d2f945e succeeded, runtime revision6 retained. Layout/project/commerce/state/group/dialog/sync checks, build and compiled200/401 passed. This is source evidence; signed-in rendered phone/desktop/contrast/hit-target measurements remain blocked by this cloud browser's Log in to access page. No access settings were changed. Primary-repo checkpoint remains draft PR2.
+
+## Metric tiles restored — 14 October 2026
+
+CJ says the metric tiles did not need redesign and explicitly requests their previous appearance. Removed only the new84px/flex/padding/font overrides and tile-note hiding rule, restoring original responsive sizing, spacing, typography, layout and notes. The outside-tile text cleanup and Top3 Shorts remain. Top Shorts uses its bounded internal scroll; no further metric tile change is authorised. This supersedes the compact84px tile decision below.
+
+Source `2e1cc2b1fbe052001cc1475ea00804445fb0eb75`; private deployment `appgdep_6acfdd8d5c3881919ba7baa4beebed85` succeeded; build passed; runtime revision6 unchanged.
+
+## Current compact2.1 summary — 14 October 2026
+
+CJ's screenshot confirms live channel metrics now populate (199 views,107.42% average viewed,-2 Likes,0 subscribers,14 shares for28days). Studio agreement is not yet measured. CJ asks to remove unnecessary text and add the2–3 highest-viewed Shorts in the selected period.
+
+Delivered: hidden above-card coverage box, repeated tile notes, duplicated data-through/status narrative and unused target/connection section. Exact source dates/warnings remain in Analytics details; one footer keeps Sync and timestamp. Existing purple Large920px material/geometry retained;2.1 metric rows are84px, label/value only.2.2 duplicate sync narrative is hidden; release/snapshot rules unchanged.
+
+Top Shorts shows up to3 actual titles plus views earned in the exact selected date range. Fixed API request:video dimension,creatorContentType==shorts filter,views,-views,maxResults3; metadata uses validated owned IDs. No lifetime totals or publication-date cutoff. Ranking failure preserves channel aggregates and reports a concise unavailable state. Card Sync/Sync all return/save the same ranking. Tests cover filter/date/order/limit,title escaping,3-row UI,failure preservation and existing state/bulk flows. Build/compiled routes pass. Live ranking response and refreshed phone layout remain to verify.
+
+Source `c25dc6b715cdd2255d50df0783256c61d928572d`; private deployment `appgdep_6acfdc6176108191ae7472edebd4a5ad` succeeded; runtime revision6 retained. Code/contract checkpoint remains in draft PR2. Earlier detailed2.1 presentation notes are superseded for the live card.
+
+## Latest repair — 14 October 2026, 20:39 UK
+
+CJ supplied a completed365-day2.1 response with unavailable figures and a2.2 July release with zero frozen snapshots.2.1's exact-uppercase content type matcher is replaced by case-normalised Shorts-only matching, supporting the `shorts` form documented by a primary API implementation as well as `SHORTS`. Long/live/unknown types remain excluded. Controlled fixtures verify both cases and source-row counts; the next owner Sync is required to verify the precise live response. The private cache now includes bounded returned content-type names and total/Shorts-row counts to diagnose any remaining mismatch without fabricated zeros. Stale Selected Shorts only heading changed to Channel-wide Shorts.
+
+2.2 retains the explicitly selected July batch; no24-hour snapshots exist for those old uploads. Sync cannot reconstruct elapsed windows or replace frozen24h counts with today's lifetime totals. Feedback now states that limitation. Choose a newer release in its separate source setup when available.
+
+Source `958e8a851b679137e7649f7e53772255c2e79b27`; private deployment `appgdep_6acfda4ce24c8191b989a2e0ff6bde16` succeeded; runtime revision6 retained. Provider-case/state/card-sync/capture/bulk-control checks and build pass. Live repaired2.1 figures and rendered all-state QA remain pending. GitHub checkpoint stays in draft PR2; main has not been updated.
+
+## Current checkpoint — 14 October 2026, channel-wide 2.1
+
+2.1 is now channel-wide YouTube Shorts, replacing the selected-sample test. Read [CHANNEL-SHORTS](integration-tests/youtube/CHANNEL-SHORTS.md), current Group2 spec/usage, then implementation `server/channel-shorts.mjs`, API route, `server/card-sync.mjs`, `ui/app.js`. Sole connected channel works without sample IDs. Normal Sync and Automation Sync all share the service; saved owner reports restore after refresh. 2.2 release selection/capture is unchanged. TikTok/Reels remain unavailable.
+
+Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved. The deployed source/code/tests are mirrored under the existing `docs/dashboard/integration-tests/youtube/` path. No extra source root, permissions or schema changes.
+
+Automation tile styling from this chat is also checkpointed: smaller tiles, three columns at desktop/two on phones, centred plain 20px icons, 12px gaps/8px padding; Sync and Sync all use shared transparent 11px/600 text +16px stroke icon and44px targets. CJ accepted the appearance and reported other syncs working. This is user acceptance, not measured all-state/device QA. Manual Costs and unconnected scheduling are honestly skipped. Skipped/failed reasons remain on tiles. The earlier missing-sample Setup required rule is superseded by channel-only setup.
+
+Validation: channel type isolation, pagination, real zero/signed likes, Google retention aggregate, missing values, owner/origin/date/input checks, fresh-date bulk sync, saved report isolation, failure retention, source UI/range/cache/spinner and2.2 regressions. Backend/capture/automation/monitoring/group-placement/shell/dialog and build/compiled200/401 checks pass.
+
+**Next:** owner refreshes Audience & Performance → Sync2.1; verify a populated Shorts report/partial warning or exact error, its date range and matching Studio Shorts metrics. Then Automation Sync2.1/Sync all should record completion and last success. Real channel-wide provider response and rendered UI remain unverified. Scheduling1.1 remains unconnected; Publishing Cadence remains deferred. Earlier checkpoints below are history and must not override this scope.
+
 Updated13 October2026 after approved regrouping. Start with AGENTS.md, dashboard README, DESIGN_SYSTEM/ DESIGN_TOKENS and the affected group's spec/usage/components. Prior lengthy checkpoint history is preserved at ../../archives/dashboard/2026-10-13/pre-regrouping/docs/dashboard/HANDOFF.md; it is superseded for current grouping.
 
 ## Current grouping — 13 October 2026
@@ -37,7 +93,7 @@ A successful retry resolves only the issue linked to that retry's original run, 
 
 Runtime/card implementation is now delivered; see group-4/USAGE-AND-CONNECTIONS.md. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance for continuity; no empty4.1 card.
 
-## Latest implementation checkpoint
+## Historical first implementation checkpoint
 
 Durable automation run records and owner-only card/history are deployed. New migration:drizzle/0006_automation_runs.sql plus generated snapshot/journal; previous applied migrations unchanged. Source/checker updates are under integration-tests/youtube. Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved.
 
@@ -45,7 +101,7 @@ Controlled tests include partial owner failures, interruption recovery/fencing, 
 
 Next: refresh the signed-in site, select Automations, inspect a new scheduled checker execution after it runs. Review card/mobile/dialog and enlarged text. Expand adapters with read-only Drive checks after that evidence; do not claim all automations monitored or scheduler uptime verified. Existing record preservation/provider verification limits still apply.
 
-## Latest — per-card sync grid,14 October2026
+## Historical — per-card sync grid,14 October2026
 
 CJ reports two visible run entries and explicitly requests other cards' syncs in the existing card, then a grid showing every card's sync status/last sync. Delivered responsive nine-card grid, latest attempt/retained last success/manual save timestamps, older unresolved issues, full history and expanded filters.11 registered operation types cover Drive checks/discovery/explicit Queue approval, logical Shorts analytics, release metadata/checker, Mailchimp, Payhip received-sales refresh, earnings/ranking and payouts. Buffer stays Not connected; Costs stays Manual records. No second card or monitoring-driven external action.
 
@@ -53,7 +109,7 @@ Source c07418cbc68fb5d37a6bbca9de9308c2694581e0; private deployment appgdep_6ace
 
 All relevant controlled sync/grid/capture/security/Group1–3 regressions, production build and compiled200/401 pages pass. No rendered browser QA or newly instrumented live provider-read verification. Next: owner refreshes Automations, checks grid/scroll, performs normal source-card Sync and compares tiles/history. Expand receiver/upload/memory adapters only as those real sources become available. Current authority:group-4/USAGE-AND-CONNECTIONS.md.
 
-## Current Large card and data sync — 14 October2026
+## Historical Large card and data sync — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
 

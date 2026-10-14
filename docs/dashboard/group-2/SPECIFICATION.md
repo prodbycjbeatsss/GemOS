@@ -1,5 +1,50 @@
 # Group 2 — visual and interaction specification
 
+## 2.2 Weekly channel Shorts — 14 October 2026
+
+CJ approved automatic Monday–Sunday upload batches in Europe/London because Shorts titles do not match remixes. Production2.2 defaults to current week with previous/next controls (52past weeks, no future); no remix affiliation is inferred. Owner uploads discovery replaces manual links/release name. Existing external5-minute checker now discovers current-week uploads plus2prior days for week-boundary captures, independent of the historical week being viewed. Sync all uses saved weekly channel/week; sole channel works without manual release setup. Cached page restoration reads without creating a new sync.
+
+Owner duration+file dimensions/rotation identify format-eligible Shorts; Analytics classification is used when available, excludes non-Shorts and confirms unknown candidates. Unknown classification remains explicitly unranked. Public only; horizontal/long/live items excluded, bounded pagination and owned metadata enforced. Existing immutable24h–24h15m snapshots remain; no old lifetime-count backfill. Legacy selected releases retained as historical records, not production input. Full technical contract/limits: [Weekly Shorts](../integration-tests/youtube/WEEKLY-SHORTS.md) (handoff root uses integration-tests/youtube/WEEKLY-SHORTS.md). No schema/scope/audience/runtime changes. Source58aed6824184714e27f163faf4f5a09f2a75a54b; private appgdep_6acfec9321e88191ba465e675a2246b8 succeeded, runtime revision6.
+
+Weekly SQLite/provider/UK+BST/DST/history/classification/snapshot/auth/cache-read tests; existing capture/card-sync/automation/monitor/source UI/group/layout/shell/timestamp checks; production build and compiled200/401 passed. Live upload discovery, actual fileDetails availability/classification and next24h scheduled capture still need owner verification. Browser screenshots unavailable in the signed-out session. User reports prior Sync all/timestamps pass and2.1 within10–15 views of Studio; cause of discrepancy unconfirmed. Next owner check: weekly Sync and Last week for a Sunday upload, then a fresh24h capture.
+
+## Uniform sync timestamp component — 14 October 2026
+
+CJ requests a single line underneath Sync on all cards. Shared dashboard.css tokens now define10px Inter/14px line/standard muted colour, nowrap and inline time. Source footer Sync stacks its timestamp beneath the44px action; Finance60px and paired Release72px footer tracks keep the original outer card sizes. Automation tiles use the same line after their Sync row. Visible format is Last synced: HH:mm:ss (UK); full date/year and UK time remain in time datetime/title and accessible label. Missing time uses an accessible Not recorded explanation with a compact dash. Manual Costs retains Last saved; unconnected Buffer has no fabricated Sync. Earlier beside-button/multiline date layouts are superseded. Metrics, palettes and durable sync records unchanged. Timestamp/bulk/project/commerce/layout/group/shell checks and build pass; signed-in rendered phone/desktop verification remains pending. Site source d7ad704b9a5f33a343d25bc1c024acb95c7b1dc4.
+
+## Shared card sync timestamps — 14 October 2026
+
+All source card footers now show the same owner-scoped last successful completion record as the Automation grid, with UK date/time including seconds. Time labels refresh on source requests, page focus/visibility and every 30 seconds while visible; reads create no runs. Failed attempts retain last success. Manual Subscription Costs shows Last saved; unconnected Buffer shows Not connected. Automation grid dates now include seconds; its own freshness remains Records refreshed. Does not claim metrics represent this exact time or backfill 24h snapshots. Fixed sizes, metric tiles and provider contracts retained. Source 03ba6c3efa9ef2d0b6e61535476b111558256bf9. Timestamp, card-sync, monitor, bulk UI, project, commerce, state/layout checks, production build and compiled page checks pass. Signed-in rendered footer verification still pending.
+
+## Metric tiles restored — 14 October 2026
+
+CJ says the metric tiles did not need redesign and explicitly requests their previous appearance. Removed only the new84px/flex/padding/font overrides and tile-note hiding rule, restoring original responsive sizing, spacing, typography, layout and notes. The outside-tile text cleanup and Top3 Shorts remain. Top Shorts uses its bounded internal scroll; no further metric tile change is authorised. This supersedes the compact84px tile decision below.
+
+Source `2e1cc2b1fbe052001cc1475ea00804445fb0eb75`; private deployment `appgdep_6acfdd8d5c3881919ba7baa4beebed85` succeeded; build passed; runtime revision6 unchanged.
+
+## Current compact2.1 summary — 14 October 2026
+
+CJ's screenshot confirms live channel metrics now populate (199 views,107.42% average viewed,-2 Likes,0 subscribers,14 shares for28days). Studio agreement is not yet measured. CJ asks to remove unnecessary text and add the2–3 highest-viewed Shorts in the selected period.
+
+Delivered: hidden above-card coverage box, repeated tile notes, duplicated data-through/status narrative and unused target/connection section. Exact source dates/warnings remain in Analytics details; one footer keeps Sync and timestamp. Existing purple Large920px material/geometry retained;2.1 metric rows are84px, label/value only.2.2 duplicate sync narrative is hidden; release/snapshot rules unchanged.
+
+Top Shorts shows up to3 actual titles plus views earned in the exact selected date range. Fixed API request:video dimension,creatorContentType==shorts filter,views,-views,maxResults3; metadata uses validated owned IDs. No lifetime totals or publication-date cutoff. Ranking failure preserves channel aggregates and reports a concise unavailable state. Card Sync/Sync all return/save the same ranking. Tests cover filter/date/order/limit,title escaping,3-row UI,failure preservation and existing state/bulk flows. Build/compiled routes pass. Live ranking response and refreshed phone layout remain to verify.
+
+Source `c25dc6b715cdd2255d50df0783256c61d928572d`; private deployment `appgdep_6acfdc6176108191ae7472edebd4a5ad` succeeded; runtime revision6 retained. Code/contract checkpoint remains in draft PR2. Earlier detailed2.1 presentation notes are superseded for the live card.
+
+## Current 2.1 — channel-wide Shorts, 14 October 2026
+
+CJ authorised replacing the manually selected test sample with all Shorts activity on the connected channel. Both the normal card Sync and Automation Sync all use `/api/youtube/shorts-report`, without pasted links or confirmation. YouTube's exact `creatorContentType=SHORTS` dimension value identifies eligible rows; long-form/live/unknown rows are excluded. Counts are summed over complete paginated daily reports, while Average viewed comes from Google's period aggregate. No duration/title guesses or unweighted percentage averages.
+
+Ranges are 7/28/90/365 days. The normal source defaults to Pacific yesterday; an explicit latest requested day remains available in reporting settings. Sync all reuses the saved channel/range and advances to Pacific yesterday. Current and previous windows have equal calendar length; data-through is separately shown. Missing rows/metrics remain unavailable; actual zero and signed Likes are preserved. Combined growth/targets remain withheld until compatible coverage is established. TikTok/Reels are unconnected. 2.2 still uses its independent release selection and frozen snapshot rules.
+
+The production sample fields are hidden. Old sample cache is not restored under a whole-channel label. Successful reports and channel/range are saved privately in existing owner-scoped tables. Failures preserve the prior report. No migration/new OAuth scopes. A sole owned channel needs no manual sample setup; multiple channels need a choice.
+
+[Implementation contract and verification](../integration-tests/youtube/CHANNEL-SHORTS.md). Controlled provider/SQLite/UI/state/auth/capture/automation regressions and production/compiled-page checks pass. Signed-in live report and Studio comparison remain pending. Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved.
+
+Earlier selected-sample integration notes below are historical and superseded for 2.1; 2.2 source/eligibility decisions remain in force.
+
+
 ## Current grouping — 13 October 2026
 
 CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.

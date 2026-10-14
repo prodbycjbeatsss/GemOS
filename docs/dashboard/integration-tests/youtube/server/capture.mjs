@@ -66,13 +66,14 @@ async function secretMatches(given, expected) {
   const x = new Uint8Array(a), y = new Uint8Array(b); let difference = 0; for (let i=0;i<x.length;i++) difference |= x[i]^y[i]; return difference === 0;
 }
 export async function runOwnerChecker(env, owner, channel, trigger, retryOf=null) {
- const selected=await selection(env,owner,channel);
+ const { weeklyShorts,weekRange }=await import('./weekly-shorts.mjs');
+ const selected={video_ids_json:'weekly:'+weekRange().start};
  const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(channel+':'+(selected?.video_ids_json||'')));
  const contextKey=Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,'0')).join('');
  const run=await startRun(env,owner,trigger,retryOf,contextKey);
  try {
    const before=await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id=? AND channel_id=?').bind(owner,channel).first();
-   const report=await captureRelease(env,owner,channel);
+   const report=await weeklyShorts(env,owner,{channel,remember:false});
    const after=await env.DB.prepare('SELECT COUNT(*) AS n FROM youtube_view_snapshots WHERE user_id=? AND channel_id=?').bind(owner,channel).first();
    const now=Date.now(), missed=report?.videos.filter(v=>v.visibility==='public'&&v.publishedAt&&v.snapshotViews===null&&now>Date.parse(v.publishedAt)+WINDOW_END).length||0;
    const result={checked:report?1:0,captured:Math.max(0,after.n-before.n),missedWindows:missed,noOp:after.n===before.n};
@@ -97,9 +98,9 @@ export async function captureHandler(request, env, action) {
       // Cloud Scheduler can send the short job ID or the full resource name.
       const jobName = request.headers.get('X-CloudScheduler-JobName');
       const scheduled = jobName === 'gemos-youtube-capture' || /^projects\/[^/]+\/locations\/[^/]+\/jobs\/gemos-youtube-capture$/.test(jobName || '');
-      const started = Date.now(), rows = await env.DB.prepare('SELECT r.user_id, r.channel_id FROM youtube_release_selections r INNER JOIN youtube_connections c ON r.user_id = c.user_id LIMIT 50').all(); let captured = 0, failures = 0, skipped = 0;
+      const started = Date.now(), rows = await env.DB.prepare('SELECT user_id, channels_json FROM youtube_connections LIMIT 50').all(); let captured = 0, failures = 0, skipped = 0;
       for (const row of rows.results) {
-        try {const result=await runOwnerChecker(env,row.user_id,row.channel_id,scheduled?'scheduled':'service-check');captured+=result.captured;}
+        try {const {getTarget}=await import('./sync-targets.mjs');const target=await getTarget(env,row.user_id,'weekly-shorts-sync');const channels=JSON.parse(row.channels_json);row.channels_json=JSON.stringify(channels.length===1?channels:channels.filter(c=>c.id===target?.channel));if(JSON.parse(row.channels_json).length!==1){skipped++;continue;}const result=await runOwnerChecker(env,row.user_id,JSON.parse(row.channels_json)[0]?.id,scheduled?'scheduled':'service-check');captured+=result.captured;}
         catch(error){if(error instanceof RunError&&error.status===409)skipped++;else failures++;}
       }
       await env.DB.prepare('INSERT INTO youtube_capture_runs (id, started_at, finished_at, captured, outcome) VALUES (?, ?, ?, ?, ?)').bind(crypto.randomUUID(), started, Date.now(), captured, failures ? 'error' : scheduled ? 'scheduled' : 'manual-service-check').run();

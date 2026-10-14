@@ -1,3 +1,4 @@
+import { getTarget,savedConnection } from './sync-targets.mjs';
 import { syncCard } from './card-sync.mjs';
 import { AUTOMATIONS } from './automation-registry.mjs';
 import { recoverRuns, getRun, publicRun, reportRuns, dismissRun, CHECKER, RunError } from './automation-runs.mjs';
@@ -27,10 +28,8 @@ export async function automationHandler(request,env){
   if(input.action!=='retry')throw new RunError('Unsupported action.');
   const original=await getRun(env,owner,input.id);if(!original)return json({error:'Run not found.'},404);
   if(original.automation!==CHECKER)throw new RunError('Retry is not supported for this automation.');
-  const selection=await env.DB.prepare('SELECT channel_id FROM youtube_release_selections WHERE user_id=? LIMIT 2').bind(owner).all();
-  if(selection.results.length!==1)throw new RunError('Select one current release in Audience & Performance before retrying.',409);
-  // A retry is a fresh check of the current selection, never a reconstruction of a missed window.
-  try{return json({result:await runOwnerChecker(env,owner,selection.results[0].channel_id,'retry',input.id)});}
+  const google=await savedConnection(env,owner),target=await getTarget(env,owner,'weekly-shorts-sync');const channel=google.channels.length===1?google.channels[0].id:target?.channel;if(!google.channels.some(c=>c.id===channel))throw new RunError('Choose your weekly Shorts channel before retrying.',409);
+  try{return json({result:await runOwnerChecker(env,owner,channel,'retry',input.id)});}
   catch(e){if(e instanceof RunError)throw e;return json({error:'The retry did not complete. Its outcome is saved in run history.'},502);}
  }catch(e){return json({error:e instanceof RunError?e.message:'Automation records could not be loaded or saved. Refresh and try again.'},e instanceof RunError?e.status:500);}
 }

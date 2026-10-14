@@ -1,5 +1,17 @@
 # Group4 — sync monitoring and run history
 
+## 2.2 Weekly channel Shorts — 14 October 2026
+
+CJ approved automatic Monday–Sunday upload batches in Europe/London because Shorts titles do not match remixes. Production2.2 defaults to current week with previous/next controls (52past weeks, no future); no remix affiliation is inferred. Owner uploads discovery replaces manual links/release name. Existing external5-minute checker now discovers current-week uploads plus2prior days for week-boundary captures, independent of the historical week being viewed. Sync all uses saved weekly channel/week; sole channel works without manual release setup. Cached page restoration reads without creating a new sync.
+
+Owner duration+file dimensions/rotation identify format-eligible Shorts; Analytics classification is used when available, excludes non-Shorts and confirms unknown candidates. Unknown classification remains explicitly unranked. Public only; horizontal/long/live items excluded, bounded pagination and owned metadata enforced. Existing immutable24h–24h15m snapshots remain; no old lifetime-count backfill. Legacy selected releases retained as historical records, not production input. Full technical contract/limits: [Weekly Shorts](../integration-tests/youtube/WEEKLY-SHORTS.md) (handoff root uses integration-tests/youtube/WEEKLY-SHORTS.md). No schema/scope/audience/runtime changes. Source58aed6824184714e27f163faf4f5a09f2a75a54b; private appgdep_6acfec9321e88191ba465e675a2246b8 succeeded, runtime revision6.
+
+Weekly SQLite/provider/UK+BST/DST/history/classification/snapshot/auth/cache-read tests; existing capture/card-sync/automation/monitor/source UI/group/layout/shell/timestamp checks; production build and compiled200/401 passed. Live upload discovery, actual fileDetails availability/classification and next24h scheduled capture still need owner verification. Browser screenshots unavailable in the signed-out session. User reports prior Sync all/timestamps pass and2.1 within10–15 views of Studio; cause of discrepancy unconfirmed. Next owner check: weekly Sync and Last week for a Sunday upload, then a fresh24h capture.
+
+## Current2.1 adapter — 14 October 2026
+
+The2.1 adapter now uses channel-wide Shorts and a saved owned channel/range, never selected test IDs or2.2's release list. Sync all advances to Pacific yesterday. A sole owned channel needs no sample setup; multiple channels require the source selector. Results save to2.1 cache and record one actual run. Missing values are partial data, not fake zeros. [Contract](../integration-tests/youtube/CHANNEL-SHORTS.md). Earlier selected-sample adapter notes are historical.
+
 Updated14 October2026. All-GemOS monitoring remains the intended scope. CJ requested existing other-card syncs in the same Automation Performance card, then a per-card status grid. No additional card/group.
 
 ## Current sources and grid
