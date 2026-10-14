@@ -11,9 +11,9 @@
     const stamp = document.createElement('span');
     stamp.className = 'card-sync-time'; stamp.dataset.syncTime = id;
     stamp.setAttribute('role', 'status'); stamp.setAttribute('aria-live', 'polite');
-    stamp.textContent = 'Last synced: checking…';
+    stamp.textContent = (id === '3.4' ? 'Last saved' : 'Last synced') + ': —';
     if (button.parentElement.matches('.sync-footer,.drive-sync-footer')) {
-      button.parentElement.append(stamp); button.parentElement.classList.add('has-sync-ledger');
+      button.parentElement.append(stamp); button.parentElement.classList.add('has-sync-ledger'); button.parentElement.parentElement.classList.add('card-sync-footer');
     } else {
       const footer = button.parentElement;
       footer.classList.add('card-sync-footer');
@@ -27,11 +27,11 @@
   let timer, epoch = 0;
   function draw(stamp, label, value, empty) {
     stamp.replaceChildren(document.createTextNode(label + ': '));
-    if (!value || !Number.isFinite(new Date(value).getTime())) { stamp.append(document.createTextNode(empty)); return; }
+    if (!value || !Number.isFinite(new Date(value).getTime())) { stamp.append(document.createTextNode('—')); stamp.setAttribute('aria-label', label + ': ' + empty); return; }
     const time = document.createElement('time'); time.dateTime = new Date(value).toISOString();
-    time.textContent = new Date(value).toLocaleString('en-GB', {timeZone:'Europe/London',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    time.textContent = new Date(value).toLocaleString('en-GB', {timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',second:'2-digit'});
     time.title = new Date(value).toLocaleString('en-GB', {timeZone:'Europe/London'}) + ' UK time';
-    stamp.append(time);
+    stamp.append(time); stamp.setAttribute('aria-label', label + ': ' + time.title);
   }
   async function refresh() {
     if (!labels.size) return;
@@ -48,7 +48,7 @@
       }
     } catch {
       if (current !== epoch) return;
-      for (const stamp of labels.values()) if (stamp.textContent.includes('checking…')) stamp.textContent = 'Last synced: unavailable';
+      for (const stamp of labels.values()) if (stamp.textContent.endsWith('—')) stamp.setAttribute('aria-label', 'Sync timestamp unavailable');
     }
   }
   function queue() { clearTimeout(timer); timer = setTimeout(refresh, 300); }

@@ -19,3 +19,17 @@ html{min-height:100%;background:var(--shell-bg);color-scheme:dark}body{min-heigh
 
 /* The longer Audience & Performance label may wrap within its hit target. */
 .group-navigation a{white-space:normal;text-align:center}
+
+/* Shared sync timestamp: one line below the 44px action, full date in accessible text. */
+:root{--sync-time-size:10px;--sync-time-line:14px;--sync-time-colour:rgba(255,255,255,.82);--sync-footer-track:60px}
+body .card-sync-time{display:block;font-family:Inter,sans-serif;font-size:var(--sync-time-size);font-weight:400;line-height:var(--sync-time-line);color:var(--sync-time-colour);white-space:nowrap;max-width:none;min-width:0}
+body .card-sync-time time{display:inline}
+body .has-sync-ledger :is(.sync-status,.drive-sync-status){display:none}
+body :is(.card-sync-left,.has-sync-ledger){display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:0;min-width:0}
+body .card-sync-footer{min-height:var(--sync-footer-track);align-items:flex-start;gap:5px}
+body .sales-card{grid-template-rows:146px 44px minmax(0,1fr) var(--sync-footer-track)}
+body .section-one-grid{--g1-footer-height:72px}
+body #card-release-buffer .group-card-footer{justify-content:space-between}
+body .sync-tile .tile-actions{margin-top:auto}
+body .sync-tile .card-sync-time{text-align:center}
+body .cost-footer>.card-sync-time{order:3;flex-basis:100%;text-align:left}

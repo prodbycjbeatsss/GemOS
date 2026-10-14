@@ -1,5 +1,9 @@
 # GemOs dashboard card design system
 
+## Uniform sync timestamp component — 14 October 2026
+
+CJ requests a single line underneath Sync on all cards. Shared dashboard.css tokens now define10px Inter/14px line/standard muted colour, nowrap and inline time. Source footer Sync stacks its timestamp beneath the44px action; Finance60px and paired Release72px footer tracks keep the original outer card sizes. Automation tiles use the same line after their Sync row. Visible format is Last synced: HH:mm:ss (UK); full date/year and UK time remain in time datetime/title and accessible label. Missing time uses an accessible Not recorded explanation with a compact dash. Manual Costs retains Last saved; unconnected Buffer has no fabricated Sync. Earlier beside-button/multiline date layouts are superseded. Metrics, palettes and durable sync records unchanged. Timestamp/bulk/project/commerce/layout/group/shell checks and build pass; signed-in rendered phone/desktop verification remains pending. Site source d7ad704b9a5f33a343d25bc1c024acb95c7b1dc4.
+
 ## Current locked contract — source check, 14 October 2026
 
 All10 cards were checked against source tokens/contracts. This supersedes older Current/Compact/grouping notes below; details/evidence: [source check](dashboard/verification/2026-10-14-design-system.md).
