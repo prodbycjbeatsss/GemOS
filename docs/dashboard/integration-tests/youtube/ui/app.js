@@ -5,6 +5,7 @@
   const metrics = ['views', 'averageViewPercentage', 'likes', 'subscribersGained', 'shares'];
   let backendMode = window.GEMOS_BACKEND_CONFIGURED === true;
   let token = null, expiresAt = 0, expiryTimer, connectTimer, generation = 0, busy = false, report = null, opener, syncing = false;
+  let weekOffset=0,weeklyGeneration=0;
   let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
   const configKey = 'gemos-youtube-client-v1';
@@ -93,7 +94,12 @@
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
+  async function loadWeekly({sync=false}={}) {
+    const epoch=++weeklyGeneration,session=generation,channel=$('channel').value,offset=weekOffset;batchLoading=true;controls();
+    try{let data;if(!sync){const cached=await backend('weekly-shorts?channel='+encodeURIComponent(channel)+'&weekOffset='+offset);data=cached.report;}if(!data)data=await backend('weekly-shorts',{channel,weekOffset:offset});if(epoch!==weeklyGeneration||session!==generation||channel!==$('channel').value)return;batchReport=data;renderBatch();batchStatus('Weekly Shorts synced',data.capture,'Synced');}catch(e){if(epoch===weeklyGeneration&&session===generation)batchStatus('Sync failed',e.message,'Sync failed');}finally{if(epoch===weeklyGeneration){batchLoading=false;controls();}}
+  }
   async function restoreRelease() {
+    if(backendMode){await loadWeekly();return;}
     const session = generation, channel = $('channel').value;
     const data = await backend('release?channel=' + encodeURIComponent(channel));
     if (session !== generation || channel !== $('channel').value) return;
@@ -165,7 +171,8 @@
     for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date', 'batch-name-input', 'batch-videos', 'batch-confirm']) $(id).disabled = busy;
     $('scheduler-download').disabled = !backendMode || !connected || busy;
     $('batch-import').disabled = !connected || busy || !$('channel').value;
-    $('batch-sync').disabled = $('batch-import').disabled;
+    $('batch-sync').disabled = backendMode ? busy||batchLoading||!token||!$('channel').value : $('batch-import').disabled;
+    if(typeof weekOffset!=='undefined'&&$('batch-week-prev')){$('batch-week-prev').disabled=busy||batchLoading||weekOffset<=-52;$('batch-week-next').disabled=busy||batchLoading||weekOffset>=0;}
     $('batch-sync').classList.toggle('is-syncing', batchLoading);
     $('batch-sync').setAttribute('aria-busy', String(batchLoading));
     $('batch-sync').querySelector('span').textContent = batchLoading ? 'Syncing' : 'Sync';
@@ -398,6 +405,7 @@
   }
   function publicationStatus(video, now = Date.now()) {
     if (hasSnapshot(video)) return { label: '24-hour snapshot saved', reason: 'YouTube’s cumulative view count was saved in the qualifying window. It stays frozen; later Google revisions are not backfilled.' };
+    if(video.classification==='pending')return {label:'Shorts classification pending',reason:'YouTube has not confirmed the format yet. This upload remains unranked.'};
     if (video.visibility !== 'public') return { label: 'Publication not confirmed', reason: 'The video is not public, or its visibility is unavailable. The reported time may be an upload time.' };
     const published = new Date(video.publishedAt).getTime();
     if (!video.publishedAt || !Number.isFinite(published) || published > now) return { label: 'Publication time unavailable', reason: 'YouTube has not returned a usable past publication time.' };
@@ -409,11 +417,11 @@
   function renderBatch() {
     const all = batchReport?.videos || [], ranked = all.filter(hasSnapshot).sort((a,b) => b.snapshotViews-a.snapshotViews || a.id.localeCompare(b.id)), list = [...ranked, ...all.filter(v => !hasSnapshot(v))];
     const ranks = new Map(ranked.map(v => [v.id, 1 + ranked.filter(other => other.snapshotViews > v.snapshotViews).length]));
-    $('batch-name').textContent = batchReport?.name || 'Choose a release above';
-    $('batch-summary').textContent = list.length ? list.length + (list.length === 1 ? ' Short in this release' : ' Shorts in this release') + ' · ' + ranked.length + ' ranked' : 'No Shorts imported.';
+    $('batch-name').textContent = batchReport?.name || (backendMode?'Weekly Shorts':'Choose a release above');
+    $('batch-summary').textContent = batchReport?.scopeType==='weekly-shorts' ? list.length+' uploads · '+ranked.length+' ranked' : list.length ? list.length + (list.length === 1 ? ' Short in this release' : ' Shorts in this release') + ' · ' + ranked.length + ' ranked' : 'No Shorts imported.';
     const dates = list.filter(v => v.visibility === 'public' && v.publishedAt && new Date(v.publishedAt).getTime() <= Date.now()).map(v => new Date(v.publishedAt)).sort((a,b) => a-b);
     const formatter = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/London' });
-    $('batch-dates').textContent = dates.length ? formatter.formatRange(dates[0], dates.at(-1)) : batchReport ? 'Public release dates unavailable' : 'No release imported';
+    $('batch-dates').textContent = batchReport?.week ? formatter.formatRange(new Date(batchReport.week.start+'T12:00:00Z'),new Date(batchReport.week.end+'T12:00:00Z')) : dates.length ? formatter.formatRange(dates[0], dates.at(-1)) : batchReport ? 'Public release dates unavailable' : 'No release imported';
     $('batch-list').replaceChildren(...list.map(video => {
       const state = publicationStatus(video), row = document.createElement('button'); row.type = 'button'; row.className = 'clip-row'; const rank = ranks.get(video.id); row.dataset.pending = String(!rank); if (rank) row.dataset.rank = String(rank);
       const marker = document.createElement('span'); marker.className = 'clip-medal'; marker.textContent = rank ? String(rank) : '—'; marker.setAttribute('aria-hidden', 'true');
@@ -426,10 +434,11 @@
       row.setAttribute('aria-label', (rank ? 'Rank ' + rank + ', ' + video.snapshotViews + ' views, ' : 'Unranked, ') + (video.title || 'Title unavailable') + ', ' + state.label + '. Open details');
       row.addEventListener('click', () => openBatchDetails(video)); return row;
     }));
-    if (!list.length) { const p = document.createElement('p'); p.className = 'batch-empty'; p.textContent = 'Import your release’s Shorts above. Three Shorts are fine. Titles and publication times will appear here.'; $('batch-list').append(p); }
+    if (!list.length) { const p = document.createElement('p'); p.className = 'batch-empty'; p.textContent = 'No Shorts found for this week.'; $('batch-list').append(p); }
   }
   async function importBatch() {
-    if (busy) return;
+    if (busy||batchLoading) return;
+    if(backendMode){await loadWeekly({sync:true});return;}
     let ids;
     try {
       ids = idsFromText($('batch-videos').value, 6);
@@ -461,11 +470,12 @@
     batchOpener = document.activeElement;
     $('batch-dialog-title').textContent = video ? video.title : 'Ranking details';
     const area = $('batch-dialog-content'); area.replaceChildren();
-    const lines = video ? ['Release: ' + batchReport.name, 'Video ID: ' + video.id, 'Visibility: ' + video.visibility, 'YouTube publication metadata: ' + (video.publishedAt ? batchDate(video.publishedAt) + ' UK (' + video.publishedAt + ')' : 'Unavailable'), '24-hour views: ' + (hasSnapshot(video) ? video.snapshotViews.toLocaleString('en-GB') : 'unavailable'), ...(hasSnapshot(video) ? ['Capture requested: ' + batchDate(video.requestedAt) + ' UK', 'Count returned: ' + batchDate(video.capturedAt) + ' UK'] : []), publicationStatus(video).reason] : ['This card covers one selected release, independently of 2.1’s reporting range.', 'Any 1–6 actual Shorts can form the selected test batch. Three is valid; no missing uploads are invented.', 'Only saved qualifying snapshots are ranked. Tied view counts share a rank. Unavailable results stay unranked.', 'A qualifying snapshot must be captured from 24h through 24h 15m after publication. Current or later lifetime counts cannot replace a missed capture.', 'Automatic capture needs the five-minute background checker. TikTok and Reels are not connected. Private/unlisted metadata may reflect upload time.', batchReport ? 'Metadata imported: ' + batchDate(batchReport.fetchedAt) + ' UK' : 'No release imported yet.'];
+    const lines = video ? ['Release: ' + batchReport.name, 'Video ID: ' + video.id, 'Visibility: ' + video.visibility, 'YouTube publication metadata: ' + (video.publishedAt ? batchDate(video.publishedAt) + ' UK (' + video.publishedAt + ')' : 'Unavailable'), '24-hour views: ' + (hasSnapshot(video) ? video.snapshotViews.toLocaleString('en-GB') : 'unavailable'), ...(hasSnapshot(video) ? ['Capture requested: ' + batchDate(video.requestedAt) + ' UK', 'Count returned: ' + batchDate(video.capturedAt) + ' UK'] : []), publicationStatus(video).reason] : [batchReport?.scopeType==='weekly-shorts'?'Monday–Sunday uploads grouped by UK publication date; titles do not need to match a remix.':'This card covers one selected release, independently of 2.1’s reporting range.', 'Weekly uploads are discovered from your channel. Format-based Shorts use owner-provided dimensions and duration; Analytics classification is used when returned. Unknown formats stay unranked.', 'Only saved qualifying snapshots are ranked. Tied view counts share a rank. Unavailable results stay unranked.', 'A qualifying snapshot must be captured from 24h through 24h 15m after publication. Current or later lifetime counts cannot replace a missed capture.', 'Automatic capture needs the five-minute background checker. TikTok and Reels are not connected. Private/unlisted metadata may reflect upload time.', batchReport ? 'Metadata imported: ' + batchDate(batchReport.fetchedAt) + ' UK' : 'No release imported yet.'];
     for (const text of lines) { const p = document.createElement('p'); p.textContent = text; area.append(p); }
     if (video) { const link = document.createElement('a'); link.href = 'https://www.youtube.com/shorts/' + video.id; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Watch Short ↗'; area.append(link); }
     $('batch-dialog').showModal();
   }
+  for(const [id,change] of [['batch-week-prev',-1],['batch-week-next',1]])$(''+id)?.addEventListener('click',()=>{if(busy||batchLoading)return;weekOffset=Math.max(-52,Math.min(0,weekOffset+change));$('batch-week-label').textContent=weekOffset===0?'This week':weekOffset===-1?'Last week':Math.abs(weekOffset)+' weeks ago';batchReport=null;renderBatch();loadWeekly();});
   $('batch-import').addEventListener('click', importBatch); $('batch-sync').addEventListener('click', importBatch);
   $('batch-details').addEventListener('click', () => openBatchDetails());
   $('batch-dialog-close').addEventListener('click', () => $('batch-dialog').close());

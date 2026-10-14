@@ -664,3 +664,8 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 CJ: “We need to connect it so it picks up the shorts on my page now ... instead of the shorts selected in the test area”, then “Go for it”. Implemented official YouTube creatorContentType-based channel-wide activity, owner-bound channel/range cache, normal and bulk Sync; removed sample inputs from the production flow. Counts sum complete Shorts-only daily rows; retention uses Google's aggregate. Unknown/long/live excluded, missing unavailable, signed Likes preserved.2.2 remains independently selected. Existing tables/scopes/private audience retained. Controlled tests/build pass; live report and Studio agreement remain pending. Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved.
 
 Also checkpointed prior chat's user-accepted smaller Automation tiles/shared transparent Sync controls and truthful skipped-feedback repair, preserving latest deployed fixes.
+
+
+### 2026-10-14 — Weekly Shorts instead of remix-title matching
+
+CJ approved2.2 automatic UK Monday–Sunday publication batches, current-week default and week navigation; Shorts titles need not match remixes and weekly grouping does not prove remix affiliation. Scheduled discovery monitors new channel uploads and preserves immutable24-hour captures. Unknown formats remain unranked and missed windows cannot be backfilled. Source/evidence: docs/dashboard/integration-tests/youtube/WEEKLY-SHORTS.md. Previous manually selected release production contracts superseded; stored history retained.

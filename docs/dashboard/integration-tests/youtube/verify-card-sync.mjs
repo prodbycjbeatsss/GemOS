@@ -12,6 +12,7 @@ const sql=new DatabaseSync(':memory:');for(const f of readdirSync('drizzle').fil
 const DB={prepare(q){let args=[];const s={bind(...v){args=v;return s;},async first(){return sql.prepare(q).get(...args)||null;},async all(){return {results:sql.prepare(q).all(...args)};},async run(){return {meta:{changes:Number(sql.prepare(q).run(...args).changes)}};}};return s;},async batch(stmts){sql.exec('BEGIN');try{const r=[];for(const s of stmts)r.push(await s.run());sql.exec('COMMIT');return r;}catch(e){sql.exec('ROLLBACK');throw e;}}};
 const origin='https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site',env={DB,GOOGLE_CLIENT_ID:'fake.apps.googleusercontent.com',GOOGLE_CLIENT_SECRET:'FAKE',YOUTUBE_TOKEN_KEY:'ab'.repeat(32),GOOGLE_REDIRECT_URI:origin+'/api/youtube/callback'};
 const req=(path='/api/automations',body=null,owner='owner',requestOrigin=origin)=>new Request(origin+path,{method:body?'POST':'GET',headers:{'oai-authenticated-user-id':owner,Origin:requestOrigin,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
+import {weeklyFixture} from './weekly-test-fixture.mjs';
 const realFetch=globalThis.fetch;let calls=[];
 try{
  const cipher=await seal('FAKE_ACCESS',env,'owner');sql.prepare('INSERT INTO youtube_connections VALUES (?,?,?,?,?,?,?,?,?)').run('owner',env.GOOGLE_CLIENT_ID,cipher,cipher,Date.now()+90*86400000,[...SCOPES,DRIVE_SCOPE].join(' '),JSON.stringify([{id:'UC_TEST',title:'Example'}]),Date.now(),'revision');
@@ -29,7 +30,7 @@ try{
  sql.prepare("INSERT INTO automation_locks VALUES (?,?,?,?)").run('owner','sync-card:2.1','busy',Date.now()+300000);await assert.rejects(syncCard(req(),env,'2.1'),/already syncing/);sql.prepare("DELETE FROM automation_locks WHERE automation='sync-card:2.1'").run();
  const connected=await assetHandler(req('/api/youtube/drive-folders',{production:'production12345',queue:'queue123456789'}),env,'drive-folders');assert.equal(connected.status,200);await assetHandler(req('/api/youtube/drive-select',{folder:'project12345678'}),env,'drive-select');calls=[];result=await syncCard(req(),env,'1.2');assert.equal(result.status,'completed');assert.ok(calls.length>0);assert.ok(calls.every(c=>c.method==='GET'),'main/card Sync cannot move/publish: Drive requests are all reads');
  assert.equal((await capabilities(env,'owner'))['1.2'],true);
- const empty=(await syncCard(req(),env,'2.2'));assert.equal(empty.status,'skipped');
+ globalThis.fetch=weeklyFixture(globalThis.fetch);const empty=(await syncCard(req(),env,'2.2'));assert.equal(empty.status,'completed');
  const before=calls.length;assert.equal((await automationHandler(req('/api/automations',{action:'sync-card',card:'1.2'},'owner','https://evil.invalid'),env)).status,403);assert.equal(calls.length,before);
  assert.equal((await automationHandler(req('/api/automations',{action:'sync-card',card:'1.2',url:'https://evil.invalid'}),env)).status,400);assert.equal((await automationHandler(req('/api/automations',{action:'sync-card',card:'__proto__'}),env)).status,400);assert.equal((await automationHandler(req('/api/automations',{action:'sync-card',card:'1.2'},''),env)).status,401);
  await saveTarget(env,'owner','email-list-sync',{month:'2026-10'});assert.equal((await getTarget(env,'owner','email-list-sync')).month,'2026-10');assert.equal((await getTarget(env,'other','email-list-sync')),null);

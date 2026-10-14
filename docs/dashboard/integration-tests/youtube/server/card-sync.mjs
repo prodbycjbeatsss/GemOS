@@ -1,3 +1,4 @@
+import { weeklyHandler } from './weekly-shorts.mjs';
 import { channelShortsHandler } from './channel-shorts.mjs';
 import { getTarget, savedConnection, capabilities } from './sync-targets.mjs';
 import { monitoredRequest, partial } from './sync-monitor.mjs';
@@ -34,8 +35,8 @@ export async function syncCard(request,env,card,sample=null){
    const report=await run('shorts-analytics-sync','/api/youtube/shorts-report',{}, {channel,rangeDays,...(sample?.endDate?{endDate:sample.endDate}:{})},r=>channelShortsHandler(r,env));
    partialData=report.warnings.length>0;
   }else if(card==='2.2'){
-   const rows=await env.DB.prepare('SELECT channel_id FROM youtube_release_selections WHERE user_id=? LIMIT 2').bind(owner).all();if(rows.results.length!==1)return {card,status:'skipped',message:'Select one release first.'};
-   await run('release-metadata-sync','/api/youtube/release-refresh',{}, {},async()=>Response.json(await captureRelease(env,owner,rows.results[0].channel_id,{refreshOnly:true})));
+   const target=await getTarget(env,owner,'weekly-shorts-sync');const channel=target?.channel||unique;if(!channel)return {card,status:'skipped',message:'Choose a weekly Shorts channel first.'};
+   await run('release-metadata-sync','/api/youtube/weekly-shorts',{}, {channel,weekOffset:target?.weekOffset||0},r=>weeklyHandler(r,env));
   }else if(card==='2.3'){
    const target=await getTarget(env,owner,'email-list-sync')||{month:new Date().toISOString().slice(0,7)};
    await run('email-list-sync','/api/mailchimp/report',target,null,r=>mailchimpHandler(r,env,'report'));
