@@ -1,5 +1,11 @@
 # GemOS dashboard — current handoff
 
+## Metric tiles restored — 14 October 2026
+
+CJ says the metric tiles did not need redesign and explicitly requests their previous appearance. Removed only the new84px/flex/padding/font overrides and tile-note hiding rule, restoring original responsive sizing, spacing, typography, layout and notes. The outside-tile text cleanup and Top3 Shorts remain. Top Shorts uses its bounded internal scroll; no further metric tile change is authorised. This supersedes the compact84px tile decision below.
+
+Source `2e1cc2b1fbe052001cc1475ea00804445fb0eb75`; private deployment `appgdep_6acfdd8d5c3881919ba7baa4beebed85` succeeded; build passed; runtime revision6 unchanged.
+
 ## Current compact2.1 summary — 14 October 2026
 
 CJ's screenshot confirms live channel metrics now populate (199 views,107.42% average viewed,-2 Likes,0 subscribers,14 shares for28days). Studio agreement is not yet measured. CJ asks to remove unnecessary text and add the2–3 highest-viewed Shorts in the selected period.
