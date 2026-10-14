@@ -1,5 +1,15 @@
 # Group 2 — visual and interaction specification
 
+## Current compact2.1 summary — 14 October 2026
+
+CJ's screenshot confirms live channel metrics now populate (199 views,107.42% average viewed,-2 Likes,0 subscribers,14 shares for28days). Studio agreement is not yet measured. CJ asks to remove unnecessary text and add the2–3 highest-viewed Shorts in the selected period.
+
+Delivered: hidden above-card coverage box, repeated tile notes, duplicated data-through/status narrative and unused target/connection section. Exact source dates/warnings remain in Analytics details; one footer keeps Sync and timestamp. Existing purple Large920px material/geometry retained;2.1 metric rows are84px, label/value only.2.2 duplicate sync narrative is hidden; release/snapshot rules unchanged.
+
+Top Shorts shows up to3 actual titles plus views earned in the exact selected date range. Fixed API request:video dimension,creatorContentType==shorts filter,views,-views,maxResults3; metadata uses validated owned IDs. No lifetime totals or publication-date cutoff. Ranking failure preserves channel aggregates and reports a concise unavailable state. Card Sync/Sync all return/save the same ranking. Tests cover filter/date/order/limit,title escaping,3-row UI,failure preservation and existing state/bulk flows. Build/compiled routes pass. Live ranking response and refreshed phone layout remain to verify.
+
+Source `c25dc6b715cdd2255d50df0783256c61d928572d`; private deployment `appgdep_6acfdc6176108191ae7472edebd4a5ad` succeeded; runtime revision6 retained. Code/contract checkpoint remains in draft PR2. Earlier detailed2.1 presentation notes are superseded for the live card.
+
 ## Current 2.1 — channel-wide Shorts, 14 October 2026
 
 CJ authorised replacing the manually selected test sample with all Shorts activity on the connected channel. Both the normal card Sync and Automation Sync all use `/api/youtube/shorts-report`, without pasted links or confirmation. YouTube's exact `creatorContentType=SHORTS` dimension value identifies eligible rows; long-form/live/unknown rows are excluded. Counts are summed over complete paginated daily reports, while Average viewed comes from Google's period aggregate. No duration/title guesses or unweighted percentage averages.

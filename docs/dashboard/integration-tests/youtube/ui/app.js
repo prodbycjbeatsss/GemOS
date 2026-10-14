@@ -137,7 +137,7 @@
     $('sync-heading').textContent = heading;
     const selectedDays = Number(document.querySelector('[data-range][aria-checked=true]').dataset.range);
     $('sync-message').textContent = report && report.rangeDays !== selectedDays ? message + ' Showing ' + report.rangeDays + ' days until the new range is ready.' : message;
-    document.querySelector('.sync-status').textContent = footer;
+    document.querySelector('.sync-status').textContent = footer;document.querySelector('.sync-status').setAttribute('aria-label',footer+'. '+message);
     $('last-import').textContent = report ? 'Last import · ' + new Date(report.fetchedAt).toLocaleString('en-GB') : 'No successful import yet.';
     fitRecess();
   }
@@ -371,8 +371,9 @@
     $('target-label').textContent = backendMode?'Channel-wide Shorts':'Selected Shorts only'; $('target-value').textContent = backendMode?report?'YouTube Shorts':'Sync to load':report ? report.videos.length + ' videos' : 'No sample imported';
     $('target-state').textContent = backendMode?(report?.warnings.length?'Partial data':report?'Connected':'Not synced'):'Test'; $('target-bar').hidden = true;
     $('target-note').textContent = 'Comparison and target hidden until report coverage is verified. TikTok and Reels are not connected.';
-    showSync(syncState.heading, syncState.message, syncState.footer);
+    renderTopShorts();showSync(syncState.heading, syncState.message, syncState.footer);
   }
+  function renderTopShorts(){const list=$('analytics-top-shorts');if(!list)return;list.replaceChildren();if(!report?.topShorts?.length){const row=document.createElement('li');row.className='ranking-empty';row.textContent=!report?'Sync to load':report.topShortsState==='unavailable'?'Ranking unavailable':report.topShortsState==='empty'?'No Shorts activity returned':'Sync to load top Shorts';list.append(row);return;}report.topShorts.slice(0,3).forEach((short,i)=>{const row=document.createElement('li'),link=document.createElement('a'),rank=document.createElement('span'),title=document.createElement('span'),views=document.createElement('span');link.className='top-short-link';link.href='https://www.youtube.com/shorts/'+short.id;link.target='_blank';link.rel='noopener noreferrer';rank.className='top-short-rank';rank.textContent=String(i+1);title.className='top-short-title';title.textContent=short.title;title.title=short.title;views.className='top-short-views';views.textContent=short.views.toLocaleString('en-GB')+' views';link.setAttribute('aria-label',short.title+', '+short.views+' views in the selected period');link.append(rank,title,views);row.append(link);list.append(row);});}
   function details() {
     opener = document.activeElement;
     const area = $('details-content'); area.replaceChildren();
