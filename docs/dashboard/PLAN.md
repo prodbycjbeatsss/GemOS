@@ -1,5 +1,11 @@
 # GemOS — current implementation plan
 
+## Current — channel-wide 2.1 delivered, 14 October 2026
+
+Manual sample setup is replaced by channel-wide Shorts reports for normal Sync and Automation Sync all. Preserve the existing Group2 design/optional ranges and independent2.2 release snapshots. Data source, aggregation, guards and tests: [CHANNEL-SHORTS](integration-tests/youtube/CHANNEL-SHORTS.md). Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved.
+
+Next: live owner Sync and matching Studio Shorts comparison, followed by Automation completion/timestamp check. Missing platforms remain unavailable. Automation smaller tiles/shared quiet buttons are user-accepted; all-state/device verification is separate. Earlier sample-based plan entries below are historical.
+
 ## Regrouping delivered — 13 October 2026
 
 ## Current grouping — 13 October 2026

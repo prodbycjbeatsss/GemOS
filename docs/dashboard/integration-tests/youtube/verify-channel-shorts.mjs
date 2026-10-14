@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import {readFileSync,readdirSync} from 'node:fs';
+import {channelShortsHandler, reportingYesterday} from './server/channel-shorts.mjs';
+import {syncCard} from './server/card-sync.mjs';
+import {reportRuns} from './server/automation-runs.mjs';
+import {getAnalyticsCache} from './server/analytics-cache.mjs';
+import {seal,SCOPES} from './server/youtube.mjs';
+const sql=new DatabaseSync(':memory:');for(const f of readdirSync('drizzle').filter(f=>f.endsWith('.sql')).sort())sql.exec(readFileSync('drizzle/'+f,'utf8'));
+const DB={prepare(q){let args=[];const s={bind(...v){args=v;return s;},async first(){return sql.prepare(q).get(...args)||null;},async all(){return {results:sql.prepare(q).all(...args)};},async run(){return {meta:{changes:Number(sql.prepare(q).run(...args).changes)}};}};return s;},async batch(stmts){sql.exec('BEGIN');try{const r=[];for(const s of stmts)r.push(await s.run());sql.exec('COMMIT');return r;}catch(e){sql.exec('ROLLBACK');throw e;}}};
+const origin='https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site',env={DB,GOOGLE_CLIENT_ID:'fake.apps.googleusercontent.com',GOOGLE_CLIENT_SECRET:'FAKE',YOUTUBE_TOKEN_KEY:'ab'.repeat(32),GOOGLE_REDIRECT_URI:origin+'/api/youtube/callback'};
+const req=(body,owner='owner',requestOrigin=origin)=>new Request(origin+'/api/youtube/shorts-report',{method:'POST',headers:{'oai-authenticated-user-id':owner,Origin:requestOrigin,'Content-Type':'application/json'},body:JSON.stringify(body)});
+const realFetch=globalThis.fetch;let calls=[],bad=false,noShorts=false;
+try{
+ const cipher=await seal('FAKE_ACCESS',env,'owner');sql.prepare('INSERT INTO youtube_connections VALUES (?,?,?,?,?,?,?,?,?)').run('owner',env.GOOGLE_CLIENT_ID,cipher,cipher,Date.now()+90*86400000,SCOPES.join(' '),JSON.stringify([{id:'UC_TEST',title:'Example'}]),Date.now(),'revision');
+ assert.equal((await reportRuns(env,'owner')).cards.find(c=>c.id==='2.1').setupRequired,false,'sole owned channel needs no manual sample');
+ globalThis.fetch=async(input)=>{const u=new URL(input);calls.push(u);assert.equal(u.hostname,'youtubeanalytics.googleapis.com');assert.equal(u.searchParams.get('ids'),'channel==UC_TEST');assert.equal(u.searchParams.has('filters'),false,'no selected-video filter');if(bad)return Response.json({error:'failure'},{status:503});
+  if(u.searchParams.get('dimensions')==='creatorContentType')return Response.json({columnHeaders:[{name:'creatorContentType'},{name:'averageViewPercentage'}],rows:noShorts?[['VIDEO_ON_DEMAND',99]]:[['VIDEO_ON_DEMAND',99],['SHORTS',42.75]]});
+  const start=u.searchParams.get('startDate');const data=Array.from({length:210},(_,i)=>{const d=new Date(start+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+Math.floor(i/3));return [d.toISOString().slice(0,10),['SHORTS','VIDEO_ON_DEMAND','UNSPECIFIED'][i%3],i%3===0?10:999,i%3===0?-1:100,i%3===0?0:100,i%3===0?2:100];}).filter(r=>!noShorts||r[1]!=='SHORTS');const offset=Number(u.searchParams.get('startIndex'))-1;return Response.json({columnHeaders:['day','creatorContentType','views','likes','subscribersGained','shares'].map(name=>({name})),rows:data.slice(offset,offset+200)});
+ };
+ const input={channel:'UC_TEST',rangeDays:90,endDate:'2026-10-10'};
+ let r=await channelShortsHandler(req(input),env);assert.equal(r.status,200);let report=await r.json();assert.equal(report.scopeType,'channel-shorts');assert.equal(report.current.views,700);assert.equal(report.current.likes,-70);assert.equal(report.current.subscribersGained,0);assert.equal(report.current.shares,140);assert.equal(report.current.averageViewPercentage,42.75,'provider aggregate, never daily average');assert.equal(calls.length,6,'both periods paginate then fetch aggregate');assert.equal((await getAnalyticsCache(env,'owner',[{id:'UC_TEST'}])).current.views,700);assert.equal(await getAnalyticsCache(env,'other',[{id:'UC_TEST'}]),null);
+ let saved=sql.prepare('SELECT report_json FROM analytics_sync_cache').get().report_json;const before=calls.length;
+ for(const body of [{...input,channel:'UC_OTHER'},{...input,ids:['abcdefghijk']},{...input,endDate:'2026-02-30'},{...input,endDate:'2099-01-01'},{...input,rangeDays:12}])assert.equal((await channelShortsHandler(req(body),env)).status,400);
+ assert.equal((await channelShortsHandler(req(input,'owner','https://evil.invalid'),env)).status,403);assert.equal((await channelShortsHandler(req(input,''),env)).status,401);assert.equal(calls.length,before);
+ bad=true;r=await channelShortsHandler(req(input),env);assert.equal(r.status,502);assert.equal(sql.prepare('SELECT report_json FROM analytics_sync_cache').get().report_json,saved,'provider failure preserves prior report');bad=false;
+ noShorts=true;r=await channelShortsHandler(req(input),env);report=await r.json();assert.equal(report.current.views,null);assert.equal(report.current.averageViewPercentage,null);assert.ok(report.warnings.length>0,'no Shorts rows are not fabricated zero');noShorts=false;
+ calls=[];r=await syncCard(req({}),env,'2.1');assert.equal(r.status,'completed');assert.equal(calls[0].searchParams.get('endDate'),reportingYesterday(),'Sync all advances to current reporting date');assert.equal((await reportRuns(env,'owner')).cards.find(c=>c.id==='2.1').latest.status,'succeeded');assert.ok((await reportRuns(env,'owner')).cards.find(c=>c.id==='2.1').lastSuccess);
+ console.log('Channel-wide Shorts passed: official type isolation, signed likes/real zero, pagination, provider retention aggregate, owner/date/origin validation, cache preservation, missing rows, current-date Sync all and durable run records.');
+}finally{globalThis.fetch=realFetch;}

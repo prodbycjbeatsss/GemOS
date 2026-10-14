@@ -1,5 +1,17 @@
 # GemOS dashboard — current handoff
 
+## Current checkpoint — 14 October 2026, channel-wide 2.1
+
+2.1 is now channel-wide YouTube Shorts, replacing the selected-sample test. Read [CHANNEL-SHORTS](integration-tests/youtube/CHANNEL-SHORTS.md), current Group2 spec/usage, then implementation `server/channel-shorts.mjs`, API route, `server/card-sync.mjs`, `ui/app.js`. Sole connected channel works without sample IDs. Normal Sync and Automation Sync all share the service; saved owner reports restore after refresh. 2.2 release selection/capture is unchanged. TikTok/Reels remain unavailable.
+
+Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved. The deployed source/code/tests are mirrored under the existing `docs/dashboard/integration-tests/youtube/` path. No extra source root, permissions or schema changes.
+
+Automation tile styling from this chat is also checkpointed: smaller tiles, three columns at desktop/two on phones, centred plain 20px icons, 12px gaps/8px padding; Sync and Sync all use shared transparent 11px/600 text +16px stroke icon and44px targets. CJ accepted the appearance and reported other syncs working. This is user acceptance, not measured all-state/device QA. Manual Costs and unconnected scheduling are honestly skipped. Skipped/failed reasons remain on tiles. The earlier missing-sample Setup required rule is superseded by channel-only setup.
+
+Validation: channel type isolation, pagination, real zero/signed likes, Google retention aggregate, missing values, owner/origin/date/input checks, fresh-date bulk sync, saved report isolation, failure retention, source UI/range/cache/spinner and2.2 regressions. Backend/capture/automation/monitoring/group-placement/shell/dialog and build/compiled200/401 checks pass.
+
+**Next:** owner refreshes Audience & Performance → Sync2.1; verify a populated Shorts report/partial warning or exact error, its date range and matching Studio Shorts metrics. Then Automation Sync2.1/Sync all should record completion and last success. Real channel-wide provider response and rendered UI remain unverified. Scheduling1.1 remains unconnected; Publishing Cadence remains deferred. Earlier checkpoints below are history and must not override this scope.
+
 Updated13 October2026 after approved regrouping. Start with AGENTS.md, dashboard README, DESIGN_SYSTEM/ DESIGN_TOKENS and the affected group's spec/usage/components. Prior lengthy checkpoint history is preserved at ../../archives/dashboard/2026-10-13/pre-regrouping/docs/dashboard/HANDOFF.md; it is superseded for current grouping.
 
 ## Current grouping — 13 October 2026
@@ -37,7 +49,7 @@ A successful retry resolves only the issue linked to that retry's original run, 
 
 Runtime/card implementation is now delivered; see group-4/USAGE-AND-CONNECTIONS.md. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance for continuity; no empty4.1 card.
 
-## Latest implementation checkpoint
+## Historical first implementation checkpoint
 
 Durable automation run records and owner-only card/history are deployed. New migration:drizzle/0006_automation_runs.sql plus generated snapshot/journal; previous applied migrations unchanged. Source/checker updates are under integration-tests/youtube. Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved.
 
@@ -45,7 +57,7 @@ Controlled tests include partial owner failures, interruption recovery/fencing, 
 
 Next: refresh the signed-in site, select Automations, inspect a new scheduled checker execution after it runs. Review card/mobile/dialog and enlarged text. Expand adapters with read-only Drive checks after that evidence; do not claim all automations monitored or scheduler uptime verified. Existing record preservation/provider verification limits still apply.
 
-## Latest — per-card sync grid,14 October2026
+## Historical — per-card sync grid,14 October2026
 
 CJ reports two visible run entries and explicitly requests other cards' syncs in the existing card, then a grid showing every card's sync status/last sync. Delivered responsive nine-card grid, latest attempt/retained last success/manual save timestamps, older unresolved issues, full history and expanded filters.11 registered operation types cover Drive checks/discovery/explicit Queue approval, logical Shorts analytics, release metadata/checker, Mailchimp, Payhip received-sales refresh, earnings/ranking and payouts. Buffer stays Not connected; Costs stays Manual records. No second card or monitoring-driven external action.
 
@@ -53,7 +65,7 @@ Source c07418cbc68fb5d37a6bbca9de9308c2694581e0; private deployment appgdep_6ace
 
 All relevant controlled sync/grid/capture/security/Group1–3 regressions, production build and compiled200/401 pages pass. No rendered browser QA or newly instrumented live provider-read verification. Next: owner refreshes Automations, checks grid/scroll, performs normal source-card Sync and compares tiles/history. Expand receiver/upload/memory adapters only as those real sources become available. Current authority:group-4/USAGE-AND-CONNECTIONS.md.
 
-## Current Large card and data sync — 14 October2026
+## Historical Large card and data sync — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
 

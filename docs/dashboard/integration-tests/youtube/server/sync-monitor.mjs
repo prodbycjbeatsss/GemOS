@@ -20,6 +20,7 @@ export async function monitoredRequest(request,env,automation,work){
  }catch(e){await finishRun(env,run,'failed',null,'sync-incomplete');throw e;}
 }
 export function partial(key,d){if(!d)return true;
+ if(key==='shorts-analytics-sync')return d.warnings?.length>0||d.current?.views===null;
  if(key==='youtube-earnings-sync')return d.total===null;
  if(key==='youtube-ranking-sync')return d.titlesAvailable===false;
  if(key==='email-list-sync')return d.active===null||d.signups===null||d.unsubscribes===null||d.campaignAvailable===false;

@@ -1,5 +1,9 @@
 # Group4 — sync monitoring and run history
 
+## Current2.1 adapter — 14 October 2026
+
+The2.1 adapter now uses channel-wide Shorts and a saved owned channel/range, never selected test IDs or2.2's release list. Sync all advances to Pacific yesterday. A sole owned channel needs no sample setup; multiple channels require the source selector. Results save to2.1 cache and record one actual run. Missing values are partial data, not fake zeros. [Contract](../integration-tests/youtube/CHANNEL-SHORTS.md). Earlier selected-sample adapter notes are historical.
+
 Updated14 October2026. All-GemOS monitoring remains the intended scope. CJ requested existing other-card syncs in the same Automation Performance card, then a per-card status grid. No additional card/group.
 
 ## Current sources and grid

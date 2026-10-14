@@ -1,5 +1,9 @@
 # GemOs dashboard card design system
 
+## Current Automation inner tiles — accepted 14 October 2026
+
+Large920px cobalt card remains. Smaller centred tiles: three columns on desktop≥840px/two on phones;12px gaps,8px padding,12px corners,20px plain monochrome icon,12px title/11px status and dates. Sync and Sync all use the other groups' transparent icon-and-text control:11px/600,16px stroke icon,44px hit target, no filled tile button. Routine details stay in footer history; unresolved tiles retain an issue link. CJ accepted appearance. This supersedes the28px glass/18px icon/8px-gap tile notes below. Outer material/glyph/insets remain unchanged. 2.1 now has channel-only setup; sample setup references are historical.
+
 ## Current Large card and data sync — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.

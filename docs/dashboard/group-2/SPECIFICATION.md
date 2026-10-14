@@ -1,5 +1,18 @@
 # Group 2 — visual and interaction specification
 
+## Current 2.1 — channel-wide Shorts, 14 October 2026
+
+CJ authorised replacing the manually selected test sample with all Shorts activity on the connected channel. Both the normal card Sync and Automation Sync all use `/api/youtube/shorts-report`, without pasted links or confirmation. YouTube's exact `creatorContentType=SHORTS` dimension value identifies eligible rows; long-form/live/unknown rows are excluded. Counts are summed over complete paginated daily reports, while Average viewed comes from Google's period aggregate. No duration/title guesses or unweighted percentage averages.
+
+Ranges are 7/28/90/365 days. The normal source defaults to Pacific yesterday; an explicit latest requested day remains available in reporting settings. Sync all reuses the saved channel/range and advances to Pacific yesterday. Current and previous windows have equal calendar length; data-through is separately shown. Missing rows/metrics remain unavailable; actual zero and signed Likes are preserved. Combined growth/targets remain withheld until compatible coverage is established. TikTok/Reels are unconnected. 2.2 still uses its independent release selection and frozen snapshot rules.
+
+The production sample fields are hidden. Old sample cache is not restored under a whole-channel label. Successful reports and channel/range are saved privately in existing owner-scoped tables. Failures preserve the prior report. No migration/new OAuth scopes. A sole owned channel needs no manual sample setup; multiple channels need a choice.
+
+[Implementation contract and verification](../integration-tests/youtube/CHANNEL-SHORTS.md). Controlled provider/SQLite/UI/state/auth/capture/automation regressions and production/compiled-page checks pass. Signed-in live report and Studio comparison remain pending. Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved.
+
+Earlier selected-sample integration notes below are historical and superseded for 2.1; 2.2 source/eligibility decisions remain in force.
+
+
 ## Current grouping — 13 October 2026
 
 CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.

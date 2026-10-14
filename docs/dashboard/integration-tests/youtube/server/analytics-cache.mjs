@@ -2,7 +2,7 @@ const metrics=['views','averageViewPercentage','likes','subscribersGained','shar
 const shift=(date,days)=>{const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10);};
 export async function getAnalyticsCache(env,owner,channels){
  const table=await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='analytics_sync_cache'").first();if(!table)return null;
- const row=await env.DB.prepare('SELECT report_json FROM analytics_sync_cache WHERE user_id=?').bind(owner).first();if(!row)return null;const report=JSON.parse(row.report_json);return channels.some(c=>c.id===report.channelId)?report:null;
+ const row=await env.DB.prepare('SELECT report_json FROM analytics_sync_cache WHERE user_id=?').bind(owner).first();if(!row)return null;const report=JSON.parse(row.report_json);return report.scopeType==='channel-shorts'&&channels.some(c=>c.id===report.channelId)?report:null;
 }
 export async function cacheAnalytics(env,owner,target,videos,current,previous,end,channelTitle){
  const warnings=[];

@@ -53,14 +53,14 @@
       $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
       if (data.items.some(item => item.id === saved.channel)) $('channel').value = saved.channel;
       status('Connected · read-only. Session restored after refresh.');
-      showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+      showSync('Ready to sync', backendMode?'Choose your date range, then Sync all channel Shorts.':'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
   let analyticsTrace=null,analyticsStep=null,analyticsSelection=null;
   async function backend(action, params) {
-    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep,'X-GemOS-Sync-Selection':JSON.stringify(analyticsSelection)}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
+    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep,'X-GemOS-Sync-Selection':JSON.stringify(analyticsSelection)}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(action==='shorts-report'?150000:30000) });
     let data; try { data = await response.json(); } catch { throw new Error('The connection service returned an unreadable response.'); }
     if (!response.ok) { const error = new Error(data.error || 'The connection service is unavailable.'); error.status = response.status; throw error; }
     if(action!=='status' && action!=='disconnect' && $('youtube-badge')){$('youtube-badge').textContent='Connected · checked now';$('youtube-badge').dataset.state='connected';}return data;
@@ -82,10 +82,10 @@
       $('channel').replaceChildren(...data.channels.map(c => new Option(c.title, c.id)));
       if (data.channels.some(c => c.id === previous)) $('channel').value = previous;
       token = 'server-connection'; expiresAt = Infinity; status('Connected · read-only. Saved connection restored for both cards.');
-      showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+      showSync('Ready to sync', backendMode?'Choose your date range, then Sync all channel Shorts.':'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
-      if(data.analyticsReport&&data.analyticsReport.channelId===$('channel').value){
-        report=data.analyticsReport;const restoredDays=report.rangeDays;$('videos').value=report.videos.map(v=>v.id).join('\n');$('confirm-shorts').checked=true;$('end-date').value=report.requestedEnd;
+      if(data.analyticsReport?.scopeType==='channel-shorts'&&data.analyticsReport.channelId===$('channel').value){
+        report=data.analyticsReport;const restoredDays=report.rangeDays;
         document.querySelectorAll('[data-range]').forEach(button=>button.setAttribute('aria-checked',String(Number(button.dataset.range)===restoredDays)));rememberSelection();render();showSync('Saved analytics restored','Showing the saved Automation Sync result. Press Sync for a new request.','Saved · '+new Date(report.fetchedAt).toLocaleTimeString('en-GB'));
       }
       await restoreRelease();
@@ -232,7 +232,7 @@
           const data = await api('https://www.googleapis.com/youtube/v3/channels', { part: 'snippet', mine: 'true', maxResults: '50' }, session);
           if (!data.items?.length) throw new Error('No owned YouTube channel was returned for this account.');
           $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
-          showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+          showSync('Ready to sync', backendMode?'Choose your date range, then Sync all channel Shorts.':'Choose your Shorts and date range, then Sync.', 'Not synced');
           batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
           status(rememberSession() ? 'Connected · read-only. Kept across refreshes in this tab until expiry.' : 'Connected · read-only. Browser storage is blocked; refresh will require reconnecting.');
         } catch (error) { if (session === generation) clearConnection(error.message); }
@@ -266,6 +266,7 @@
     return result;
   }
   async function sync({ rangeChange = false } = {}) {
+    if(backendMode)return syncChannel({rangeChange});
     if (busy) return;
     let ids, requested, rangeDays;
     try {
@@ -326,8 +327,20 @@
     }
     finally { analyticsTrace=null;analyticsStep=null;analyticsSelection=null;if (session === generation) { busy = false; syncing = false; controls(); } }
   }
+  async function syncChannel({rangeChange=false}={}) {
+    if(busy)return;
+    const channel=$('channel').value,rangeDays=Number(document.querySelector('[data-range][aria-checked=true]').dataset.range),session=generation;
+    let requested;try{requested=date($('end-date').value);if(!channel)throw new Error('Connect and choose your YouTube channel.');}catch(e){feedback(e.message);return;}
+    const cacheKey=JSON.stringify(['channel-shorts',channel,requested,rangeDays]);
+    if(!rangeChange)invalidateCache();
+    busy=true;syncing=true;controls();feedback('Syncing all YouTube Shorts on your channel…');showSync('Syncing','Fetching channel-wide Shorts activity…','Syncing…');
+    try{const next=await backend('shorts-report',{channel,rangeDays,endDate:requested});if(session!==generation||channel!==$('channel').value)return;
+      report=next;reportCache.set(cacheKey,report);render();const partial=report.warnings.length>0;feedback(partial?'Shorts report loaded with unavailable metrics. See Analytics details.':'Channel-wide Shorts report updated.');showSync(partial?'Synced with unavailable metrics':'Synced',partial?'Some Shorts metrics are unavailable; your source notes are in Analytics details.':'All channel activity classified as Shorts by YouTube.','Synced · '+new Date(report.fetchedAt).toLocaleTimeString('en-GB'));
+    }catch(e){if(session===generation){feedback((e.name==='TimeoutError'?'YouTube timed out. Try Sync again.':e.message)+(report?' Previous successful report retained.':''));showSync('Sync failed','See the connection message or run history.','Sync failed');}}
+    finally{if(session===generation){busy=false;syncing=false;controls();}}
+  }
   function render() {
-    $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
+    $('included-status').textContent = report?.scopeType==='channel-shorts'?'All Shorts activity on '+report.channelTitle+' · classified by YouTube.':report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
     const videoSignature = JSON.stringify(report?.videos || []);
     if (videoSignature !== renderedVideos) $('included-videos').replaceChildren(...(report?.videos || []).map(video => {
       const item = document.createElement('li');
@@ -341,7 +354,7 @@
     $('headline-views').textContent = values?.views == null ? '— views' : number(values.views) + ' views';
     $('growth').hidden = true;
     $('period').textContent = report ? report.currentPeriod.start + ' – ' + report.currentPeriod.end : 'Not imported';
-    $('freshness').textContent = report ? 'Latest returned day · ' + report.latestReturnedDay : 'No live data loaded';
+    $('freshness').textContent = report ? 'Latest returned Shorts day · ' + (report.latestReturnedDay||'Unavailable') : 'No live data loaded';
     const tiles = [['Average viewed', 'averageViewPercentage'], ['Likes', 'likes'], ['Subscribers gained', 'subscribersGained'], ['Shares', 'shares']];
     if (!metricNodes.length) $('metrics').replaceChildren(...tiles.map(([label, key]) => {
       const tile = document.createElement('div'); tile.className = 'tile';
@@ -355,15 +368,15 @@
       value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
       note.textContent = report ? key === 'likes' ? 'Source-reported period value' : 'Selected-period activity' : 'Not imported';
     });
-    $('target-label').textContent = 'Selected Shorts only'; $('target-value').textContent = report ? report.videos.length + ' videos' : 'No sample imported';
-    $('target-state').textContent = 'Test'; $('target-bar').hidden = true;
+    $('target-label').textContent = backendMode?'Channel-wide Shorts':'Selected Shorts only'; $('target-value').textContent = backendMode?report?'YouTube Shorts':'Sync to load':report ? report.videos.length + ' videos' : 'No sample imported';
+    $('target-state').textContent = backendMode?(report?.warnings.length?'Partial data':report?'Connected':'Not synced'):'Test'; $('target-bar').hidden = true;
     $('target-note').textContent = 'Comparison and target hidden until report coverage is verified. TikTok and Reels are not connected.';
     showSync(syncState.heading, syncState.message, syncState.footer);
   }
   function details() {
     opener = document.activeElement;
     const area = $('details-content'); area.replaceChildren();
-    const p = document.createElement('p'); p.textContent = 'Values are period activity for your selected videos. Likes preserves Google’s signed value; Studio can report a negative value. Its cause is not inferred. Average percentage viewed is Google’s aggregate, not an average of daily percentages. Subscribers gained are attributed to the selected content. This is not a frozen 24-hour snapshot.';
+    const p = document.createElement('p'); p.textContent = (backendMode?'Values cover all channel activity classified as SHORTS by YouTube. ':'Values are period activity for your selected videos. ')+ 'Likes preserves Google’s signed value; Studio can report a negative value. Its cause is not inferred. Average percentage viewed is Google’s aggregate, not an average of daily percentages. Subscribers gained are attributed to the reported Shorts activity. This is not a frozen 24-hour snapshot.';
     const pre = document.createElement('pre'); pre.textContent = report ? JSON.stringify(report, null, 2) : 'No report imported.';
     area.append(p, pre); $('details').showModal();
   }
@@ -485,7 +498,7 @@
       return;
     }
     let cached;
-    try { const scopeKey = JSON.stringify([$('channel').value, idsFromText($('videos').value).sort()]); cached = reportCache.get(JSON.stringify([scopeKey, date($('end-date').value), Number(button.dataset.range)])); } catch {}
+    try { if(backendMode)cached=reportCache.get(JSON.stringify(['channel-shorts',$('channel').value,date($('end-date').value),Number(button.dataset.range)]));else {const scopeKey = JSON.stringify([$('channel').value, idsFromText($('videos').value).sort()]); cached = reportCache.get(JSON.stringify([scopeKey, date($('end-date').value), Number(button.dataset.range)]));} } catch {}
     if (cached) {
       report = cached; render();
       feedback('Loaded the saved ' + report.rangeDays + '-day range. Sync fetches fresh data.');
@@ -510,14 +523,15 @@
   $('details').addEventListener('close', () => opener?.focus());
   $('details').addEventListener('click', event => { if (event.target === $('details')) { const b = $('details').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('details').close(); } });
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
+    if(backendMode&&['videos','confirm-shorts'].includes(id))return;
     if (id === 'client-id') { clearConnection(); return; }
     if (id === 'channel') { if (backendMode && token) restoreRelease().catch(error => batchStatus('Restore failed', error.message, 'Not synced')); batchReport = null; renderBatch(); batchStatus('Ready to import', 'Channel changed. Import to load this release.', 'Not synced'); if (token) { if (backendMode) { try { sessionStorage.setItem('gemos-youtube-channel-v1', $('channel').value); } catch {} } else rememberSession(); } }
     rememberSelection(); invalidateCache();
-    report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
+    report = null; render(); feedback(backendMode?'Channel or date changed. Sync to update your Shorts report.':'Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });
   for (const id of ['videos', 'end-date']) $(id).addEventListener('input', rememberSelection);
   $('end-date').value = shift(new Date().toISOString().slice(0, 10), -3);
-  restoreSelection(); restoreBatch(); renderBatch();
+  restoreSelection(); if(backendMode){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(p=>[p.type,p.value]));$('end-date').value=shift(p.year+'-'+p.month+'-'+p.day,-1);}restoreBatch(); renderBatch();
   $('origin').textContent = location.origin;
   // Tab-session storage retains only short-lived auth/config, never a refresh token.
   window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; batchReport = null; invalidateCache(); });

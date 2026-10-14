@@ -1,5 +1,18 @@
 # Group 2 — usage and connections
 
+## Current 2.1 — channel-wide Shorts, 14 October 2026
+
+CJ authorised replacing the manually selected test sample with all Shorts activity on the connected channel. Both the normal card Sync and Automation Sync all use `/api/youtube/shorts-report`, without pasted links or confirmation. YouTube's exact `creatorContentType=SHORTS` dimension value identifies eligible rows; long-form/live/unknown rows are excluded. Counts are summed over complete paginated daily reports, while Average viewed comes from Google's period aggregate. No duration/title guesses or unweighted percentage averages.
+
+Ranges are 7/28/90/365 days. The normal source defaults to Pacific yesterday; an explicit latest requested day remains available in reporting settings. Sync all reuses the saved channel/range and advances to Pacific yesterday. Current and previous windows have equal calendar length; data-through is separately shown. Missing rows/metrics remain unavailable; actual zero and signed Likes are preserved. Combined growth/targets remain withheld until compatible coverage is established. TikTok/Reels are unconnected. 2.2 still uses its independent release selection and frozen snapshot rules.
+
+The production sample fields are hidden. Old sample cache is not restored under a whole-channel label. Successful reports and channel/range are saved privately in existing owner-scoped tables. Failures preserve the prior report. No migration/new OAuth scopes. A sole owned channel needs no manual sample setup; multiple channels need a choice.
+
+[Implementation contract and verification](../integration-tests/youtube/CHANNEL-SHORTS.md). Controlled provider/SQLite/UI/state/auth/capture/automation regressions and production/compiled-page checks pass. Signed-in live report and Studio comparison remain pending. Source `adb46bc48e331c167b904887e856765427a900c8`; private deployment `appgdep_6acfd7e6fef08191871ecc76c5f09d1b` succeeded; runtime revision 6 preserved.
+
+Earlier selected-sample integration notes below are historical and superseded for 2.1; 2.2 source/eligibility decisions remain in force.
+
+
 ## Current grouping — 13 October 2026
 
 CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.
@@ -19,7 +32,7 @@ Purpose: understand performance and view targets across YouTube Shorts, TikTok a
 
 Scope confirmed again on 8 October: 2.1 is the overall short-form view, while 2.2 remains one release batch. It is not a calendar-month report and 2.1 does not follow the selected leaderboard batch.
 
-Period: rolling last 28 days versus the preceding non-overlapping 28 days, advanced with the latest complete imported day. Use activity during the reporting period, not lifetime totals for posts published during that period. Source day boundaries, weighting and cross-platform coverage still need validation.
+Period: optional 7/28/90/365-day activity ranges (28 default), ending at the requested Pacific day, with the preceding equal-length non-overlapping window. Latest observed Shorts day is labelled separately; it is not a promise of complete coverage. Use activity during the reporting period, not lifetime totals for posts published during that period. Source day boundaries, weighting and cross-platform coverage still need validation.
 
 ### All-tab reporting window — confirmed 8 October 2026
 
@@ -75,7 +88,7 @@ Clip details show exact stored values, publication time in Europe/London and cap
 
 ## Shared source and action rules
 
-Per-card Sync left, detail route right. Dashboard Sync all is planned; no extra group-level Sync. Current buttons show Not connected and perform no import.
+Per-card Sync left, detail route right. Dashboard Sync all is planned; no extra group-level Sync. Current production Sync invokes the connected read-only handler and records real outcomes.
 
 Example views: 92,400 / 54,600 / 26,800 = 173,800; shares 1,260 / 840 / 420 = 2,520; targets 100,000 / 60,000 / 30,000 = 190,000. Current sample window: 7 September–4 October, versus 10 August–6 September. Previous views are illustrative, not external facts. Data is clearly labelled as examples.
 
@@ -96,7 +109,7 @@ CJ approved 7/28/90/365-day activity windows with 28 default. Each selected wind
 
 ### Scope clarity and sync stages — 9 October 2026
 
-2.1 is intended to cover all short-form content on the selected platform(s) for the reporting period, independently of project selection. 2.2 covers one selected release: six source clips across three platforms, up to 18 short uploads. The live test remains a 1–5-video sample and now says Selected Shorts only; this update adds no channel-wide enumeration. Sync feedback reflects actual ownership/cutoff/current/previous requests, followed by success, warnings or failure; last import time does not imply the source has data through today. The status area uses a small part of the lower recess and leaves other space clear.
+2.1 is intended to cover all short-form content on the selected platform(s) for the reporting period, independently of project selection. 2.2 covers one selected release: six source clips across three platforms, up to 18 short uploads. Historical 9 October test: selected 1–5-video sample only. The current channel-wide implementation supersedes that test scope. Sync feedback reflects actual ownership/cutoff/current/previous requests, followed by success, warnings or failure; last import time does not imply the source has data through today. The status area uses a small part of the lower recess and leaves other space clear.
 
 
 ### Cached range selection — 9 October 2026
