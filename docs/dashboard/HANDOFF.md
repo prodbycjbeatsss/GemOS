@@ -1,5 +1,9 @@
 # GemOS dashboard — current handoff
 
+## All-card source design check — 14 October2026
+
+Completed source/token check of all10 cards. [Findings and limits](verification/2026-10-14-design-system.md). Repaired Subscription Costs header alignment/narrow-phone padding/popup border+inset,Release12px row gap andFinance/Email5px Sync icon gap. Existing palettes, metric tiles, data and controls preserved. Updated master system/tokens andGroup4 current tile/channel contract. Source3dd8deb76343305a1142a27eb74f8aaaf13ae6cc/private appgdep_6acfe022fac881918a80f7ea0d2f945e succeeded, runtime revision6 retained. Layout/project/commerce/state/group/dialog/sync checks, build and compiled200/401 passed. This is source evidence; signed-in rendered phone/desktop/contrast/hit-target measurements remain blocked by this cloud browser's Log in to access page. No access settings were changed. Primary-repo checkpoint remains draft PR2.
+
 ## Metric tiles restored — 14 October 2026
 
 CJ says the metric tiles did not need redesign and explicitly requests their previous appearance. Removed only the new84px/flex/padding/font overrides and tile-note hiding rule, restoring original responsive sizing, spacing, typography, layout and notes. The outside-tile text cleanup and Top3 Shorts remain. Top Shorts uses its bounded internal scroll; no further metric tile change is authorised. This supersedes the compact84px tile decision below.

@@ -1,5 +1,20 @@
 # GemOs dashboard card design system
 
+## Current locked contract — source check, 14 October 2026
+
+All10 cards were checked against source tokens/contracts. This supersedes older Current/Compact/grouping notes below; details/evidence: [source check](dashboard/verification/2026-10-14-design-system.md).
+
+|Group|Current cards|Geometry/material|
+|---|---|---|
+|1 Release|Buffer,Pre Release Checklist|Large920px paired; existing blue/state material;12px vertical/20px horizontal gaps;20/24px outer insets |
+|2 Audience & Performance|Short-form Performance,24h ranking,Email List|Large920px; purple155deg #4338ca/#312e8145%/#0f172a; original metric tiles retained;12/20px gaps |
+|3 Finance|Payhip,earnings,payouts,Subscription Costs|Compact454px;green155deg #065f46/#044e3942%/#022c22;146px header/44px period+footer,12px tracks;20/24px inset;2×2 desktop |
+|4 Automations|Automation Performance|Large920px;cobalt155deg #1e3a8a/#17255442%/#090d1a;174px header/44px top Sync and footer; accepted centred compact inner grid |
+
+Shared32px card/22px recess/58px glyph/28px top symbol; clipped spotlight and reviewed glass/shadows;Inter/Poppins;one footer;44px controls;plain icon-text Sync with5px gap. Preserve group-specific supporting colours and layouts. Group4 spotlight stops0/42/75 are a documented exception and were retained. Group4 tile icons are20px plain marks;12px title/11px state+date;8px padding/12px gap;three columns desktop/two phone. Older28px glass tile/two-column-only rules are superseded.2.1 uses channel-wide Shorts with period-specific Top3; sample setup references are historical.2.2 stays independently release-selected. No arbitrary metric redesign.
+
+Source corrections: cost identity first track66px matches other Finance headers; cost phone inset restored20px; cost popup viewport inset32px/borderwhite.16;Release vertical gap12px;Finance/Email Sync gap5px. Form/dialog width caps and scrolling exceptions remain role-specific. Current source `3dd8deb76343305a1142a27eb74f8aaaf13ae6cc`; private deployment `appgdep_6acfe022fac881918a80f7ea0d2f945e` succeeded. Controlled contract/state/build/compiled tests pass; rendered phone/desktop/contrast/hit boxes are not measured because this browser is at the private Site's sign-in wall.
+
 ## Current Automation inner tiles — accepted 14 October 2026
 
 Large920px cobalt card remains. Smaller centred tiles: three columns on desktop≥840px/two on phones;12px gaps,8px padding,12px corners,20px plain monochrome icon,12px title/11px status and dates. Sync and Sync all use the other groups' transparent icon-and-text control:11px/600,16px stroke icon,44px hit target, no filled tile button. Routine details stay in footer history; unresolved tiles retain an issue link. CJ accepted appearance. This supersedes the28px glass/18px icon/8px-gap tile notes below. Outer material/glyph/insets remain unchanged. 2.1 now has channel-only setup; sample setup references are historical.
