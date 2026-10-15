@@ -33,7 +33,7 @@ try{
  assert.equal(sql.prepare('SELECT COUNT(*) n FROM automation_runs').get().n,total,'loading/refreshing automation grid creates no runs');
  assert.equal((await reportRuns(env,'other')).cards.find(c=>c.id==='2.3').latest,null);
  sql.prepare('INSERT INTO subscription_costs VALUES (?,?,?,?)').run('owner','{"subscriptions":[],"topups":[]}',1,now);assert.equal((await reportRuns(env,'owner')).cards.find(c=>c.id==='3.4').lastSaved,now);
- assert.equal((await reportRuns(env,'owner')).cards.find(c=>c.id==='1.1').mode,'unconnected');
+ assert.equal((await reportRuns(env,'owner')).cards.find(c=>c.id==='1.1').canSync,false);
  // Independent read-only report refreshes must not block rapid period switches.
  const a=await startRun(env,'owner','card-refresh',null,null,'youtube-earnings-sync'),b=await startRun(env,'owner','card-refresh',null,null,'youtube-earnings-sync');assert.notEqual(a.id,b.id);await finishRun(env,a,'succeeded',{partial:false});await finishRun(env,b,'succeeded',{partial:false});
  // External move uncertainty is explicitly unconfirmed, not a retryable failure.

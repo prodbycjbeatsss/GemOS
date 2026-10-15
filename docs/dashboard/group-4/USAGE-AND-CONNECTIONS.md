@@ -1,8 +1,10 @@
 # Group4 — current usage and connections
 
-Updated15October2026; deployed version74. One cobalt920px Large card; nine centred tiles, three columns desktop/two phone. Plain20px icons,12px names/11px state and date,8px padding/12px gaps. Existing32px/22px radii,58px top glyph,20/24px insets and44px action targets remain. Shared single-line UK time with seconds sits beneath each Sync; full date remains accessible. Manual Costs says Last saved; unconnected Buffer has no fabricated success.
+Current1.1 adapter: youtube-schedule-sync uses the same Source Sync/Sync-all handler. Fixed provider GET calls, cached owner-only reads without runs, partial unverified metadata; no new scope/schema. See [SCHEDULE](../integration-tests/youtube/SCHEDULE.md).
 
-Individual Sync and sequential Sync all use fixed allowlisted read-only services, prevent duplicate execution and continue after failures. Current supported sources: Drive discovery/checks, channel-wide Shorts2.1, UK-weekly Shorts2.2, Mailchimp, received Payhip sales, YouTube earnings and payouts. Costs are manual; Buffer scheduling is unconnected.2.1 uses owned-channel/range selection;2.2 independently uses weekly channel/week. Neither requires or borrows a manual video sample.
+Updated15October2026; deployed version75. One cobalt920px Large card; nine centred tiles, three columns desktop/two phone. Plain20px icons,12px names/11px state and date,8px padding/12px gaps. Existing32px/22px radii,58px top glyph,20/24px insets and44px action targets remain. Shared single-line UK time with seconds sits beneath each Sync; full date remains accessible. Manual Costs says Last saved; Release Buffer uses confirmed YouTube schedule sync.
+
+Individual Sync and sequential Sync all use fixed allowlisted read-only services, prevent duplicate execution and continue after failures. Current supported sources: YouTube schedule, Drive discovery/checks, channel-wide Shorts2.1, UK-weekly Shorts2.2, Mailchimp, received Payhip sales, YouTube earnings and payouts. Costs are manual; Buffer uses the confirmed seven-upload YouTube schedule.2.1 uses owned-channel/range selection;2.2 independently uses weekly channel/week. Neither requires or borrows a manual video sample.
 
 Attention counts/history retain unresolved failed/unconfirmed operations even after later ordinary success. Checker retry resolves only linked eligible issues; dismissal needs a reason. Owner-only status/history reads create no runs. Sync never publishes/schedules/approves/moves/sends/purchases or rewrites manual records.
 
@@ -21,7 +23,7 @@ server/automation-registry.mjs lists11 operation types mapped to nine Group1–3
 
 |Card|Instrumented work / grid state|
 |---|---|
-|1.1 Schedule Overview|Not connected; no invented scheduling sync|
+|1.1 Release Buffer|YouTube schedule import: seven uploads per UK week, read-only|
 |1.2 Release Readiness|Drive file checks/associations, catalogue discovery, explicit guarded Release Queue approval|
 |2.1 Short-form Performance|Channel-wide Shorts Analytics report; one logical durable run|
 |2.2 Weekly Shorts|Owned upload discovery/current views for selected UK week; independent background24h checker|

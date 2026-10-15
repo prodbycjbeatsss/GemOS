@@ -667,3 +667,13 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Alternatives considered:** Title matching/manual release selection and snapshot-only visible ranking are superseded for production2.2. No later count may fill a missed24h snapshot.
 
 **Owner:** CJ. This records prior confirmed choices and the explicit15October GitHub save authorisation; it introduces no new scheduling/publication/account permission.
+
+## 2026-10-15 — Studio schedule and seven-upload Release Buffer
+
+**Decision:** Use Studio as first authoritative schedule source. A full UK week requires Monday main video plus one Short each day Tuesday–Sunday. Count consecutive complete weeks from next Monday (today if Monday), stop at first gap; inspect12-week horizon. This YouTube-only slice supersedes the earlier19-platform proposal.
+
+**Why:** CJ already schedules in Studio and explicitly requires all videos scheduled. Planned dates/ready files do not prove platform acceptance. Read-only imports establish useful coverage before a GemOS calendar or upload automation.
+
+**Implementation:** Owned future private publishAt, UK day/type slots and succeeded processing; uncertain metadata stays partial. No title/remix inference. GET-only fixed provider routes, existing permissions/tables, source/bulk Sync and redacted monitoring. Version75/source282dda40c4a1d3e67d332ab2db34342ca8b720ab is deployed.
+
+**Owner:** CJ. Controlled coverage/UI/affected regressions/build/compiled checks pass; first live account schedule comparison and rendered device/accessibility acceptance remain pending.

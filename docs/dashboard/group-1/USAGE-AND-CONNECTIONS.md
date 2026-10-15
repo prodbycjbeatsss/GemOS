@@ -12,7 +12,7 @@ Flexible filenames preserve prefixes, BPM, key, artist pairings and credits. No 
 
 A yearly parent such as 2027 is valid. Its sibling stages are In Production, Release Queue and Released; projects are direct children with PROJECT/AUDIO/STEMS/ARTWORK/SHORTS inside. Connect each stage by Drive ID. In Production is required for discovery; Queue is required to move a production project. Released remains optional. Parent auto-detection is not implemented. Renames preserve IDs; moves retain associations but require fresh location/access checks. Computer-to-Drive sync behaviour must be tested with a complete old project.
 
-The checklist-local selector clears previous readiness, restores only the selected project's saved state, then automatically scans that project with existing read access. Refresh list discovers projects; manual Sync rechecks later changes. The list refreshes on page opening and manually; there is no continuous watcher. Other cards keep their own scope: 1.1 overall scheduling, 2.1 overall selected-platform activity (sample selection still limits its test), 2.2 its separate release/batch picker.
+The checklist-local selector clears previous readiness, restores only the selected project's saved state, then automatically scans that project with existing read access. Refresh list discovers projects; manual Sync rechecks later changes. The list refreshes on page opening and manually; there is no continuous watcher. Other cards keep their own scope: 1.1 overall scheduling, 2.1 channel-wide Shorts activity,2.2 its independent UK-week upload cohort.
 
 ## Prepare release and approval
 
@@ -22,11 +22,16 @@ Confirm ready requires the saved review version, a fresh server 8/8 check and un
 
 A move is not a distributed transaction with Drive: concurrent local/manual changes still need care. Record pending before one PATCH; verify its actual parent after. An uncertain response is never automatically retried. A repeat confirmation can reconcile a folder now in Queue; if still in production, inspect Drive and resolve manually before further approval. Stored reviews remain separate from approved schedule records. Any changed snapshot blocks renewed confirmation.
 
-## 1.1 Release Buffer
+## YouTube schedule connection —15October2026
 
-Coverage counts consecutive fully confirmed weeks in Europe/London, stopping at the first gap. A covered week needs 19 platform uploads: Monday main YouTube video plus six Tuesday–Sunday clips on each of YouTube Shorts, TikTok and Reels. One source clip reused on three platforms is three destination confirmations. Unaccepted requests, planned dates, reminders, ready files and queue placement do not establish coverage. Prior scheduled jobs are not automatically cancelled by a later file check.
+Release Buffer now reads YouTube Studio. A complete UK week needs one main video Monday and one Short each day Tuesday–Sunday. This first YouTube-only connection supersedes the earlier19-platform proposal; TikTok/Reels are not claimed as scheduled. Check12 full weeks from next Monday (today if Monday), count consecutive complete weeks, stop at first gap. Later complete weeks remain visible but do not extend coverage.
 
-Scheduling records/source, real platform confirmations and archive-after-publication remain unconnected. Current buffer is No schedule yet, not a computed zero. Future Buffer details will give a project/platform/date breakdown.
+Only future private status.publishAt is scheduling evidence. Owned duration/dimensions/rotation establish main/Short format, with succeeded processing; unknown format/processing stays unverified/partial. Titles do not establish remix affiliation. Wrong-day/duplicate uploads, planned dates and Drive readiness cannot fill missing slots. A successful empty scan can show zero; a provider failure retains saved data.
+
+Source Sync and Automation1.1/Sync all use the same fixed GET-only provider import under existing permissions and tables. Cached GET restores owner/channel/revision/current-anchor reports without provider work or run creation. Headline shows Covered until <last complete Sunday> or No complete weeks; source states remain distinct. Recess shows nearby weeks and n/7/missing days. Native Buffer details shows all12 weeks and day-level actual uploads/times/links. Multiple owned channels require source selection. Shared timestamp sits below Sync. Material and paired920px geometry stay unchanged.
+
+See [schedule contract](../integration-tests/youtube/SCHEDULE.md). New coverage/UI tests plus affected sync/checklist/analytics/capture/monitoring/Automation/shell/group/dialog/geometry/Drive regressions, production build and compiled200/401 checks pass. First live owner schedule comparison and rendered phone/accessibility checks remain pending. No upload, schedule-write or publication action is added.
+
 
 ## Verification limits
 

@@ -1,8 +1,10 @@
 # GemOs dashboard card design system
 
+Release Buffer now has Source Sync with the shared one-line timestamp and a12-week/day native detail view, retaining paired920px blue geometry. [SCHEDULE](dashboard/integration-tests/youtube/SCHEDULE.md) owns coverage/eligibility. Earlier unconnected-source wording is historical.
+
 ## Shared sync and current source geometry — 15 October 2026
 
-Production version74 uses one-line UK timestamps with seconds below source-card Sync and Automation-tile controls. ui/sync-times.js reads durable automation completion records; failure retains last success. Full date remains in the time element/accessible text. Manual subscriptions say Last saved. Normal timestamps use Inter10px/14px, white .82 and nowrap; footer track reserves60px, with Group1's72px exception. Action targets remain44px.
+Production version75 uses one-line UK timestamps with seconds below source-card Sync and Automation-tile controls. ui/sync-times.js reads durable automation completion records; failure retains last success. Full date remains in the time element/accessible text. Manual subscriptions say Last saved. Normal timestamps use Inter10px/14px, white .82 and nowrap; footer track reserves60px, with Group1's72px exception. Action targets remain44px.
 
 Group4 is920px Large, with three desktop/two phone columns,20px plain tile icons,12px names/11px state and dates,8px padding/12px gaps. Earlier Compact/glass/two-column tile notes are historical. All normal Large cards920px; Finance Compact454px with12px row/20px column gaps. Group1's12px row gap is now implemented. Original2.1 metric tiles are restored; period-specific Top3 Shorts and outside-tile copy cleanup remain.2.2 is Weekly Shorts/current cumulative views;24h snapshots remain details/checker evidence.
 

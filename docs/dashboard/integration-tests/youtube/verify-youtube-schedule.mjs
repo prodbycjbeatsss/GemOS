@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict';
+import { DatabaseSync } from 'node:sqlite';
+import { readFileSync, readdirSync } from 'node:fs';
+import { seal, SCOPES } from './server/youtube.mjs';
+import { scheduleCoverage, scheduleStart, videoKind, readSchedule, scheduleHandler } from './server/youtube-schedule.mjs';
+import { getTarget, capabilities } from './server/sync-targets.mjs';
+import { syncCard } from './server/card-sync.mjs';
+import { reportRuns } from './server/automation-runs.mjs';
+const sql = new DatabaseSync(':memory:'); for (const file of readdirSync('drizzle').filter(f => f.endsWith('.sql')).sort()) sql.exec(readFileSync('drizzle/' + file, 'utf8'));
+const DB = { prepare(q) { let args = []; const s = { bind(...v) { args = v; return s; }, async first() { return sql.prepare(q).get(...args) || null; }, async all() { return { results: sql.prepare(q).all(...args) }; }, async run() { return { meta: { changes: Number(sql.prepare(q).run(...args).changes) } }; } }; return s; }, async batch(stmts) { return Promise.all(stmts.map(s => s.run())); } };
+const origin = 'https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site', env = { DB, GOOGLE_CLIENT_ID: 'fake.apps.googleusercontent.com', GOOGLE_CLIENT_SECRET: 'FAKE', YOUTUBE_TOKEN_KEY: 'ab'.repeat(32), GOOGLE_REDIRECT_URI: origin + '/api/youtube/callback' };
+const request = (body, owner = 'owner', requestOrigin = origin) => new Request(origin + '/api/youtube/schedule', { method: body === undefined ? 'GET' : 'POST', headers: { ...(owner ? { 'oai-authenticated-user-id': owner } : {}), Origin: requestOrigin }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+const now = Date.parse('2026-10-15T12:00:00Z'), originalNow = Date.now, originalFetch = globalThis.fetch; Date.now = () => now;
+const day = n => { const d = new Date('2026-10-19T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const video = (n, offset = n, kind = n % 7 === 0 ? 'main' : 'short') => ({ id: String(n).padStart(11, 'a'), snippet: { channelId: 'UC_TEST', title: '<literal> ' + n, publishedAt: '2024-01-01T12:00:00Z' }, status: { privacyStatus: 'private', publishAt: day(offset) + 'T17:00:00Z' }, contentDetails: { duration: kind === 'main' ? 'PT4M' : 'PT30S' }, fileDetails: { videoStreams: [{ widthPixels: kind === 'main' ? 1920 : 1080, heightPixels: kind === 'main' ? 1080 : 1920 }] }, processingDetails: { processingStatus: 'succeeded' } });
+try {
+  assert.equal(scheduleStart(), '2026-10-19'); assert.equal(scheduleStart(new Date('2026-10-18T23:30:00Z')), '2026-10-19'); assert.equal(scheduleStart(new Date('2026-10-25T23:30:00Z')), '2026-10-26');
+  assert.equal(scheduleCoverage(Array.from({length:84},(_,i)=>video(i))).horizonComplete,true);
+  assert.equal(scheduleCoverage(Array.from({length:84},(_,i)=>video(i))).coveredWeeks,12);
+  const wrong=video(0,0,'short'); assert.equal(scheduleCoverage([wrong]).weeks[0].ready,0,'Monday Short cannot fill main slot');
+  assert.equal(scheduleCoverage([]).coveredWeeks,0,'successful empty scan is real zero');
+  let items = Array.from({ length: 21 }, (_, i) => video(i)); items = items.filter(v => v.id !== video(13).id);
+  let report = scheduleCoverage(items); assert.equal(report.coveredWeeks, 1); assert.equal(report.firstGap, '2026-10-26'); assert.equal(report.weeks[2].complete, true, 'later complete weeks do not bridge gap'); assert.equal(report.weeks[1].ready, 6);
+  items.push(video(99, 12, 'short')); assert.equal(scheduleCoverage(items).coveredWeeks, 1, 'duplicate Saturday does not replace Sunday');
+  items.push(video(13)); assert.equal(scheduleCoverage(items).coveredWeeks, 3);
+  const broken = video(13); broken.processingDetails.processingStatus = 'processing'; assert.equal(scheduleCoverage([...items.filter(v => v.id !== broken.id), broken]).coveredWeeks, 1);
+  const unknown = video(13); delete unknown.fileDetails; assert.equal(videoKind(unknown), null); assert.equal(scheduleCoverage([...items.filter(v => v.id !== unknown.id), unknown]).uncertain, 1);
+  const invalid = video(0); invalid.contentDetails.duration = 'PT0S'; assert.equal(videoKind(invalid), null); invalid.contentDetails.duration = 'invalid'; assert.equal(videoKind(invalid), null);
+  const publicVideo = video(0); publicVideo.status.privacyStatus = 'public'; assert.equal(scheduleCoverage([publicVideo]).weeks[0].ready, 0); const unscheduled = video(0); delete unscheduled.status.publishAt; assert.equal(scheduleCoverage([unscheduled]).coveredWeeks, 0);
+  const boundary = video(100, 6, 'short'); boundary.status.publishAt = '2026-10-25T00:30:00+01:00'; assert.equal(scheduleCoverage([boundary]).weeks[0].days[6].complete, true, 'UK Sunday differs from UTC Saturday');
+  const cipher = await seal('FAKE_ACCESS', env, 'owner'); sql.prepare('INSERT INTO youtube_connections VALUES (?,?,?,?,?,?,?,?,?)').run('owner', env.GOOGLE_CLIENT_ID, cipher, cipher, now + 86400000, SCOPES.join(' '), JSON.stringify([{ id: 'UC_TEST', title: 'Example' }]), now, 'rev');
+  let calls = [], failure = false, foreign = false, disconnect = false, cycle = false;
+  globalThis.fetch = async (input, options = {}) => {
+    const url = new URL(input); calls.push(url); assert.equal(options.method || 'GET', 'GET', 'all provider work is read-only'); assert.equal(url.origin, 'https://www.googleapis.com');
+    if (failure) return Response.json({ error: 'provider secret' }, { status: 503 });
+    if (url.pathname.endsWith('/channels')) return Response.json({ items: [{ id: 'UC_TEST', contentDetails: { relatedPlaylists: { uploads: 'UU_TEST' } } }] });
+    if (url.pathname.endsWith('/playlistItems')) { if (cycle) return Response.json({ items: [], nextPageToken: 'same' }); return Response.json({ items: (url.searchParams.has('pageToken') ? items.slice(1) : items.slice(0, 1)).map(v => ({ contentDetails: { videoId: v.id, videoPublishedAt: '2024-01-01T12:00:00Z' } })), ...(url.searchParams.has('pageToken') ? {} : { nextPageToken: 'older' }) }); }
+    if (disconnect) sql.prepare("UPDATE youtube_connections SET revision='changed' WHERE user_id='owner'").run();
+    return Response.json({ items: items.filter(v => url.searchParams.get('id').split(',').includes(v.id)).map(v => foreign ? { ...v, snippet: { ...v.snippet, channelId: 'FOREIGN' } } : v) });
+  };
+  report = await readSchedule(env, 'owner'); assert.equal(report.coveredWeeks, 3); assert.equal(calls.filter(u => u.pathname.endsWith('playlistItems')).length, 2, 'old upload dates never stop schedule discovery');
+  const before = calls.length; let response = await scheduleHandler(request(), env); assert.equal((await response.json()).report.coveredWeeks, 3); assert.equal(calls.length, before, 'GET restores cache without provider work');
+  assert.equal((await scheduleHandler(request(undefined, 'other'), env).then(r => r.json())).report, null); assert.equal(await getTarget(env, 'other', 'youtube-schedule-report'), null);
+  assert.equal((await scheduleHandler(request(undefined, ''), env)).status, 401); assert.equal((await scheduleHandler(request({ channel: 'FOREIGN' }), env)).status, 400); assert.equal((await scheduleHandler(request({ channel: 'UC_TEST' }, 'owner', 'https://evil.invalid'), env)).status, 403); assert.equal((await scheduleHandler(request({ url: 'https://evil.invalid' }), env)).status, 400);
+  assert.equal((await capabilities(env, 'owner'))['1.1'], true); const runsBefore = sql.prepare('SELECT COUNT(*) n FROM automation_runs').get().n;
+  assert.equal((await syncCard(request({}), env, '1.1')).status, 'completed'); assert.equal(sql.prepare('SELECT COUNT(*) n FROM automation_runs').get().n, runsBefore + 1); assert.equal((await reportRuns(env, 'owner')).cards.find(c => c.id === '1.1').latest.automation, 'youtube-schedule-sync');
+  failure = true; response = await scheduleHandler(request({ channel: 'UC_TEST' }), env); assert.equal(response.status, 502); assert.equal((await getTarget(env, 'owner', 'youtube-schedule-report')).report.coveredWeeks, 3); failure = false;
+  cycle = true; await assert.rejects(readSchedule(env, 'owner'), /incomplete/); cycle = false;
+  foreign = true; await assert.rejects(readSchedule(env, 'owner'), /mismatched/); foreign = false;
+  disconnect = true; await assert.rejects(readSchedule(env, 'owner'), /connection changed/); assert.equal((await scheduleHandler(request(), env).then(r => r.json())).report, null, 'old connection report hidden');
+  console.log('YouTube schedule passed: seven distinct UK day slots, gap stopping, duplicate/wrong type/processing guards, DST, old-upload pagination, GET-only provider calls, owner/origin/input guards, retained cache, disconnect fencing and monitored individual/Sync-all adapter.');
+} finally { Date.now = originalNow; globalThis.fetch = originalFetch; }

@@ -1,3 +1,4 @@
+import { scheduleHandler } from './youtube-schedule.mjs';
 import { weeklyHandler } from './weekly-shorts.mjs';
 import { channelShortsHandler } from './channel-shorts.mjs';
 import { getTarget, savedConnection, capabilities } from './sync-targets.mjs';
@@ -13,7 +14,7 @@ import { RunError } from './automation-runs.mjs';
 export async function syncCard(request,env,card,sample=null){
  const owner=request.headers.get('oai-authenticated-user-id');if(!owner)throw new RunError('Sign in first.',401);
  const available=await capabilities(env,owner);if(!Object.hasOwn(available,card))throw new RunError('Unknown dashboard card.');
- if(!available[card])return {card,status:'skipped',message:card==='3.4'?'Manual records do not need a provider sync.':card==='1.1'?'Scheduling source is not connected.':'Connect this source on its card first.'};
+ if(!available[card])return {card,status:'skipped',message:card==='3.4'?'Manual records do not need a provider sync.':card==='1.1'?'Connect YouTube and choose a schedule channel on Release Buffer.':'Connect this source on its card first.'};
  const token=crypto.randomUUID(),now=Date.now(),key='sync-card:'+card;
  const lease=await env.DB.prepare('INSERT INTO automation_locks (user_id,automation,run_id,expires_at) VALUES (?,?,?,?) ON CONFLICT(user_id,automation) DO UPDATE SET run_id=excluded.run_id,expires_at=excluded.expires_at WHERE automation_locks.expires_at<=?').bind(owner,key,token,now+300000,now).run();
  if(lease.meta.changes!==1)throw new RunError('This card is already syncing. Refresh its status shortly.',409);
@@ -22,7 +23,11 @@ export async function syncCard(request,env,card,sample=null){
  const run=async(key,path,params,body,work)=>{const req=make(path,params,body);const r=await monitoredRequest(req,env,key,()=>work(req));if(!r.ok)throw new RunError('Sync could not complete. Open the source card or run history for details.',r.status);const d=await r.json();if(partial(key,d))partialData=true;return d;};
  const google=await savedConnection(env,owner),unique=google.channels.length===1?google.channels[0].id:null;
  try{
-  if(card==='1.2'){
+  if(card==='1.1'){
+   const target=await getTarget(env,owner,'youtube-schedule-sync');const channel=target?.channel||unique;
+   if(!channel)return {card,status:'skipped',message:'Choose your schedule channel in Release Buffer first.'};
+   await run('youtube-schedule-sync','/api/youtube/schedule',{}, {channel},r=>scheduleHandler(r,env));
+  }else if(card==='1.2'){
    await run('drive-catalogue-sync','/api/youtube/drive-discover',{}, {},r=>assetHandler(r,env,'drive-discover'));
    const setting=await env.DB.prepare('SELECT selected_id FROM drive_release_settings WHERE user_id=?').bind(owner).first();
    if(setting?.selected_id)await run('drive-assets-sync','/api/youtube/drive-scan',{}, {folder:setting.selected_id},r=>assetHandler(r,env,'drive-scan'));

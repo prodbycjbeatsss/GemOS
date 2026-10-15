@@ -1,6 +1,6 @@
 (() => {
   const selectors = {
-    '1.1': '#buffer-preview-details', '1.2': '#asset-sync',
+    '1.1': '#buffer-sync', '1.2': '#asset-sync',
     '2.1': '[data-sync-card="overview"]', '2.2': '#batch-sync', '2.3': '#email-refresh',
     '3.1': '#sales-refresh', '3.2': '#earnings-sync', '3.3': '#payouts-sync', '3.4': '#cost-manage'
   };
@@ -18,7 +18,7 @@
       const footer = button.parentElement;
       footer.classList.add('card-sync-footer');
       const left = document.createElement('div'); left.className = 'card-sync-left';
-      if (id === '1.1' || id === '3.4') footer.prepend(stamp);
+      if (id === '3.4') footer.prepend(stamp);
       else { button.before(left); left.append(button, stamp); }
     }
     labels.set(id, stamp);

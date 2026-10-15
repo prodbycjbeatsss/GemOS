@@ -229,19 +229,6 @@ import { groupGeometry } from '/checklist-layout.js';
       grid.classList.remove('g1-measuring');layoutQueued=false;
     });
   }
-  let bufferTrigger=null;
-  function bufferDetails(){
-    const host=$('buffer-detail-content');host.replaceChildren();
-    const empty=document.createElement('div');empty.className='buffer-empty';
-    const icon=document.createElement('span');icon.className='empty-state-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-12 5h6"/></svg>';
-    const title=document.createElement('strong');title.textContent='No releases to show';
-    const note=document.createElement('p');note.textContent='Your scheduled projects will appear here.';empty.append(icon,title,note);
-    const status=document.createElement('p');status.className='buffer-source-status';status.textContent='Scheduling not connected';host.append(empty,status);
-  }
-  function openBufferPreview(trigger,name){bufferTrigger=trigger;$('buffer-preview-title').textContent='Release buffer';bufferDetails(name);openDialog('buffer-preview-dialog','buffer-preview-title');}
-  $('buffer-preview-details').addEventListener('click',event=>openBufferPreview(event.currentTarget));
-  $('buffer-preview-close').addEventListener('click',()=>$('buffer-preview-dialog').close());
-  $('buffer-preview-dialog').addEventListener('close',()=>bufferTrigger?.focus());
   const layoutObserver=new ResizeObserver(reflow);cards.forEach(card=>card.querySelectorAll('.group-card-header,.recessed-dock>div,.group-card-footer').forEach(el=>layoutObserver.observe(el)));window.addEventListener('resize',reflow);document.fonts?.ready.then(reflow);reflow();
   (async()=>{try{const data=await api('drive-status');granted=data.driveGranted;if($('drive-badge')){$('drive-badge').textContent=granted?'Saved · checking access':'Not connected';$('drive-badge').dataset.state=granted?'saved':'none';}$('drive-access').textContent=granted?'Saved read-only Drive permission found.':'YouTube access alone cannot scan Drive. Add read-only Drive access once.';
     applyCatalogue(data);$('release-connections').open=!data.folders?.production;

@@ -12,4 +12,8 @@ Live diagnosis found no saved `shorts-analytics-sync` target. A Google connectio
 
 ## Current 2.1 scope — 14 October 2026
 
-The configured production card now reports channel-wide Shorts using YouTube's official creatorContentType classification, rather than the manual sample. See CHANNEL-SHORTS.md for requests, dates, persistence, verification and limits. This supersedes the sample-setup guidance above. 2.2 now independently discovers uploads by UK publication week; see WEEKLY-SHORTS.md. Sync all uses the same service and current Pacific reporting date.
+The configured production card now reports channel-wide Shorts using YouTube's official creatorContentType classification, rather than the manual sample. See CHANNEL-SHORTS.md for requests, dates, persistence, verification and limits. This supersedes the sample-setup guidance above. Release ranking 2.2 remains independently selected. Sync all uses the same service and current Pacific reporting date.
+
+## Release Buffer schedule — 15 October 2026
+
+1.1 now reads the owned YouTube uploads schedule. A complete UK week requires one main video on Monday and one Short on each day Tuesday–Sunday; consecutive coverage stops at the first gap. Twelve weeks are checked from the next Monday (today if Monday). Ready files and manual planned dates do not count. Use Source Sync or Automation Sync all. No upload/publication/schedule changes are made. See SCHEDULE.md for API, cache, classification and evidence limits.

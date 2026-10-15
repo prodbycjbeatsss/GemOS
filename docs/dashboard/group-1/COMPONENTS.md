@@ -5,6 +5,7 @@ Current 10 October 2026. Reuse materials and behaviour; keep list/checklist cont
 | Component | Purpose and anatomy | States/content | Accessibility and responsive contract |
 |---|---|---|---|
 | Spotlight pair | Glyph, header, matched recess, one footer | Loading/empty/partial/populated reserve group geometry; no filler | Shared largest measured dimensions, mobile stack/desktop pair; both grow for text |
+| Schedule coverage |12 UK weeks, seven date/type slots, first-gap stopping | Distinct loading/empty/saved/partial/error/covered/gap |44px Sync/week controls, shared timestamp, native12-week/day dialog with safe links and focus return |
 | Asset tile | Icon, name, muted type, symbol | Pass ✓, Missing ×, attention !, unchecked - | Native button, full category/status accessible; two columns, four rows; no inline links |
 | Empty state | Quiet 58px icon shell, short headline, supporting copy | Truthful empty/unconnected; no fabricated zero | Centred in recess, readable wrapping; icon decorative when text conveys meaning |
 | File dialog | Category icon, state, filenames, per-file text link, association controls when needed | Absent/unchecked/attention/pass; Shorts lists all files | Labelled native dialog, initial static-heading focus, Escape/Close/trigger return; 420px max, reachable sticky Close |

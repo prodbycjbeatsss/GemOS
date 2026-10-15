@@ -6,11 +6,18 @@ Updated 10 October 2026. Applies to the private `/checklist` integration. `previ
 
 One column below 840px; two equal columns from 840px, centred within 960px with 20px gap. Desktop selector sits above 1.2; both cards occupy the same row beneath it. Mobile order: Buffer, Check release, Checklist.
 
-Both cards use the accepted blue/glass material, 32px card corners, 22px recess corners, 20px mobile/24px desktop inset, 58px glyph with 18px corners and 12px glyph-to-label gap. Inter body and Poppins main answer, 24px mobile/30px desktop. Shared measurements use the greatest required header, recess and footer heights across the pair. Both slots grow together for legitimate content or enlarged text, with minimum 512px (532px below 360px). No independent recess growth or one-column checklist fallback.
+Both cards use the accepted blue/glass material, 32px card corners, 22px recess corners, 20px mobile/24px desktop inset, 58px glyph with 18px corners and 12px glyph-to-label gap. Inter body and Poppins main answer, 24px mobile/30px desktop. Shared measurements use the greatest required header, recess and footer heights across the pair. Both slots grow together for legitimate content or enlarged text, with normal920px Large minimum and accessible growth. No independent recess growth or one-column checklist fallback.
 
-## 1.1 Release Buffer
+## YouTube schedule connection —15October2026
 
-The current source is unconnected: header No schedule yet / Scheduling not connected. Centre a calendar icon and No releases to show inside the matched recess, with short supporting copy. No example releases, count dash, invented zero-week coverage or empty row filler. Buffer details opens a compact centred empty state. The populated route will show actual project/date/platform-confirmation breakdown once scheduling records exist; it is not an FAQ or a view of the selected checklist scan.
+Release Buffer now reads YouTube Studio. A complete UK week needs one main video Monday and one Short each day Tuesday–Sunday. This first YouTube-only connection supersedes the earlier19-platform proposal; TikTok/Reels are not claimed as scheduled. Check12 full weeks from next Monday (today if Monday), count consecutive complete weeks, stop at first gap. Later complete weeks remain visible but do not extend coverage.
+
+Only future private status.publishAt is scheduling evidence. Owned duration/dimensions/rotation establish main/Short format, with succeeded processing; unknown format/processing stays unverified/partial. Titles do not establish remix affiliation. Wrong-day/duplicate uploads, planned dates and Drive readiness cannot fill missing slots. A successful empty scan can show zero; a provider failure retains saved data.
+
+Source Sync and Automation1.1/Sync all use the same fixed GET-only provider import under existing permissions and tables. Cached GET restores owner/channel/revision/current-anchor reports without provider work or run creation. Headline shows Covered until <last complete Sunday> or No complete weeks; source states remain distinct. Recess shows nearby weeks and n/7/missing days. Native Buffer details shows all12 weeks and day-level actual uploads/times/links. Multiple owned channels require source selection. Shared timestamp sits below Sync. Material and paired920px geometry stay unchanged.
+
+See [schedule contract](../integration-tests/youtube/SCHEDULE.md). New coverage/UI tests plus affected sync/checklist/analytics/capture/monitoring/Automation/shell/group/dialog/geometry/Drive regressions, production build and compiled200/401 checks pass. First live owner schedule comparison and rendered phone/accessibility checks remain pending. No upload, schedule-write or publication action is added.
+
 
 ## 1.2 Pre Release Checklist
 
@@ -31,7 +38,7 @@ Footer: Sync and last-check state on left; Prepare release → on right. Saved c
 
 - File popup: category icon, PASS/Missing/Needs attention/Not checked, connected filename(s), minimal Open file links; No file connected with file-X icon if absent. Resolve ambiguous associations here, with six ordered selectors for Shorts. Candidate names are not labelled connected until confirmation succeeds.
 - Prepare release: artist/track header, muted beat descriptor, progress/timestamp, editable artist/title/BPM/key/credits and minimal folder link. Show outstanding categories only, linking to their file popups. Review passed Shorts in Tuesday–Sunday order, then Save review. Confirm ready rechecks eight categories and the reviewed snapshot; production projects move to connected Release Queue. Projects already queued are reviewed without a second move. No duplicated list of every passed asset.
-- Buffer details: overall confirmed scheduled projects, currently a truthful empty state.
+- Buffer details:12 UK weeks with day-level schedule, missing slots and unverified uploads.
 - Picker: stage groups, short title/artist, selected tick, full original name available; selection stays local to 1.2.
 
 All use the existing blue/navy modal material, 32px shell, responsive insets, visible focus and 44px controls. File popup remains compact at 420px maximum; preparation at 560px. Static heading receives initial focus, dialog starts at top, content scrolls within 85dvh and Close remains reachable in a sticky footer. Escape dismisses; close restores trigger focus. Native Android Back still needs device verification.

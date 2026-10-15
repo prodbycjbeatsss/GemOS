@@ -1,4 +1,5 @@
 export const AUTOMATIONS = {
+ 'youtube-schedule-sync':{name:'YouTube schedule sync',card:'1.1'},
  'youtube-snapshot-checker':{name:'YouTube snapshot checker',card:'2.2'},
  'drive-assets-sync':{name:'Drive file check',card:'1.2'},
  'drive-catalogue-sync':{name:'Drive release discovery',card:'1.2'},
@@ -12,7 +13,7 @@ export const AUTOMATIONS = {
  'youtube-payouts-sync':{name:'YouTube payouts sync',card:'3.3'}
 };
 export const CARDS=[
- {id:'1.1',name:'Schedule Overview',href:'/checklist',mode:'unconnected'},
+ {id:'1.1',name:'Release Buffer',href:'/checklist',mode:'sync'},
  {id:'1.2',name:'Release Readiness',href:'/checklist',mode:'sync'},
  {id:'2.1',name:'Short-form Performance',href:'/',mode:'sync'},
  {id:'2.2',name:'24-hour Shorts Ranking',href:'/',mode:'sync'},

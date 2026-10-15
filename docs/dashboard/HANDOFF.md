@@ -6,20 +6,28 @@ Updated 15 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_S
 
 Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Confirmed successful Site version **74**: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_5e8927e61b2c8191b511577c529b5123`.
-Source: `14101e638b8bdef89f031fa380af697a0837a9a1`.
-Deployment: `appgdep_6acfee28dfe08191982c65dbc9f0900b`, succeeded 14 October 2026 at 21:03:54 UTC; runtime environment revision 6.
+Private Site version75: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_55e333991fb48191837f405387b0216f`; source `282dda40c4a1d3e67d332ab2db34342ca8b720ab`; deployment `appgdep_6ad0e1f0286881919a0c9784b72c3e45`, succeeded15October2026 at14:24:05UTC. Runtime revision6 and private audience retained.
 
-The GitHub checkpoint previously stopped at 19dff15 and the earlier Large/Sync-all implementation. This reconciliation mirrors the newer application source under integration-tests/youtube and updates its contracts. Private report seeds, temporary screenshots and unused starter UI examples are excluded. Existing GitHub-only integration documentation and prior applied migrations are retained. This is a repository save, not a new deployment or provider/account change.
+Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboard/2026-10-15/pre-youtube-schedule/HANDOFF.md). Existing credentials/scopes/tables/owner data are preserved.
 
 ## Current groups
 
 | Group / route | Current behaviour |
 |---|---|
-|1 Release /checklist|Two blue/state 920px Large cards. Eight Drive asset checks, preparation, discovery and explicit guarded Queue movement. Release Buffer has no authoritative scheduling source. No automatic publish/archive.|
+|1 Release /checklist|Two blue/state 920px Large cards. Eight Drive asset checks, preparation, discovery and explicit guarded Queue movement. Release Buffer reads YouTube Studio's seven-upload UK-week schedule. No automatic publish/archive.|
 |2 Audience & Performance /|Three purple 920px Large cards: 2.1 channel-wide Shorts; 2.2 Weekly Shorts; 2.3 Mailchimp Email List. Monthly newsletter reporting only; no sending.|
 |3 Finance /commerce|Four green 454px Compact cards: Payhip Sales, YouTube Earnings, YouTube Payouts, manual Subscription Costs. 2×2 desktop. /costs remains authenticated 303 redirect.|
 |4 Automations /automations|One cobalt 920px Large Automation Performance card with nine status tiles, individual Sync, sequential Sync all, attention/history, safe checker retry and reasoned dismissal.|
+
+## YouTube schedule connection —15October2026
+
+Release Buffer now reads YouTube Studio. A complete UK week needs one main video Monday and one Short each day Tuesday–Sunday. This first YouTube-only connection supersedes the earlier19-platform proposal; TikTok/Reels are not claimed as scheduled. Check12 full weeks from next Monday (today if Monday), count consecutive complete weeks, stop at first gap. Later complete weeks remain visible but do not extend coverage.
+
+Only future private status.publishAt is scheduling evidence. Owned duration/dimensions/rotation establish main/Short format, with succeeded processing; unknown format/processing stays unverified/partial. Titles do not establish remix affiliation. Wrong-day/duplicate uploads, planned dates and Drive readiness cannot fill missing slots. A successful empty scan can show zero; a provider failure retains saved data.
+
+Source Sync and Automation1.1/Sync all use the same fixed GET-only provider import under existing permissions and tables. Cached GET restores owner/channel/revision/current-anchor reports without provider work or run creation. Headline shows Covered until <last complete Sunday> or No complete weeks; source states remain distinct. Recess shows nearby weeks and n/7/missing days. Native Buffer details shows all12 weeks and day-level actual uploads/times/links. Multiple owned channels require source selection. Shared timestamp sits below Sync. Material and paired920px geometry stay unchanged.
+
+See [schedule contract](integration-tests/youtube/SCHEDULE.md). New coverage/UI tests plus affected sync/checklist/analytics/capture/monitoring/Automation/shell/group/dialog/geometry/Drive regressions, production build and compiled200/401 checks pass. First live owner schedule comparison and rendered phone/accessibility checks remain pending. No upload, schedule-write or publication action is added.
 
 ## Audience changes already delivered
 
@@ -41,12 +49,12 @@ Sync all runs supported data refreshes sequentially, guards duplicates and conti
 
 CJ's later chat reports Sync all and uniform timestamps pass, channel-wide Shorts works with an accepted roughly 10–15-view Studio difference, and weekly discovery/current totals/per-upload views/ranks work. This user acceptance must not be reset because an older document says pending. The reason for the Studio difference has not been established.
 
-Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, verify-weekly-shorts.mjs, verify-sync-times.cjs, verify-card-sync.mjs, verify-sync-controls-ui.cjs, verify-state.cjs, verify-automations.mjs and verify-capture.mjs — all pass. These cover reporting/classification/date boundaries, cache and state retention, timestamps, safe sync controls, owner/origin validation and immutable snapshot behaviour. No application code was changed for this source save. No new production build, provider fetch or rendered browser/device audit was performed during reconciliation.
+Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, verify-weekly-shorts.mjs, verify-sync-times.cjs, verify-card-sync.mjs, verify-sync-controls-ui.cjs, verify-state.cjs, verify-automations.mjs and verify-capture.mjs — all pass. These cover reporting/classification/date boundaries, cache and state retention, timestamps, safe sync controls, owner/origin validation and immutable snapshot behaviour. That earlier source reconciliation has now been followed by the schedule feature, production build and compiled authentication checks described above. No live owner schedule-provider query or rendered/device audit was performed.
 
 ## Next work
 
 1. Continue from this reconciled source; do not rebuild accepted analytics/automation features or request the same confirmations again.
-2. Resolve the Release Buffer's authoritative scheduling source with CJ before implementing scheduling/publication. Publishing Cadence remains unimplemented; no extra placeholder card is authorised.
+2. Refresh Release → Release Buffer → Sync; compare its first incomplete week/day breakdown with Studio, then inspect Automation1.1/Sync all and phone layout. Schedule reads are implemented; schedule/publication writes, GemOS planning calendar and Publishing Cadence remain unimplemented.
 3. Keep genuine remaining evidence gaps scoped: full two-project Drive/move/device checks; real qualifying 24-hour snapshot; genuine Payhip paid/refund/licence-contract verification; populated YouTube payment-history/account pairing; TikTok/Reels access; enlarged text/contrast/Android Back.
 4. Expand automation monitoring only when real upload/receiver/memory workflows exist. Shared AI memory remains future work rather than an implemented integration.
 

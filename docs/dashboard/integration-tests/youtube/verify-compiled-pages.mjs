@@ -18,3 +18,11 @@ console.log(JSON.stringify({passed:true,checks:['compiled checklist, commerce an
 const costs=files.find(f=>readFileSync(resolve(dir,f),'utf8').includes('Subscriptions are now in Finance.'));assert.ok(costs,'compiled Costs redirect');
 const redirect=await import(pathToFileURL(resolve(dir,costs)).href);assert.equal(redirect.GET(new Request('https://test/costs')).status,401);const moved=redirect.GET(new Request('https://test/costs',{headers:{'oai-authenticated-user-id':'owner'}}));assert.equal(moved.status,303);assert.equal(moved.headers.get('location'),'/commerce');
 console.log('Legacy Costs route redirects authenticated users to Finance.');
+
+const scheduleScript=files.find(f=>{const s=readFileSync(resolve(dir,f),'utf8');return s.includes('Ready to check YouTube Studio.')&&!s.toLowerCase().includes('<!doctype html');});
+assert.ok(scheduleScript,'compiled schedule UI script');
+const scheduleUI=await import(pathToFileURL(resolve(dir,scheduleScript)).href);
+assert.equal(scheduleUI.GET(new Request('https://test/schedule-buffer.js')).status,401);
+const scheduleResponse=scheduleUI.GET(new Request('https://test/schedule-buffer.js',{headers:{'oai-authenticated-user-id':'owner'}}));
+assert.equal(scheduleResponse.status,200);assert.ok((await scheduleResponse.text()).includes('/api/youtube/schedule'));
+console.log('Compiled schedule script returns authenticated200/unauthenticated401 and uses fixed schedule API.');
