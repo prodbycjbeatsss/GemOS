@@ -1,15 +1,11 @@
-# Group4 — Large sync status grid
+# Group4 — components and ownership
 
-## Current Large card and data sync — 14 October2026
+Updated15October2026; deployed version74. One cobalt920px Large card; nine centred tiles, three columns desktop/two phone. Plain20px icons,12px names/11px state and date,8px padding/12px gaps. Existing32px/22px radii,58px top glyph,20/24px insets and44px action targets remain. Shared single-line UK time with seconds sits beneath each Sync; full date remains accessible. Manual Costs says Last saved; unconnected Buffer has no fabricated success.
 
-CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
+Individual Sync and sequential Sync all use fixed allowlisted read-only services, prevent duplicate execution and continue after failures. Current supported sources: Drive discovery/checks, channel-wide Shorts2.1, UK-weekly Shorts2.2, Mailchimp, received Payhip sales, YouTube earnings and payouts. Costs are manual; Buffer scheduling is unconnected.2.1 uses owned-channel/range selection;2.2 independently uses weekly channel/week. Neither requires or borrows a manual video sample.
 
-Nine compact centred two-column tiles:8px padding/gaps,28px glass icon/18px monochrome mark,11px name/10px status/date, status symbol plus wording,44px Sync/details controls. Latest attempt/duration remains in details. Older unresolved issues remain visible after newer success. Manual Costs shows Last saved; unconnected Buffer shows Not connected, both Sync-disabled.2.2 uses Last successful check; other sources show Last synced.
+Attention counts/history retain unresolved failed/unconfirmed operations even after later ordinary success. Checker retry resolves only linked eligible issues; dismissal needs a reason. Owner-only status/history reads create no runs. Sync never publishes/schedules/approves/moves/sends/purchases or rewrites manual records.
 
-Sync all refreshes available data cards sequentially, guards duplicates and continues after failures; completed/partial/skipped/failed are separate. Bottom Refresh status only reads records. Source choices reuse last successful saved selections/periods; absent period defaults to the source's current month. Missing/multiple required channel/account/sample choices require source setup. Analytics can initialise from the same tab's previously confirmed sample, never2.2's independent release sample. It does not move/approve/publish/send/purchase/spend or rewrite manual records.
+CJ reports Sync all and timestamps working. Eight reporting/sync/state/automation/capture controlled checks passed during15October reconciliation. Real qualifying24h capture and measured rendered/accessibility checks remain open. Source/deployment provenance and next work: [HANDOFF](../HANDOFF.md). API/storage details: [USAGE-AND-CONNECTIONS](USAGE-AND-CONNECTIONS.md).
 
-Source 4c5a7387e7352fe82f5b14604317fff3cdf41bf2; private deployment appgdep_6aced96e768881918b0c3d6e9a829474; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_5f6fa7750d3c8191ba376254f10694db; succeeded; runtime revision6 unchanged.
-
-Controlled card-sync/control/automation/cache/security/provider/Group1–3 checks, production build and compiled200/401 pass. Actual Drive bulk fixture used only GET provider calls. Rendered phone/desktop/enlarged-text and owner live Sync all remain pending.
-
-ui/automations.html/js owns Large grid/controls; server/card-sync.mjs fixes safe actions; sync-targets.mjs owns prior successful selections; analytics-cache.mjs owns real saved2.1 result. Existing native details/history/retry/dismissal remains. See USAGE-AND-CONNECTIONS.md for API/storage/recovery.
+ui/automations.html/js owns grid/actions/history. server/card-sync.mjs fixes dispatch; sync-targets.mjs retains owner selections; channel-shorts.mjs and weekly-shorts.mjs own independent audience sources; analytics-cache.mjs retains the real2.1 report. ui/sync-times.js and ui/dashboard.css own shared source-card timestamps. Existing native details/history/dismissal/checker retry remain.

@@ -1,8 +1,21 @@
-# Group4 — sync monitoring and run history
+# Group4 — current usage and connections
+
+Updated15October2026; deployed version74. One cobalt920px Large card; nine centred tiles, three columns desktop/two phone. Plain20px icons,12px names/11px state and date,8px padding/12px gaps. Existing32px/22px radii,58px top glyph,20/24px insets and44px action targets remain. Shared single-line UK time with seconds sits beneath each Sync; full date remains accessible. Manual Costs says Last saved; unconnected Buffer has no fabricated success.
+
+Individual Sync and sequential Sync all use fixed allowlisted read-only services, prevent duplicate execution and continue after failures. Current supported sources: Drive discovery/checks, channel-wide Shorts2.1, UK-weekly Shorts2.2, Mailchimp, received Payhip sales, YouTube earnings and payouts. Costs are manual; Buffer scheduling is unconnected.2.1 uses owned-channel/range selection;2.2 independently uses weekly channel/week. Neither requires or borrows a manual video sample.
+
+Attention counts/history retain unresolved failed/unconfirmed operations even after later ordinary success. Checker retry resolves only linked eligible issues; dismissal needs a reason. Owner-only status/history reads create no runs. Sync never publishes/schedules/approves/moves/sends/purchases or rewrites manual records.
+
+CJ reports Sync all and timestamps working. Eight reporting/sync/state/automation/capture controlled checks passed during15October reconciliation. Real qualifying24h capture and measured rendered/accessibility checks remain open. Source/deployment provenance and next work: [HANDOFF](../HANDOFF.md). API/storage details: [USAGE-AND-CONNECTIONS](USAGE-AND-CONNECTIONS.md).
+
+## Historical implementation detail
+
+The older checkpoints below retain API/lease/storage history. Current source selections, sizing, tile design and acceptance are defined above.
+
 
 Updated14 October2026. All-GemOS monitoring remains the intended scope. CJ requested existing other-card syncs in the same Automation Performance card, then a per-card status grid. No additional card/group.
 
-## Current sources and grid
+## Original registry and storage design (later source selections superseded above)
 
 server/automation-registry.mjs lists11 operation types mapped to nine Group1–3 cards. server/automation-runs.mjs aggregates each card's latest attempt, last successful completion, unresolved issue count and representative issue. Owner-scoped status/history reads do not start work.
 
@@ -10,8 +23,8 @@ server/automation-registry.mjs lists11 operation types mapped to nine Group1–3
 |---|---|
 |1.1 Schedule Overview|Not connected; no invented scheduling sync|
 |1.2 Release Readiness|Drive file checks/associations, catalogue discovery, explicit guarded Release Queue approval|
-|2.1 Short-form Performance|One logical server-backed analytics sync spanning ownership/probe/current/previous requests|
-|2.2 24-hour Shorts Ranking|Release metadata import/refresh and existing background checker; Last successful check distinguishes no-op|
+|2.1 Short-form Performance|Channel-wide Shorts Analytics report; one logical durable run|
+|2.2 Weekly Shorts|Owned upload discovery/current views for selected UK week; independent background24h checker|
 |2.3 Email List|Mailchimp report refresh; missing activity/campaign data is partial|
 |3.1 Payhip Sales|Saved received-sales report refresh; no invented historical fetch or storefront fulfilment|
 |3.2 YouTube Earnings|Revenue report and separately named ranking requests|
@@ -50,7 +63,7 @@ Next owner check: refresh the Site, open Automations and inspect the grid; run n
 
 Recovery: redeploy preceding Site source while retaining existing run history/tables. Existing snapshot/provider data and prior applied migrations remain untouched.
 
-## Current Large card and data sync — 14 October2026
+## Historical Large/saved-sample checkpoint — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
 

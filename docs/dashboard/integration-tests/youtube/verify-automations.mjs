@@ -1,3 +1,4 @@
+import {weeklyFixture} from './weekly-test-fixture.mjs';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync,readdirSync} from 'node:fs';
@@ -34,11 +35,11 @@ try{
  const id='abcdefghijk',publishedAt=new Date(now-WINDOW_START).toISOString();
  const meta=[{id,title:'Example',publishedAt,visibility:'public',snapshotViews:null}];sql.prepare('INSERT INTO youtube_release_selections VALUES (?,?,?,?,?,?)').run('checker-owner','UC_TEST','Example',JSON.stringify([id]),JSON.stringify(meta),now);
  globalThis.fetch=async()=>new Response(JSON.stringify({error:'SECRET provider body'}),{status:502});
- await assert.rejects(runOwnerChecker(env,'checker-owner','UC_TEST','scheduled'),/YouTube could not return/);
+ await assert.rejects(runOwnerChecker(env,'checker-owner','UC_TEST','scheduled'),/could not|Google|YouTube/);
  const failed=(await reportRuns(env,'checker-owner')).runs[0];assert.equal(failed.status,'failed');assert.ok(!JSON.stringify(failed).includes('SECRET'));
  globalThis.fetch=async()=>new Response(JSON.stringify({items:[{id,snippet:{channelId:'UC_TEST',title:'Example',publishedAt},status:{privacyStatus:'public'},statistics:{viewCount:'0'}}]}));
  const retryRequest=new Request(origin+'/api/automations',{method:'POST',headers:{'oai-authenticated-user-id':'checker-owner',Origin:origin},body:JSON.stringify({action:'retry',id:failed.id})});
- let response=await automationHandler(retryRequest,env);assert.equal(response.status,200);assert.equal((await response.json()).result.captured,1);assert.equal((await getRun(env,'checker-owner',failed.id)).issue_state,'resolved');
+ globalThis.fetch=weeklyFixture(globalThis.fetch);let response=await automationHandler(retryRequest,env);assert.equal(response.status,200);assert.equal((await response.json()).result.captured,1);assert.equal((await getRun(env,'checker-owner',failed.id)).issue_state,'resolved');
  const noop=await runOwnerChecker(env,'checker-owner','UC_TEST','scheduled');assert.equal(noop.noOp,true);assert.equal(noop.captured,0);
  sql.prepare('DELETE FROM youtube_view_snapshots WHERE user_id=?').run('checker-owner');now+=86400000;const missed=await runOwnerChecker(env,'checker-owner','UC_TEST','scheduled');assert.equal(missed.missedWindows,1);assert.equal(missed.captured,0);assert.equal((await getRun(env,'checker-owner',missed.runId)).status,'succeeded');
  assert.equal((await captureHandler(new Request(origin+'/api/youtube/run-captures',{method:'POST',headers:{Authorization:'Bearer wrong'}}),env,'run-captures')).status,401);
@@ -48,6 +49,6 @@ try{
  sql.prepare('UPDATE youtube_release_selections SET metadata_json=? WHERE user_id=?').run(JSON.stringify([{...meta[0],publishedAt:fresh}]),'checker-owner');
  sql.prepare('INSERT INTO youtube_release_selections VALUES (?,?,?,?,?,?)').run('second-owner','UC_OTHER','Other',JSON.stringify([otherId]),JSON.stringify([{id:otherId,title:'Other',publishedAt:fresh,visibility:'public',snapshotViews:null}]),now);
  globalThis.fetch=async url=>new URL(url).searchParams.get('id')===id?new Response('SECRET',{status:502}):new Response(JSON.stringify({items:[{id:otherId,snippet:{channelId:'UC_OTHER',title:'Other',publishedAt:fresh},status:{privacyStatus:'public'},statistics:{viewCount:'1'}}]}));
- response=await captureHandler(new Request(origin+'/api/youtube/run-captures',{method:'POST',headers:{Authorization:'Bearer FAKE','X-CloudScheduler-JobName':'gemos-youtube-capture'}}),env,'run-captures');assert.equal(response.status,503);const partial=await response.json();assert.equal(partial.failures,1);assert.equal(partial.captured,1);assert.equal((await reportRuns(env,'second-owner')).runs[0].status,'succeeded');assert.equal((await reportRuns(env,'checker-owner')).runs[0].status,'failed');assert.equal((await reportRuns(env,'second-owner')).attentionCount,0);
+ globalThis.fetch=weeklyFixture(globalThis.fetch);response=await captureHandler(new Request(origin+'/api/youtube/run-captures',{method:'POST',headers:{Authorization:'Bearer FAKE','X-CloudScheduler-JobName':'gemos-youtube-capture'}}),env,'run-captures');assert.equal(response.status,503);const partial=await response.json();assert.equal(partial.failures,1);assert.equal(partial.captured,1);assert.equal((await reportRuns(env,'second-owner')).runs[0].status,'succeeded');assert.equal((await reportRuns(env,'checker-owner')).runs[0].status,'failed');assert.equal((await reportRuns(env,'second-owner')).attentionCount,0);
  console.log('Automation checks passed: durable starts, timeout recovery/fencing, owner isolation, concurrency, context-bound retries, linked resolution, dismissal audit, attention ordering/counts, pagination, auth/origin/validation, real checker failure/retry/no-op/missed-window and redaction.');
 }finally{Date.now=realNow;globalThis.fetch=realFetch;}

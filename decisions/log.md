@@ -657,3 +657,13 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Evidence:** New card-sync/control/cache and existing security/provider/Group1–3 tests, production build/compiled pages pass; controlled Drive bulk emits GET-only provider requests. Source 4c5a7387e7352fe82f5b14604317fff3cdf41bf2; private deployment appgdep_6aced96e768881918b0c3d6e9a829474; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_5f6fa7750d3c8191ba376254f10694db; succeeded; runtime revision6 unchanged. No rendered browser or owner live Sync all verification.
 
 **Owner:** CJ.
+
+## 2026-10-15 — Reconcile deployed audience reporting and sync acceptance
+
+**Decision:** Mirror successful private Site version74/source14101e638b8bdef89f031fa380af697a0837a9a1 into GemOS. Record CJ's14October channel-wide2.1, UK-weekly2.2 with current cumulative totals/per-upload ranks, restored original metric tiles and uniform timestamps. Preserve immutable24h snapshots as details/checker evidence. Sync all/timestamps and latest Shorts functionality are user-accepted; controlled checks and device/provider evidence stay distinct.
+
+**Why:** GitHub stopped at the earlier Large/Sync-all checkpoint and would otherwise send a new agent back to superseded sample/release-only behaviour. Titles do not reliably identify a remix. UK publication-week grouping provides the agreed cohort without inventing remix affiliation.
+
+**Alternatives considered:** Title matching/manual release selection and snapshot-only visible ranking are superseded for production2.2. No later count may fill a missed24h snapshot.
+
+**Owner:** CJ. This records prior confirmed choices and the explicit15October GitHub save authorisation; it introduces no new scheduling/publication/account permission.

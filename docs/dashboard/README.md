@@ -1,5 +1,16 @@
 # Dashboard — start here
 
+## Current deployed contract — reconciled 15 October 2026
+
+Site version **74**, source `14101e638b8bdef89f031fa380af697a0837a9a1`, was successfully deployed on 14 October at 21:03 UTC. This contract takes precedence over older selected-sample/release-only/Compact Automation notes below. Historical previews remain provenance.
+
+- **2.1:** channel-wide YouTube Shorts activity, with 7/28/90/365-day periods, four original metric tiles and up to three highest-viewed Shorts for the same reporting period. Official content-type classification; no manually chosen video sample in the configured production path. TikTok/Reels remain unavailable. See [channel reporting](integration-tests/youtube/CHANNEL-SHORTS.md).
+- **2.2:** Weekly Shorts, grouped Monday–Sunday by Europe/London publication date, independent of titles/remix names. Current week defaults; up to 52 past weeks. Headline sums current cumulative views of confirmed/format-eligible Shorts uploaded that week; rows show current views and competition ranks. These are lifetime-to-sync counts for that upload batch, not views earned only during the week. Unknown classification stays unranked; missing confirmed counts make the total unavailable. Frozen 24-hour snapshots remain in details and the checker, never backfilled from later counts.
+- **Sync:** source cards and Automation tiles show a shared single-line UK time including seconds beneath the action; full date remains in machine-readable/accessibility text. Last successful completion survives failed attempts. Manual costs says Last saved; unconnected sources have no invented timestamp.
+- **Automation:** one cobalt 920px Large card, nine centred status tiles; three columns desktop/two phone, 20px plain icons, 12px titles/11px status and dates, 8px padding/12px gaps. Individual Sync and sequential Sync all retain safe read-only actions and truthful partial/skipped/failed outcomes.
+- **Evidence:** CJ reports Sync all/timestamps and the later channel-wide/weekly Shorts changes working. A 10–15-view difference from Studio is accepted; its cause is unconfirmed. Controlled tests are separate from that acceptance; fresh rendered accessibility/device checks and a real qualifying 24-hour capture remain unverified.
+
+
 ## Current grouping — 13 October 2026
 
 CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Group4 Automation Performance is now live at /automations with the first YouTube checker adapter. Publishing Cadence remains unimplemented.

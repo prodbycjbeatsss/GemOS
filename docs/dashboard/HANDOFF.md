@@ -1,68 +1,53 @@
 # GemOS dashboard — current handoff
 
-Updated13 October2026 after approved regrouping. Start with AGENTS.md, dashboard README, DESIGN_SYSTEM/ DESIGN_TOKENS and the affected group's spec/usage/components. Prior lengthy checkpoint history is preserved at ../../archives/dashboard/2026-10-13/pre-regrouping/docs/dashboard/HANDOFF.md; it is superseded for current grouping.
+Updated 15 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_SYSTEM.md, docs/DESIGN_TOKENS.md and the affected group's specification/usage/components. Earlier handoff: [archived checkpoint](../../archives/dashboard/2026-10-15/pre-source-reconciliation/HANDOFF.md).
 
-## Current grouping — 13 October 2026
+## Deployment and source authority
 
-CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Group4 now has Automation Performance at /automations; Publishing Cadence remains unimplemented.
+Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Email keeps its independent Mailchimp settings/reporting/member popup on /. Subscription costs keep manual saved histories/top-ups/logos/management on /commerce. API/storage/scopes unchanged. /costs is an authenticated303 redirect to /commerce. Historical IDs/colours below are superseded by this grouping; original mocks remain provenance.
+Confirmed successful Site version **74**: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_5e8927e61b2c8191b511577c529b5123`.
+Source: `14101e638b8bdef89f031fa380af697a0837a9a1`.
+Deployment: `appgdep_6acfee28dfe08191982c65dbc9f0900b`, succeeded 14 October 2026 at 21:03:54 UTC; runtime environment revision 6.
 
-## Deployment and scope
-
-Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved. Sole-owner private. Existing Google,Mailchimp,Payhip credentials/settings and subscription records are unchanged. Public Payhip receiver access is unchanged. No new permissions, bank connection or provider-record rewriting. Automation monitoring adds two tables through a registered schema-only migration.
-
-Live routes:Release /checklist,Audience & Performance /,Finance /commerce,Automations /automations. Old /costs redirects303 to /commerce after authentication. ui/costs.html moved to an explicit source archive; its scripts, model, logo assets and /api/costs remain in use on Finance. Mailchimp setup/card/dialog/script moved together to Audience. Analytics reflow stays scoped to its original two cards.
+The GitHub checkpoint previously stopped at 19dff15 and the earlier Large/Sync-all implementation. This reconciliation mirrors the newer application source under integration-tests/youtube and updates its contracts. Private report seeds, temporary screenshots and unused starter UI examples are excluded. Existing GitHub-only integration documentation and prior applied migrations are retained. This is a repository save, not a new deployment or provider/account change.
 
 ## Current groups
 
-- Group1 Release:8 Drive asset checks/metadata preparation/Shorts-order review and explicit guarded Queue move. Buffer remains an honest no-schedule state until an authoritative scheduling source is chosen. No automatic publish/archive. Existing controlled checks pass; full real two-project/move/device verification remains pending. Read ASSETS/PROJECTS.
-- Group2 Audience & Performance:2.1 selected-Shorts analytics,2.2 independent release ranking/qualifying24h–24h15 snapshots,2.3 Email List. All purple Large920px; Email uses matching174px header/recess/footer tokens on a new half-width desktop row, stacked on phone. Mailchimp reports current active contacts, selected-month activity and latest newsletter; read group-2/EMAIL-LIST.md. No newsletter sends. First real qualifying ranking/TikTok/Reels are unverified.
-- Group3 Finance:3.1 Payhip,3.2 YouTube earnings(top3 period views/revenue),3.3 YouTube payouts(provisional compatible GBP balance + independent current-month estimate,conditional window/history),3.4 Subscription Costs(monthly-equivalent manual records/separate top-up purchases). All green Compact454px in a2×2 desktop grid. Costs management uses green material and preserves saved history/service picker. Read group-3/SUBSCRIPTIONS.md. Payhip coupon mappings/all3 tiers are user-verified; genuine paid/refund/contracts remain pending. AdSense balance access is user-verified; populated paid-history and account/channel pairing comparison remain limited.
-- Group4 Automations: Automation Performance now lives at /automations, using cobalt Large920px. All-GemOS scope; dashboard sync adapters and the checker implemented. Attention-first card/history, context-bound safe retry and reasoned dismissal. Publishing Cadence remains unimplemented; no placeholder.
+| Group / route | Current behaviour |
+|---|---|
+|1 Release /checklist|Two blue/state 920px Large cards. Eight Drive asset checks, preparation, discovery and explicit guarded Queue movement. Release Buffer has no authoritative scheduling source. No automatic publish/archive.|
+|2 Audience & Performance /|Three purple 920px Large cards: 2.1 channel-wide Shorts; 2.2 Weekly Shorts; 2.3 Mailchimp Email List. Monthly newsletter reporting only; no sending.|
+|3 Finance /commerce|Four green 454px Compact cards: Payhip Sales, YouTube Earnings, YouTube Payouts, manual Subscription Costs. 2×2 desktop. /costs remains authenticated 303 redirect.|
+|4 Automations /automations|One cobalt 920px Large Automation Performance card with nine status tiles, individual Sync, sequential Sync all, attention/history, safe checker retry and reasoned dismissal.|
 
-## Validation and next action
+## Audience changes already delivered
 
-Group-placement/unique IDs/script/setup/dialog ownership, destination colour/size declarations, four-link navigation and old Costs redirect checks pass. Actual subscription form/persistence/history/date/logo/custom-picker checks, Mailchimp SQLite/encryption/API checks and existing Group1–3 security/state/reporting regressions pass. Production build and compiled authenticated200/unauthenticated401 handlers plus authenticated303 redirect pass. No supported browser QA; tests do not prove rendered alignment/contrast/Android Back/enlarged text or new live provider results.
+2.1 now queries all channel Shorts, rather than a 1–5-video sample. Official YouTube creatorContentType classification is handled case-insensitively. Range options are 7/28/90/365 days; source periods use Pacific reporting dates. Views, signed Likes, Subscribers gained and Shares are summed only from Shorts rows; Average percentage viewed is Google's period aggregate. Top Shorts shows up to three titles and period views. Ranking failure preserves aggregate metrics. Original metric tile layout was restored after CJ requested it. Missing sources/metrics remain unavailable; no fabricated growth/coverage. See [CHANNEL-SHORTS](integration-tests/youtube/CHANNEL-SHORTS.md).
 
-CJ accepted the regrouped visual appearance in chat. This is user visual acceptance; it does not establish all-state accessibility, saved-record/connection or new live-provider verification. Next work is the approved Automation Performance scope and proposed first checker adapter, documented in group-4/USAGE-AND-CONNECTIONS.md.
+2.2 discovers uploads by Monday–Sunday UK publication week, with current week/default and up to 52 prior weeks. Titles need not match the remix; no remix relationship is inferred. Headline is total current cumulative views for confirmed/format-eligible Shorts published in that week. Each row shows current views and competition ranking (ties share a place). Unknown classification stays pending/unranked; missing confirmed counts make the total unavailable. This is not a count of views earned only during the selected week. Immutable qualifying 24h–24h15m snapshots remain in details/checker, without backfill. Legacy selected-release data remains preserved. See [WEEKLY-SHORTS](integration-tests/youtube/WEEKLY-SHORTS.md).
 
-Future Sync all at the combined dashboard top is approved direction only; source-specific retries remain. Never let Sync publish,schedule,approve or move releases. Preserve independent card selections and truthful missing/zero/partial data.
+Both cards persist owner-scoped reports and restore truthful saved dates. Source Sync and Automation Sync use the same services, independently of each other's selections. No new scopes or schema change was required for these reporting changes.
 
-## Automation Performance — confirmed scope, 13 October 2026
+## Shared design and sync
 
-CJ confirmed coverage of all GemOS automations. The headline counts unresolved failed or unconfirmed runs: “1 automation needs attention”, “No automations need attention” only after recorded runs with no unresolved issues, and “No automation runs yet” before any records. Needs-attention runs precede recent runs; the footer opens full history and filtering by automation.
+All normal Large cards are 920px; Finance Compact is 454px. Two Compact plus the 12px row gap equal one Large. Desktop column gap remains 20px. Group1's 12px row-gap correction is included. Shared 32px card/22px recess radii, 58px header glyph, 20/24px insets, Inter/Poppins, clipped beam and 44px action targets remain.
 
-A successful retry resolves only the issue linked to that retry's original run, after confirmed completion. Manual dismissal requires a recorded reason and retains the original failure in history. Retry is available only where duplicate external actions can be prevented and the specific operation is eligible; uncertain writes require reconciliation/details rather than blindly repeating them. Monitoring approval does not authorise new publication, purchase, notification or unattended folder moves.
+Automation inner tiles use three desktop/two phone columns, 20px plain icons, 12px titles/11px state/date, 8px padding/12px gaps. Earlier two-column/glass-tile notes are historical. Shared single-line UK timestamps with seconds sit beneath Sync; full date remains accessible. Manual Costs says Last saved; failure retains last success. See [source design check](integration-tests/youtube/DESIGN-SYSTEM-CHECK.md).
 
-Runtime/card implementation is now delivered; see group-4/USAGE-AND-CONNECTIONS.md. Publishing Cadence overlaps Group1 planning; no cadence-grid implementation is authorised by this discussion. Retain provisional numbering4.2 for Automation Performance for continuity; no empty4.1 card.
+Sync all runs supported data refreshes sequentially, guards duplicates and continues after failures. It never publishes, schedules, approves/moves releases, sends emails, purchases or changes manual records. Status/history reads create no runs. Uploads, memory imports and public Payhip receiver processing are not fully monitored.
 
-## Latest implementation checkpoint
+## Acceptance and verification
 
-Durable automation run records and owner-only card/history are deployed. New migration:drizzle/0006_automation_runs.sql plus generated snapshot/journal; previous applied migrations unchanged. Source/checker updates are under integration-tests/youtube. Source 8791d9c008663fbc88f7f254bcccdf0e1edd78f6; private deployment appgdep_6aceb52deacc8191adf1c1ba8cb3506a; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_f651fa447a448191b69c242527dda3f6; succeeded. Runtime environment revision 6 preserved.
+CJ's later chat reports Sync all and uniform timestamps pass, channel-wide Shorts works with an accepted roughly 10–15-view Studio difference, and weekly discovery/current totals/per-upload views/ranks work. This user acceptance must not be reset because an older document says pending. The reason for the Studio difference has not been established.
 
-Controlled tests include partial owner failures, interruption recovery/fencing, selection-bound concurrent retry guards, linked resolution, dismissal audit, no-op/missed-window results, auth/origin/owner isolation, literal reason/stale UI/focus behaviour; snapshot and Group1/2 regressions, compiled200/401 and build pass. Sites service credential reads of new page/API returned401; owner session/live scheduled record and rendered QA were not verified.
+Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, verify-weekly-shorts.mjs, verify-sync-times.cjs, verify-card-sync.mjs, verify-sync-controls-ui.cjs, verify-state.cjs, verify-automations.mjs and verify-capture.mjs — all pass. These cover reporting/classification/date boundaries, cache and state retention, timestamps, safe sync controls, owner/origin validation and immutable snapshot behaviour. No application code was changed for this source save. No new production build, provider fetch or rendered browser/device audit was performed during reconciliation.
 
-Next: refresh the signed-in site, select Automations, inspect a new scheduled checker execution after it runs. Review card/mobile/dialog and enlarged text. Expand adapters with read-only Drive checks after that evidence; do not claim all automations monitored or scheduler uptime verified. Existing record preservation/provider verification limits still apply.
+## Next work
 
-## Latest — per-card sync grid,14 October2026
+1. Continue from this reconciled source; do not rebuild accepted analytics/automation features or request the same confirmations again.
+2. Resolve the Release Buffer's authoritative scheduling source with CJ before implementing scheduling/publication. Publishing Cadence remains unimplemented; no extra placeholder card is authorised.
+3. Keep genuine remaining evidence gaps scoped: full two-project Drive/move/device checks; real qualifying 24-hour snapshot; genuine Payhip paid/refund/licence-contract verification; populated YouTube payment-history/account pairing; TikTok/Reels access; enlarged text/contrast/Android Back.
+4. Expand automation monitoring only when real upload/receiver/memory workflows exist. Shared AI memory remains future work rather than an implemented integration.
 
-CJ reports two visible run entries and explicitly requests other cards' syncs in the existing card, then a grid showing every card's sync status/last sync. Delivered responsive nine-card grid, latest attempt/retained last success/manual save timestamps, older unresolved issues, full history and expanded filters.11 registered operation types cover Drive checks/discovery/explicit Queue approval, logical Shorts analytics, release metadata/checker, Mailchimp, Payhip received-sales refresh, earnings/ranking and payouts. Buffer stays Not connected; Costs stays Manual records. No second card or monitoring-driven external action.
-
-Source c07418cbc68fb5d37a6bbca9de9308c2694581e0; private deployment appgdep_6aced3aad67881918fc69f3fc1a22539; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_3e5404c6afec8191a983f23b603b5ae8; succeeded. Runtime environment revision6 retained. This is the latest deployed source/version, superseding the preceding deployment checkpoints above. Existing schema/scopes/credentials/records unchanged. Repeated automation page/API reads create no runs. Genuine source-card page-load fetches can create card-refresh records; exact original two entries were not examined/deleted. Analytics queries share one ordered trace; uncertain moves remain unconfirmed/non-retryable. Checker retry/dismissal remains intact.
-
-All relevant controlled sync/grid/capture/security/Group1–3 regressions, production build and compiled200/401 pages pass. No rendered browser QA or newly instrumented live provider-read verification. Next: owner refreshes Automations, checks grid/scroll, performs normal source-card Sync and compares tiles/history. Expand receiver/upload/memory adapters only as those real sources become available. Current authority:group-4/USAGE-AND-CONNECTIONS.md.
-
-## Current Large card and data sync — 14 October2026
-
-CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
-
-Nine compact centred two-column tiles:8px padding/gaps,28px glass icon/18px monochrome mark,11px name/10px status/date, status symbol plus wording,44px Sync/details controls. Latest attempt/duration remains in details. Older unresolved issues remain visible after newer success. Manual Costs shows Last saved; unconnected Buffer shows Not connected, both Sync-disabled.2.2 uses Last successful check; other sources show Last synced.
-
-Sync all refreshes available data cards sequentially, guards duplicates and continues after failures; completed/partial/skipped/failed are separate. Bottom Refresh status only reads records. Source choices reuse last successful saved selections/periods; absent period defaults to the source's current month. Missing/multiple required channel/account/sample choices require source setup. Analytics can initialise from the same tab's previously confirmed sample, never2.2's independent release sample. It does not move/approve/publish/send/purchase/spend or rewrite manual records.
-
-Source 4c5a7387e7352fe82f5b14604317fff3cdf41bf2; private deployment appgdep_6aced96e768881918b0c3d6e9a829474; version appgprj_6ac84c21e1fc819198906084958537b0~appgver_5f6fa7750d3c8191ba376254f10694db; succeeded; runtime revision6 unchanged.
-
-Controlled card-sync/control/automation/cache/security/provider/Group1–3 checks, production build and compiled200/401 pass. Actual Drive bulk fixture used only GET provider calls. Rendered phone/desktop/enlarged-text and owner live Sync all remain pending.
-
-This is the latest implementation checkpoint and supersedes earlier deployment/Compact-size/monitor-only notes above. Registered0007_sync_targets/0008_analytics_sync_cache add owner selections and real2.1 cache; previous schemas/records/scopes unchanged. Source under integration-tests/youtube. New tests verify-card-sync.mjs/verify-sync-controls-ui.cjs and updated verify-state.cjs join the passing existing suite. Next owner acceptance: Large layout, centred compact tiles, one Sync then Sync all, truthful skips/partials/failures, saved2.1 restoration. No rendered/live all-source proof claimed.
+Preserve existing credentials/scopes, owner records, immutable snapshots, saved subscriptions and historical failures. Detailed source contracts retain the distinctions between real zero, unavailable, partial, failed and stale data.

@@ -5,6 +5,7 @@
   const metrics = ['views', 'averageViewPercentage', 'likes', 'subscribersGained', 'shares'];
   let backendMode = window.GEMOS_BACKEND_CONFIGURED === true;
   let token = null, expiresAt = 0, expiryTimer, connectTimer, generation = 0, busy = false, report = null, opener, syncing = false;
+  let weekOffset=0,weeklyGeneration=0;
   let syncState = { heading: 'Ready to sync', message: 'Connect and choose your Shorts to import.', footer: 'Not synced' };
   const sessionKey = 'gemos-youtube-session-v1';
   const configKey = 'gemos-youtube-client-v1';
@@ -53,14 +54,14 @@
       $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
       if (data.items.some(item => item.id === saved.channel)) $('channel').value = saved.channel;
       status('Connected · read-only. Session restored after refresh.');
-      showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+      showSync('Ready to sync', backendMode?'Choose your date range, then Sync all channel Shorts.':'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
   let analyticsTrace=null,analyticsStep=null,analyticsSelection=null;
   async function backend(action, params) {
-    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep,'X-GemOS-Sync-Selection':JSON.stringify(analyticsSelection)}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(30000) });
+    const response = await fetch('/api/youtube/' + action, { method: params ? 'POST' : 'GET', headers: params ? { 'Content-Type': 'application/json',...(action==='query'&&analyticsTrace?{'X-GemOS-Sync-ID':analyticsTrace,'X-GemOS-Sync-Step':analyticsStep,'X-GemOS-Sync-Selection':JSON.stringify(analyticsSelection)}:{}) } : {}, body: params ? JSON.stringify(params) : undefined, cache: 'no-store', signal: AbortSignal.timeout(action==='shorts-report'?150000:30000) });
     let data; try { data = await response.json(); } catch { throw new Error('The connection service returned an unreadable response.'); }
     if (!response.ok) { const error = new Error(data.error || 'The connection service is unavailable.'); error.status = response.status; throw error; }
     if(action!=='status' && action!=='disconnect' && $('youtube-badge')){$('youtube-badge').textContent='Connected · checked now';$('youtube-badge').dataset.state='connected';}return data;
@@ -71,7 +72,7 @@
     $('persistent-connection').textContent = 'One saved Google connection serves both cards. Release links and qualifying snapshots are saved on the server.';
     $('client-session-note').textContent = 'Saved access is renewed by the server. Google Testing mode may require reconnecting after seven days. Disconnect removes saved access.';
     $('google-connection-help').textContent = 'The existing Web client uses the saved server connection. Its authorised redirect URI is ' + location.origin + '/api/youtube/callback. No secret belongs in this page.';
-    $('batch-capture-note').textContent = 'Snapshot window · 24h–24h 15m';
+    $('batch-capture-note').textContent = 'Total Shorts views';
     try {
       const data = await backend('status'); if (session !== generation) return;
       if (!data.configured) throw new Error('Background connection setup is incomplete.');
@@ -82,10 +83,10 @@
       $('channel').replaceChildren(...data.channels.map(c => new Option(c.title, c.id)));
       if (data.channels.some(c => c.id === previous)) $('channel').value = previous;
       token = 'server-connection'; expiresAt = Infinity; status('Connected · read-only. Saved connection restored for both cards.');
-      showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+      showSync('Ready to sync', backendMode?'Choose your date range, then Sync all channel Shorts.':'Choose your Shorts and date range, then Sync.', 'Not synced');
       batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
-      if(data.analyticsReport&&data.analyticsReport.channelId===$('channel').value){
-        report=data.analyticsReport;const restoredDays=report.rangeDays;$('videos').value=report.videos.map(v=>v.id).join('\n');$('confirm-shorts').checked=true;$('end-date').value=report.requestedEnd;
+      if(data.analyticsReport?.scopeType==='channel-shorts'&&data.analyticsReport.channelId===$('channel').value){
+        report=data.analyticsReport;const restoredDays=report.rangeDays;
         document.querySelectorAll('[data-range]').forEach(button=>button.setAttribute('aria-checked',String(Number(button.dataset.range)===restoredDays)));rememberSelection();render();showSync('Saved analytics restored','Showing the saved Automation Sync result. Press Sync for a new request.','Saved · '+new Date(report.fetchedAt).toLocaleTimeString('en-GB'));
       }
       await restoreRelease();
@@ -93,7 +94,12 @@
     } catch (error) { if (session === generation) clearConnection(error.message); }
     finally { if (session === generation) { busy = false; controls(); } }
   }
+  async function loadWeekly({sync=false}={}) {
+    const epoch=++weeklyGeneration,session=generation,channel=$('channel').value,offset=weekOffset;batchLoading=true;controls();
+    try{let data;if(!sync){const cached=await backend('weekly-shorts?channel='+encodeURIComponent(channel)+'&weekOffset='+offset);data=cached.report;}if(!data)data=await backend('weekly-shorts',{channel,weekOffset:offset});if(epoch!==weeklyGeneration||session!==generation||channel!==$('channel').value)return;batchReport=data;renderBatch();batchStatus('Weekly Shorts synced',data.capture,'Synced');}catch(e){if(epoch===weeklyGeneration&&session===generation)batchStatus('Sync failed',e.message,'Sync failed');}finally{if(epoch===weeklyGeneration){batchLoading=false;controls();}}
+  }
   async function restoreRelease() {
+    if(backendMode){await loadWeekly();return;}
     const session = generation, channel = $('channel').value;
     const data = await backend('release?channel=' + encodeURIComponent(channel));
     if (session !== generation || channel !== $('channel').value) return;
@@ -137,7 +143,7 @@
     $('sync-heading').textContent = heading;
     const selectedDays = Number(document.querySelector('[data-range][aria-checked=true]').dataset.range);
     $('sync-message').textContent = report && report.rangeDays !== selectedDays ? message + ' Showing ' + report.rangeDays + ' days until the new range is ready.' : message;
-    document.querySelector('.sync-status').textContent = footer;
+    document.querySelector('.sync-status').textContent = footer;document.querySelector('.sync-status').setAttribute('aria-label',footer+'. '+message);
     $('last-import').textContent = report ? 'Last import · ' + new Date(report.fetchedAt).toLocaleString('en-GB') : 'No successful import yet.';
     fitRecess();
   }
@@ -165,7 +171,8 @@
     for (const id of ['client-id', 'videos', 'confirm-shorts', 'end-date', 'batch-name-input', 'batch-videos', 'batch-confirm']) $(id).disabled = busy;
     $('scheduler-download').disabled = !backendMode || !connected || busy;
     $('batch-import').disabled = !connected || busy || !$('channel').value;
-    $('batch-sync').disabled = $('batch-import').disabled;
+    $('batch-sync').disabled = backendMode ? busy||batchLoading||!token||!$('channel').value : $('batch-import').disabled;
+    if(typeof weekOffset!=='undefined'&&$('batch-week-prev')){$('batch-week-prev').disabled=busy||batchLoading||weekOffset<=-52;$('batch-week-next').disabled=busy||batchLoading||weekOffset>=0;}
     $('batch-sync').classList.toggle('is-syncing', batchLoading);
     $('batch-sync').setAttribute('aria-busy', String(batchLoading));
     $('batch-sync').querySelector('span').textContent = batchLoading ? 'Syncing' : 'Sync';
@@ -232,7 +239,7 @@
           const data = await api('https://www.googleapis.com/youtube/v3/channels', { part: 'snippet', mine: 'true', maxResults: '50' }, session);
           if (!data.items?.length) throw new Error('No owned YouTube channel was returned for this account.');
           $('channel').replaceChildren(...data.items.map(item => new Option(item.snippet.title, item.id)));
-          showSync('Ready to sync', 'Choose your Shorts and date range, then Sync.', 'Not synced');
+          showSync('Ready to sync', backendMode?'Choose your date range, then Sync all channel Shorts.':'Choose your Shorts and date range, then Sync.', 'Not synced');
           batchStatus('Ready to import', 'Choose a release name and its Shorts above.', 'Not synced');
           status(rememberSession() ? 'Connected · read-only. Kept across refreshes in this tab until expiry.' : 'Connected · read-only. Browser storage is blocked; refresh will require reconnecting.');
         } catch (error) { if (session === generation) clearConnection(error.message); }
@@ -266,6 +273,7 @@
     return result;
   }
   async function sync({ rangeChange = false } = {}) {
+    if(backendMode)return syncChannel({rangeChange});
     if (busy) return;
     let ids, requested, rangeDays;
     try {
@@ -326,8 +334,20 @@
     }
     finally { analyticsTrace=null;analyticsStep=null;analyticsSelection=null;if (session === generation) { busy = false; syncing = false; controls(); } }
   }
+  async function syncChannel({rangeChange=false}={}) {
+    if(busy)return;
+    const channel=$('channel').value,rangeDays=Number(document.querySelector('[data-range][aria-checked=true]').dataset.range),session=generation;
+    let requested;try{requested=date($('end-date').value);if(!channel)throw new Error('Connect and choose your YouTube channel.');}catch(e){feedback(e.message);return;}
+    const cacheKey=JSON.stringify(['channel-shorts',channel,requested,rangeDays]);
+    if(!rangeChange)invalidateCache();
+    busy=true;syncing=true;controls();feedback('Syncing all YouTube Shorts on your channel…');showSync('Syncing','Fetching channel-wide Shorts activity…','Syncing…');
+    try{const next=await backend('shorts-report',{channel,rangeDays,endDate:requested});if(session!==generation||channel!==$('channel').value)return;
+      report=next;reportCache.set(cacheKey,report);render();const partial=report.warnings.length>0;feedback(partial?'Shorts report loaded with unavailable metrics. See Analytics details.':'Channel-wide Shorts report updated.');showSync(partial?'Synced with unavailable metrics':'Synced',partial?'Some Shorts metrics are unavailable; your source notes are in Analytics details.':'All channel activity classified as Shorts by YouTube.','Synced · '+new Date(report.fetchedAt).toLocaleTimeString('en-GB'));
+    }catch(e){if(session===generation){feedback((e.name==='TimeoutError'?'YouTube timed out. Try Sync again.':e.message)+(report?' Previous successful report retained.':''));showSync('Sync failed','See the connection message or run history.','Sync failed');}}
+    finally{if(session===generation){busy=false;syncing=false;controls();}}
+  }
   function render() {
-    $('included-status').textContent = report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
+    $('included-status').textContent = report?.scopeType==='channel-shorts'?'All Shorts activity on '+report.channelTitle+' · classified by YouTube.':report ? report.videos.length + (report.videos.length === 1 ? ' video included in these analytics.' : ' videos included in these analytics.') : 'Sync to see which videos are included.';
     const videoSignature = JSON.stringify(report?.videos || []);
     if (videoSignature !== renderedVideos) $('included-videos').replaceChildren(...(report?.videos || []).map(video => {
       const item = document.createElement('li');
@@ -341,7 +361,7 @@
     $('headline-views').textContent = values?.views == null ? '— views' : number(values.views) + ' views';
     $('growth').hidden = true;
     $('period').textContent = report ? report.currentPeriod.start + ' – ' + report.currentPeriod.end : 'Not imported';
-    $('freshness').textContent = report ? 'Latest returned day · ' + report.latestReturnedDay : 'No live data loaded';
+    $('freshness').textContent = report ? 'Latest returned Shorts day · ' + (report.latestReturnedDay||'Unavailable') : 'No live data loaded';
     const tiles = [['Average viewed', 'averageViewPercentage'], ['Likes', 'likes'], ['Subscribers gained', 'subscribersGained'], ['Shares', 'shares']];
     if (!metricNodes.length) $('metrics').replaceChildren(...tiles.map(([label, key]) => {
       const tile = document.createElement('div'); tile.className = 'tile';
@@ -355,15 +375,16 @@
       value.textContent = values?.[key] == null ? report ? 'Unavailable' : '—' : key === 'averageViewPercentage' ? number(values[key]) + '%' : number(values[key]);
       note.textContent = report ? key === 'likes' ? 'Source-reported period value' : 'Selected-period activity' : 'Not imported';
     });
-    $('target-label').textContent = 'Selected Shorts only'; $('target-value').textContent = report ? report.videos.length + ' videos' : 'No sample imported';
-    $('target-state').textContent = 'Test'; $('target-bar').hidden = true;
+    $('target-label').textContent = backendMode?'Channel-wide Shorts':'Selected Shorts only'; $('target-value').textContent = backendMode?report?'YouTube Shorts':'Sync to load':report ? report.videos.length + ' videos' : 'No sample imported';
+    $('target-state').textContent = backendMode?(report?.warnings.length?'Partial data':report?'Connected':'Not synced'):'Test'; $('target-bar').hidden = true;
     $('target-note').textContent = 'Comparison and target hidden until report coverage is verified. TikTok and Reels are not connected.';
-    showSync(syncState.heading, syncState.message, syncState.footer);
+    renderTopShorts();showSync(syncState.heading, syncState.message, syncState.footer);
   }
+  function renderTopShorts(){const list=$('analytics-top-shorts');if(!list)return;list.replaceChildren();if(!report?.topShorts?.length){const row=document.createElement('li');row.className='ranking-empty';row.textContent=!report?'Sync to load':report.topShortsState==='unavailable'?'Ranking unavailable':report.topShortsState==='empty'?'No Shorts activity returned':'Sync to load top Shorts';list.append(row);return;}report.topShorts.slice(0,3).forEach((short,i)=>{const row=document.createElement('li'),link=document.createElement('a'),rank=document.createElement('span'),title=document.createElement('span'),views=document.createElement('span');link.className='top-short-link';link.href='https://www.youtube.com/shorts/'+short.id;link.target='_blank';link.rel='noopener noreferrer';rank.className='top-short-rank';rank.textContent=String(i+1);title.className='top-short-title';title.textContent=short.title;title.title=short.title;views.className='top-short-views';views.textContent=short.views.toLocaleString('en-GB')+' views';link.setAttribute('aria-label',short.title+', '+short.views+' views in the selected period');link.append(rank,title,views);row.append(link);list.append(row);});}
   function details() {
     opener = document.activeElement;
     const area = $('details-content'); area.replaceChildren();
-    const p = document.createElement('p'); p.textContent = 'Values are period activity for your selected videos. Likes preserves Google’s signed value; Studio can report a negative value. Its cause is not inferred. Average percentage viewed is Google’s aggregate, not an average of daily percentages. Subscribers gained are attributed to the selected content. This is not a frozen 24-hour snapshot.';
+    const p = document.createElement('p'); p.textContent = (backendMode?'Values cover all channel activity classified as SHORTS by YouTube. ':'Values are period activity for your selected videos. ')+ 'Likes preserves Google’s signed value; Studio can report a negative value. Its cause is not inferred. Average percentage viewed is Google’s aggregate, not an average of daily percentages. Subscribers gained are attributed to the reported Shorts activity. This is not a frozen 24-hour snapshot.';
     const pre = document.createElement('pre'); pre.textContent = report ? JSON.stringify(report, null, 2) : 'No report imported.';
     area.append(p, pre); $('details').showModal();
   }
@@ -384,6 +405,7 @@
   }
   function publicationStatus(video, now = Date.now()) {
     if (hasSnapshot(video)) return { label: '24-hour snapshot saved', reason: 'YouTube’s cumulative view count was saved in the qualifying window. It stays frozen; later Google revisions are not backfilled.' };
+    if(video.classification==='pending')return {label:'Shorts classification pending',reason:'YouTube has not confirmed the format yet. This upload remains unranked.'};
     if (video.visibility !== 'public') return { label: 'Publication not confirmed', reason: 'The video is not public, or its visibility is unavailable. The reported time may be an upload time.' };
     const published = new Date(video.publishedAt).getTime();
     if (!video.publishedAt || !Number.isFinite(published) || published > now) return { label: 'Publication time unavailable', reason: 'YouTube has not returned a usable past publication time.' };
@@ -393,29 +415,31 @@
   }
   const batchDate = value => new Date(value).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
   function renderBatch() {
-    const all = batchReport?.videos || [], ranked = all.filter(hasSnapshot).sort((a,b) => b.snapshotViews-a.snapshotViews || a.id.localeCompare(b.id)), list = [...ranked, ...all.filter(v => !hasSnapshot(v))];
-    const ranks = new Map(ranked.map(v => [v.id, 1 + ranked.filter(other => other.snapshotViews > v.snapshotViews).length]));
-    $('batch-name').textContent = batchReport?.name || 'Choose a release above';
-    $('batch-summary').textContent = list.length ? list.length + (list.length === 1 ? ' Short in this release' : ' Shorts in this release') + ' · ' + ranked.length + ' ranked' : 'No Shorts imported.';
+    const all=batchReport?.videos||[],weekly=batchReport?.scopeType==='weekly-shorts',viewCount=v=>weekly?v.currentViews:v.snapshotViews,rankable=v=>weekly?v.classification!=='pending'&&Number.isSafeInteger(v.currentViews)&&v.currentViews>=0:hasSnapshot(v),ranked=all.filter(rankable).sort((a,b)=>viewCount(b)-viewCount(a)||a.id.localeCompare(b.id)),list=[...ranked,...all.filter(v=>!rankable(v))];
+    if($('batch-total-views'))$('batch-total-views').textContent=weekly&&Number.isSafeInteger(batchReport.totalViews)?batchReport.totalViews.toLocaleString('en-GB')+' views':'— views';
+    const ranks = new Map(ranked.map(v => [v.id, 1 + ranked.filter(other => viewCount(other) > viewCount(v)).length]));
+    $('batch-name').textContent = batchReport?.name || (backendMode?'Weekly Shorts':'Choose a release above');
+    $('batch-summary').textContent = batchReport?.scopeType==='weekly-shorts' ? list.length+' uploads · '+ranked.length+' ranked' : list.length ? list.length + (list.length === 1 ? ' Short in this release' : ' Shorts in this release') + ' · ' + ranked.length + ' ranked' : 'No Shorts imported.';
     const dates = list.filter(v => v.visibility === 'public' && v.publishedAt && new Date(v.publishedAt).getTime() <= Date.now()).map(v => new Date(v.publishedAt)).sort((a,b) => a-b);
     const formatter = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/London' });
-    $('batch-dates').textContent = dates.length ? formatter.formatRange(dates[0], dates.at(-1)) : batchReport ? 'Public release dates unavailable' : 'No release imported';
+    $('batch-dates').textContent = batchReport?.week ? formatter.formatRange(new Date(batchReport.week.start+'T12:00:00Z'),new Date(batchReport.week.end+'T12:00:00Z')) : dates.length ? formatter.formatRange(dates[0], dates.at(-1)) : batchReport ? 'Public release dates unavailable' : 'No release imported';
     $('batch-list').replaceChildren(...list.map(video => {
       const state = publicationStatus(video), row = document.createElement('button'); row.type = 'button'; row.className = 'clip-row'; const rank = ranks.get(video.id); row.dataset.pending = String(!rank); if (rank) row.dataset.rank = String(rank);
       const marker = document.createElement('span'); marker.className = 'clip-medal'; marker.textContent = rank ? String(rank) : '—'; marker.setAttribute('aria-hidden', 'true');
       const body = document.createElement('span'); body.className = 'batch-row-copy';
       const title = document.createElement('span'); title.className = 'clip-name'; title.textContent = video.title || 'Title unavailable'; title.title = video.title || '';
-      const meta = document.createElement('span'); meta.className = 'clip-meta'; meta.textContent = state.label;
+      const meta = document.createElement('span'); meta.className = 'clip-meta'; meta.textContent = weekly?(video.classification==='pending'?'Shorts classification pending':Number.isSafeInteger(video.currentViews)?'Total views':'Views unavailable'):state.label;
       const published = document.createElement('span'); published.className = 'batch-row-date'; published.textContent = video.publishedAt ? (video.visibility === 'public' ? 'Published · ' : 'YouTube time · ') + batchDate(video.publishedAt) + ' UK' : 'Publication time unavailable';
       body.append(title, meta, published); row.append(marker, body);
-      if (rank) { const count = document.createElement('span'); count.className = 'clip-views'; count.textContent = video.snapshotViews.toLocaleString('en-GB'); count.setAttribute('aria-label', video.snapshotViews + ' views at capture'); row.append(count); }
-      row.setAttribute('aria-label', (rank ? 'Rank ' + rank + ', ' + video.snapshotViews + ' views, ' : 'Unranked, ') + (video.title || 'Title unavailable') + ', ' + state.label + '. Open details');
+      if (rank||weekly) { const count = document.createElement('span'); count.className = 'clip-views'; count.textContent = Number.isSafeInteger(viewCount(video))?viewCount(video).toLocaleString('en-GB'):'—'; count.setAttribute('aria-label',Number.isSafeInteger(viewCount(video))?viewCount(video)+(weekly?' current views':' views at capture'):'Views unavailable'); row.append(count); }
+      row.setAttribute('aria-label', (rank ? 'Rank ' + rank + ', ' + viewCount(video) + ' views, ' : 'Unranked, ') + (video.title || 'Title unavailable') + ', ' + state.label + '. Open details');
       row.addEventListener('click', () => openBatchDetails(video)); return row;
     }));
-    if (!list.length) { const p = document.createElement('p'); p.className = 'batch-empty'; p.textContent = 'Import your release’s Shorts above. Three Shorts are fine. Titles and publication times will appear here.'; $('batch-list').append(p); }
+    if (!list.length) { const p = document.createElement('p'); p.className = 'batch-empty'; p.textContent = 'No Shorts found for this week.'; $('batch-list').append(p); }
   }
   async function importBatch() {
-    if (busy) return;
+    if (busy||batchLoading) return;
+    if(backendMode){await loadWeekly({sync:true});return;}
     let ids;
     try {
       ids = idsFromText($('batch-videos').value, 6);
@@ -428,7 +452,7 @@
       if (backendMode) {
         batchReport = await backend('release', { ids, channelId: channel, name: name.slice(0,120), confirmed: true });
         if (session !== generation) return;
-        renderBatch(); batchStatus('Release synced', batchReport.capture, 'Synced · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB')); return;
+        renderBatch(); const expiredWithoutSnapshots=batchReport.videos.length>0&&batchReport.videos.every(v=>!hasSnapshot(v)&&Number.isFinite(Date.parse(v.publishedAt))&&Date.now()>Date.parse(v.publishedAt)+87300000);batchStatus('Release synced',expiredWithoutSnapshots?'No 24-hour snapshots were recorded for this release. Sync cannot reconstruct its past capture windows.':batchReport.capture, 'Synced · ' + new Date(batchReport.fetchedAt).toLocaleTimeString('en-GB')); return;
       }
       const data = await api('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet,status', id: ids.join(',') }, session);
       if (!Array.isArray(data.items) || data.items.length !== ids.length || data.items.some(v => !ids.includes(v.id) || v.snippet?.channelId !== channel) || new Set(data.items.map(v=>v.id)).size !== ids.length) throw new Error('Every release Short must be available and owned by the selected channel.');
@@ -447,11 +471,12 @@
     batchOpener = document.activeElement;
     $('batch-dialog-title').textContent = video ? video.title : 'Ranking details';
     const area = $('batch-dialog-content'); area.replaceChildren();
-    const lines = video ? ['Release: ' + batchReport.name, 'Video ID: ' + video.id, 'Visibility: ' + video.visibility, 'YouTube publication metadata: ' + (video.publishedAt ? batchDate(video.publishedAt) + ' UK (' + video.publishedAt + ')' : 'Unavailable'), '24-hour views: ' + (hasSnapshot(video) ? video.snapshotViews.toLocaleString('en-GB') : 'unavailable'), ...(hasSnapshot(video) ? ['Capture requested: ' + batchDate(video.requestedAt) + ' UK', 'Count returned: ' + batchDate(video.capturedAt) + ' UK'] : []), publicationStatus(video).reason] : ['This card covers one selected release, independently of 2.1’s reporting range.', 'Any 1–6 actual Shorts can form the selected test batch. Three is valid; no missing uploads are invented.', 'Only saved qualifying snapshots are ranked. Tied view counts share a rank. Unavailable results stay unranked.', 'A qualifying snapshot must be captured from 24h through 24h 15m after publication. Current or later lifetime counts cannot replace a missed capture.', 'Automatic capture needs the five-minute background checker. TikTok and Reels are not connected. Private/unlisted metadata may reflect upload time.', batchReport ? 'Metadata imported: ' + batchDate(batchReport.fetchedAt) + ' UK' : 'No release imported yet.'];
+    const lines = video ? ['Release: ' + batchReport.name, 'Video ID: ' + video.id, 'Visibility: ' + video.visibility, 'YouTube publication metadata: ' + (video.publishedAt ? batchDate(video.publishedAt) + ' UK (' + video.publishedAt + ')' : 'Unavailable'), ...(batchReport?.scopeType==='weekly-shorts'?['Current views: '+(Number.isSafeInteger(video.currentViews)?video.currentViews.toLocaleString('en-GB'):'Unavailable')]:[]), '24-hour views: ' + (hasSnapshot(video) ? video.snapshotViews.toLocaleString('en-GB') : 'unavailable'), ...(hasSnapshot(video) ? ['Capture requested: ' + batchDate(video.requestedAt) + ' UK', 'Count returned: ' + batchDate(video.capturedAt) + ' UK'] : []), publicationStatus(video).reason] : [batchReport?.scopeType==='weekly-shorts'?'Monday–Sunday uploads grouped by UK publication date; titles do not need to match a remix.':'This card covers one selected release, independently of 2.1’s reporting range.', 'Weekly uploads are discovered from your channel. Format-based Shorts use owner-provided dimensions and duration; Analytics classification is used when returned. Unknown formats stay unranked.', batchReport?.scopeType==='weekly-shorts'?'The headline totals current cumulative views of confirmed Shorts uploaded that week. Rows rank by current views; ties share a place. Unknown classification and unavailable counts remain unranked. These are lifetime-to-sync counts, not views earned only during the week.':'Only saved qualifying snapshots are ranked. Tied view counts share a rank. Unavailable results stay unranked.', 'A qualifying snapshot must be captured from 24h through 24h 15m after publication. Current or later lifetime counts cannot replace a missed capture.', 'Automatic capture needs the five-minute background checker. TikTok and Reels are not connected. Private/unlisted metadata may reflect upload time.', batchReport ? 'Metadata imported: ' + batchDate(batchReport.fetchedAt) + ' UK' : 'No release imported yet.'];
     for (const text of lines) { const p = document.createElement('p'); p.textContent = text; area.append(p); }
     if (video) { const link = document.createElement('a'); link.href = 'https://www.youtube.com/shorts/' + video.id; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Watch Short ↗'; area.append(link); }
     $('batch-dialog').showModal();
   }
+  for(const [id,change] of [['batch-week-prev',-1],['batch-week-next',1]])$(''+id)?.addEventListener('click',()=>{if(busy||batchLoading)return;weekOffset=Math.max(-52,Math.min(0,weekOffset+change));$('batch-week-label').textContent=weekOffset===0?'This week':weekOffset===-1?'Last week':Math.abs(weekOffset)+' weeks ago';batchReport=null;renderBatch();loadWeekly();});
   $('batch-import').addEventListener('click', importBatch); $('batch-sync').addEventListener('click', importBatch);
   $('batch-details').addEventListener('click', () => openBatchDetails());
   $('batch-dialog-close').addEventListener('click', () => $('batch-dialog').close());
@@ -485,7 +510,7 @@
       return;
     }
     let cached;
-    try { const scopeKey = JSON.stringify([$('channel').value, idsFromText($('videos').value).sort()]); cached = reportCache.get(JSON.stringify([scopeKey, date($('end-date').value), Number(button.dataset.range)])); } catch {}
+    try { if(backendMode)cached=reportCache.get(JSON.stringify(['channel-shorts',$('channel').value,date($('end-date').value),Number(button.dataset.range)]));else {const scopeKey = JSON.stringify([$('channel').value, idsFromText($('videos').value).sort()]); cached = reportCache.get(JSON.stringify([scopeKey, date($('end-date').value), Number(button.dataset.range)]));} } catch {}
     if (cached) {
       report = cached; render();
       feedback('Loaded the saved ' + report.rangeDays + '-day range. Sync fetches fresh data.');
@@ -510,14 +535,15 @@
   $('details').addEventListener('close', () => opener?.focus());
   $('details').addEventListener('click', event => { if (event.target === $('details')) { const b = $('details').getBoundingClientRect(); if (event.clientX < b.left || event.clientX > b.right || event.clientY < b.top || event.clientY > b.bottom) $('details').close(); } });
   for (const id of ['videos', 'confirm-shorts', 'end-date', 'channel', 'client-id']) $(id).addEventListener('change', () => {
+    if(backendMode&&['videos','confirm-shorts'].includes(id))return;
     if (id === 'client-id') { clearConnection(); return; }
     if (id === 'channel') { if (backendMode && token) restoreRelease().catch(error => batchStatus('Restore failed', error.message, 'Not synced')); batchReport = null; renderBatch(); batchStatus('Ready to import', 'Channel changed. Import to load this release.', 'Not synced'); if (token) { if (backendMode) { try { sessionStorage.setItem('gemos-youtube-channel-v1', $('channel').value); } catch {} } else rememberSession(); } }
     rememberSelection(); invalidateCache();
-    report = null; render(); feedback('Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
+    report = null; render(); feedback(backendMode?'Channel or date changed. Sync to update your Shorts report.':'Selection changed. Sync to import this sample.'); showSync('Ready to sync', 'Your selection changed. Sync to import these Shorts.', 'Not synced');
   });
   for (const id of ['videos', 'end-date']) $(id).addEventListener('input', rememberSelection);
   $('end-date').value = shift(new Date().toISOString().slice(0, 10), -3);
-  restoreSelection(); restoreBatch(); renderBatch();
+  restoreSelection(); if(backendMode){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(p=>[p.type,p.value]));$('end-date').value=shift(p.year+'-'+p.month+'-'+p.day,-1);}restoreBatch(); renderBatch();
   $('origin').textContent = location.origin;
   // Tab-session storage retains only short-lived auth/config, never a refresh token.
   window.addEventListener('pagehide', () => { generation++; token = null; expiresAt = 0; report = null; batchReport = null; invalidateCache(); });

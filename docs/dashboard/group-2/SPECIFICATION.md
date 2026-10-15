@@ -1,13 +1,28 @@
 # Group 2 — visual and interaction specification
 
+## Current production contract — 15 October 2026
+
+This section replaces earlier selected-sample/selected-release production statements. Historical preview.html remains a mock.
+
+**2.1 Short-form Performance:** all channel Shorts, classified using YouTube's creatorContentType, for 7/28/90/365-day Pacific reporting periods. Preserve four original metric tiles, Google's aggregate Average percentage viewed, signed Likes, Subscribers gained and Shares. Up to three highest-viewed Shorts use the same period's activity counts, with literal owned titles and real links. Missing metrics/coverage remain unavailable; comparisons and targets stay withheld where coverage is unverified. TikTok/Reels are not connected.
+
+**2.2 Weekly Shorts:** Monday–Sunday Europe/London publication-week selection, current week by default, up to52 previous weeks. Numeric headline totals current cumulative views for confirmed/format-eligible Shorts uploaded during that week. Rows show current views and competition ranks; ties share places. No title/remix matching. Unknown classification stays pending/unranked; missing confirmed counts make the total unavailable. These are lifetime-to-sync views for that week's uploads, not views earned only within the week. Snapshot24h counts remain frozen in details/checker and never backfilled.
+
+**2.3 Email List:** Mailchimp current active audience, selected-month activity and latest newsletter, independently selected. No sends.
+
+All three use shared purple920px Large cards and their established distinct layouts. The shared single-line UK timestamp with seconds sits beneath Sync; full date remains accessible. Saved values preserve original fetchedAt and survive failed refreshes without implying a new success.
+
+Source and validation: [CHANNEL-SHORTS](../integration-tests/youtube/CHANNEL-SHORTS.md), [WEEKLY-SHORTS](../integration-tests/youtube/WEEKLY-SHORTS.md), [STATUS](../integration-tests/youtube/STATUS.md). CJ reports current behaviour working. Real qualifying24h capture and measured rendered/device/accessibility checks remain open.
+
+
 ## Current grouping — 13 October 2026
 
-CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.
+CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Group4 Automation Performance is live at /automations; Publishing Cadence remains unimplemented.
 
 Email keeps its independent Mailchimp settings/reporting/member popup on /. Subscription costs keep manual saved histories/top-ups/logos/management on /commerce. API/storage/scopes unchanged. /costs is an authenticated303 redirect to /commerce. Historical IDs/colours below are superseded by this grouping; original mocks remain provenance.
 
 
-## 9 October 2026 — current integration checkpoint
+## Historical integration checkpoint — 9 October 2026
 
 The separate integration test now includes 2.1 finalised test interactions and 2.2 saved releases and qualifying snapshots. See [current test authority](../integration-tests/youtube/STATUS.md). 2.2 accepts 1–6 actual same-release Shorts, including a three-Short batch; shows actual titles, publication metadata, availability and full row details; leaves every row unranked until a qualifying snapshot exists. Uses the existing platform pills and purple/glass material, normal 575/583px recess and 360px list region. Canonical preview.html remains unchanged; saved qualifying capture/ranking is implemented in the test; automatic schedule, real first-window capture and rendered fit remain unverified.
 
@@ -41,13 +56,10 @@ Target bar uses 90°, #818cf8 → #38bdf8 → #34d399. Detail overlay contains p
 
 ## 2.2 presentation
 
-Implemented header: Shorts Views (24hrs), followed by Snapshot taken at 24h · up to 15 min later, then the selected batch dates with year (6–11 October 2026 for the first example). Supporting snapshot text is 11px/1.4, or 10px below 360px; the compact headline uses 22px below 360px to retain 174px headers and 880px slots.
+Header: trophy glyph, Weekly Shorts label, numeric current-total headline, Total Shorts views caption and selected UK week dates. Previous/next week controls sit above the scroll list; future weeks are disabled. Each eligible row shows numbered place, literal title and current view count. Pending/unavailable rows retain explicit status. Keep the established purple material,174px minimum header,575/583px recess and360px list viewport; enlarged text reflows.
 
-Compact artist/track batch picker and chips stay outside the scrolling list. List viewport 360px: five fixed 72px row spaces, manual vertical scrolling and a subtle bottom fade only if content is below. No automatic scroll. Empty/shorter lists retain panel size.
+Ranking details explains cumulative-count scope and includes retained qualifying24h snapshot evidence where present. Current-view ranks do not claim a24-hour comparison. Sync uses the same weekly service as Automation Sync all.
 
-Rows show rank, clip title, platform and captured-value slot. Preserve podium rings; no rank-change arrows. Unranked rows remain muted but readable beneath completed rows. Relative bars use the exact 2.1 gradient, leader full width, others divided by selected leader's captured views. No unranked bar.
-
-Interactive rows open labelled clip details; never manufacture Watch clip URLs. Comparison definitions and data status belong in details. Frozen mock snapshots include capture time and age; only the inclusive provisional 24:00–24:15 window qualifies.
 
 ## Footer and overlays
 

@@ -3,7 +3,8 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
 import { seal, SCOPES } from './server/youtube.mjs';
 import { captureHandler, captureRelease, qualifies, parseViews, WINDOW_START, WINDOW_END } from './server/capture.mjs';
-const sql=new DatabaseSync(':memory:');for(const file of ['0000_yummy_tusk.sql','0001_breezy_the_professor.sql','0006_automation_runs.sql'])sql.exec(readFileSync('drizzle/'+file,'utf8'));
+import {weeklyFixture} from './weekly-test-fixture.mjs';
+const sql=new DatabaseSync(':memory:');for(const file of ['0000_yummy_tusk.sql','0001_breezy_the_professor.sql','0006_automation_runs.sql','0007_sync_targets.sql'])sql.exec(readFileSync('drizzle/'+file,'utf8'));
 const DB={prepare(query){let values=[];const statement={bind(...args){values=args;return statement;},async first(){return sql.prepare(query).get(...values)||null;},async all(){return {results:sql.prepare(query).all(...values)};},async run(){return {meta:{changes:Number(sql.prepare(query).run(...values).changes)}};}};return statement;},async batch(statements){sql.exec('BEGIN');try{const results=[];for(const s of statements)results.push(await s.run());sql.exec('COMMIT');return results;}catch(e){sql.exec('ROLLBACK');throw e;}}};
 const origin='https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site',env={DB,GOOGLE_CLIENT_ID:'fake.apps.googleusercontent.com',GOOGLE_CLIENT_SECRET:'FAKE',YOUTUBE_TOKEN_KEY:'ab'.repeat(32),GOOGLE_REDIRECT_URI:origin+'/api/youtube/callback',YOUTUBE_UPDATER_KEY:'FAKE_UPDATER'};
 let now=Date.parse('2026-01-02T00:00:00Z');const realNow=Date.now;Date.now=()=>now;
@@ -23,11 +24,13 @@ assert.equal((await invoke('release','POST',{name:'Example',ids:[id],confirmed:t
 assert.equal((await captureHandler(request('release?channel=UC_TEST','GET',null,{'oai-authenticated-user-id':'other'}),env,'release')).status,401);
 assert.equal((await invoke('run-captures','POST',null,{Authorization:'Bearer wrong'})).status,401);
 assert.equal((await captureHandler(request('run-captures','POST',null,{Authorization:'Bearer undefined'}),{...env,YOUTUBE_UPDATER_KEY:undefined},'run-captures')).status,401);
+const legacyFetch=globalThis.fetch;globalThis.fetch=weeklyFixture(globalThis.fetch);
 for(const [jobName,expected] of [['projects/example/locations/europe-west2/jobs/gemos-youtube-capture','scheduled'],['gemos-youtube-capture','scheduled'],['other-job','manual-service-check'],['/jobs/gemos-youtube-capture','manual-service-check'],[undefined,'manual-service-check']]){
  const headers={Authorization:'Bearer FAKE_UPDATER',...(jobName?{'X-CloudScheduler-JobName':jobName}:{})};
  result=await invoke('run-captures','POST',null,headers);assert.equal(result.status,200);assert.equal(result.data.captured,0);assert.equal(sql.prepare('SELECT outcome FROM youtube_capture_runs ORDER BY rowid DESC LIMIT 1').get().outcome,expected);
 }
 
+globalThis.fetch=legacyFetch;
 // New publication timestamps cannot inherit an earlier snapshot. Private/missing/negative/late values do not rank.
 for(const mode of ['private','missing','negative','late','early','foreign','valid']){
  now=Date.parse('2026-02-02T00:00:00Z');publishedAt=new Date(now-WINDOW_START).toISOString();visibility=mode==='private'?'private':'public';viewCount=mode==='missing'?undefined:mode==='negative'?'-1':'5';latency=mode==='late'?900001:0;channelId=mode==='foreign'?'OTHER':'UC_TEST';if(mode==='early')publishedAt=new Date(now-WINDOW_START+1).toISOString();

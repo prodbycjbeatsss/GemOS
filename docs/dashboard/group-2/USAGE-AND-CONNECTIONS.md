@@ -1,13 +1,28 @@
 # Group 2 — usage and connections
 
+## Current production contract — 15 October 2026
+
+This section replaces earlier selected-sample/selected-release production statements. Historical preview.html remains a mock.
+
+**2.1 Short-form Performance:** all channel Shorts, classified using YouTube's creatorContentType, for 7/28/90/365-day Pacific reporting periods. Preserve four original metric tiles, Google's aggregate Average percentage viewed, signed Likes, Subscribers gained and Shares. Up to three highest-viewed Shorts use the same period's activity counts, with literal owned titles and real links. Missing metrics/coverage remain unavailable; comparisons and targets stay withheld where coverage is unverified. TikTok/Reels are not connected.
+
+**2.2 Weekly Shorts:** Monday–Sunday Europe/London publication-week selection, current week by default, up to52 previous weeks. Numeric headline totals current cumulative views for confirmed/format-eligible Shorts uploaded during that week. Rows show current views and competition ranks; ties share places. No title/remix matching. Unknown classification stays pending/unranked; missing confirmed counts make the total unavailable. These are lifetime-to-sync views for that week's uploads, not views earned only within the week. Snapshot24h counts remain frozen in details/checker and never backfilled.
+
+**2.3 Email List:** Mailchimp current active audience, selected-month activity and latest newsletter, independently selected. No sends.
+
+All three use shared purple920px Large cards and their established distinct layouts. The shared single-line UK timestamp with seconds sits beneath Sync; full date remains accessible. Saved values preserve original fetchedAt and survive failed refreshes without implying a new success.
+
+Source and validation: [CHANNEL-SHORTS](../integration-tests/youtube/CHANNEL-SHORTS.md), [WEEKLY-SHORTS](../integration-tests/youtube/WEEKLY-SHORTS.md), [STATUS](../integration-tests/youtube/STATUS.md). CJ reports current behaviour working. Real qualifying24h capture and measured rendered/device/accessibility checks remain open.
+
+
 ## Current grouping — 13 October 2026
 
-CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Former Group5 cadence/automation becomes future Group4; it has no live page yet.
+CJ approved moving Email List from Group3 to Group2 and Subscription Costs from Group4 to Group3, with destination size/colour rules. Group2 is **Audience & Performance**:2.1 Short-form performance,2.2 24-hour Shorts ranking,2.3 Email List; all purple Large920px. Group3 is **Finance**:3.1 Payhip,3.2 YouTube earnings,3.3 YouTube payouts,3.4 Subscription Costs; all green Compact454px. Finance is a2×2 desktop grid with12px vertical/20px horizontal gaps. No new standalone group. Group4 Automation Performance is live at /automations; Publishing Cadence remains unimplemented.
 
 Email keeps its independent Mailchimp settings/reporting/member popup on /. Subscription costs keep manual saved histories/top-ups/logos/management on /commerce. API/storage/scopes unchanged. /costs is an authenticated303 redirect to /commerce. Historical IDs/colours below are superseded by this grouping; original mocks remain provenance.
 
 
-## 9 October 2026 — current integration checkpoint
+## Historical integration checkpoint — 9 October 2026
 
 The private test now offers 2.2 metadata import using the same connection: enter a release name and 1–6 same-release Shorts, confirm, import. Three is valid. One ownership-checked YouTube Data API request reads snippet/status only. Public publication metadata is displayed in UK time; private/unlisted times are not treated as confirmed publication. There are no stored qualifying 24-hour views or rankings; old current counts cannot substitute. The two cards keep separate selections and periods. See [STATUS](../integration-tests/youtube/STATUS.md) for current behaviour and limits.
 
@@ -51,31 +66,16 @@ Missing is not zero. Partial totals identify missing sources; combined growth an
 
 Start with direct APIs. No paid analytics service is selected. A successful import must include source, scope, period and data-through time. Manual Sync should preserve cached results and report success/error; it must not imply real-time source data.
 
-## 2.2 Shorts leaderboard
+## 2.2 Weekly Shorts
 
-Purpose: compare individual platform uploads within a release batch. All ranks uploads together; the same source clip can appear for multiple platforms. Platform view definitions differ.
+The current production contract is defined above and in WEEKLY-SHORTS.md. Previous selected-release inputs and snapshot-only visible ranking are legacy. Current-week discovery and historical week selection require an owned connected channel; legacy release records are retained independently. The background checker discovers recent uploads/current-week crossover, not the historical week currently viewed.
 
-### Confirmed snapshot decision
+Snapshot capture retains the24h–24h15m inclusive request/response window and immutable first count. Missing captures remain unavailable in details. Monday review notifications, external sends and cross-platform rankings are unimplemented; monitoring does not authorise them.
 
-- Capture a cumulative view snapshot around each upload's 24-hour mark; record actual publication/capture times, source and completeness, then freeze it.
-- Rank only once the upload is at least 24 hours old and a valid snapshot has been imported. Missed captures remain unranked. A later lifetime total cannot replace a missed snapshot under a 24-hour label.
-- Newer uploads remain below ranked rows, muted but readable, with age/live count. Completed uploads awaiting a usable snapshot also stay unranked.
-- Provisional capture window approved on 8 October: aim for publication +24 hours; accept a usable capture from 24:00 through 24:15 inclusive. Validate with real imports before locking this tolerance. If failures are too frequent, review widening it with CJ; never widen silently. Heading and subtitle confirmed: Shorts Views (24hrs), then Snapshot taken at 24h · up to 15 min later, then the selected batch date range with year (example: 6–11 October 2026). Actual capture age appears in clip details. The preview update is implemented with stored illustrative capture timestamps and inclusive-window eligibility; example counts do not prove real capture.
-- Bars compare captured views with the selected-tab leader. No bar for unranked uploads; no rank-change or algorithm-causation claims.
-
-A backend scheduler is intended for dependable captures. Activepieces is optional, only if it saves work; custom scheduler and hosting are undecided. Test a small real import before building the full scheduler.
-
-### Batch and review behaviour
-
-Batch picker identifies artist/track; date line shows Tuesday–Sunday range. Examples: Teeth & Claws 6–11 October; Air Max 90s 13–18 October 2026. These are not real scheduling records. Current illustrative leaderboard reference time is 11 October 2026, 18:00 UK; next batch is empty.
-
-Monday batch review confirmed: once Sunday's last clip reaches 24 hours, notify CJ even if some usable snapshots are missing. Call it Batch review rather than Final leaderboard when incomplete. Rank valid snapshots and list unranked clips with their reason. Do not wait indefinitely for every capture, substitute later lifetime totals or imply complete results. Exact delivery time, retry/update behaviour and notification implementation are deferred until integration testing. No notification is implemented in HTML.
-
-Clip details show exact stored values, publication time in Europe/London and capture/reporting status. Only use a real Watch clip URL when available; do not invent links.
 
 ## Shared source and action rules
 
-Per-card Sync left, detail route right. Dashboard Sync all is planned; no extra group-level Sync. Current buttons show Not connected and perform no import.
+Per-card Sync left, detail route right, shared timestamp beneath Sync. The Automations card offers individual and sequential Sync all through the same owned source services. No publication/move/send is performed.
 
 Example views: 92,400 / 54,600 / 26,800 = 173,800; shares 1,260 / 840 / 420 = 2,520; targets 100,000 / 60,000 / 30,000 = 190,000. Current sample window: 7 September–4 October, versus 10 August–6 September. Previous views are illustrative, not external facts. Data is clearly labelled as examples.
 

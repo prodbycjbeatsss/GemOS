@@ -1,16 +1,14 @@
-import { cacheAnalytics } from './analytics-cache.mjs';
-import { getTarget, saveTarget, validSample, savedConnection, capabilities } from './sync-targets.mjs';
-import { monitoredRequest, monitoredAnalytics, partial } from './sync-monitor.mjs';
+import { weeklyHandler } from './weekly-shorts.mjs';
+import { channelShortsHandler } from './channel-shorts.mjs';
+import { getTarget, savedConnection, capabilities } from './sync-targets.mjs';
+import { monitoredRequest, partial } from './sync-monitor.mjs';
 import { assetHandler } from './assets.mjs';
 import { captureRelease } from './capture.mjs';
-import { handle } from './youtube.mjs';
 import { earningsHandler } from './earnings.mjs';
 import { payoutsHandler } from './payouts.mjs';
 import { mailchimpHandler } from './mailchimp.mjs';
 import { payhipHandler } from './payhip.mjs';
 import { RunError } from './automation-runs.mjs';
-const metricNames='views,averageViewPercentage,likes,subscribersGained,shares';
-const shift=(date,days)=>{const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10);};
 // Fixed server-side routing: the caller cannot supply a URL, method, credentials or move action.
 export async function syncCard(request,env,card,sample=null){
  const owner=request.headers.get('oai-authenticated-user-id');if(!owner)throw new RunError('Sign in first.',401);
@@ -30,24 +28,15 @@ export async function syncCard(request,env,card,sample=null){
    if(setting?.selected_id)await run('drive-assets-sync','/api/youtube/drive-scan',{}, {folder:setting.selected_id},r=>assetHandler(r,env,'drive-scan'));
    else return {card,status:'partial',message:'Release list refreshed. Choose a project for its file check.'};
   }else if(card==='2.1'){
-   let target=await getTarget(env,owner,'shorts-analytics-sync');
-   if(!target&&sample?.confirmed===true){target={ids:sample.ids,channel:sample.channel||unique,endDate:sample.endDate,rangeDays:sample.rangeDays};}
-   if(!validSample(target)||!google.channels.some(c=>c.id===target.channel))return {card,status:'skipped',message:'Choose and Sync your confirmed Shorts sample in Audience & Performance first.'};
-   const trace=crypto.randomUUID(),headers={'X-GemOS-Sync-ID':trace,'X-GemOS-Sync-Selection':JSON.stringify(target)};
-   const query=async(step,base,params)=>{const req=make('/api/youtube/query',{}, {base,params},{...headers,'X-GemOS-Sync-Step':step});const r=await monitoredAnalytics(req,env,()=>handle(req,env,'query'));if(!r.ok)throw new RunError('Shorts analytics could not refresh. See run history.',r.status);return r.json();};
-   const owned=await query('ownership','https://www.googleapis.com/youtube/v3/videos',{part:'snippet',id:target.ids.join(',')});
-   if(!Array.isArray(owned.items)||owned.items.length!==target.ids.length||owned.items.some(i=>i.snippet?.channelId!==target.channel))throw new RunError('The saved Shorts sample is no longer available for this channel.',409);
-   const base={ids:'channel=='+target.channel,metrics:metricNames,filters:'video=='+target.ids.join(',')};
-   const probe=await query('probe','https://youtubeanalytics.googleapis.com/v2/reports',{...base,startDate:shift(target.endDate,-Math.max(83,target.rangeDays-1)),endDate:target.endDate,dimensions:'day',sort:'-day',maxResults:'1'});
-   const i=probe.columnHeaders?.findIndex(c=>c.name==='day'),end=probe.rows?.[0]?.[i];if(!/^\d{4}-\d{2}-\d{2}$/.test(end||'')||end>target.endDate)throw new RunError('No usable daily analytics report was returned.',502);
-   const start=shift(end,1-target.rangeDays);
-   const current=await query('current','https://youtubeanalytics.googleapis.com/v2/reports',{...base,startDate:start,endDate:end});
-   const previous=await query('previous','https://youtubeanalytics.googleapis.com/v2/reports',{...base,startDate:shift(start,-target.rangeDays),endDate:shift(start,-1)});
-   const traceResult=await env.DB.prepare('SELECT status,result_json FROM automation_runs WHERE user_id=? AND automation=? AND context_key=?').bind(owner,'shorts-analytics-sync','trace:'+trace).first();if(traceResult?.status!=='succeeded')throw new RunError('Analytics returned an incomplete result. See run history.',502);partialData=JSON.parse(traceResult.result_json).partial===true;
-   await cacheAnalytics(env,owner,target,owned,current,previous,end,google.channels.find(c=>c.id===target.channel).title);
+   const saved=await getTarget(env,owner,'shorts-analytics-sync');
+   const channel=sample?.channel||saved?.channel||unique;
+   if(!google.channels.some(c=>c.id===channel))return {card,status:'skipped',message:'Choose your YouTube channel in Audience & Performance first.'};
+   const rangeDays=sample?.rangeDays||saved?.rangeDays||28;
+   const report=await run('shorts-analytics-sync','/api/youtube/shorts-report',{}, {channel,rangeDays,...(sample?.endDate?{endDate:sample.endDate}:{})},r=>channelShortsHandler(r,env));
+   partialData=report.warnings.length>0;
   }else if(card==='2.2'){
-   const rows=await env.DB.prepare('SELECT channel_id FROM youtube_release_selections WHERE user_id=? LIMIT 2').bind(owner).all();if(rows.results.length!==1)return {card,status:'skipped',message:'Select one release first.'};
-   await run('release-metadata-sync','/api/youtube/release-refresh',{}, {},async()=>Response.json(await captureRelease(env,owner,rows.results[0].channel_id,{refreshOnly:true})));
+   const target=await getTarget(env,owner,'weekly-shorts-sync');const channel=target?.channel||unique;if(!channel)return {card,status:'skipped',message:'Choose a weekly Shorts channel first.'};
+   await run('release-metadata-sync','/api/youtube/weekly-shorts',{}, {channel,weekOffset:target?.weekOffset||0},r=>weeklyHandler(r,env));
   }else if(card==='2.3'){
    const target=await getTarget(env,owner,'email-list-sync')||{month:new Date().toISOString().slice(0,7)};
    await run('email-list-sync','/api/mailchimp/report',target,null,r=>mailchimpHandler(r,env,'report'));

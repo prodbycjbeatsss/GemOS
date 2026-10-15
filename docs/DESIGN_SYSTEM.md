@@ -1,5 +1,14 @@
 # GemOs dashboard card design system
 
+## Shared sync and current source geometry — 15 October 2026
+
+Production version74 uses one-line UK timestamps with seconds below source-card Sync and Automation-tile controls. ui/sync-times.js reads durable automation completion records; failure retains last success. Full date remains in the time element/accessible text. Manual subscriptions say Last saved. Normal timestamps use Inter10px/14px, white .82 and nowrap; footer track reserves60px, with Group1's72px exception. Action targets remain44px.
+
+Group4 is920px Large, with three desktop/two phone columns,20px plain tile icons,12px names/11px state and dates,8px padding/12px gaps. Earlier Compact/glass/two-column tile notes are historical. All normal Large cards920px; Finance Compact454px with12px row/20px column gaps. Group1's12px row gap is now implemented. Original2.1 metric tiles are restored; period-specific Top3 Shorts and outside-tile copy cleanup remain.2.2 is Weekly Shorts/current cumulative views;24h snapshots remain details/checker evidence.
+
+Version74 source corrections and verification limits: [design check](dashboard/integration-tests/youtube/DESIGN-SYSTEM-CHECK.md). The previous pending Sync-all/timestamps/functionality statements are superseded by CJ's later acceptance in [HANDOFF](dashboard/HANDOFF.md); measured rendered accessibility and real qualifying24h capture remain open.
+
+
 ## Current Large card and data sync — 14 October2026
 
 CJ explicitly requests shared Large sizing, smaller centred tile icons/text/status icons, per-tile Sync and a top Sync all. Delivered920px cobalt card; no second card. Existing32px card/22px recess/58px top glyph/20–24px insets retained;174px header,44px top sync track, flexible scroll recess and44px bottom footer. Enlarged header text can grow the card.
@@ -22,7 +31,7 @@ This supersedes preceding Compact454px Group4 notes; other groups retain their e
 
 ## Current regrouping — 13 October2026
 
-Email List is now2.3:Group2 purple #4338ca/#312e81/#0f172a and Large920px, shared174px header/575–583px recess/bottom footer. Subscription Costs is now3.4:Group3 green #065f46/#044e39/#022c22 and Compact454px. Finance uses four half-width cards,12px row/20px column gaps. Cards/dialogs consume destination material, dimensions and shared glyph/fonts/radii. Former cobalt Group4 Costs rules below are historical; new Group4 publishing/automation has not been styled or built. Old /costs redirects to Finance. Narrow Finance cost controls scroll within one44px track; intentional list scrolling does not trigger paired growth.
+Email List is now2.3:Group2 purple #4338ca/#312e81/#0f172a and Large920px, shared174px header/575–583px recess/bottom footer. Subscription Costs is now3.4:Group3 green #065f46/#044e39/#022c22 and Compact454px. Finance uses four half-width cards,12px row/20px column gaps. Cards/dialogs consume destination material, dimensions and shared glyph/fonts/radii. Former cobalt Group4 Costs rules below are historical; earlier Group4 notes below are historical. Old /costs redirects to Finance. Narrow Finance cost controls scroll within one44px track; intentional list scrolling does not trigger paired growth.
 
 Updated 11 October 2026. Master reference for this dashboard-card review, consolidated from the reviewed Groups 1 and 2. This does not lock the rest of the app's navigation or themes. Approved 9 October fixes are recorded in the group specs and verification report.
 
@@ -174,7 +183,7 @@ CJ confirms revenue connection succeeds and main figures load; Long/Shorts break
 
 The earnings recess uses a block content container with auto-height breakdown and explicit hidden-state rules instead of nested100%-height flex content, to avoid clipping. Versioned script refreshed. No revenue amounts or classifications invented. Live ranking and rendered breakdown remain pending user recheck.
 
-Locked geometry applied to Group3:Compact454px,12px row gap,20px column gap; Large920px unchanged. 454+12+454=920. Internal header/recess/footer geometry and20/24px insets unchanged. Group1/2 card slots remain920px; their existing mobile vertical20px grid gap has not yet been changed by this repair, so the full-dashboard spacing rule is only partially rolled out.
+Locked geometry applied to Group3:Compact454px,12px row gap,20px column gap; Large920px unchanged. 454+12+454=920. Internal header/recess/footer geometry and20/24px insets unchanged. Group1/2 card slots remain920px; this checkpoint predates the later12px Group1 row-gap correction.
 
 Controlled earnings/backend/commerce fixtures and compiled private200/401/shell checks pass; production build succeeds. No supported browser capture, no successful owner-authenticated direct live revenue read in this session, and live provider success is not claimed by fixtures. Private source76992f4c8d9f33b3d5a664276c4709482c7b1af7/deployment appgdep_6acd4280bc4c81918d9d684a92919835 succeeded20:26UTC, envrevision6 preserved. Next: refresh Sales and Sync, inspect Long/Shorts rows and top earner; screenshot if still missing, then compare completed-month total to Studio.
 

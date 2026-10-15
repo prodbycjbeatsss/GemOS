@@ -56,3 +56,10 @@ next-env.d.ts
 /work/
 
 !.env.example
+
+/public/ocr/
+
+# Private report seeds and temporary QA captures are not repository source.
+/private/
+/initial.png
+/mobile-test.png
