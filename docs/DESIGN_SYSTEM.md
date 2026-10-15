@@ -221,3 +221,21 @@ Private source e4b20f3a70ceb9be206c26648ddbe842b5be08d1; deployment appgdep_6ace
 ## Group 4 — manual costs, 13 October 2026
 
 CJ retains original cobalt material:#1e3a8a/#17255442%/#090d1a, #60a5fa beam .75/.18/transparent; shared glass/radii/fonts/glyph/insets. One454px card with scrolling full list and separate top-up view. Costs joins shared navigation; narrow phones wrap four group links into two rows. Current components and accepted-vs-pending verification:dashboard/group-4/COMPONENTS.md. No Groups1–3 card redesign.
+
+## Planner prototype theme extension —15October2026
+
+Applies only to ui/planner.html at /planner. Shared dashboard cards retain their established palettes/dimensions. Calendar uses a1536px maximum workspace, desktop release sidebar/seven-day board and mobile day agenda below840px. Reuse Inter/Poppins,32/22/12px radii,20/24px insets,12px gaps, glass/recess/shadows and contained highlights.
+
+| Semantic role | Dark | Light |
+|---|---|---|
+|Page|#101a2b → #172439|#e5ebee → #d9e4ea|
+|Surface|#1b2d44|#eef2f4|
+|Recess|#14253a|#dce6ec|
+|Text|#e4edf6|#203349|
+|Supporting text|#aebfd1|#34475a|
+|Accent/focus|#7dd3ed|#17617f|
+|YouTube tint RGB|244,155,162|128,30,47|
+|TikTok tint RGB|108,210,207|0,80,89|
+|Reels tint RGB|192,171,237|84,42,128|
+
+Platform names/icons and status wording supplement tint. No pure black/white. Theme selection persists locally; example plan/status edits reset on reload. Source-token4.5:1 checks pass across base/tinted/hover text combinations; rendered/translucent compositing and device accessibility remain unverified. Component and state rules: [Planner specification](dashboard/planner/SPECIFICATION.md).

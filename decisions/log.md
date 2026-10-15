@@ -677,3 +677,13 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Implementation:** Owned future private publishAt, UK day/type slots and succeeded processing; uncertain metadata stays partial. No title/remix inference. GET-only fixed provider routes, existing permissions/tables, source/bulk Sync and redacted monitoring. Version75/source282dda40c4a1d3e67d332ab2db34342ca8b720ab is deployed.
 
 **Owner:** CJ. Controlled coverage/UI/affected regressions/build/compiled checks pass; first live account schedule comparison and rendered device/accessibility acceptance remain pending.
+
+## 2026-10-15 — Separate responsive Release Planner prototype
+
+**Decision:** Separate /planner HTML preview before connected implementation; one release/week. Today plus Week/Month/Year. Monday main YouTube remix and three separate platform cards (YouTube Shorts/TikTok/Reels) each Tuesday–Sunday. Thumbnail/title/status/time; platform tints; no profile pictures/comment buttons. Desktop weekly grid/sidebar; mobile week-strip/day agenda. Soft dark/light themes with no pure black/white, using existing GemOS material/typography/radii.
+
+**Why:** CJ supplied desktop and mobile calendar references and asked to adapt a few workflow details, keep existing cards separate, update the plan and reread AGENTS. Unfinished working titles allow design exploration without a completed release project.
+
+**Boundary:** Labelled fictional data, in-memory preview edits, local theme-only persistence; no provider/backend writes or real schedule claims.19 planner entries do not change the seven-YouTube-upload Release Buffer rule. Real planning persistence/Drive matching/platform confirmation follows visual acceptance.
+
+**Owner:** CJ. Automated interactions/source-token contrast/build/compiled auth checked; rendered phone/desktop/accessibility acceptance remains pending.

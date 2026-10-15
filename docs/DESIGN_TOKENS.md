@@ -151,3 +151,21 @@ Controlled earnings/backend/commerce fixtures and compiled private200/401/shell 
 | Logo container / mark |30px /20px; radius9px; monochrome |
 
 Shared32px card/22px recess,58px glyph,20/24px insets,12px vertical/20px horizontal gaps and44px controls preserved. Runtime variables live in ui/costs.html; navigation rules in ui/dashboard.css.
+
+## Planner-only token roles —15October2026
+
+Applies only to ui/planner.html at /planner. Shared dashboard cards retain their established palettes/dimensions. Calendar uses a1536px maximum workspace, desktop release sidebar/seven-day board and mobile day agenda below840px. Reuse Inter/Poppins,32/22/12px radii,20/24px insets,12px gaps, glass/recess/shadows and contained highlights.
+
+| Semantic role | Dark | Light |
+|---|---|---|
+|Page|#101a2b → #172439|#e5ebee → #d9e4ea|
+|Surface|#1b2d44|#eef2f4|
+|Recess|#14253a|#dce6ec|
+|Text|#e4edf6|#203349|
+|Supporting text|#aebfd1|#34475a|
+|Accent/focus|#7dd3ed|#17617f|
+|YouTube tint RGB|244,155,162|128,30,47|
+|TikTok tint RGB|108,210,207|0,80,89|
+|Reels tint RGB|192,171,237|84,42,128|
+
+Platform names/icons and status wording supplement tint. No pure black/white. Theme selection persists locally; example plan/status edits reset on reload. Source-token4.5:1 checks pass across base/tinted/hover text combinations; rendered/translucent compositing and device accessibility remain unverified. Component and state rules: [Planner specification](dashboard/planner/SPECIFICATION.md).

@@ -6,7 +6,7 @@ Updated 15 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_S
 
 Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Private Site version75: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_55e333991fb48191837f405387b0216f`; source `282dda40c4a1d3e67d332ab2db34342ca8b720ab`; deployment `appgdep_6ad0e1f0286881919a0c9784b72c3e45`, succeeded15October2026 at14:24:05UTC. Runtime revision6 and private audience retained.
+Private Site version76: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_74c208642d548191806ecb495221723f`; source `190379ae2febceae30f82a93e7862b3d05b1fc35`; deployment `appgdep_6ad0facae84481919588d0497c2c289f`, succeeded 15 October 2026 at 16:10UTC. Runtime revision6 and private audience retained. Version75 introduced the separate read-only Studio Release Buffer.
 
 Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboard/2026-10-15/pre-youtube-schedule/HANDOFF.md). Existing credentials/scopes/tables/owner data are preserved.
 
@@ -21,13 +21,23 @@ Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboa
 
 ## YouTube schedule connection —15October2026
 
-Release Buffer now reads YouTube Studio. A complete UK week needs one main video Monday and one Short each day Tuesday–Sunday. This first YouTube-only connection supersedes the earlier19-platform proposal; TikTok/Reels are not claimed as scheduled. Check12 full weeks from next Monday (today if Monday), count consecutive complete weeks, stop at first gap. Later complete weeks remain visible but do not extend coverage.
+Release Buffer now reads YouTube Studio. A complete UK week needs one main video Monday and one Short each day Tuesday–Sunday. Buffer coverage uses seven YouTube uploads only. The separate Planner prototype below has19 planned platform entries; TikTok/Reels are not claimed as scheduled. Check12 full weeks from next Monday (today if Monday), count consecutive complete weeks, stop at first gap. Later complete weeks remain visible but do not extend coverage.
 
 Only future private status.publishAt is scheduling evidence. Owned duration/dimensions/rotation establish main/Short format, with succeeded processing; unknown format/processing stays unverified/partial. Titles do not establish remix affiliation. Wrong-day/duplicate uploads, planned dates and Drive readiness cannot fill missing slots. A successful empty scan can show zero; a provider failure retains saved data.
 
 Source Sync and Automation1.1/Sync all use the same fixed GET-only provider import under existing permissions and tables. Cached GET restores owner/channel/revision/current-anchor reports without provider work or run creation. Headline shows Covered until <last complete Sunday> or No complete weeks; source states remain distinct. Recess shows nearby weeks and n/7/missing days. Native Buffer details shows all12 weeks and day-level actual uploads/times/links. Multiple owned channels require source selection. Shared timestamp sits below Sync. Material and paired920px geometry stay unchanged.
 
 See [schedule contract](integration-tests/youtube/SCHEDULE.md). New coverage/UI tests plus affected sync/checklist/analytics/capture/monitoring/Automation/shell/group/dialog/geometry/Drive regressions, production build and compiled200/401 checks pass. First live owner schedule comparison and rendered phone/accessibility checks remain pending. No upload, schedule-write or publication action is added.
+
+## Release Planner prototype — 15 October 2026
+
+Separate owner-protected page: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/planner. Source: [planner.html](integration-tests/youtube/ui/planner.html); [specification](planner/SPECIFICATION.md); [implementation/evidence](integration-tests/youtube/PLANNER.md).
+
+One main YouTube remix on Monday, then Tuesday–Sunday each have three separate entries: YouTube Shorts, TikTok and Instagram Reels (19/week). Cards show thumbnail, title, status and time, with named platform tints; no avatars or comment controls. Today and Week/Month/Year navigation, platform filters, desktop week columns and mobile week strip/selected-day agenda are implemented. Shared GemOS typography, radii, spacing and glass/recess treatment are reused with documented planner-only soft navy and mist themes; neither uses pure black or white. The switch remembers only theme preference.
+
+Three fictional releases demonstrate the views. Add release generates an in-memory weekly plan, prevents duplicate weeks and accepts an unfinished working title. Post details allow preview-only status changes. A persistent notice states that changes reset on reload. No saved projects, Drive imports, actual schedule matching, provider writes, uploads or publication are added. Example status is not provider evidence.
+
+Controlled inline-script interaction tests pass (cadence, navigation, filters, draft validation, literal text handling, dialogs and theme persistence). Source-token contrast checks pass at4.5:1 for normal/secondary/platform text in both themes, including tinted hover states. Production build and compiled owner200/unauthorised401 checks pass for Planner and existing routes. Rendered desktop/phone, focus, enlarged-text and actual composited contrast checks remain outstanding; no browser/device QA is claimed.
 
 ## Audience changes already delivered
 
@@ -54,7 +64,7 @@ Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, ve
 ## Next work
 
 1. Continue from this reconciled source; do not rebuild accepted analytics/automation features or request the same confirmations again.
-2. Refresh Release → Release Buffer → Sync; compare its first incomplete week/day breakdown with Studio, then inspect Automation1.1/Sync all and phone layout. Schedule reads are implemented; schedule/publication writes, GemOS planning calendar and Publishing Cadence remain unimplemented.
+2. Review /planner on phone and desktop in both themes, including Week/Month/Year, filters, post details and a draft release. Then refine the accepted layout and implement owner-scoped saved plans before Drive readiness and explicit YouTube matching. Real planning persistence and Publishing Cadence remain unimplemented. CJ currently has no scheduled uploads/full project; defer the Buffer/Studio live comparison until genuine uploads exist.
 3. Keep genuine remaining evidence gaps scoped: full two-project Drive/move/device checks; real qualifying 24-hour snapshot; genuine Payhip paid/refund/licence-contract verification; populated YouTube payment-history/account pairing; TikTok/Reels access; enlarged text/contrast/Android Back.
 4. Expand automation monitoring only when real upload/receiver/memory workflows exist. Shared AI memory remains future work rather than an implemented integration.
 

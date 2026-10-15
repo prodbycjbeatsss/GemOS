@@ -26,3 +26,12 @@ assert.equal(scheduleUI.GET(new Request('https://test/schedule-buffer.js')).stat
 const scheduleResponse=scheduleUI.GET(new Request('https://test/schedule-buffer.js',{headers:{'oai-authenticated-user-id':'owner'}}));
 assert.equal(scheduleResponse.status,200);assert.ok((await scheduleResponse.text()).includes('/api/youtube/schedule'));
 console.log('Compiled schedule script returns authenticated200/unauthenticated401 and uses fixed schedule API.');
+
+const plannerPage=files.find(f=>readFileSync(resolve(dir,f),'utf8').includes('One release. Every platform. A clearer week.'));
+assert.ok(plannerPage,'compiled Planner preview route');
+const planner=await import(pathToFileURL(resolve(dir,plannerPage)).href);
+assert.equal(planner.GET(new Request('https://test/planner')).status,401);
+const plannerResponse=planner.GET(new Request('https://test/planner',{headers:{'oai-authenticated-user-id':'owner'}}));
+assert.ok(plannerResponse instanceof Response);assert.equal(plannerResponse.status,200);
+const plannerHTML=await plannerResponse.text();assert.ok(plannerHTML.includes('id="theme-toggle"'));assert.ok(plannerHTML.includes('Example content'));assert.ok(plannerHTML.includes('data-view="year"'));
+console.log('Compiled standalone Planner returns authenticated200/unauthenticated401 with theme and calendar controls.');
