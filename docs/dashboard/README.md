@@ -1,5 +1,7 @@
 # Dashboard — start here
 
+Product wording authority: [glossary.md](../../glossary.md). Latest Planner revision: [specification](planner/SPECIFICATION.md). CJ's16October full-width/four-filter/shared-status requirements are confirmed but not yet deployed because the execution environment failed to connect.
+
 ## Current deployed contract — reconciled 15 October 2026
 
 Site version **76**, source `190379ae2febceae30f82a93e7862b3d05b1fc35`, was successfully deployed 15 October at16:10UTC. Release Buffer now reads Studio under the seven-upload UK-week rule: [SCHEDULE](integration-tests/youtube/SCHEDULE.md). This contract takes precedence over older selected-sample/release-only/Compact Automation notes below. Historical previews remain provenance.

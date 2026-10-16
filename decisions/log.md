@@ -687,3 +687,10 @@ CJ approved plan then implementation:Email List moves to2.3 Audience & Performan
 **Boundary:** Labelled fictional data, in-memory preview edits, local theme-only persistence; no provider/backend writes or real schedule claims.19 planner entries do not change the seven-YouTube-upload Release Buffer rule. Real planning persistence/Drive matching/platform confirmation follows visual acceptance.
 
 **Owner:** CJ. Automated interactions/source-token contrast/build/compiled auth checked; rendered phone/desktop/accessibility acceptance remains pending.
+
+
+## 16 October 2026 — Planner layout, destination filters and shared vocabulary
+
+CJ requests the Planner span the available screen, remove the Night Shift/release-summary box, place platform selectors below Week/Month/Year and distinguish YouTube, YouTube Shorts, TikTok and Instagram Reels with coloured logos. Keep19 planned entries/week; YouTube main and Shorts share a provider but have separate UI labels and slot rules. Soft dark/light themes and GemOS design system remain.
+
+CJ rejects a user-defined preview-status mechanism and requests a shared glossary. Root glossary.md defines current terms and the ownership rule: calendar and dashboard read the same underlying records; planned intent, asset readiness, explicit review/queue stage and provider scheduling are separate facts. Remove manual status editing; no invented scheduling confirmation. This confirms the target, not implementation of a shared data connection. Version76 remains unchanged; source/build/deployment work is blocked by the failed execution environment connection.

@@ -65,7 +65,13 @@ Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, ve
 
 Current Planner inline-script and source-token contrast checks pass again. Supported browser control is unavailable in this managed environment, so rendered layout, actual focus traversal/touch targets, text scaling, fonts and composited contrast remain unmeasured. No app code, deployment or owner data changed during this review. The current [plan](PLAN.md#planner-review-checkpoint--16-october-2026) now contains the focused phone/desktop review steps and removes stale top-level wording that the calendar prototype was unimplemented. CJ's instruction to continue is not visual acceptance; saved-plan implementation remains next after that review.
 
-## Next work
+## Latest CJ review — 16 October 2026
+
+CJ requests a full-width calendar without a phone-style frame, removal of the Night Shift/release summary, selectors directly below Week/Month/Year, separate YouTube/YouTube Shorts filters and coloured platform logos. CJ also rejects manually defined preview statuses: use the same underlying records as the dashboard cards. [glossary.md](../../glossary.md) now defines shared wording, fact ownership and four destination labels; the [Planner specification](planner/SPECIFICATION.md) separates the confirmed target from the deployed baseline.
+
+Execution environment connection failed this session. Documentation/decisions are saved through GitHub; application source, tests and deployment are unchanged. Version76 remains live with the previous UI. Next: implement the confirmed revision, remove editable status controls, then connect shared data with separate planning/readiness/platform evidence. Do not block these already confirmed changes on another approval of the old layout.
+
+## Earlier next work (Planner item superseded by latest CJ review above)
 
 1. Continue from this reconciled source; do not rebuild accepted analytics/automation features or request the same confirmations again.
 2. Review /planner on phone and desktop in both themes, including Week/Month/Year, filters, post details and a draft release. Then refine the accepted layout and implement owner-scoped saved plans before Drive readiness and explicit YouTube matching. Real planning persistence and Publishing Cadence remain unimplemented. CJ currently has no scheduled uploads/full project; defer the Buffer/Studio live comparison until genuine uploads exist.

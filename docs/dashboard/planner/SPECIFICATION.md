@@ -1,6 +1,23 @@
-# Release Planner — prototype specification
+# Release Planner — specification
 
 Confirmed15October2026 by CJ. Separate self-contained HTML design preview at /planner, within the existing owner-private Site. Existing dashboard cards remain unchanged.
+
+## Confirmed revision — 16 October 2026 (pending implementation)
+
+CJ reviewed version76 and requested:
+- Use the available screen width on phone and desktop, with responsive gutters. No phone-shaped frame or narrow simulated device container; remove the1536px cap where it limits the workspace.
+- Remove the Night Shift/release-summary box from the top on mobile and its desktop sidebar equivalent. Release identity stays on individual posts and in details.
+- Put one platform-selector row directly below Week/Month/Year in both layouts. Permit wrapping on narrow screens while keeping every option accessible.
+- Four distinct filters: YouTube, YouTube Shorts, TikTok, Instagram Reels. Keep the weekly count at1+6+6+6=19; this change must not duplicate YouTube posts.
+- Use recognisable coloured platform logos alongside labels and retain platform card tints. Preserve soft dark/light themes and the established typography/materials.
+- Remove the manually editable demonstration-status control and “Preview status” wording. Real readiness/scheduling facts must come from the same underlying records/services as the dashboard cards. Planning dates are separate editable intent.
+- Use [the shared glossary](../../../glossary.md) as the wording authority. Keep planning, asset readiness, review/queue stage and platform confirmation distinct.
+
+The execution environment failed to connect on16October. These are confirmed requirements, not deployed changes. Version76 still has the previous summary/filter/status demonstration. Do not claim shared-record integration until implemented and checked.
+
+## Version76 implementation (historical baseline)
+
+The sections below describe the deployed prototype baseline. The confirmed revision above supersedes conflicting layout/status choices as the next target; it does not retroactively change the deployed code.
 
 ## Workflow and content
 

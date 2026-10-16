@@ -12,7 +12,16 @@ Updated 16 October 2026. Current source and acceptance: [HANDOFF](HANDOFF.md).
 
 CJ reports the latest functions work. Do not repeat implementation or reset that acceptance. See the handoff for exact source/version and evidence limits.
 
-## Next sequence
+## Current task — confirmed Planner revision, 16 October 2026
+
+1. Implement the [revised Planner specification](planner/SPECIFICATION.md#confirmed-revision--16-october-2026-pending-implementation): full-width workspace, remove release summary/sidebar, selectors below Week/Month/Year, four distinct destination filters and coloured logos.
+2. Remove manual preview-status editing. Use [glossary.md](../../glossary.md) to align wording and preserve separate planning/readiness/scheduling facts.
+3. Wire real facts to the same records/services used by dashboard cards, with explicit project/upload associations and truthful unverified TikTok/Reels states. Until connected, label fictional data globally and do not offer a status-setting control.
+4. Validate both themes, mobile/desktop and19-entry cadence, filters, dialogs, shared-state consistency and truthful source failures; then publish and update deployment evidence.
+
+Blocked16October: execution environment connection failed. GitHub documentation can be updated, but no source build, runtime checks or deployment can be completed in this session. Version76 remains live unchanged.
+
+## Earlier next sequence (superseded by the current task above)
 
 1. Review the deployed version76 Planner on phone and desktop in both themes using the checks below. The separate calendar prototype is implemented; connected plan storage is not.
 2. Address observed layout/interaction findings, then add owner-scoped saved plans and unfinished working-title/project association after visual acceptance.
