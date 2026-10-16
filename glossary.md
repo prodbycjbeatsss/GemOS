@@ -48,3 +48,13 @@ Explicit project-to-upload association is required where a relationship is claim
 - [Release Planner specification](docs/dashboard/planner/SPECIFICATION.md)
 
 New or changed product wording belongs here alongside its affected specification. Record confirmed decisions in decisions/log.md; label unsettled terminology as proposed.
+
+
+## Publishing settings and timing — confirmed16October2026
+
+- **Default post time:** the owner-configured local publishing time for a destination, used when creating a new plan. No actual defaults are agreed or saved yet.
+- **Post time override:** an explicit intended time saved for one post instead of its inherited default. It changes a plan, not a provider schedule.
+- **Reschedule:** an explicit change to an already platform-scheduled post; it is confirmed only after the platform accepts the new time.
+- **Upload scheduler:** future automation that transfers media and requests platform scheduling from the saved plan. The existing five-minute statistics checker is not an upload scheduler.
+
+Settings → Publishing will own timezone/four destination defaults. Changes affect new plans; applying them to existing editable plans is explicit. Use Europe/London for UK planning and handle GMT/BST. Actual clock-time preferences still need setting, not guessing from examples.

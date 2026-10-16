@@ -21,12 +21,18 @@ Full-width responsive workspace, no release-summary box/sidebar, selectors below
 
 Default source reads the same saved YouTube schedule as Release Buffer through its existing GET endpoint, with visible freshness, independent format filters, unverified/stale/error/empty states and access-loss clearing. No new provider calls, scopes, schema or scheduling writes. Separate Example plans retain the19-entry weekly demonstration, all Planned only. No fake project association or file-readiness result.
 
-## Next sequence
+## Next sequence — confirmed direction16October2026
 
-1. Review /planner on phone/desktop in both themes: Week/Month/Year, selectors, long titles, empty/error states, source switching and dialogs. Rendered/device evidence remains outstanding.
-2. Implement owner-scoped saved release plans and explicit project/folder associations. Reuse existing readiness/preparation records; do not add an editable calendar status system.
-3. Add explicit owned upload associations where project/release relationships are needed. Actual schedule-cache integration is delivered; project/file matching is not. TikTok/Reels remain unverified until genuine access is established.
-4. Verify Buffer against Studio and qualifying24h snapshots when genuine scheduled uploads/releases exist. Payhip store/licence work remains parked.
+Code-grounded dependencies and all dashboard connections: [Calendar integration map](planner/INTEGRATION-MAP.md). Main Settings → Publishing and shared plan ownership are confirmed; actual default times remain unset.
+
+1. Build owner-private Settings → Publishing: Europe/London timezone and four platform default times, saved per owner. Defaults affect new plans only; explicit apply-to-existing excludes platform-scheduled posts.
+2. Add durable release/post records, unfinished working titles, one release/week,19 intended posts and per-post time overrides; connect calendar editing with revision checks.
+3. Link owned project folders and per-project saved readiness without changing dashboard selection; reuse reviewed metadata, artwork references, ordered clips and queue evidence. Implement real private artwork delivery separately from metadata IDs.
+4. Add explicit owned upload associations, publication history and relevant performance/24h details; extend Automation context without changing existing reporting scopes.
+5. Build a verified upload scheduler one provider at a time after media/permissions/runtime design. It consumes the same saved posts; provider-confirmed facts remain separate and rescheduling requires explicit action.
+6. Add optional subscription/newsletter/payment history layers where dates are meaningful. Payhip store/licence work stays parked. Never force non-event metrics into the calendar.
+
+Visual/device checks remain open and should accompany each slice; they do not require repeating accepted analytics or waiting for real uploads before building Settings/saved unfinished plans.
 
 ## Validation
 

@@ -63,9 +63,13 @@ Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, ve
 
 ## Next work
 
-1. Review the revised Planner on phone/desktop in both themes and address observed layout/accessibility findings.
-2. Add owner-scoped saved plans and explicit project/asset/upload associations that reuse dashboard records. Calendar must not invent or manually set source-derived statuses.
-3. Defer the live Buffer/Studio and24h capture checks until real uploads exist; preserve CJ's accepted analytics/Sync-all behaviour. Payhip store/licence work stays parked.
-4. Other scoped evidence gaps remain: full two-project Drive/move/device checks, populated payout history, genuine Payhip paid/refund verification, TikTok/Reels access and enlarged-text/Android Back.
+CJ confirmed Settings → Publishing for default platform times/timezone, per-post planned overrides and shared settings/project/post records across calendar, dashboard and future scheduler. Defaults apply to new plans; existing-plan changes are explicit; already scheduled posts require separately confirmed provider rescheduling. No actual clock times are agreed.
+
+Read [Calendar integration map](planner/INTEGRATION-MAP.md) before implementation. Code review identifies per-project readiness reads, reviewed metadata authority, private artwork/media delivery and exact provider IDs as concrete dependencies. youtube_release_selections is analytics selection, not a plan table. Do not repurpose it or mutate dashboard selected_id to render the calendar.
+
+1. First build: owner-private Settings → Publishing, then persistent release/post plans and calendar timing edits.
+2. Link shared project/readiness/metadata/artwork and exact upload identities; add published history/per-post reporting next.
+3. Build the upload scheduler only after real media/provider permissions and job/retry/reschedule design. Existing five-minute job checks statistics; it does not upload.
+4. Optional dated finance/newsletter layers follow core planning. Payhip store/licence work stays parked; no invented source evidence. Retain all accepted analytics/Sync-all behaviour and existing security/snapshot invariants.
 
 Preserve existing credentials/scopes, owner records, immutable snapshots, saved subscriptions and historical failures. Detailed source contracts retain the distinctions between real zero, unavailable, partial, failed and stale data.
