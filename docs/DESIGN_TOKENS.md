@@ -154,7 +154,7 @@ Shared32px card/22px recess,58px glyph,20/24px insets,12px vertical/20px horizon
 
 ## Planner-only token roles —15October2026
 
-Applies only to ui/planner.html at /planner. Shared dashboard cards retain their established palettes/dimensions. Calendar uses a1536px maximum workspace, desktop release sidebar/seven-day board and mobile day agenda below840px. Reuse Inter/Poppins,32/22/12px radii,20/24px insets,12px gaps, glass/recess/shadows and contained highlights.
+Applies only to ui/planner.html at /planner. Shared dashboard cards retain their established palettes/dimensions. Planner version77 uses the available screen width with responsive gutters, no release sidebar/summary or phone-style frame, a desktop seven-day board and mobile day agenda below840px. Four coloured-logo destination selectors sit below Week/Month/Year. Reuse Inter/Poppins,32/22/12px radii,20/24px insets,12px gaps, glass/recess/shadows and contained highlights.
 
 | Semantic role | Dark | Light |
 |---|---|---|
@@ -169,3 +169,6 @@ Applies only to ui/planner.html at /planner. Shared dashboard cards retain their
 |Reels tint RGB|192,171,237|84,42,128|
 
 Platform names/icons and status wording supplement tint. No pure black/white. Theme selection persists locally; example plan/status edits reset on reload. Source-token4.5:1 checks pass across base/tinted/hover text combinations; rendered/translucent compositing and device accessibility remain unverified. Component and state rules: [Planner specification](dashboard/planner/SPECIFICATION.md).
+
+
+Planner revision16October2026: full-width workspace supersedes the earlier1536px cap/sidebar; mobile has no enclosing phone-style panel. Main YouTube and Shorts have separate filters/tints/logos. Shorts tint RGB is244,174,142 dark and125,46,20 light. Existing theme tokens and shared materials stay; pure black/white remain excluded. Details use shared glossary wording and read-only evidence, with no editable status control.

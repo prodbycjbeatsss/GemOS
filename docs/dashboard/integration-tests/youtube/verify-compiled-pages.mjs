@@ -33,5 +33,5 @@ const planner=await import(pathToFileURL(resolve(dir,plannerPage)).href);
 assert.equal(planner.GET(new Request('https://test/planner')).status,401);
 const plannerResponse=planner.GET(new Request('https://test/planner',{headers:{'oai-authenticated-user-id':'owner'}}));
 assert.ok(plannerResponse instanceof Response);assert.equal(plannerResponse.status,200);
-const plannerHTML=await plannerResponse.text();assert.ok(plannerHTML.includes('id="theme-toggle"'));assert.ok(plannerHTML.includes('Example content'));assert.ok(plannerHTML.includes('data-view="year"'));
+const plannerHTML=await plannerResponse.text();assert.ok(plannerHTML.includes('id="theme-toggle"'));assert.ok(plannerHTML.includes('id="source-schedule"'));assert.ok(plannerHTML.includes('data-view="year"'));
 console.log('Compiled standalone Planner returns authenticated200/unauthenticated401 with theme and calendar controls.');

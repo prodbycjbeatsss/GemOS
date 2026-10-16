@@ -17,7 +17,7 @@ Updated 16 October 2026. Shared product wording for the dashboard and Release Pl
 | Not checked | The relevant check has not produced a result. | Check state; never substitute a fabricated ready/scheduled value. |
 | Unverified | Available evidence cannot establish the claimed fact. | Preserve source-specific reason, including unknown format/processing or an unconnected destination. |
 | Stale | A saved result may no longer describe the current state. | Retain its source/time and disclose staleness; it is not fresh confirmation. |
-| Preview | The current design demonstration using fictional content. | A page-level explanation, not a release/post status. Remove “Preview status” and manual status editing in the next prototype revision. |
+| Preview | The current design demonstration using fictional content. | A page-level explanation, not a release/post status. “Preview status” and manual status editing were removed in version77. |
 
 Readiness, review/queue stage, planned timing and platform scheduling are independent facts. Show the relevant facts without collapsing them into one editable status. Source errors, partial results and unavailable data must remain explicit; they are not zero or proof that an item is unscheduled.
 
@@ -38,7 +38,7 @@ Use recognisable coloured platform logos alongside names, with distinct card tin
 
 The calendar is another view of the same underlying release, asset-check and provider records used by the dashboard cards. It must not copy card text into a second database or maintain contradictory status values. Update shared records through the owning workflow, then refresh both views. Planning dates remain editable plan data; source-derived facts remain read-only.
 
-Explicit project-to-upload association is required where a relationship is claimed; matching titles alone is not evidence. TikTok/Reels scheduling stays unverified until genuine provider evidence is available. The current deployed prototype does not yet implement these connections.
+Explicit project-to-upload association is required where a relationship is claimed; matching titles alone is not evidence. TikTok/Reels scheduling stays unverified until genuine provider evidence is available. Version77 reuses Release Buffer's existing saved YouTube report through the same GET endpoint. Owner-scoped saved plans and explicit project/asset/upload associations are not yet implemented; no readiness or remix association is inferred.
 
 ## Authoritative detail
 

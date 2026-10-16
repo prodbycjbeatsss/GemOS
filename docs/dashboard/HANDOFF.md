@@ -6,7 +6,7 @@ Updated 16 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_S
 
 Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Private Site version76: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_74c208642d548191806ecb495221723f`; source `190379ae2febceae30f82a93e7862b3d05b1fc35`; deployment `appgdep_6ad0facae84481919588d0497c2c289f`, succeeded 15 October 2026 at 16:10UTC. Runtime revision6 and private audience retained. Version75 introduced the separate read-only Studio Release Buffer.
+Private Site version77: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_8fd211e428208191801de97660217510`; source `dc826293ef091983d36ee61d326c922bdd5cb4b8`; deployment `appgdep_6ad29a2e042c8191b81baf2eb93c9147`, succeeded16October2026 at21:42UTC. Runtime revision6/private audience retained. Version75 introduced read-only Release Buffer; version76 was the first separate Planner prototype.
 
 Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboard/2026-10-15/pre-youtube-schedule/HANDOFF.md). Existing credentials/scopes/tables/owner data are preserved.
 
@@ -29,15 +29,15 @@ Source Sync and Automation1.1/Sync all use the same fixed GET-only provider impo
 
 See [schedule contract](integration-tests/youtube/SCHEDULE.md). New coverage/UI tests plus affected sync/checklist/analytics/capture/monitoring/Automation/shell/group/dialog/geometry/Drive regressions, production build and compiled200/401 checks pass. First live owner schedule comparison and rendered phone/accessibility checks remain pending. No upload, schedule-write or publication action is added.
 
-## Release Planner prototype — 15 October 2026
+## Release Planner — revision delivered16October2026
 
-Separate owner-protected page: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/planner. Source: [planner.html](integration-tests/youtube/ui/planner.html); [specification](planner/SPECIFICATION.md); [implementation/evidence](integration-tests/youtube/PLANNER.md).
+Separate owner-protected /planner page. Full available screen width, no release-summary box/sidebar or phone-style frame, one selector group below Week/Month/Year, four independent YouTube/YouTube Shorts/TikTok/Instagram Reels filters and coloured native logos. Soft dark/light modes retain GemOS typography/materials; existing dashboard cards stay unchanged.
 
-One main YouTube remix on Monday, then Tuesday–Sunday each have three separate entries: YouTube Shorts, TikTok and Instagram Reels (19/week). Cards show thumbnail, title, status and time, with named platform tints; no avatars or comment controls. Today and Week/Month/Year navigation, platform filters, desktop week columns and mobile week strip/selected-day agenda are implemented. Shared GemOS typography, radii, spacing and glass/recess treatment are reused with documented planner-only soft navy and mist themes; neither uses pure black or white. The switch remembers only theme preference.
+YouTube schedule is the default source and reads the same saved report as Release Buffer through GET /api/youtube/schedule. It makes no new provider request/run or write. Source timestamp, disconnected/not checked/channel-choice/empty/errors and retained stale results are explicit. Unknown format/processing stays Unverified; expired timestamps stay Stale. Lost access/channel mismatch clears records. Real upload IDs link to YouTube; no title/date-based project association or readiness inference.
 
-Three fictional releases demonstrate the views. Add release generates an in-memory weekly plan, prevents duplicate weeks and accepts an unfinished working title. Post details allow preview-only status changes. A persistent notice states that changes reset on reload. No saved projects, Drive imports, actual schedule matching, provider writes, uploads or publication are added. Example status is not provider evidence.
+Example plans is separate and labelled, with19 entries/week and in-memory unfinished drafts. All examples are Planned only. Manual status editing/“Preview status” are removed. Details show Asset readiness: Not checked until explicit project association exists. Shared wording is in [glossary.md](../../glossary.md); [specification](planner/SPECIFICATION.md) and [runtime contract](integration-tests/youtube/PLANNER.md) are current.
 
-Controlled inline-script interaction tests pass (cadence, navigation, filters, draft validation, literal text handling, dialogs and theme persistence). Source-token contrast checks pass at4.5:1 for normal/secondary/platform text in both themes, including tinted hover states. Production build and compiled owner200/unauthorised401 checks pass for Planner and existing routes. Rendered desktop/phone, focus, enlarged-text and actual composited contrast checks remain outstanding; no browser/device QA is claimed.
+Inline-script/shared-GET fixtures, four independent filters, source isolation, safe titles/links, cadence/drafts/dialogs/themes and source-token4.5:1 text contrast pass. Existing scheduling backend checks, production build and compiled owner200/unauthorised401 checks pass. Supported browser/device QA remains unavailable; no actual owner-cache/live-provider comparison is claimed. Saved plans and explicit project/asset/upload associations remain next.
 
 ## Audience changes already delivered
 
@@ -61,21 +61,11 @@ CJ's later chat reports Sync all and uniform timestamps pass, channel-wide Short
 
 Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, verify-weekly-shorts.mjs, verify-sync-times.cjs, verify-card-sync.mjs, verify-sync-controls-ui.cjs, verify-state.cjs, verify-automations.mjs and verify-capture.mjs — all pass. These cover reporting/classification/date boundaries, cache and state retention, timestamps, safe sync controls, owner/origin validation and immutable snapshot behaviour. That earlier source reconciliation has now been followed by the schedule feature, production build and compiled authentication checks described above. No live owner schedule-provider query or rendered/device audit was performed.
 
-## Continuation review — 16 October 2026
+## Next work
 
-Current Planner inline-script and source-token contrast checks pass again. Supported browser control is unavailable in this managed environment, so rendered layout, actual focus traversal/touch targets, text scaling, fonts and composited contrast remain unmeasured. No app code, deployment or owner data changed during this review. The current [plan](PLAN.md#planner-review-checkpoint--16-october-2026) now contains the focused phone/desktop review steps and removes stale top-level wording that the calendar prototype was unimplemented. CJ's instruction to continue is not visual acceptance; saved-plan implementation remains next after that review.
-
-## Latest CJ review — 16 October 2026
-
-CJ requests a full-width calendar without a phone-style frame, removal of the Night Shift/release summary, selectors directly below Week/Month/Year, separate YouTube/YouTube Shorts filters and coloured platform logos. CJ also rejects manually defined preview statuses: use the same underlying records as the dashboard cards. [glossary.md](../../glossary.md) now defines shared wording, fact ownership and four destination labels; the [Planner specification](planner/SPECIFICATION.md) separates the confirmed target from the deployed baseline.
-
-Execution environment connection failed this session. Documentation/decisions are saved through GitHub; application source, tests and deployment are unchanged. Version76 remains live with the previous UI. Next: implement the confirmed revision, remove editable status controls, then connect shared data with separate planning/readiness/platform evidence. Do not block these already confirmed changes on another approval of the old layout.
-
-## Earlier next work (Planner item superseded by latest CJ review above)
-
-1. Continue from this reconciled source; do not rebuild accepted analytics/automation features or request the same confirmations again.
-2. Review /planner on phone and desktop in both themes, including Week/Month/Year, filters, post details and a draft release. Then refine the accepted layout and implement owner-scoped saved plans before Drive readiness and explicit YouTube matching. Real planning persistence and Publishing Cadence remain unimplemented. CJ currently has no scheduled uploads/full project; defer the Buffer/Studio live comparison until genuine uploads exist.
-3. Keep genuine remaining evidence gaps scoped: full two-project Drive/move/device checks; real qualifying 24-hour snapshot; genuine Payhip paid/refund/licence-contract verification; populated YouTube payment-history/account pairing; TikTok/Reels access; enlarged text/contrast/Android Back.
-4. Expand automation monitoring only when real upload/receiver/memory workflows exist. Shared AI memory remains future work rather than an implemented integration.
+1. Review the revised Planner on phone/desktop in both themes and address observed layout/accessibility findings.
+2. Add owner-scoped saved plans and explicit project/asset/upload associations that reuse dashboard records. Calendar must not invent or manually set source-derived statuses.
+3. Defer the live Buffer/Studio and24h capture checks until real uploads exist; preserve CJ's accepted analytics/Sync-all behaviour. Payhip store/licence work stays parked.
+4. Other scoped evidence gaps remain: full two-project Drive/move/device checks, populated payout history, genuine Payhip paid/refund verification, TikTok/Reels access and enlarged-text/Android Back.
 
 Preserve existing credentials/scopes, owner records, immutable snapshots, saved subscriptions and historical failures. Detailed source contracts retain the distinctions between real zero, unavailable, partial, failed and stale data.

@@ -1,25 +1,31 @@
-# Release Planner — separate design prototype
+# Release Planner — responsive calendar
 
-Confirmed15October2026. Separate self-contained ui/planner.html, served at the owner-private /planner route. Existing dashboard cards and APIs stay unchanged.
+Updated16October2026. Separate owner-private /planner route, implemented in ui/planner.html. Shared product wording: root glossary.md in GemOS.
 
-## Confirmed scope
+## Layout and destinations
 
-- One main release per week; unfinished working titles accepted.
--19 platform entries per release: Monday main YouTube remix, Tuesday–Sunday one upload each for YouTube Shorts, TikTok and Instagram Reels.
-- Cards show thumbnail, title, status and planned time. No profile pictures, avatars or comment buttons. Each platform has its own tinted card plus name/icon; colour is supplementary.
-- Today action; Week/Month/Year view controls. Desktop week is a seven-column board with release summary and platform filters. Mobile week uses a seven-day strip and a selected-day list with three separate platform cards on short-form days. Month is an overview with mobile selected-day details; Year opens months.
-- Dark/light switch uses softened navy/slate and pale blue-grey surfaces. No pure black/white colours. Theme selection alone persists locally; preview releases/status changes reset on reload.
+Use available screen width with responsive gutters, no1536px cap and no simulated phone frame. The former release summary and sidebar are removed. One row of platform selectors follows Week/Month/Year, wrapping into two columns on mobile. Each destination has a recognisable native coloured SVG logo, name and its own tint: YouTube, YouTube Shorts, TikTok, Instagram Reels. Main and Shorts filter independently.
 
-## Design system
+Keep shared Inter/Poppins typography,32/22/12px radii, fine borders, contained highlights, recessed materials and soft navy/mist dark/light themes. Existing dashboard card geometry/palettes are unchanged. Theme preference alone persists locally. No pure black/white colours.
 
-Reuse Inter body/Poppins headings,32px outer/22px recessed/12px control radii,20px mobile/24px desktop insets,12px internal gaps, fine borders, contained highlight and recessed glass material. Planner calendar is a wider workspace exception, not a fixed920px dashboard card. Platform tints and softened light tokens are scoped to this prototype; they do not recolour existing cards. Local vector thumbnail illustrations are labelled examples.
+Week is a desktop seven-day board and mobile week-strip/day agenda. Month keeps individual platform entries on desktop and selected-day agenda on mobile; Year opens months. Today and previous/next retain selected view. Native dialogs are read-only and retain Close, Escape, outside-click and focus return. There is no status dropdown or Apply control.
 
-## Prototype boundary
+## Shared scheduling source
 
-Three fictional weekly releases illustrate the layout. A persistent notice labels example content and reset-on-reload behaviour. Planned/Files ready/Scheduled are illustrative statuses; no Drive scan, upload, actual schedule confirmation or publishing occurs. Add release validates a Monday, title and time and enforces one release/week. Opening a card shows its details and allows a preview-only status edit. No provider/backend calls or release-plan storage are added.
+YouTube schedule is the default view. It uses GET /api/youtube/schedule, the existing authenticated saved-report endpoint used by Release Buffer. It does not make a provider request or create an automation run. On focus or source selection, reload that shared cache; source freshness is visible. Refresh actual Studio data with Release Buffer's existing Sync workflow. No new tables, scopes, credentials or schema.
 
-Real implementation later needs owner-scoped plan storage, project/folder association, independent readiness evidence, explicit platform upload matching and truthful unconnected TikTok/Reels states.19 planned entries must not silently change Release Buffer's separately accepted seven-YouTube-upload coverage rule.
+Read actual video IDs/titles/publication timestamps/format/processing from the saved report. Main and Shorts remain separate; unknown format or processing is Unverified. Past publication timestamps and retained results after a failed read are Stale, never proof of publication. A wrong-day upload may be scheduled but does not thereby fill Buffer's required slot. This view does not change Buffer coverage or infer a release/remix relationship.
 
-## Validation
+Disconnected, not checked, multiple-channel choice, successful empty report and failed reads have distinct messages. Transient failure retains clearly labelled saved results; lost access or channel mismatch clears them. Deduplicate by video ID. Titles use literal DOM text; YouTube links use validated IDs. Actual uploads without an artwork association show Artwork unavailable. No invented thumbnails, project relationship or file-readiness result. Asset readiness remains Not checked until an explicit shared project association exists. TikTok/Reels remain unverified and are never filled with fictional uploads in this view.
 
-verify-planner.cjs runs the actual inline script against DOM fixtures:19 separate entries, mobile day selection, week/month/year navigation, filters, Today, soft-theme toggle, theme-only persistence, one release/week validation, unfinished drafts, literal titles and safe dialog focus/backdrop. Production build and compiled authenticated200/unauthenticated401 route checks accompany delivery. Source-token text contrast is measured for the theme/card combinations. This does not establish rendered layout, fonts, clipping, actual touch targets, Android Back or full accessibility conformance. Phone/desktop visual acceptance remains to be checked with CJ.
+## Example plans
+
+Example plans is a separate, clearly labelled source for visual review. Three fictional releases demonstrate19 entries/week: Monday main YouTube remix; Tuesday–Sunday each have YouTube Shorts, TikTok and Reels. All are Planned only: intended timing, not confirmed readiness/scheduling. No source evidence is joined to examples by date or title.
+
+Add release is available only in Example plans; accepts an unfinished working title, valid Monday/time and enforces one release/week. The in-memory draft resets on reload. There is no saved plan, provider write, upload, publication or automated folder move.19 example entries do not change Buffer's seven-YouTube-upload rule.
+
+## Validation and remaining work
+
+verify-planner.cjs executes the actual inline script with DOM/fetch fixtures:19 entries, four independent filters, mobile days, navigation, theme-only persistence, literal titles, draft validation, read-only dialogs, shared saved schedule GET, correct formats/processing, expiry, deduplication, source errors/retention, channel mismatch and lost access. Source-token contrast covers text and all four platform tints in both themes including hover. Existing scheduling backend fixtures, production build and compiled owner200/unauthorised401 checks accompany delivery.
+
+No supported rendered browser/device QA is available in this managed session. These checks do not establish actual fonts, clipping, touch targets, composited contrast, Android Back or complete accessibility. Owner live cache contents have not been independently inspected. Next: review both themes/layouts, then owner-scoped saved plans plus explicit project/asset/upload associations; reuse the dashboard records rather than adding editable status fields.

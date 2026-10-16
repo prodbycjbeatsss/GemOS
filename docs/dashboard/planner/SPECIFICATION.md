@@ -1,48 +1,37 @@
 # Release Planner — specification
 
-Confirmed15October2026 by CJ. Separate self-contained HTML design preview at /planner, within the existing owner-private Site. Existing dashboard cards remain unchanged.
+Updated16October2026. Separate owner-private /planner route using the GemOS design system. Shared product wording: [glossary.md](../../../glossary.md).
 
-## Confirmed revision — 16 October 2026 (pending implementation)
+## Layout
 
-CJ reviewed version76 and requested:
-- Use the available screen width on phone and desktop, with responsive gutters. No phone-shaped frame or narrow simulated device container; remove the1536px cap where it limits the workspace.
-- Remove the Night Shift/release-summary box from the top on mobile and its desktop sidebar equivalent. Release identity stays on individual posts and in details.
-- Put one platform-selector row directly below Week/Month/Year in both layouts. Permit wrapping on narrow screens while keeping every option accessible.
-- Four distinct filters: YouTube, YouTube Shorts, TikTok, Instagram Reels. Keep the weekly count at1+6+6+6=19; this change must not duplicate YouTube posts.
-- Use recognisable coloured platform logos alongside labels and retain platform card tints. Preserve soft dark/light themes and the established typography/materials.
-- Remove the manually editable demonstration-status control and “Preview status” wording. Real readiness/scheduling facts must come from the same underlying records/services as the dashboard cards. Planning dates are separate editable intent.
-- Use [the shared glossary](../../../glossary.md) as the wording authority. Keep planning, asset readiness, review/queue stage and platform confirmation distinct.
+Use the available screen width on phone and desktop with responsive gutters; no1536px cap or simulated phone frame. Remove the release-summary box/sidebar. Release identity remains on individual example posts and in details. Week/Month/Year and Today/navigation remain; one platform-selector group sits directly below view controls. Selectors wrap to two columns on mobile.
 
-The execution environment failed to connect on16October. These are confirmed requirements, not deployed changes. Version76 still has the previous summary/filter/status demonstration. Do not claim shared-record integration until implemented and checked.
+Four independent destinations: YouTube, YouTube Shorts, TikTok, Instagram Reels. Each has a recognisable native coloured SVG logo, text label and card tint. Main and Shorts filter separately without duplicating posts. All filters remain available in both sources; an empty/unverified destination is not fabricated data.
 
-## Version76 implementation (historical baseline)
+Week: seven-column desktop board with contained horizontal scrolling if needed; mobile week-strip and selected-day agenda. Month: individual compact platform entries on desktop and date grid/day agenda on mobile. Year:12 miniature month grids opening Month view. Previous/next advances the selected period. Today retains the view.
 
-The sections below describe the deployed prototype baseline. The confirmed revision above supersedes conflicting layout/status choices as the next target; it does not retroactively change the deployed code.
+Keep Inter/Poppins,32/22/12px radii,20/24px gutters (12px narrow-phone exception), fine borders, glass/recessed materials and contained highlights. Dark navy/slate and pale blue-grey themes avoid pure black/white; preference alone persists locally. Existing dashboard card palettes/geometry stay unchanged.
 
-## Workflow and content
+## Shared source and status ownership
 
-One main release/week. Monday has one main YouTube remix; each Tuesday–Sunday has three independent entries: YouTube Shorts, TikTok and Instagram Reels (19 total/week). An incomplete project/working title can be planned. Cards contain thumbnail, title, status and planned time. Remove reference profile pictures/comment controls.
+YouTube schedule is the default source. GET /api/youtube/schedule reuses the exact saved owner/channel/connection-revision/current-anchor report shown by Release Buffer. No provider query, write or monitored run occurs on reading the calendar. Reload on focus/source selection; Sync the existing Release Buffer workflow to refresh Studio data. Source timestamp remains visible.
 
-Illustrative Planned/Files ready/Scheduled statuses are visibly example data. Preview edits reset on reload; local theme preference alone persists. Production integration will preserve independent plan, readiness and actual platform evidence.19 planner entries do not change Release Buffer's separately agreed seven-YouTube-upload rule.
+Each actual upload has its real ID/title/UK publication time. Verified main/Short format determines the filter; unknown format/processing stays Unverified. Expired timestamps or retained results after a failed read say Stale, never Published. Deduplicate video IDs. Successful empty results, no saved check, disconnected source, required channel selection and errors remain distinct. Lost access or channel mismatch clears the records.
 
-## Views
+An actual upload's Artwork unavailable placeholder is explicit; no invented thumbnail/project link. Do not join an upload to a remix/project by matching date or title. Asset readiness says Not checked until an explicit shared project association exists. TikTok/Reels actual scheduling remains unverified until connected. Calendar status is read-only: no status dropdown or Apply control.
 
-- Week default: seven-column desktop board with thumbnail cards and a slim release/platform-filter sidebar. Internal calendar scroll preserves readable day widths on narrower desktops.
-- Mobile below840px: collapsible release summary and platform filters, seven-day strip with date activity markers, selected-day agenda with three separate cards on short-form days.
-- Month: date grid with separate compact platform entries on desktop; activity dots and selected-day agenda on mobile.
-- Year:12 miniature month grids; selecting a month opens Month view.
-- Today returns to the current UK date while retaining the selected view. Previous/next advances a week/month/year appropriately.
-- Clicking a post opens a labelled native dialog with thumbnail/title/platform/date/time/example status and preview-only status editing.
-- Add release creates19 in-memory posts after a title, valid Monday and time; duplicate weeks are rejected. No full project/files are required.
+The calendar does not alter Buffer's seven-YouTube-upload coverage eligibility or its first-gap stopping rule. A scheduled wrong-day upload can appear without filling a required slot.
 
-## Design system and themes
+## Example plans
 
-Inter body/Poppins headings;32px outer,22px recess,12px controls;24px desktop/20px mobile insets with12px narrow-phone outer exception,12px internal gaps. Recessed glass, fine borders, contained highlight and44px primary action targets reuse GemOS visual principles. Calendar is a wider1536px workspace exception rather than a fixed920px dashboard card.
+A separate Example plans source supports visual review with fictional content. One main YouTube remix Monday plus one Short/TikTok/Reel each Tuesday–Sunday gives19 separate entries/week. All examples say Planned only, expressing intended time without readiness/scheduling confirmation. Examples never mix with actual source records.
 
-Dark navy/slate and pale blue-grey themes avoid pure black/white. Platform-tinted cards also carry platform names/icons. Theme tokens are scoped to planner.html; global dashboard palettes remain unchanged. Source-token contrast checks cover normal text/platform labels at4.5:1 against base/card backgrounds, including hover. Actual compositing/rendering still requires review.
+Add release appears only in Example plans. It accepts an unfinished working title, valid Monday and time, rejects duplicate weeks and creates19 in-memory entries. Drafts reset on reload. Post details show planned timing plus asset readiness Not checked, a source explanation and dashboard link. Native dialogs support Close, Escape, backdrop dismissal and focus return.
 
-## Evidence and next action
+## Delivery and limits
 
-Runtime contract/tests: [PLANNER](../integration-tests/youtube/PLANNER.md). Actual inline-script tests and compiled auth/build checks pass; no browser-rendered measurement claim. CJ should review desktop/Android, light/dark, Week/Month/Year, long titles, dialogs and empty/filter states before connected Planner implementation.
+Delivered private Site version77, source `dc826293ef091983d36ee61d326c922bdd5cb4b8`, on16October2026. [Runtime contract and checks](../integration-tests/youtube/PLANNER.md).
 
-References supplied by CJ: desktop thumbnail calendar screenshot and mobile week-strip/day-list example. These inform layout only; profile/comment features are omitted and GemOS materials replace source styling.
+Actual inline-script and saved-API fixture tests, source-token contrast checks, existing scheduling backend fixtures, production build and compiled private200/401 checks pass. No browser-rendered/device QA or live owner-cache comparison is claimed.
+
+Next: review actual responsive rendering in both themes, then owner-scoped saved plans and explicit project/asset/upload associations sharing dashboard records. No source-derived fact becomes manually editable.
