@@ -1,6 +1,6 @@
 # GemOS — current implementation plan
 
-Updated 15 October 2026. Current source and acceptance: [HANDOFF](HANDOFF.md).
+Updated 16 October 2026. Current source and acceptance: [HANDOFF](HANDOFF.md).
 
 ## Completed and accepted
 
@@ -14,10 +14,25 @@ CJ reports the latest functions work. Do not repeat implementation or reset that
 
 ## Next sequence
 
-1. Keep GitHub source/specs/handoff aligned with deployed Site version75.
-2. Verify Release Buffer's first live Sync against Studio and inspect phone/day-details/Automation1.1. Read-only scheduling is delivered; scheduling/publication writes, GemOS planning calendar and Publishing Cadence remain unimplemented.
-3. Close evidence gaps where real inputs exist: Drive two-project/guarded-move checks, a qualifying24h snapshot, Payhip paid/refund/contracts, populated YouTube payment history, and measured device/accessibility checks.
-4. Add TikTok/Reels and additional monitoring adapters only after their real source/access is established.
+1. Review the deployed version76 Planner on phone and desktop in both themes using the checks below. The separate calendar prototype is implemented; connected plan storage is not.
+2. Address observed layout/interaction findings, then add owner-scoped saved plans and unfinished working-title/project association after visual acceptance.
+3. Connect genuine Drive readiness and explicit YouTube upload matching, keeping planned/readiness/platform confirmation separate. Preserve Release Buffer's seven-YouTube-upload coverage rule.
+4. Defer the Buffer/Studio comparison and qualifying24h capture until genuine scheduled uploads/releases exist. Payhip store/licence work remains parked; TikTok/Reels integration waits for real access.
+
+### Planner review checkpoint — 16 October 2026
+
+AGENTS, current handoff, Planner specification and shared design system reread. Current inline-script checks pass again, including19 entries/week, day selection, navigation, filters, drafts, theme-only persistence, dialogs and literal titles; source-token contrast checks pass. This is controlled/static evidence, not browser or device acceptance.
+
+The managed environment has no supported control-browser capability. No preview server, substitute browser, screenshots or rendered measurements were used. Visual acceptance remains open; do not infer acceptance from CJ's instruction to continue.
+
+Review https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/planner:
+- Phone, Week: choose a Tuesday–Sunday date; confirm three separate platform cards and readable thumbnail/title/status/time.
+- Switch dark/light; check contrast, clipped text, legible controls and any horizontal page overflow.
+- Try Month and Year, Today, previous/next and platform filters; verify the selected day's agenda matches.
+- Add a working-title release on an unused Monday; inspect its19 preview posts and a post dialog. Confirm dismissal and reload behaviour.
+- Desktop, Week: check seven readable day columns and the sidebar; any horizontal scrolling should stay within the board.
+
+Record observed failures with view, theme and screen width/device. Layout changes can then be scoped to that evidence.
 
 ## Validation
 

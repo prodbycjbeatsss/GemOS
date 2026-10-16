@@ -1,6 +1,6 @@
 # GemOS dashboard — current handoff
 
-Updated 15 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_SYSTEM.md, docs/DESIGN_TOKENS.md and the affected group's specification/usage/components. Earlier handoff: [archived checkpoint](../../archives/dashboard/2026-10-15/pre-source-reconciliation/HANDOFF.md).
+Updated 16 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_SYSTEM.md, docs/DESIGN_TOKENS.md and the affected group's specification/usage/components. Earlier handoff: [archived checkpoint](../../archives/dashboard/2026-10-15/pre-source-reconciliation/HANDOFF.md).
 
 ## Deployment and source authority
 
@@ -60,6 +60,10 @@ Sync all runs supported data refreshes sequentially, guards duplicates and conti
 CJ's later chat reports Sync all and uniform timestamps pass, channel-wide Shorts works with an accepted roughly 10–15-view Studio difference, and weekly discovery/current totals/per-upload views/ranks work. This user acceptance must not be reset because an older document says pending. The reason for the Studio difference has not been established.
 
 Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, verify-weekly-shorts.mjs, verify-sync-times.cjs, verify-card-sync.mjs, verify-sync-controls-ui.cjs, verify-state.cjs, verify-automations.mjs and verify-capture.mjs — all pass. These cover reporting/classification/date boundaries, cache and state retention, timestamps, safe sync controls, owner/origin validation and immutable snapshot behaviour. That earlier source reconciliation has now been followed by the schedule feature, production build and compiled authentication checks described above. No live owner schedule-provider query or rendered/device audit was performed.
+
+## Continuation review — 16 October 2026
+
+Current Planner inline-script and source-token contrast checks pass again. Supported browser control is unavailable in this managed environment, so rendered layout, actual focus traversal/touch targets, text scaling, fonts and composited contrast remain unmeasured. No app code, deployment or owner data changed during this review. The current [plan](PLAN.md#planner-review-checkpoint--16-october-2026) now contains the focused phone/desktop review steps and removes stale top-level wording that the calendar prototype was unimplemented. CJ's instruction to continue is not visual acceptance; saved-plan implementation remains next after that review.
 
 ## Next work
 
