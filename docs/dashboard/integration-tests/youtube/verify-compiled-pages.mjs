@@ -35,3 +35,7 @@ const plannerResponse=planner.GET(new Request('https://test/planner',{headers:{'
 assert.ok(plannerResponse instanceof Response);assert.equal(plannerResponse.status,200);
 const plannerHTML=await plannerResponse.text();assert.ok(plannerHTML.includes('id="theme-toggle"'));assert.ok(plannerHTML.includes('id="source-schedule"'));assert.ok(plannerHTML.includes('data-view="year"'));
 console.log('Compiled standalone Planner returns authenticated200/unauthenticated401 with theme and calendar controls.');
+for(const [marker,type,required] of [['Publishing defaults for your release plans.','text/html','id="publishing-form"'],['Private settings/planning UI.','text/javascript','/api/publishing/'],['.settings-main{','text/css','--page:#101a2b']]){
+ const file=files.find(f=>readFileSync(resolve(dir,f),'utf8').includes(marker));assert.ok(file,'compiled publishing route '+marker);const route=await import(pathToFileURL(resolve(dir,file)).href);assert.equal(route.GET(new Request('https://test/private')).status,401);const response=route.GET(new Request('https://test/private',{headers:{'oai-authenticated-user-id':'owner'}}));assert.equal(response.status,200);assert.ok(response.headers.get('Content-Type').includes(type));assert.ok((await response.text()).includes(required));
+}
+console.log('Compiled Publishing settings, planning script and shared soft-theme CSS return owner200/unauthorised401 with expected content types.');

@@ -38,7 +38,7 @@ Use recognisable coloured platform logos alongside names, with distinct card tin
 
 The calendar is another view of the same underlying release, asset-check and provider records used by the dashboard cards. It must not copy card text into a second database or maintain contradictory status values. Update shared records through the owning workflow, then refresh both views. Planning dates remain editable plan data; source-derived facts remain read-only.
 
-Explicit project-to-upload association is required where a relationship is claimed; matching titles alone is not evidence. TikTok/Reels scheduling stays unverified until genuine provider evidence is available. Version77 reuses Release Buffer's existing saved YouTube report through the same GET endpoint. Owner-scoped saved plans and explicit project/asset/upload associations are not yet implemented; no readiness or remix association is inferred.
+Explicit project-to-upload association is required where a relationship is claimed; matching titles alone is not evidence. TikTok/Reels scheduling stays unverified until genuine provider evidence is available. Version77 reuses Release Buffer's existing saved YouTube report through the same GET endpoint. Version78 adds owner-scoped saved plans/defaults. Explicit project/asset/upload associations remain next; no readiness or remix association is inferred.
 
 ## Authoritative detail
 
@@ -52,9 +52,12 @@ New or changed product wording belongs here alongside its affected specification
 
 ## Publishing settings and timing — confirmed16October2026
 
-- **Default post time:** the owner-configured local publishing time for a destination, used when creating a new plan. No actual defaults are agreed or saved yet.
+- **Default post time:** the owner-configured local publishing time for a destination, used when creating a new plan. The settings initially have no times; the owner chooses and saves them.
 - **Post time override:** an explicit intended time saved for one post instead of its inherited default. It changes a plan, not a provider schedule.
 - **Reschedule:** an explicit change to an already platform-scheduled post; it is confirmed only after the platform accepts the new time.
 - **Upload scheduler:** future automation that transfers media and requests platform scheduling from the saved plan. The existing five-minute statistics checker is not an upload scheduler.
 
-Settings → Publishing will own timezone/four destination defaults. Changes affect new plans; applying them to existing editable plans is explicit. Use Europe/London for UK planning and handle GMT/BST. Actual clock-time preferences still need setting, not guessing from examples.
+Settings → Publishing owns timezone/four destination defaults. Changes affect new plans; applying them to existing editable plans is explicit. Use Europe/London for UK planning and handle GMT/BST. Actual clock-time preferences must be chosen in Settings, not guessed from examples.
+
+
+**My plans:** saved intended release/post records in the private OS database. Editing intended timing does not reschedule a platform upload. **Example plans:** fictional temporary layout examples, kept separate from My plans and the actual YouTube schedule. A saved working-title rename updates its plan cards; linked project metadata/artwork remains a later connection. **Use current Publishing default:** explicitly replace a post override with the destination's currently saved default time. **Review plan changes:** preview changes before applying current defaults to eligible existing plans; personal overrides/platform-linked records are excluded.

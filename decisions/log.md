@@ -704,3 +704,12 @@ Delivered CJ's full-width/no-summary/four-filter/coloured-logo revision in priva
 ## 16 October2026 — shared Publishing settings and calendar integration sequence
 
 CJ confirmed main Settings → Publishing for Europe/London and separate YouTube/Shorts/TikTok/Reels default times, per-post intended-time overrides and shared records between calendar, relevant dashboard data and future upload scheduler. Defaults affect new plans; explicit apply-to-existing is separate from confirmed platform rescheduling. No actual default clock times are agreed. Code-grounded integration map saved at docs/dashboard/planner/INTEGRATION-MAP.md; next build is Settings plus durable plans before uploader/optional finance layers. Existing analytics selection tables are not release-plan storage, Drive metadata IDs are not renderable artwork, and source-derived facts remain read-only. This checkpoint records architecture/sequence, not delivered runtime links.
+
+
+## 17 October2026 — Publishing settings and durable calendar plans delivered
+
+CJ explicitly authorised the first two integration steps. Private Site version78/source877cf52f41c55747c91fab8a3b9bb3b68c6ca595 now has Settings → Publishing and My plans persistence/editing. Four platform defaults start blank; UK timezone and DST resolution are explicit. New plans inherit defaults; existing-plan changes require preview/apply, excluding overrides/platform-linked posts. No provider write, upload or new source permission.
+
+Two additive D1 tables hold owner settings and a bounded plan catalogue. Atomic catalogue/settings revision fences protect concurrent edits; stable release/post IDs and revisions support future associations/jobs. This deliberately uses owner-scoped catalogue JSON for the small104-week planning scope rather than repurposing analytics selections or copying Drive records. Generated0009 migration/snapshot/journal committed; existing tables/data remain untouched.
+
+Saved unfinished titles, one Monday week,19 posts, per-post intended date/time/default overrides and whole-week/title edits are implemented. Examples/actual YouTube schedules stay separate. Shared soft-theme stylesheet and authenticated script routes are reused by Settings and Calendar; compiled checks caught/fixed framework CSS-route wrapping. Backend SQLite and actual UI-script/API fixtures, Planner/group regressions/build/private200/401 pass; rendered/device and live owner save remain unverified. Next is project/readiness/artwork/media association. No upload testing is needed to trial these two steps.

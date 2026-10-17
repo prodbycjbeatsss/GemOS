@@ -1,12 +1,12 @@
 # GemOS dashboard — current handoff
 
-Updated 16 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_SYSTEM.md, docs/DESIGN_TOKENS.md and the affected group's specification/usage/components. Earlier handoff: [archived checkpoint](../../archives/dashboard/2026-10-15/pre-source-reconciliation/HANDOFF.md).
+Updated 17 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_SYSTEM.md, docs/DESIGN_TOKENS.md and the affected group's specification/usage/components. Earlier handoff: [archived checkpoint](../../archives/dashboard/2026-10-15/pre-source-reconciliation/HANDOFF.md).
 
 ## Deployment and source authority
 
 Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Private Site version77: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_8fd211e428208191801de97660217510`; source `dc826293ef091983d36ee61d326c922bdd5cb4b8`; deployment `appgdep_6ad29a2e042c8191b81baf2eb93c9147`, succeeded16October2026 at21:42UTC. Runtime revision6/private audience retained. Version75 introduced read-only Release Buffer; version76 was the first separate Planner prototype.
+Private Site version78: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_86cd8eac8fe48191b093f8ea6f0b755a`; source `877cf52f41c55747c91fab8a3b9bb3b68c6ca595`; deployment `appgdep_6ad359c1ac648191a93c56ecbcf58521`, succeeded17October2026 at11:19UTC. Runtime revision6/private audience retained. Version75 introduced Release Buffer;76–77 introduced/revised the separate Planner.
 
 Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboard/2026-10-15/pre-youtube-schedule/HANDOFF.md). Existing credentials/scopes/tables/owner data are preserved.
 
@@ -61,15 +61,19 @@ CJ's later chat reports Sync all and uniform timestamps pass, channel-wide Short
 
 Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, verify-weekly-shorts.mjs, verify-sync-times.cjs, verify-card-sync.mjs, verify-sync-controls-ui.cjs, verify-state.cjs, verify-automations.mjs and verify-capture.mjs — all pass. These cover reporting/classification/date boundaries, cache and state retention, timestamps, safe sync controls, owner/origin validation and immutable snapshot behaviour. That earlier source reconciliation has now been followed by the schedule feature, production build and compiled authentication checks described above. No live owner schedule-provider query or rendered/device audit was performed.
 
+## Publishing settings and durable plans — delivered17October2026
+
+/settings stores four blank-by-default destination times and Europe/London timezone. Explicit preview/apply updates eligible existing planned posts; overrides/platform-linked posts stay excluded. /planner defaults to My plans, with persistent unfinished releases, one Monday release week and19 stable intended posts. Open a post to edit intended timing or adopt its current default; Edit release changes the working title or moves the whole week retaining post times/overrides. Existing provider schedule and examples are separate sources. Neither plan edits nor settings perform uploads/rescheduling.
+
+Two additive D1 tables, generated0009 migration/snapshot/journal, owner-checked APIs and atomic catalogue/settings revision fences are delivered. Plans are stored as a bounded owner catalogue rather than duplicating Drive/analytics records; release/post IDs and revisions remain stable for future associations/jobs. Shared raw soft-theme CSS serves Calendar and Settings; Calendar/Settings links sit outside the four dashboard groups. All existing data/scopes/snapshots remain untouched.
+
+Backend SQLite, real UI-script/API fixtures, Planner/group regressions, production build and compiled owner200/unauthorised401 checks pass. No supported rendered browser/device QA or live owner save is claimed. Runtime contract: [PLANNER](integration-tests/youtube/PLANNER.md). First user check needs only four default times and an unfinished test title, not media/uploads.
+
 ## Next work
 
-CJ confirmed Settings → Publishing for default platform times/timezone, per-post planned overrides and shared settings/project/post records across calendar, dashboard and future scheduler. Defaults apply to new plans; existing-plan changes are explicit; already scheduled posts require separately confirmed provider rescheduling. No actual clock times are agreed.
-
-Read [Calendar integration map](planner/INTEGRATION-MAP.md) before implementation. Code review identifies per-project readiness reads, reviewed metadata authority, private artwork/media delivery and exact provider IDs as concrete dependencies. youtube_release_selections is analytics selection, not a plan table. Do not repurpose it or mutate dashboard selected_id to render the calendar.
-
-1. First build: owner-private Settings → Publishing, then persistent release/post plans and calendar timing edits.
-2. Link shared project/readiness/metadata/artwork and exact upload identities; add published history/per-post reporting next.
-3. Build the upload scheduler only after real media/provider permissions and job/retry/reschedule design. Existing five-minute job checks statistics; it does not upload.
-4. Optional dated finance/newsletter layers follow core planning. Payhip store/licence work stays parked; no invented source evidence. Retain all accepted analytics/Sync-all behaviour and existing security/snapshot invariants.
+1. CJ: set default times at /settings, create a saved test release at /planner, reload, edit one intended time and check both themes. Record layout/save problems without requiring real uploads.
+2. Implement the next integration-map slice: explicit project folder/readiness/review/artwork/media associations. Per-project saved reads must not change selected_id.
+3. Add exact upload identities, actual published history and per-post reporting. Then build the uploader with real provider/media capabilities and job safety.
+4. Preserve accepted analytics/Sync-all behaviour; genuine Buffer/24h capture evidence waits for uploads. Optional finance/newsletter calendar layers and parked Payhip store/licence work remain later.
 
 Preserve existing credentials/scopes, owner records, immutable snapshots, saved subscriptions and historical failures. Detailed source contracts retain the distinctions between real zero, unavailable, partial, failed and stale data.

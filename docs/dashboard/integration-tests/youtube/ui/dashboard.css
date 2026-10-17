@@ -33,3 +33,5 @@ body #card-release-buffer .group-card-footer{justify-content:space-between}
 body .sync-tile .tile-actions{margin-top:auto}
 body .sync-tile .card-sync-time{text-align:center}
 body .cost-footer>.card-sync-time{order:3;flex-basis:100%;text-align:left}
+
+.dashboard-header{flex-wrap:wrap}.os-navigation{display:flex;justify-content:flex-end;gap:12px;width:100%}.os-navigation a{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;color:var(--shell-muted);font-size:12px;text-decoration:none;border-radius:12px}.os-navigation a:hover{background:var(--shell-selected)}.os-navigation a:focus-visible{outline:2px solid var(--shell-focus);outline-offset:3px}@media(max-width:599px){.os-navigation{justify-content:flex-start}}

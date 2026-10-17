@@ -1,6 +1,6 @@
 # GemOS — current implementation plan
 
-Updated16October2026. Current source/acceptance: [HANDOFF](HANDOFF.md). Wording: [glossary.md](../../glossary.md).
+Updated17October2026. Current source/acceptance: [HANDOFF](HANDOFF.md). Wording: [glossary.md](../../glossary.md).
 
 ## Completed and accepted
 
@@ -21,20 +21,30 @@ Full-width responsive workspace, no release-summary box/sidebar, selectors below
 
 Default source reads the same saved YouTube schedule as Release Buffer through its existing GET endpoint, with visible freshness, independent format filters, unverified/stale/error/empty states and access-loss clearing. No new provider calls, scopes, schema or scheduling writes. Separate Example plans retain the19-entry weekly demonstration, all Planned only. No fake project association or file-readiness result.
 
-## Next sequence — confirmed direction16October2026
+## Delivered — Publishing settings and saved plans,17October2026
 
-Code-grounded dependencies and all dashboard connections: [Calendar integration map](planner/INTEGRATION-MAP.md). Main Settings → Publishing and shared plan ownership are confirmed; actual default times remain unset.
+Private version78, source `877cf52f41c55747c91fab8a3b9bb3b68c6ca595`, deployment `appgdep_6ad359c1ac648191a93c56ecbcf58521` succeeded17October at11:19UTC. Existing private audience/runtime revision6 retained.
 
-1. Build owner-private Settings → Publishing: Europe/London timezone and four platform default times, saved per owner. Defaults affect new plans only; explicit apply-to-existing excludes platform-scheduled posts.
-2. Add durable release/post records, unfinished working titles, one release/week,19 intended posts and per-post time overrides; connect calendar editing with revision checks.
-3. Link owned project folders and per-project saved readiness without changing dashboard selection; reuse reviewed metadata, artwork references, ordered clips and queue evidence. Implement real private artwork delivery separately from metadata IDs.
-4. Add explicit owned upload associations, publication history and relevant performance/24h details; extend Automation context without changing existing reporting scopes.
-5. Build a verified upload scheduler one provider at a time after media/permissions/runtime design. It consumes the same saved posts; provider-confirmed facts remain separate and rescheduling requires explicit action.
-6. Add optional subscription/newsletter/payment history layers where dates are meaningful. Payhip store/licence work stays parked. Never force non-event metrics into the calendar.
+Settings → Publishing (/settings) saves four initially blank platform times with Europe/London timezone. Defaults affect new plans only; Review plan changes previews an explicit apply to eligible existing planned posts, excluding personal overrides/platform-linked records. No actual defaults were guessed.
 
-Visual/device checks remain open and should accompany each slice; they do not require repeating accepted analytics or waiting for real uploads before building Settings/saved unfinished plans.
+My plans is the default calendar source. Add release saves an unfinished title and Monday week plus19 stable post IDs. Post details edit intended dates/times within the week and can adopt the current default; Edit release renames or shifts the whole week while retaining times/overrides. Reload/new clients restore saved plans. Examples and actual YouTube source evidence remain separate.
+
+The storage uses two additive D1 tables with generated migration/snapshot/journal. Plans are a bounded owner catalogue (104 active weeks), atomic revision-checked writes and stable per-release/post IDs/revisions. A settings change during a plan write is fenced by the same SQL operation. Browser storage keeps only theme preference.
+
+## Next sequence
+
+1. CJ sets the four default times in Settings → Publishing and creates an unfinished test release in Calendar → My plans. Verify save/reload, one post override and both themes on phone/desktop; no actual upload or full project is needed.
+2. Link owned project folders, per-project saved readiness, reviewed metadata, artwork/private image delivery and ordered media IDs. Read project-specific state without changing dashboard selection.
+3. Add exact owned upload associations and published history/per-post metrics; preserve existing Buffer/analytics meanings.
+4. Build the upload scheduler only after provider/media/permissions design; it consumes these saved posts. Explicit platform rescheduling is separate from intended-time editing.
+5. Optional dated finance/newsletter layers follow core planning. Payhip store/licence work stays parked. Real Buffer/24h evidence waits for uploads.
+
+Complete connection map: [INTEGRATION-MAP](planner/INTEGRATION-MAP.md). Steps1–2 of that build sequence are implemented; project/media associations remain next.
 
 ## Validation
+
+New checks: verify-publishing.mjs (real SQLite/handlers, persistence, owner/origin/input guards,19 slots, overrides, rename/week shift, default preview/apply, stale revisions/settings races and GMT/BST missing/repeated hours); verify-publishing-ui.mjs (real UI script against actual handlers: fresh-client reload, save/conflict/apply, theme-only storage and no provider calls). Both pass. Updated compiled settings/script/CSS private200/401 checks pass, as do production build, Planner and group-navigation regressions. The CSS route initially failed due to framework CSS wrapping; raw text import fixes it and compiled response checks cover it. No rendered browser/device or owner live save is claimed.
+
 
 verify-planner.cjs:19-entry cadence, four independent filters, source isolation, navigation, theme-only persistence, literal titles, unfinished drafts, date/duplicate guards, read-only dialogs and shared-cache GET fixtures. Scheduling fixtures cover UK slots/DST, processing, auth, disconnect fencing and provider read-only behaviour. Production build/compiled owner200/unauthorised401 checks pass. Text contrast source-token checks pass including all four tint/hover combinations; actual compositing, fonts, geometry, touch targets and Android Back remain unverified.
 

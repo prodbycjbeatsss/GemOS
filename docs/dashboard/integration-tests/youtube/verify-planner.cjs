@@ -8,7 +8,7 @@ class Element{
  replaceChildren(...nodes){const off=n=>{if(n instanceof Element){n.isConnected=false;for(const child of n.children)off(child);}};this.children.forEach(off);this.children=[];this.append(...nodes);}
  setAttribute(k,v){this.attrs[k]=v;}addEventListener(k,fn){this.listeners[k]=fn;}fire(k,e={}){return this.listeners[k]?.({currentTarget:this,...e});}focus(){focused=this;}showModal(){this.open=true;}close(){this.open=false;this.fire('close');}reset(){}getBoundingClientRect(){return {left:10,right:100,top:10,bottom:100};}
 }
-const html=fs.readFileSync('ui/planner.html','utf8'),ids=[...html.matchAll(/id="([^"]+)"/g)].map(x=>x[1]);assert.equal(ids.length,new Set(ids).size,'unique DOM IDs');
+const html=fs.readFileSync('ui/planner.html','utf8')+'<style>'+fs.readFileSync('ui/planner-styles.txt','utf8')+'</style>',ids=[...html.matchAll(/id="([^"]+)"/g)].map(x=>x[1]);assert.equal(ids.length,new Set(ids).size,'unique DOM IDs');
 const source=html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const elements=Object.fromEntries(ids.map(id=>{const e=new Element();e.id=id;return [id,e];}));
 const views=['week','month','year'].map(view=>{const e=new Element('button');e.dataset.view=view;return e;});
@@ -17,7 +17,7 @@ let apiResult={ok:true,status:200,data:{channels:[],channel:null,report:null}},a
 const context={fetch:async(url,options)=>{apiCalls.push({url,options});return {ok:apiResult.ok,status:apiResult.status,json:async()=>apiResult.data};},AbortSignal:{timeout:()=>null},window:{addEventListener:(name,handler)=>windowListeners[name]=handler},Array,document:{documentElement:new Element('html'),getElementById:id=>elements[id],createElement:tag=>new Element(tag),createElementNS:(ns,tag)=>new Element(tag),querySelectorAll:selector=>selector==='[data-view]'?views:[]},Date:FixedDate,Intl,Set,Number,String,localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},setTimeout(){return 1;},clearTimeout(){}};
 vm.createContext(context);vm.runInContext(source,context);
 const settle=async()=>{for(let i=0;i<8;i++)await Promise.resolve();};await settle();
-assert.equal(elements['visible-count'].textContent,'0 visible posts');assert.match(elements['source-notice'].textContent,/not connected/);assert.equal(elements['add-release'].hidden,true);elements['source-examples'].fire('click');
+assert.equal(elements['visible-count'].textContent,'0 visible posts');assert.match(elements['source-notice'].textContent,/Loading your saved plans/);assert.equal(elements['add-release'].hidden,false);elements['source-schedule'].fire('click');await settle();assert.match(elements['source-notice'].textContent,/not connected/);assert.equal(elements['add-release'].hidden,true);elements['source-examples'].fire('click');
 const walk=e=>[e,...e.children.flatMap(c=>c instanceof Element?walk(c):[])],withClass=(e,c)=>walk(e).filter(n=>(n.className||'').split(' ').includes(c));
 assert.equal(elements['week-view'].hidden,false);assert.equal(elements['week-board'].children.length,7);assert.deepEqual(elements['week-board'].children.map(c=>withClass(c,'upload-card').length),[1,3,3,3,3,3,3],'19 separate platform posts');assert.equal(elements['visible-count'].textContent,'19 visible posts');
 assert.equal(elements['week-strip'].children.length,7);assert.equal(elements['agenda-list'].children.length,3,'mobile selected Thursday has three entries');assert.equal(context.document.documentElement.dataset.theme,'dark');

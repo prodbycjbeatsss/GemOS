@@ -1,6 +1,6 @@
 # Release Planner — specification
 
-Updated16October2026. Separate owner-private /planner route using the GemOS design system. Shared product wording: [glossary.md](../../../glossary.md).
+Updated17October2026. Separate owner-private /planner route using the GemOS design system. Shared product wording: [glossary.md](../../../glossary.md).
 
 ## Layout
 
@@ -14,7 +14,7 @@ Keep Inter/Poppins,32/22/12px radii,20/24px gutters (12px narrow-phone exception
 
 ## Shared source and status ownership
 
-YouTube schedule is the default source. GET /api/youtube/schedule reuses the exact saved owner/channel/connection-revision/current-anchor report shown by Release Buffer. No provider query, write or monitored run occurs on reading the calendar. Reload on focus/source selection; Sync the existing Release Buffer workflow to refresh Studio data. Source timestamp remains visible.
+My plans is the default source (see saved-plan section below). YouTube schedule remains a separate read-only source. GET /api/youtube/schedule reuses the exact saved owner/channel/connection-revision/current-anchor report shown by Release Buffer. No provider query, write or monitored run occurs on reading the calendar. Reload on focus/source selection; Sync the existing Release Buffer workflow to refresh Studio data. Source timestamp remains visible.
 
 Each actual upload has its real ID/title/UK publication time. Verified main/Short format determines the filter; unknown format/processing stays Unverified. Expired timestamps or retained results after a failed read say Stale, never Published. Deduplicate video IDs. Successful empty results, no saved check, disconnected source, required channel selection and errors remain distinct. Lost access or channel mismatch clears the records.
 
@@ -22,16 +22,30 @@ An actual upload's Artwork unavailable placeholder is explicit; no invented thum
 
 The calendar does not alter Buffer's seven-YouTube-upload coverage eligibility or its first-gap stopping rule. A scheduled wrong-day upload can appear without filling a required slot.
 
+## Saved plans and Publishing settings — delivered17October2026
+
+Settings → Publishing at /settings persists four initially blank local times and Europe/London timezone. New release plans inherit those defaults; all four must be set before generating19 posts. Defaults do not automatically rewrite existing plans. Review plan changes previews and explicitly applies eligible default changes, preserving personal overrides and platform-linked records.
+
+My plans is the default source. Add release accepts an unfinished working title and Monday week; one active release/week and104 active weeks maximum. Save persists19 posts (1 main +6 per short-form destination), stable IDs, intended local/UTC timing, timezone, time source/default revision and record revisions. Open a saved post to edit its date/time within that release week or use the current default. Edit release renames its working title or shifts the entire week while retaining times/overrides.
+
+Owner-catalogue optimistic concurrency rejects stale edits and settings-write races. Save/reload/focus restores shared private records; unsaved modal/settings edits are protected from refresh. Dates use DST-aware UK conversion, rejecting nonexistent times and requiring first/second occurrence choice when repeated. Planning APIs cannot set provider-confirmed status or bind arbitrary platform IDs. Project/readiness/artwork/media associations remain the next slice, so readiness is Not checked.
+
+Shared ui/planner-styles.txt is served as /planner.css to reuse soft-theme rules on Calendar and Settings. The .txt raw import avoids the framework's CSS-route wrapping; authenticated script/style routes are covered by compiled response tests. Calendar and Settings utilities are available from all dashboard groups.
+
 ## Example plans
 
 A separate Example plans source supports visual review with fictional content. One main YouTube remix Monday plus one Short/TikTok/Reel each Tuesday–Sunday gives19 separate entries/week. All examples say Planned only, expressing intended time without readiness/scheduling confirmation. Examples never mix with actual source records.
 
-Add release appears only in Example plans. It accepts an unfinished working title, valid Monday and time, rejects duplicate weeks and creates19 in-memory entries. Drafts reset on reload. Post details show planned timing plus asset readiness Not checked, a source explanation and dashboard link. Native dialogs support Close, Escape, backdrop dismissal and focus return.
+The example Add release flow appears while Example plans is selected; My plans has its own persistent flow. It accepts an unfinished working title, valid Monday and time, rejects duplicate weeks and creates19 in-memory entries. Drafts reset on reload. Post details show planned timing plus asset readiness Not checked, a source explanation and dashboard link. Native dialogs support Close, Escape, backdrop dismissal and focus return.
 
 ## Delivery and limits
+
+Version78 adds Publishing settings and durable plans, source `877cf52f41c55747c91fab8a3b9bb3b68c6ca595`. Backend SQLite and actual UI-script/API fixtures, generated schema checks, Planner/group regressions and compiled owner200/401 build checks pass. No rendered or live owner-save acceptance is claimed.
+
+Historical version77 delivery:
 
 Delivered private Site version77, source `dc826293ef091983d36ee61d326c922bdd5cb4b8`, on16October2026. [Runtime contract and checks](../integration-tests/youtube/PLANNER.md).
 
 Actual inline-script and saved-API fixture tests, source-token contrast checks, existing scheduling backend fixtures, production build and compiled private200/401 checks pass. No browser-rendered/device QA or live owner-cache comparison is claimed.
 
-Next: review actual responsive rendering in both themes, then owner-scoped saved plans and explicit project/asset/upload associations sharing dashboard records. No source-derived fact becomes manually editable.
+Next: review actual responsive rendering in both themes, then explicit project/asset/upload associations sharing dashboard records. Saved owner-scoped plans/settings are delivered. No source-derived fact becomes manually editable.

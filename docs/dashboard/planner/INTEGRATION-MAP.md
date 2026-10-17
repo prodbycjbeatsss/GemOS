@@ -1,10 +1,10 @@
 # Calendar integration map and build sequence
 
-Code-reviewed16October2026 against Site source dc826293ef091983d36ee61d326c922bdd5cb4b8 / GemOS d2df34a0773b1924d22902718eeb184d655340fe. This document is an implementation plan, not a claim that pending links exist.
+Code-reviewed16October2026 against Site source dc826293ef091983d36ee61d326c922bdd5cb4b8 / GemOS d2df34a0773b1924d22902718eeb184d655340fe. Updated17October2026: Publishing settings and durable plan editing are delivered in version78. Later integration slices remain a plan.
 
 ## Current position
 
-/planner defaults to GET /api/youtube/schedule, the same saved owner/channel report as Release Buffer. Four destination filters, source freshness, read-only statuses and isolated fictional examples are implemented. No durable publishing defaults, saved release/post plans, project association, upload job or platform write exists.
+/planner now defaults to My plans. The separate YouTube schedule source uses GET /api/youtube/schedule, the same saved owner/channel report as Release Buffer. Four destination filters, source freshness, read-only statuses and isolated fictional examples are implemented. Version78 adds owner-saved Publishing defaults and release/post plans with calendar timing edits. Project/media associations, upload jobs and platform writes remain absent.
 
 CJ confirmed a main Settings → Publishing page, Europe/London timezone, separate main YouTube/Shorts/TikTok/Reels default post times, per-post planned-time overrides and shared records across relevant dashboard/calendar/scheduler views. Defaults affect new plans; applying them to existing editable plans is explicit. Already scheduled platform posts require a separately confirmed rescheduling action and platform success. No actual default clock times have been agreed; the example times must not be silently promoted into saved settings.
 
@@ -12,8 +12,8 @@ CJ confirmed a main Settings → Publishing page, Europe/London timezone, separa
 
 | Source / owner | Existing code and data | Calendar connection | Delivery / priority |
 |---|---|---|---|
-| Main Settings → Publishing | No publishing-settings route/table currently | Owner timezone, four destination default times, new-plan defaults, explicit apply-to-existing preview | Foundation: build first |
-| Release/post plans | ui/planner.html only has in-memory examples | Stable release/post IDs, Monday week,19 intended posts, working title, dates/times, overrides, change revisions | Foundation: durable storage missing |
+| Main Settings → Publishing | /settings; server/publishing.mjs; publishing_settings | Owner timezone, four destination default times, new-plan defaults, explicit apply-to-existing preview | Delivered version78 |
+| Release/post plans | server/publishing.mjs; release_plan_state; ui/plans.js | Stable release/post IDs, Monday week,19 intended posts, working title, dates/times, overrides, change revisions | Delivered version78 |
 | Project identity / metadata | server/assets.mjs: drive_release_projects, drive_release_reviews; server/project-name.mjs | Explicit owner/project folder ID, reviewed artist/title/BPM/key/credits, production/queue/released location and availability | Direct link after plan identity |
 |1.2 Release Readiness | server/assets.mjs: result_json, checked_at, reviewed signature, drive_release_moves | Read each linked project's assets/readiness/review/queue evidence; detail links to existing preparation workflow | Direct link; no copied status enum |
 | Artwork and media files | assets thumbnail/video/shorts roles and confirmed IDs/order | Shared artwork reference, main MP4, six ordered source clips reused across Shorts/TikTok/Reels; file changes invalidate stale evidence | Direct link; private image/media delivery still needed |
@@ -66,10 +66,10 @@ Resolve local date/time with DST-aware Europe/London conversion; reject nonexist
 
 ## Build sequence and acceptance
 
-###1. Settings → Publishing (first build)
+###1. Settings → Publishing — delivered version78
 Owner-private page and API with four labelled destination times/timezone, no fabricated defaults, optimistic concurrency, shared navigation/glossary. Save/reload persists; owner isolation, origin/input validation and GMT/BST behaviour checked. No scheduler or provider action.
 
-###2. Saved plans and calendar editing
+###2. Saved plans and calendar editing — delivered version78
 Persist release/post plans, generate19 slots from configured defaults, allow unfinished projects and explicit per-post overrides. Calendar reads saved plans independently of actual provider evidence; examples stay isolated. Validate unique week, revisions, default-change rules, no writes to platform schedules and reload/cross-tab refresh.
 
 ###3. Project/readiness/metadata/artwork
@@ -84,4 +84,4 @@ Verify provider upload/scheduling capability, permissions, large-media path and 
 ###6. Optional dated layers
 Subscription due dates first (existing recurrence logic), then actual newsletter/payment/sales dates if wanted. Park Payhip store/licence development as instructed. Do not delay core release planning for finance/social integration gaps.
 
-No runtime changes or new links are claimed by this mapping checkpoint. The first implementation target is Settings → Publishing followed immediately by saved release/post plans, rather than more calendar decoration.
+Version78 delivers steps1–2 through two additive D1 tables and a shared authenticated planning service. The plan catalogue is owner-scoped JSON with atomic catalogue revisions plus stable release/post IDs/revisions, bounded to104 active weeks. This is simpler than premature normalized associations and preserves future per-post job/association identity. New migration/snapshot/journal are generated; existing table history stays unchanged. Next: step3 project/readiness/metadata/artwork links. No upload or platform-write feature is claimed.

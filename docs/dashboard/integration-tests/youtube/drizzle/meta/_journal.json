@@ -64,6 +64,13 @@
       "when": 1791940619916,
       "tag": "0008_analytics_sync_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1792235798135,
+      "tag": "0009_smiling_shooting_star",
+      "breakpoints": true
     }
   ]
 }

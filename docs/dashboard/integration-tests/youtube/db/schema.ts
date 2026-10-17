@@ -52,3 +52,6 @@ export const automationSyncTargets = sqliteTable('automation_sync_targets', {
 },table=>[primaryKey({columns:[table.userId,table.automation]})]);
 
 export const analyticsSyncCache=sqliteTable('analytics_sync_cache',{userId:text('user_id').primaryKey(),reportJson:text('report_json').notNull(),updatedAt:integer('updated_at').notNull()});
+
+export const publishingSettings=sqliteTable('publishing_settings',{userId:text('user_id').primaryKey(),settingsJson:text('settings_json').notNull(),revision:integer('revision').notNull(),updatedAt:integer('updated_at').notNull()});
+export const releasePlanState=sqliteTable('release_plan_state',{userId:text('user_id').primaryKey(),stateJson:text('state_json').notNull(),revision:integer('revision').notNull(),updatedAt:integer('updated_at').notNull()});
