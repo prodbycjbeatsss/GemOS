@@ -26,7 +26,7 @@ The calendar does not alter Buffer's seven-YouTube-upload coverage eligibility o
 
 Settings → Publishing at /settings persists four initially blank local times and Europe/London timezone. New release plans inherit those defaults; all four must be set before generating19 posts. Defaults do not automatically rewrite existing plans. Review plan changes previews and explicitly applies eligible default changes, preserving personal overrides and platform-linked records.
 
-My plans is the default source. Add release accepts an unfinished working title and Monday week; one active release/week and104 active weeks maximum. Save persists19 posts (1 main +6 per short-form destination), stable IDs, intended local/UTC timing, timezone, time source/default revision and record revisions. Open a saved post for read-only timing and a selected-post Settings link. Settings → Publishing → Individual planned posts edits dates/times within that release week, applies the current default and moves the whole release week retaining times/overrides. Calendar only edits an existing working title; its existing week/fold fields are disabled and title-save uses the stored week.
+My plans is the default source. Add release accepts an unfinished working title and Monday week; one active release/week and104 active weeks maximum. Save persists19 posts (1 main +6 per short-form destination), stable IDs, intended local/UTC timing, timezone, time source/default revision and record revisions. Open a saved post directly in one dialog with an editable release working title, read-only timing/facts and a selected-post Settings link. Name changes apply to all19 posts in that release; no second edit screen. Settings → Publishing → Individual planned posts edits dates/times within that release week, applies the current default and moves the whole release week retaining times/overrides. Calendar only edits an existing working title; its existing week/fold fields are disabled and title-save uses the stored week.
 
 Owner-catalogue optimistic concurrency rejects stale edits and settings-write races. Save/reload/focus restores shared private records; unsaved modal/settings edits are protected from refresh. Dates use DST-aware UK conversion, rejecting nonexistent times and requiring first/second occurrence choice when repeated. Planning APIs cannot set provider-confirmed status or bind arbitrary platform IDs. Project/readiness/artwork/media associations remain the next slice, so readiness is Not checked.
 
@@ -55,3 +55,10 @@ Delivered private Site version77, source `dc826293ef091983d36ee61d326c922bdd5cb4
 Actual inline-script and saved-API fixture tests, source-token contrast checks, existing scheduling backend fixtures, production build and compiled private200/401 checks pass. No browser-rendered/device QA or live owner-cache comparison is claimed.
 
 Next: review actual responsive rendering in both themes, then explicit project/asset/upload associations sharing dashboard records. Saved owner-scoped plans/settings are delivered. No source-derived fact becomes manually editable.
+
+
+## Editor clarification —version80
+
+A saved card is one editor, combining its release working-title input with read-only timing/evidence and Settings link. The title is shared by all19 release posts, not an upload title written back to platforms. Release/post UUIDs remain unchanged by editing. Drive folder IDs exist separately; explicit project association is still next.
+
+Do not show UK clock-change fields for ordinary times. Reveal first occurrence (BST) / second occurrence (GMT) only if server validation identifies a duplicated local hour, and hide after resolution/relevant input changes. A nonexistent spring-forward time still requires another time. UI/API fixtures and production/compiled auth checks pass; no rendered device claim.

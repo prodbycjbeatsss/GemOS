@@ -6,7 +6,7 @@ Updated 17 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_S
 
 Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Private Site version79: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_0c6a68f2289c8191ae83390e74de7a97`; source `c2f0d30d58d3caa3cc676f813d1f3d6bca802d3c`; deployment `appgdep_6ad36d0c859881919f30dbebdcac534b`, succeeded17October2026 at12:42UTC. Runtime revision6/private audience retained. Version78 added saved plans/settings;79 moves existing timing edits exclusively into Settings.
+Private Site version80: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_74096e113c6881918ae3f0759652aa2f`; source `f39900befc02637b1684e8725867a10a22c41fb8`; deployment `appgdep_6ad36e6aa59481919817a07c1c3c553e`, succeeded17October2026 at12:47UTC. Runtime revision6/private audience retained. Version78 added saved plans/settings;79 restricted existing timing edits to Settings;80 gives one-click name editing and contextual clock guidance.
 
 Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboard/2026-10-15/pre-youtube-schedule/HANDOFF.md). Existing credentials/scopes/tables/owner data are preserved.
 
@@ -72,6 +72,12 @@ Backend SQLite, real UI-script/API fixtures, Planner/group regressions, producti
 ## Timing editing rule —17October2026
 
 CJ requires timing changes only from Settings to avoid accidental rescheduling. Version79 implements this for individual posts and release-week moves. Calendar has no saved-post date/time controls, and its existing release-week field is disabled; title-save uses the stored week. Deep links select the intended post in Publishing settings. Settings edits update the same saved plan records; actual provider schedule evidence remains separate and unchanged. Real UI/API, Planner and compiled/build checks pass; rendered device evidence remains pending.
+
+## Single editor / stable IDs —17October2026
+
+Version80: clicking a saved card opens its release working-title input directly with read-only timing/facts and a Settings timing link. Save name updates that shared release's19 planned posts; no nested edit dialog. Clock-change fields normally stay hidden and appear only for an actual repeated UK local time, with plain first/second wording.
+
+Releases and posts already have stable UUIDs; Drive projects have stable folder IDs. The explicit owner/release/project-folder association is not implemented yet. Do not imply IDs alone establish a relationship. UI/API identity/name/clock-choice fixtures and build/compiled200/401 pass. The first publish attempt hit a transient Sites DB rate limit; the same saved version was successfully deployed on retry. No schema/source permission/provider write changed.
 
 ## Next work
 

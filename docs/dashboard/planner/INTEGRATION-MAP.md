@@ -87,3 +87,6 @@ Verify provider upload/scheduling capability, permissions, large-media path and 
 Subscription due dates first (existing recurrence logic), then actual newsletter/payment/sales dates if wanted. Park Payhip store/licence development as instructed. Do not delay core release planning for finance/social integration gaps.
 
 Version78 delivers steps1–2 through two additive D1 tables and a shared authenticated planning service. The plan catalogue is owner-scoped JSON with atomic catalogue revisions plus stable release/post IDs/revisions, bounded to104 active weeks. This is simpler than premature normalized associations and preserves future per-post job/association identity. New migration/snapshot/journal are generated; existing table history stays unchanged. Next: step3 project/readiness/metadata/artwork links. No upload or platform-write feature is claimed.
+
+
+Version80 clarification: each saved card opens one combined release-name editor/read-only facts view. Existing release/post UUIDs are persistent; project folder IDs are persistent; explicit association remains step3. Clock-choice UI is conditional on an actual ambiguous UK local time, not an always-visible setting. This changes presentation only, preserving the Settings-only timing rule.

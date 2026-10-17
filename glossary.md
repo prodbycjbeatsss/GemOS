@@ -64,3 +64,8 @@ Settings → Publishing owns timezone/four destination defaults. Changes affect 
 
 
 **Timing editing rule — confirmed17October2026:** Calendar displays existing post timing without editing controls and links to the selected post in Settings → Publishing → Individual planned posts. Defaults, overrides, date changes and whole-release-week moves are managed there. Calendar can create an initial plan and edit its working title. Shared-record connections determine which dashboard views refresh; pending project/artwork links must not be claimed as implemented. Actual provider scheduling changes remain a separate explicit operation, never a side effect of editing a plan.
+
+
+**Release ID / Post ID:** stable unique identifiers assigned when a saved plan is created. Renaming or changing intended timing does not change these IDs. **Project folder ID:** the existing stable Drive folder identifier used by readiness records. A release-to-project association must explicitly join these identities; IDs do not create that link automatically.
+
+**Release working title:** the shared plan name shown by its19 posts; version80 edits it directly in the card dialog. It is not a platform title-update action. **Repeated local hour:** when UK clocks go back, a time such as01:30 occurs once in BST and once in GMT. Ask which occurrence only when that exact ambiguity exists; normally keep the choice hidden.

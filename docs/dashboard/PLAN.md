@@ -37,6 +37,14 @@ Private version79, source `c2f0d30d58d3caa3cc676f813d1f3d6bca802d3c`, deployment
 
 Real UI/API fixtures cover read-only Calendar, correct selected-post deep links, Settings saves/reload, stale Settings conflicts, override preservation/default apply and Settings-only week moves. Production/compiled owner200/401 and Planner checks pass. No schema/provider/uploader changes or rendered/live-account acceptance claimed.
 
+## Single card editor and clear clock guidance —delivered17October2026
+
+Private version80, source `f39900befc02637b1684e8725867a10a22c41fb8`, deployment `appgdep_6ad36e6aa59481919817a07c1c3c553e` succeeded12:47UTC. A saved calendar card opens directly to the release working-title input alongside read-only facts and timing; no second Edit working title screen is required. The name is shared by all19 planned posts. IDs remain stable across rename/timing/week changes.
+
+Clock-choice selectors are hidden unless backend validation finds a repeated UK local time; plain first-BST/second-GMT wording appears only then and hides after resolution/relevant changes. Existing unique release/post UUIDs and Drive folder IDs are distinct from the still-pending explicit association between them. Schema/provider permissions are unchanged.
+
+UI/API fixtures cover single-card name editing, stable IDs, ordinary hidden clock controls and an affected01:30 requiring a choice. Build and compiled private200/401 pass; rendered/device acceptance remains pending.
+
 ## Next sequence
 
 1. CJ sets the four default times in Settings → Publishing and creates an unfinished test release in Calendar → My plans. Verify save/reload, one post override in Settings and both themes on phone/desktop; no actual upload or full project is needed.
