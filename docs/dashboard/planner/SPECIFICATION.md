@@ -26,7 +26,7 @@ The calendar does not alter Buffer's seven-YouTube-upload coverage eligibility o
 
 Settings → Publishing at /settings persists four initially blank local times and Europe/London timezone. New release plans inherit those defaults; all four must be set before generating19 posts. Defaults do not automatically rewrite existing plans. Review plan changes previews and explicitly applies eligible default changes, preserving personal overrides and platform-linked records.
 
-My plans is the default source. Add release accepts an unfinished working title and Monday week; one active release/week and104 active weeks maximum. Save persists19 posts (1 main +6 per short-form destination), stable IDs, intended local/UTC timing, timezone, time source/default revision and record revisions. Open a saved post to edit its date/time within that release week or use the current default. Edit release renames its working title or shifts the entire week while retaining times/overrides.
+My plans is the default source. Add release accepts an unfinished working title and Monday week; one active release/week and104 active weeks maximum. Save persists19 posts (1 main +6 per short-form destination), stable IDs, intended local/UTC timing, timezone, time source/default revision and record revisions. Open a saved post for read-only timing and a selected-post Settings link. Settings → Publishing → Individual planned posts edits dates/times within that release week, applies the current default and moves the whole release week retaining times/overrides. Calendar only edits an existing working title; its existing week/fold fields are disabled and title-save uses the stored week.
 
 Owner-catalogue optimistic concurrency rejects stale edits and settings-write races. Save/reload/focus restores shared private records; unsaved modal/settings edits are protected from refresh. Dates use DST-aware UK conversion, rejecting nonexistent times and requiring first/second occurrence choice when repeated. Planning APIs cannot set provider-confirmed status or bind arbitrary platform IDs. Project/readiness/artwork/media associations remain the next slice, so readiness is Not checked.
 
@@ -37,6 +37,12 @@ Shared ui/planner-styles.txt is served as /planner.css to reuse soft-theme rules
 A separate Example plans source supports visual review with fictional content. One main YouTube remix Monday plus one Short/TikTok/Reel each Tuesday–Sunday gives19 separate entries/week. All examples say Planned only, expressing intended time without readiness/scheduling confirmation. Examples never mix with actual source records.
 
 The example Add release flow appears while Example plans is selected; My plans has its own persistent flow. It accepts an unfinished working title, valid Monday and time, rejects duplicate weeks and creates19 in-memory entries. Drafts reset on reload. Post details show planned timing plus asset readiness Not checked, a source explanation and dashboard link. Native dialogs support Close, Escape, backdrop dismissal and focus return.
+
+## Settings-only timing rule —version79
+
+Confirmed17October2026: existing post date/time edits and release-week moves belong exclusively in Settings → Publishing. Calendar times remain read-only; no drag/drop or inline timing edit. Creating a new calendar plan may select its initial Monday; subsequent timing changes use Settings. A direct link from each saved post selects it in the Settings form. Changing a planned time does not update provider-confirmed scheduling; future rescheduling remains a separate explicit operation. Working-title edits remain in Calendar.
+
+Source `c2f0d30d58d3caa3cc676f813d1f3d6bca802d3c`, private version79. Updated real UI/API fixtures cover control location, deep links, conflict handling and unchanged Calendar week during a title edit; build/compiled private200/401 pass. No rendered proof claimed.
 
 ## Delivery and limits
 

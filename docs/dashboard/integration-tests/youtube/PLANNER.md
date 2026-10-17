@@ -43,3 +43,10 @@ Shared ui/planner-styles.txt now serves both Calendar and Settings via an authen
 Additional validation: verify-publishing.mjs uses SQLite and actual request handlers for saved defaults/plans, owner/origin/input guards,19 slots, override/reset, rename/week shift, preview/apply, settings race fencing, duplicate weeks, GMT/BST and repeated/missing local hours. verify-publishing-ui.mjs runs the real settings/planning script against those handlers to check save/load, fresh-client persistence, time editing, conflict errors and apply behaviour. Production compiled settings/script/CSS200/401 checks accompany delivery. These are controlled fixtures; no rendered browser/device acceptance or live saved-user-data test is claimed.
 
 The shared CSS is imported as a raw .txt asset and served as text/css. This avoids the framework CSS transform wrapping an HTTP route as a React component; compiled response checks cover this regression.
+
+
+## Settings-only timing rule —17October2026
+
+CJ superseded calendar time editing: saved post dates/times and existing release-week moves are now managed only in Settings → Publishing → Individual planned posts. Calendar saved-post details show timing read-only and link directly to /settings?post=<stable ID>. The calendar can create a new plan and edit its working title; an existing week field is disabled and the save uses its stored week, preventing field manipulation from moving the plan. Example clock-time input is hidden. Settings retains default/override, clock-change choices, concurrency checks and explicit apply behaviour. No schema, provider or uploader change.
+
+Real UI/API fixtures verify calendar contains no post date/time inputs, its deep link selects the intended Settings post, Settings time saves refresh a new calendar client, stale Settings tabs reject writes, and week moves occur in Settings while calendar title edits preserve the stored week. Rendered device checks remain unverified.

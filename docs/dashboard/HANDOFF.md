@@ -6,7 +6,7 @@ Updated 17 October 2026. Read AGENTS.md, docs/dashboard/README.md, docs/DESIGN_S
 
 Live: https://gemos-youtube-import-test.prodbycjbeatsss.chatgpt.site/
 
-Private Site version78: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_86cd8eac8fe48191b093f8ea6f0b755a`; source `877cf52f41c55747c91fab8a3b9bb3b68c6ca595`; deployment `appgdep_6ad359c1ac648191a93c56ecbcf58521`, succeeded17October2026 at11:19UTC. Runtime revision6/private audience retained. Version75 introduced Release Buffer;76–77 introduced/revised the separate Planner.
+Private Site version79: `appgprj_6ac84c21e1fc819198906084958537b0~appgver_0c6a68f2289c8191ae83390e74de7a97`; source `c2f0d30d58d3caa3cc676f813d1f3d6bca802d3c`; deployment `appgdep_6ad36d0c859881919f30dbebdcac534b`, succeeded17October2026 at12:42UTC. Runtime revision6/private audience retained. Version78 added saved plans/settings;79 moves existing timing edits exclusively into Settings.
 
 Previous version74 reconciliation: [pre-schedule handoff](../../archives/dashboard/2026-10-15/pre-youtube-schedule/HANDOFF.md). Existing credentials/scopes/tables/owner data are preserved.
 
@@ -63,15 +63,19 @@ Fresh controlled checks run during reconciliation: verify-channel-shorts.mjs, ve
 
 ## Publishing settings and durable plans — delivered17October2026
 
-/settings stores four blank-by-default destination times and Europe/London timezone. Explicit preview/apply updates eligible existing planned posts; overrides/platform-linked posts stay excluded. /planner defaults to My plans, with persistent unfinished releases, one Monday release week and19 stable intended posts. Open a post to edit intended timing or adopt its current default; Edit release changes the working title or moves the whole week retaining post times/overrides. Existing provider schedule and examples are separate sources. Neither plan edits nor settings perform uploads/rescheduling.
+/settings stores four blank-by-default destination times and Europe/London timezone. Explicit preview/apply updates eligible existing planned posts; overrides/platform-linked posts stay excluded. /planner defaults to My plans, with persistent unfinished releases, one Monday release week and19 stable intended posts. Version79 supersedes the original edit location: Calendar post details show timing read-only with a selected-post Settings link. Settings → Publishing → Individual planned posts owns post dates/times/default overrides and whole-release-week moves. Calendar can create a new plan and edit its working title; existing timing stays unchanged. Existing provider schedule and examples are separate sources. Neither plan edits nor settings perform uploads/rescheduling.
 
 Two additive D1 tables, generated0009 migration/snapshot/journal, owner-checked APIs and atomic catalogue/settings revision fences are delivered. Plans are stored as a bounded owner catalogue rather than duplicating Drive/analytics records; release/post IDs and revisions remain stable for future associations/jobs. Shared raw soft-theme CSS serves Calendar and Settings; Calendar/Settings links sit outside the four dashboard groups. All existing data/scopes/snapshots remain untouched.
 
 Backend SQLite, real UI-script/API fixtures, Planner/group regressions, production build and compiled owner200/unauthorised401 checks pass. No supported rendered browser/device QA or live owner save is claimed. Runtime contract: [PLANNER](integration-tests/youtube/PLANNER.md). First user check needs only four default times and an unfinished test title, not media/uploads.
 
+## Timing editing rule —17October2026
+
+CJ requires timing changes only from Settings to avoid accidental rescheduling. Version79 implements this for individual posts and release-week moves. Calendar has no saved-post date/time controls, and its existing release-week field is disabled; title-save uses the stored week. Deep links select the intended post in Publishing settings. Settings edits update the same saved plan records; actual provider schedule evidence remains separate and unchanged. Real UI/API, Planner and compiled/build checks pass; rendered device evidence remains pending.
+
 ## Next work
 
-1. CJ: set default times at /settings, create a saved test release at /planner, reload, edit one intended time and check both themes. Record layout/save problems without requiring real uploads.
+1. CJ: set default times at /settings, create a saved test release at /planner, reload, edit one intended time in Settings and check both themes. Record layout/save problems without requiring real uploads.
 2. Implement the next integration-map slice: explicit project folder/readiness/review/artwork/media associations. Per-project saved reads must not change selected_id.
 3. Add exact upload identities, actual published history and per-post reporting. Then build the uploader with real provider/media capabilities and job safety.
 4. Preserve accepted analytics/Sync-all behaviour; genuine Buffer/24h capture evidence waits for uploads. Optional finance/newsletter calendar layers and parked Payhip store/licence work remain later.

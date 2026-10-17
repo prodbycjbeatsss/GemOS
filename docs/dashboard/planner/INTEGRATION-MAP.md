@@ -56,7 +56,9 @@ This is a proposed implementation structure grounded in confirmed behaviour; exa
 
 ## Update and editing rules
 
-Settings edits affect new plans only. An explicit apply-to-existing action previews eligible unscheduled plan changes. Calendar edits use revisions to reject stale concurrent writes. A planned-time edit never calls a platform API implicitly.
+CJ's17October rule supersedes the original editing location: all existing-post intended dates/times, default overrides and whole-release-week moves are edited only in Settings → Publishing. Calendar shows timing read-only and deep-links to the selected Settings post. Calendar can still create an initial plan and edit its working title. Version79 implements this; actual platform schedules remain unchanged.
+
+Settings edits affect new plans only. An explicit apply-to-existing action previews eligible unscheduled plan changes. Publishing timing edits and Calendar working-title edits use revisions to reject stale concurrent writes. A planned-time edit never calls a platform API implicitly.
 
 Project metadata/artwork references are resolved through shared project records; existing dashboard workflows remain their editing authority initially. A project update refreshes every relevant view after save/reload/focus; cross-tab freshness must be implemented and tested rather than claimed as instant push. Changed files/review metadata keep existing readiness revalidation guards. Existing scheduled content keeps provider metadata until an explicit supported update succeeds; a local title/artwork change must not claim the remote upload changed.
 
@@ -70,7 +72,7 @@ Resolve local date/time with DST-aware Europe/London conversion; reject nonexist
 Owner-private page and API with four labelled destination times/timezone, no fabricated defaults, optimistic concurrency, shared navigation/glossary. Save/reload persists; owner isolation, origin/input validation and GMT/BST behaviour checked. No scheduler or provider action.
 
 ###2. Saved plans and calendar editing — delivered version78
-Persist release/post plans, generate19 slots from configured defaults, allow unfinished projects and explicit per-post overrides. Calendar reads saved plans independently of actual provider evidence; examples stay isolated. Validate unique week, revisions, default-change rules, no writes to platform schedules and reload/cross-tab refresh.
+Persist release/post plans, generate19 slots from configured defaults, allow unfinished projects and explicit per-post overrides through Settings only. Calendar reads saved plans independently of actual provider evidence; examples stay isolated. Validate unique week, revisions, default-change rules, no writes to platform schedules and reload/cross-tab refresh.
 
 ###3. Project/readiness/metadata/artwork
 Link owned folders and explicit files; expose per-project saved checks without changing dashboard selected_id. Both views resolve the same reviewed metadata/artwork/file references and invalidate stale readiness appropriately. Verify two different projects, changed names/artwork/files, missing access and actual private image display. No complete project required to save an unfinished plan.

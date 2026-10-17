@@ -27,13 +27,19 @@ Private version78, source `877cf52f41c55747c91fab8a3b9bb3b68c6ca595`, deployment
 
 Settings → Publishing (/settings) saves four initially blank platform times with Europe/London timezone. Defaults affect new plans only; Review plan changes previews an explicit apply to eligible existing planned posts, excluding personal overrides/platform-linked records. No actual defaults were guessed.
 
-My plans is the default calendar source. Add release saves an unfinished title and Monday week plus19 stable post IDs. Post details edit intended dates/times within the week and can adopt the current default; Edit release renames or shifts the whole week while retaining times/overrides. Reload/new clients restore saved plans. Examples and actual YouTube source evidence remain separate.
+My plans is the default calendar source. Add release saves an unfinished title and Monday week plus19 stable post IDs. Version79 supersedes the original calendar editing controls: post details show timing read-only and link to Settings. Existing post dates/times, overrides and whole-week moves are editable only in Settings → Publishing → Individual planned posts. Calendar retains new-plan creation and working-title editing. Reload/new clients restore saved plans. Examples and actual YouTube source evidence remain separate.
 
 The storage uses two additive D1 tables with generated migration/snapshot/journal. Plans are a bounded owner catalogue (104 active weeks), atomic revision-checked writes and stable per-release/post IDs/revisions. A settings change during a plan write is fenced by the same SQL operation. Browser storage keeps only theme preference.
 
+## Settings-only timing — confirmed/delivered17October2026
+
+Private version79, source `c2f0d30d58d3caa3cc676f813d1f3d6bca802d3c`, deployment `appgdep_6ad36d0c859881919f30dbebdcac534b` succeeded12:42UTC; private audience/runtime revision6 retained. All existing post date/time and whole-release-week controls are in Settings → Publishing. Calendar saved-post details are read-only with a direct selected-post Settings link. A working-title edit in Calendar keeps the stored week even if its disabled field is manipulated. Examples have no visible clock-time input.
+
+Real UI/API fixtures cover read-only Calendar, correct selected-post deep links, Settings saves/reload, stale Settings conflicts, override preservation/default apply and Settings-only week moves. Production/compiled owner200/401 and Planner checks pass. No schema/provider/uploader changes or rendered/live-account acceptance claimed.
+
 ## Next sequence
 
-1. CJ sets the four default times in Settings → Publishing and creates an unfinished test release in Calendar → My plans. Verify save/reload, one post override and both themes on phone/desktop; no actual upload or full project is needed.
+1. CJ sets the four default times in Settings → Publishing and creates an unfinished test release in Calendar → My plans. Verify save/reload, one post override in Settings and both themes on phone/desktop; no actual upload or full project is needed.
 2. Link owned project folders, per-project saved readiness, reviewed metadata, artwork/private image delivery and ordered media IDs. Read project-specific state without changing dashboard selection.
 3. Add exact owned upload associations and published history/per-post metrics; preserve existing Buffer/analytics meanings.
 4. Build the upload scheduler only after provider/media/permissions design; it consumes these saved posts. Explicit platform rescheduling is separate from intended-time editing.
