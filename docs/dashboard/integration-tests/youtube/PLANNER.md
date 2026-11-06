@@ -53,6 +53,14 @@ Real UI/API fixtures verify calendar contains no post date/time inputs, its deep
 
 ## Single calendar editor and conditional clock guidance —17October2026
 
-A saved card opens one dialog containing its release working-title input, read-only timing/facts and selected-post Settings link. Save name updates the shared release title for all19 planned posts without a second edit screen. Stable release/post IDs are unchanged. The explicit project-folder association is still a later integration step; existing Drive projects already have folder IDs.
+A saved card opens one dialog containing its release working-title input, read-only timing/facts and selected-post Settings link. Save name updates the shared release title for all19 planned posts without a second edit screen. Stable release/post IDs are unchanged.
 
 Clock-change selectors are hidden normally. If server validation finds a repeated UK local time, reveal a plain-language first-BST/second-GMT choice in the relevant form, then hide after save or relevant date/time changes. Initial release creation and Settings individual/default-apply flows keep full DST validation. Normal18:00-style times show no clock-change controls. Real UI/API fixtures cover one-click naming, stable identities and the repeated01:30 case; no rendered device check is claimed.
+
+## Explicit Drive project association and independent readiness —6November2026 working branch
+
+Branch `stage-3/project-associations` adds an optional `projectFolderId` to each saved release in the existing owner-scoped `release_plan_state.state_json`. It remains a separate identity from the release UUID. The release creation dialog and existing single-card editor can link, change or remove the folder. A new link is accepted only when the folder belongs to the authenticated owner's current discovered Drive catalogue. Existing links remain editable/unlinkable if a project later becomes unavailable; no title/date/filename matching is used. Legacy releases without this property remain valid and unlinked.
+
+`GET /api/youtube/drive-project?folder=<folder ID>` returns that owner's saved project record, reviewed metadata, preparation state and last saved readiness result. It does not change `drive_release_settings.selected_id`, call Google Drive, or trigger a scan. The Planner displays reviewed metadata when available, otherwise labels folder-derived values as suggestions, and reports the last saved scan count/time separately from platform scheduling. The same release link is carried by all19 planned posts.
+
+No D1 migration is required: the folder ID is an additive field in the existing JSON catalogue. This slice does not deliver private artwork bytes/thumbnails, media download, uploads, platform scheduling or provider post identities. The branch is not merged or deployed. Backend and UI fixtures have been added; they have not yet been executed in this managed session. JavaScript source parse checks passed. Rendered device and live Drive acceptance remain outstanding.
