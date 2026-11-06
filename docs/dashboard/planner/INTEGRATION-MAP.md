@@ -75,7 +75,10 @@ Owner-private page and API with four labelled destination times/timezone, no fab
 Persist release/post plans, generate19 slots from configured defaults, allow unfinished projects and explicit per-post overrides through Settings only. Calendar reads saved plans independently of actual provider evidence; examples stay isolated. Validate unique week, revisions, default-change rules, no writes to platform schedules and reload/cross-tab refresh.
 
 ###3. Project/readiness/metadata/artwork
-Link owned folders and explicit files; expose per-project saved checks without changing dashboard selected_id. Both views resolve the same reviewed metadata/artwork/file references and invalidate stale readiness appropriately. Verify two different projects, changed names/artwork/files, missing access and actual private image display. No complete project required to save an unfinished plan.
+
+**3.1 Delivered on working branch:** optional release-to-Drive folder association, current-catalogue owner validation, explicit unlink, legacy unlinked-plan compatibility and independent project-specific saved-readiness/review retrieval. All19 posts inherit the release association. No title/date matching and no dashboard selected_id mutation.
+
+**3.2 Still outstanding:** shared private artwork/media delivery, thumbnails and explicit ordered media references. Verify two different projects, renamed/moved/unavailable projects, changed files/reviews and missing access. No complete project is required to save an unfinished plan.
 
 ###4. Actual uploads, performance and automation context
 Explicit owned provider IDs; combine planned/actual evidence without overwriting either. Add past publication history and per-video current/24h details where sources exist. Preserve Buffer and analytics scope. Monitor future jobs with stable post context; no fake upload adapter.
