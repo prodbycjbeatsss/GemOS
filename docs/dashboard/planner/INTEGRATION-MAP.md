@@ -1,6 +1,6 @@
 # Calendar integration map and build sequence
 
-Code-reviewed16October2026 against Site source dc826293ef091983d36ee61d326c922bdd5cb4b8 / GemOS d2df34a0773b1924d22902718eeb184d655340fe. Updated17October2026: Publishing settings and durable plan editing are delivered in version78. Later integration slices remain a plan.
+Code-reviewed16October2026 against Site source dc826293ef091983d36ee61d326c922bdd5cb4b8 / GemOS d2df34a0773b1924d22902718eeb184d655340fe. Updated6November2026: Stage3.1 release-to-Drive project association and independent saved-readiness retrieval are implemented on branch `stage-3/project-associations`; not merged or deployed. Deployed Site remains version80.
 
 ## Current position
 
