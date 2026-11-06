@@ -29,6 +29,7 @@ D1 identity is owner + Drive folder ID. Existing lazy migration preserves the pr
 | Route | Behaviour |
 |---|---|
 | GET drive-status | Scopes, folders, project reviews/preparation status, selected saved result |
+| GET drive-project?folder=<ID> | Owner-scoped saved project/review/preparation/readiness record; read-only and does not change selected_id (Planner integration branch) |
 | POST drive-folders / drive-discover | Validate all roots, enumerate direct ordinary folders and publish complete catalogue atomically |
 | POST drive-select | Choose only an existing owner project; frontend follows success with drive-scan, never an other-card request |
 | POST drive-scan / drive-confirm | Scan eight categories / validate fresh candidate association |
@@ -61,3 +62,8 @@ CJ supplied saved stage connections and Gelato41 4/8 scan screenshots, and repor
 ## Current deployment
 
 Preparation slice deployment identifiers are recorded in HANDOFF after publication. Previous deployments are in Git history and archives/dashboard/2026-10-10/pre-prepare-release, not active instructions.
+
+
+## Planner project-detail read —6November2026 working branch
+
+The Planner uses `GET /api/youtube/drive-project?folder=<Drive folder ID>` to read one saved project record by the authenticated owner and exact folder ID. The response includes the current discovered stage (or `unavailable`), folder-name metadata suggestions, any reviewed metadata, preparation state, last successful asset scan and the existing eight-category result. It does not call Google Drive, run a new scan or write `drive_release_settings.selected_id`. Existing dashboard selection and its selected result remain unchanged. New release associations are validated against the owner's current discovered catalogue; historical associations can still be displayed and explicitly unlinked if the project becomes unavailable. This endpoint and the Planner association UI are on `stage-3/project-associations`, not yet deployed.
