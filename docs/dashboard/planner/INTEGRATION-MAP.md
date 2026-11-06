@@ -4,7 +4,7 @@ Code-reviewed16October2026 against Site source dc826293ef091983d36ee61d326c922bd
 
 ## Current position
 
-/planner now defaults to My plans. The separate YouTube schedule source uses GET /api/youtube/schedule, the same saved owner/channel report as Release Buffer. Four destination filters, source freshness, read-only statuses and isolated fictional examples are implemented. Version78 adds owner-saved Publishing defaults and release/post plans with calendar timing edits. Project/media associations, upload jobs and platform writes remain absent.
+/planner now defaults to My plans. The separate YouTube schedule source uses GET /api/youtube/schedule, the same saved owner/channel report as Release Buffer. Four destination filters, source freshness, read-only statuses and isolated fictional examples are implemented. Version78 adds owner-saved Publishing defaults and release/post plans with calendar timing edits. Release-to-project association and independent project readiness reads are present on the working branch; private artwork/media delivery, upload jobs and platform writes remain absent.
 
 CJ confirmed a main Settings → Publishing page, Europe/London timezone, separate main YouTube/Shorts/TikTok/Reels default post times, per-post planned-time overrides and shared records across relevant dashboard/calendar/scheduler views. Defaults affect new plans; applying them to existing editable plans is explicit. Already scheduled platform posts require a separately confirmed rescheduling action and platform success. No actual default clock times have been agreed; the example times must not be silently promoted into saved settings.
 
