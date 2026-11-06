@@ -55,6 +55,8 @@ assert.equal((await call('drive-select',{folder:A})).data.result.checkedAt,123);
 let scanA=await call('drive-scan',{folder:A});assert.equal(scanA.status,200);assert.equal(scanA.data.ready,4);assert.equal(scanA.data.assets.find(a=>a.role==='remix').reason,'Remembered file association');
 assert.equal((await call('drive-select',{folder:B})).data.result.checkedAt,scanB.data.checkedAt);
 assert.equal((await call('drive-status')).data.folderId,B);
+const detailResponse=await assetHandler(new Request(origin+'/api/youtube/drive-project?folder='+A,{headers:{'oai-authenticated-user-id':'owner'}}),env,'drive-project');assert.equal(detailResponse.status,200);const detail=await detailResponse.json();assert.equal(detail.id,A);assert.equal(detail.result.checkedAt,scanA.data.checkedAt);assert.equal(detail.stage,'production');assert.equal((await call('drive-status')).data.folderId,B,'project detail read must not change dashboard selection');
+const foreignDetail=await assetHandler(new Request(origin+'/api/youtube/drive-project?folder='+A,{headers:{'oai-authenticated-user-id':'other'}}),env,'drive-project');assert.equal(foreignDetail.status,404,'project detail is owner-scoped');
 assert.equal((await call('drive-select',{folder:A},'other')).status,404);
 assert.equal((await call('drive-status',undefined,'other')).data.projects.length,0);
 assert.equal((await call('drive-folders',folders,'owner','https://evil.example')).status,403);

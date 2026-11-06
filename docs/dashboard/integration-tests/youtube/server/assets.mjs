@@ -83,6 +83,31 @@ async function projectStatus(env,owner) {
   for(const project of projects){const review=reviews.find(r=>r.folder_id===project.id),move=moves.find(r=>r.folder_id===project.id);project.review=review?{metadata:JSON.parse(review.metadata_json),reviewedAt:review.reviewed_at}:null;project.preparation=move?{status:move.status,completedAt:move.completed_at}:null;}
   return {folders:{production:settings.production_id,queue:settings.queue_id,released:settings.released_id},projects,discoveredAt:settings.discovered_at,folderId:settings.selected_id,result:selected?.result_json?currentResult(JSON.parse(selected.result_json)):null};
 }
+async function projectRecord(env,owner,id) {
+  const row=await env.DB.prepare('SELECT * FROM drive_release_projects WHERE user_id=? AND folder_id=?').bind(owner,id).first();
+  if(!row)return null;
+  const settings=await env.DB.prepare('SELECT catalogue_json FROM drive_release_settings WHERE user_id=?').bind(owner).first();
+  const live=JSON.parse(settings?.catalogue_json||'[]').find(p=>p.id===id);
+  const review=await env.DB.prepare('SELECT * FROM drive_release_reviews WHERE user_id=? AND folder_id=?').bind(owner,id).first();
+  const move=await env.DB.prepare('SELECT * FROM drive_release_moves WHERE user_id=? AND folder_id=?').bind(owner,id).first();
+  return {
+    id:row.folder_id,name:row.name,
+    stage:live?.stage || (row.stage==='manual'?'manual':'unavailable'),
+    metadata:projectMetadata(row.name),
+    review:review?{metadata:JSON.parse(review.metadata_json),reviewedAt:review.reviewed_at}:null,
+    preparation:move?{status:move.status,completedAt:move.completed_at}:null,
+    checkedAt:row.checked_at||null,
+    result:row.result_json?currentResult(JSON.parse(row.result_json)):null
+  };
+}
+export async function ownedReleaseProject(env,owner,id) {
+  if(!validId(id))return null;
+  await tables(env,owner);
+  const settings=await env.DB.prepare('SELECT catalogue_json FROM drive_release_settings WHERE user_id=?').bind(owner).first();
+  const live=JSON.parse(settings?.catalogue_json||'[]').some(p=>p.id===id);
+  if(!live)return null;
+  return projectRecord(env,owner,id);
+}
 async function discoverProjects(env,owner,folders) {
   const values=Object.values(folders).filter(Boolean);
   if(!folders.production)throw new AssetError('Connect the In Production folder first.');
@@ -218,6 +243,12 @@ export async function assetHandler(request,env,action) {
     const owner=request.headers.get('oai-authenticated-user-id');if(!owner)throw new AssetError('Sign in to this private page.',401);
     if(!configured(env))throw new AssetError('Google connection setup is incomplete.',503);
     await tables(env,owner);
+    if(action==='drive-project'&&request.method==='GET') {
+      const id=folderId(new URL(request.url).searchParams.get('folder'));
+      const project=await projectRecord(env,owner,id);
+      if(!project)throw new AssetError('This saved project is not available to this account.',404);
+      return Response.json(project,{headers});
+    }
     if(action==='drive-status'&&request.method==='GET') {
       const connection=await env.DB.prepare('SELECT scopes FROM youtube_connections WHERE user_id = ?').bind(owner).first();
       return Response.json({moveGranted:Boolean(connection?.scopes?.split(' ').includes(DRIVE_MOVE_SCOPE)),driveGranted:[DRIVE_SCOPE,DRIVE_MOVE_SCOPE].some(scope=>connection?.scopes?.split(' ').includes(scope)),...await projectStatus(env,owner)},{headers});
