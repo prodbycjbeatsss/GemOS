@@ -60,12 +60,13 @@ export function currentResult(result) {
   const assets=roles.map((role,index)=>result.assets.find(a=>a.role===role)||{role,label:LABELS[index],state:'Unchecked',reason:'Sync to check this newly required file.',files:[],candidates:[],count:0});
   return {...result,assets,total:roles.length,ready:assets.filter(a=>a.state==='Pass').length,needsRescan:assets.some(a=>a.state==='Unchecked')};
 }
-async function tables(env,owner) {
+async function tables(env,owner,seedLegacy=true) {
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS drive_asset_state (user_id TEXT PRIMARY KEY, folder_id TEXT NOT NULL, mappings_json TEXT NOT NULL, result_json TEXT, checked_at INTEGER)').run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_projects (user_id TEXT NOT NULL, folder_id TEXT NOT NULL, name TEXT NOT NULL, stage TEXT NOT NULL DEFAULT 'manual', mappings_json TEXT NOT NULL DEFAULT '{}', result_json TEXT, checked_at INTEGER, PRIMARY KEY(user_id,folder_id))").run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_settings (user_id TEXT PRIMARY KEY, production_id TEXT NOT NULL DEFAULT '', queue_id TEXT NOT NULL DEFAULT '', released_id TEXT NOT NULL DEFAULT '', selected_id TEXT NOT NULL DEFAULT '', catalogue_json TEXT NOT NULL DEFAULT '[]', discovered_at INTEGER)").run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_reviews (user_id TEXT NOT NULL,folder_id TEXT NOT NULL,metadata_json TEXT NOT NULL,signature TEXT NOT NULL,reviewed_at INTEGER NOT NULL,PRIMARY KEY(user_id,folder_id))").run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS drive_release_moves (user_id TEXT NOT NULL,folder_id TEXT NOT NULL,source_id TEXT NOT NULL,target_id TEXT NOT NULL,status TEXT NOT NULL,started_at INTEGER NOT NULL,completed_at INTEGER,PRIMARY KEY(user_id,folder_id))").run();
+  if(!seedLegacy)return;
   const legacy=await env.DB.prepare('SELECT * FROM drive_asset_state WHERE user_id = ?').bind(owner).first();
   // Copy the old result once without replacing newer per-project scans/selections.
   if(legacy)await env.DB.prepare('INSERT OR IGNORE INTO drive_release_projects (user_id,folder_id,name,mappings_json,result_json,checked_at) VALUES (?,?,?,?,?,?)').bind(owner,legacy.folder_id,legacy.result_json?JSON.parse(legacy.result_json).projectName:'Saved project',legacy.mappings_json,legacy.result_json,legacy.checked_at).run();
@@ -102,7 +103,7 @@ async function projectRecord(env,owner,id) {
 }
 export async function ownedReleaseProject(env,owner,id) {
   if(!validId(id))return null;
-  await tables(env,owner);
+  await tables(env,owner,false);
   const settings=await env.DB.prepare('SELECT catalogue_json FROM drive_release_settings WHERE user_id=?').bind(owner).first();
   const live=JSON.parse(settings?.catalogue_json||'[]').some(p=>p.id===id);
   if(!live)return null;
@@ -242,7 +243,7 @@ export async function assetHandler(request,env,action) {
   try {
     const owner=request.headers.get('oai-authenticated-user-id');if(!owner)throw new AssetError('Sign in to this private page.',401);
     if(!configured(env))throw new AssetError('Google connection setup is incomplete.',503);
-    await tables(env,owner);
+    await tables(env,owner,action!=='drive-project');
     if(action==='drive-project'&&request.method==='GET') {
       const id=folderId(new URL(request.url).searchParams.get('folder'));
       const project=await projectRecord(env,owner,id);
