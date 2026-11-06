@@ -59,6 +59,6 @@ Next: review actual responsive rendering in both themes, then explicit project/a
 
 ## Editor clarification —version80
 
-A saved card is one editor, combining its release working-title input with read-only timing/evidence and Settings link. The title is shared by all19 release posts, not an upload title written back to platforms. Release/post UUIDs remain unchanged by editing. Drive folder IDs exist separately; explicit project association is still next.
+A saved card is one editor, combining its release working-title input with read-only timing/evidence and Settings link. The title is shared by all19 release posts, not an upload title written back to platforms. Release/post UUIDs remain unchanged by editing. Drive folder IDs are distinct from release UUIDs; branch `stage-3/project-associations` adds an explicit optional link between them.
 
 Do not show UK clock-change fields for ordinary times. Reveal first occurrence (BST) / second occurrence (GMT) only if server validation identifies a duplicated local hour, and hide after resolution/relevant input changes. A nonexistent spring-forward time still requires another time. UI/API fixtures and production/compiled auth checks pass; no rendered device claim.

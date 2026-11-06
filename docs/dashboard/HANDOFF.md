@@ -79,10 +79,16 @@ Version80: clicking a saved card opens its release working-title input directly 
 
 Releases and posts already have stable UUIDs; Drive projects have stable folder IDs. The explicit owner/release/project-folder association is not implemented yet. Do not imply IDs alone establish a relationship. UI/API identity/name/clock-choice fixtures and build/compiled200/401 pass. The first publish attempt hit a transient Sites DB rate limit; the same saved version was successfully deployed on retry. No schema/source permission/provider write changed.
 
+## Stage 3.1 — project association branch, 6November2026
+
+Working branch: [`stage-3/project-associations`](https://github.com/prodbycjbeatsss/GemOS/tree/stage-3/project-associations). The branch adds an optional `projectFolderId` to each saved release's existing JSON record, validates new links against the authenticated owner's current discovered Drive catalogue, supports explicit unlink and preserves older unlinked plans. A new owner-scoped `GET /api/youtube/drive-project?folder=folderId` reads the chosen project's saved scan/review/preparation record without changing `selected_id` or initiating a Drive request. Planner creation and its existing one-dialog card editor expose the optional association and last saved readiness/metadata.
+
+No D1 migration, OAuth scope, provider write, Drive scan, private media delivery or deployment is included. The deployed Site remains version80. Backend/UI fixtures were added but have not yet been executed here; JS source parse checks passed. Rendered phone/desktop and real owner/Drive validation remain outstanding.
+
 ## Next work
 
 1. CJ: set default times at /settings, create a saved test release at /planner, reload, edit one intended time in Settings and check both themes. Record layout/save problems without requiring real uploads.
-2. Implement the next integration-map slice: explicit project folder/readiness/review/artwork/media associations. Per-project saved reads must not change selected_id.
+2. Complete private artwork delivery and shared media references, including ordered Shorts clips. Preserve Drive privacy and never expose tokens.
 3. Add exact upload identities, actual published history and per-post reporting. Then build the uploader with real provider/media capabilities and job safety.
 4. Preserve accepted analytics/Sync-all behaviour; genuine Buffer/24h capture evidence waits for uploads. Optional finance/newsletter calendar layers and parked Payhip store/licence work remain later.
 
