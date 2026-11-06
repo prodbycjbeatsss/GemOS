@@ -11,9 +11,9 @@ const call=async(kind,body,owner='owner',o=origin)=>{const r=await publishingHan
 const projectA='project_folder_0001',projectB='project_folder_0002';
 await ownedReleaseProject(env,'owner',projectA);await ownedReleaseProject(env,'other',projectB);
 sql.prepare('INSERT INTO drive_release_projects (user_id,folder_id,name,stage,mappings_json) VALUES (?,?,?,?,?)').run('owner',projectA,'Artist - Track','production','{}');
-sql.prepare('UPDATE drive_release_settings SET catalogue_json=? WHERE user_id=?').run(JSON.stringify([{id:projectA,name:'Artist - Track',stage:'production'}]),'owner');
+sql.prepare('INSERT INTO drive_release_settings (user_id,catalogue_json) VALUES (?,?)').run('owner',JSON.stringify([{id:projectA,name:'Artist - Track',stage:'production'}]));
 sql.prepare('INSERT INTO drive_release_projects (user_id,folder_id,name,stage,mappings_json) VALUES (?,?,?,?,?)').run('other',projectB,'Other Artist - Track','production','{}');
-sql.prepare('UPDATE drive_release_settings SET catalogue_json=? WHERE user_id=?').run(JSON.stringify([{id:projectB,name:'Other Artist - Track',stage:'production'}]),'other');
+sql.prepare('INSERT INTO drive_release_settings (user_id,catalogue_json) VALUES (?,?)').run('other',JSON.stringify([{id:projectB,name:'Other Artist - Track',stage:'production'}]));
 const times={yt:'18:00',shorts:'17:30',tt:'18:30',ig:'19:00'},value={timezone:'Europe/London',times};
 assert.equal((await call('settings',undefined,null)).status,401);assert.equal((await call('settings',{revision:0,value},'owner','https://evil.example')).status,403);assert.equal((await call('settings',{revision:0,value:{...value,timezone:'UTC'}})).status,400);
 let s=await call('settings');assert.deepEqual(s.data.value.times,{yt:null,shorts:null,tt:null,ig:null});
