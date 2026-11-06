@@ -1,6 +1,6 @@
 # GemOS — current implementation plan
 
-Updated17October2026. Current source/acceptance: [HANDOFF](HANDOFF.md). Wording: [glossary.md](../../glossary.md).
+Updated6November2026 (working branch checkpoint; deployed version80 unchanged). Current source/acceptance: [HANDOFF](HANDOFF.md). Wording: [glossary.md](../../glossary.md).
 
 ## Completed and accepted
 
@@ -45,10 +45,16 @@ Clock-choice selectors are hidden unless backend validation finds a repeated UK 
 
 UI/API fixtures cover single-card name editing, stable IDs, ordinary hidden clock controls and an affected01:30 requiring a choice. Build and compiled private200/401 pass; rendered/device acceptance remains pending.
 
+## Stage 3.1 — project association and independent readiness read (working branch)
+
+Branch `stage-3/project-associations` adds optional owner-validated `projectFolderId` values to saved releases, a read-only `/api/youtube/drive-project` endpoint and Planner controls to link/unlink a Drive project. Existing readiness/review/preparation records are reused; the dashboard's selected project is not changed. Legacy plans remain valid. No new D1 migration, Drive scope, scan, media download or provider operation is introduced.
+
+Backend and UI regression fixtures cover owner validation, explicit unlink, read-only project detail, selected-project isolation, saved scan display and legacy plans. They have been added but not run in this managed session. Static JavaScript parsing passed. The branch is not merged or deployed; version80 remains the deployed Site.
+
 ## Next sequence
 
 1. CJ sets the four default times in Settings → Publishing and creates an unfinished test release in Calendar → My plans. Verify save/reload, one post override in Settings and both themes on phone/desktop; no actual upload or full project is needed.
-2. Link owned project folders, per-project saved readiness, reviewed metadata, artwork/private image delivery and ordered media IDs. Read project-specific state without changing dashboard selection.
+2. Implement private artwork delivery and shared media references, including six ordered Shorts source clips, without exposing private Drive files or credentials.
 3. Add exact owned upload associations and published history/per-post metrics; preserve existing Buffer/analytics meanings.
 4. Build the upload scheduler only after provider/media/permissions design; it consumes these saved posts. Explicit platform rescheduling is separate from intended-time editing.
 5. Optional dated finance/newsletter layers follow core planning. Payhip store/licence work stays parked. Real Buffer/24h evidence waits for uploads.
